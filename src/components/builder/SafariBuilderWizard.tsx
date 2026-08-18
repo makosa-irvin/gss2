@@ -98,16 +98,16 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
   };
 
   return (
-    <div id="custom-safari-builder" className="rounded-3xl bg-[#141e17] border border-[#233327] overflow-hidden shadow-2xl p-6 sm:p-10 max-w-4xl mx-auto">
+    <div id="custom-safari-builder" className="rounded-3xl bg-white border border-[#e8e4da] overflow-hidden shadow-xl p-6 sm:p-10 max-w-4xl mx-auto">
       {/* Wizard Step Progress */}
       <div className="mb-8">
-        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#a3b2a7] mb-3">
-          <span className="text-[#c49a45]">Step {step} of 6</span>
+        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#5d6e62] mb-3">
+          <span className="text-[#9e7120]">Step {step} of 6</span>
           <span>{step === 1 ? 'Destination' : step === 2 ? 'Duration' : step === 3 ? 'Companions' : step === 4 ? 'Comfort & Style' : step === 5 ? 'Experiences' : 'Your Customized Plan'}</span>
         </div>
-        <div className="h-1.5 w-full bg-[#0c120e] rounded-full overflow-hidden">
+        <div className="h-2 w-full bg-[#f2efe6] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#c49a45] transition-all duration-500 rounded-full"
+            className="h-full bg-[#b3822a] transition-all duration-500 rounded-full"
             style={{ width: `${(step / 6) * 100}%` }}
           />
         </div>
@@ -117,10 +117,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
       {step === 1 && (
         <div className="space-y-6">
           <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
               Where in East Africa calls to you?
             </h3>
-            <p className="text-sm text-[#a3b2a7] mt-1">
+            <p className="text-sm text-[#5d6e62] mt-1">
               Select one or combine multiple destinations for your tailor-made route.
             </p>
           </div>
@@ -140,17 +140,17 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => toggleDestination(item.id)}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all duration-200 ${
                     selected
-                      ? 'bg-[#1b2920] border-[#c49a45] shadow-lg shadow-[#c49a45]/10'
-                      : 'bg-[#0c120e] border-[#233327] hover:border-[#384e3e]'
+                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
+                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#f4f2eb]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#c49a45] text-black' : 'border border-[#384e3e]'}`}>
+                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
                       {selected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
-                  <p className="text-xs text-[#8b9e90] mt-1.5">{item.desc}</p>
+                  <p className="text-xs text-[#5d6e62] mt-1.5">{item.desc}</p>
                 </div>
               );
             })}
@@ -159,7 +159,7 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           <div className="flex justify-end pt-4">
             <button
               onClick={() => setStep(2)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-bold text-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
             >
               <span>Next: How Many Days?</span>
               <ArrowRight className="w-4 h-4" />
@@ -172,10 +172,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
       {step === 2 && (
         <div className="space-y-6">
           <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
               How long is your ideal journey?
             </h3>
-            <p className="text-sm text-[#a3b2a7] mt-1">
+            <p className="text-sm text-[#5d6e62] mt-1">
               Every itinerary is completely flexible and can be customized down to the day.
             </p>
           </div>
@@ -194,18 +194,18 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => setDuration(item.id)}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all ${
                     selected
-                      ? 'bg-[#1b2920] border-[#c49a45] shadow-lg shadow-[#c49a45]/10'
-                      : 'bg-[#0c120e] border-[#233327] hover:border-[#384e3e]'
+                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
+                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#f4f2eb]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#c49a45] text-black' : 'border border-[#384e3e]'}`}>
+                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
                       {selected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
-                  <span className="text-xs font-semibold text-[#c49a45] block mt-1">{item.label}</span>
-                  <p className="text-xs text-[#8b9e90] mt-1">{item.desc}</p>
+                  <span className="text-xs font-bold text-[#9e7120] block mt-1">{item.label}</span>
+                  <p className="text-xs text-[#5d6e62] mt-1">{item.desc}</p>
                 </div>
               );
             })}
@@ -214,13 +214,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           <div className="flex justify-between pt-4">
             <button
               onClick={() => setStep(1)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
             >
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
             <button
               onClick={() => setStep(3)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-bold text-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
             >
               <span>Next: Who is Traveling?</span>
               <ArrowRight className="w-4 h-4" />
@@ -233,10 +233,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
       {step === 3 && (
         <div className="space-y-6">
           <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
               Who are you traveling with?
             </h3>
-            <p className="text-sm text-[#a3b2a7] mt-1">
+            <p className="text-sm text-[#5d6e62] mt-1">
               We tailor lodge room arrangements, private safari vehicles, and pacing accordingly.
             </p>
           </div>
@@ -257,12 +257,12 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => setTravelerType(item.id)}
                   className={`p-4 rounded-2xl border cursor-pointer transition-all text-center ${
                     selected
-                      ? 'bg-[#1b2920] border-[#c49a45] shadow-lg shadow-[#c49a45]/10'
-                      : 'bg-[#0c120e] border-[#233327] hover:border-[#384e3e]'
+                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
+                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
                   }`}
                 >
-                  <h4 className="font-serif-luxury text-base font-bold text-[#f4f2eb]">{item.title}</h4>
-                  <p className="text-[11px] text-[#8b9e90] mt-1">{item.desc}</p>
+                  <h4 className="font-serif-luxury text-base font-bold text-[#161f19]">{item.title}</h4>
+                  <p className="text-[11px] text-[#5d6e62] mt-1">{item.desc}</p>
                 </div>
               );
             })}
@@ -271,13 +271,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           <div className="flex justify-between pt-4">
             <button
               onClick={() => setStep(2)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
             >
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
             <button
               onClick={() => setStep(4)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-bold text-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
             >
               <span>Next: Travel Style</span>
               <ArrowRight className="w-4 h-4" />
@@ -290,10 +290,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
       {step === 4 && (
         <div className="space-y-6">
           <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
               What level of comfort do you prefer?
             </h3>
-            <p className="text-sm text-[#a3b2a7] mt-1">
+            <p className="text-sm text-[#5d6e62] mt-1">
               Choose your accommodation standard and luxury level.
             </p>
           </div>
@@ -311,17 +311,17 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => setComfortLevel(item.id)}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all ${
                     selected
-                      ? 'bg-[#1b2920] border-[#c49a45] shadow-lg shadow-[#c49a45]/10'
-                      : 'bg-[#0c120e] border-[#233327] hover:border-[#384e3e]'
+                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
+                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#f4f2eb]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#c49a45] text-black' : 'border border-[#384e3e]'}`}>
+                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
                       {selected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
-                  <p className="text-xs text-[#8b9e90] mt-2 leading-relaxed">{item.desc}</p>
+                  <p className="text-xs text-[#5d6e62] mt-2 leading-relaxed">{item.desc}</p>
                 </div>
               );
             })}
@@ -330,13 +330,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           <div className="flex justify-between pt-4">
             <button
               onClick={() => setStep(3)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
             >
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
             <button
               onClick={() => setStep(5)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-bold text-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
             >
               <span>Next: Experiences</span>
               <ArrowRight className="w-4 h-4" />
@@ -349,10 +349,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
       {step === 5 && (
         <div className="space-y-6">
           <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
               What do you most want to experience?
             </h3>
-            <p className="text-sm text-[#a3b2a7] mt-1">
+            <p className="text-sm text-[#5d6e62] mt-1">
               Pick as many highlights as you like to help us shape your dream itinerary.
             </p>
           </div>
@@ -380,8 +380,8 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => toggleExperience(exp)}
                   className={`p-3 rounded-xl text-left border text-xs font-semibold transition-all flex items-center justify-between ${
                     selected
-                      ? 'bg-[#c49a45] text-black border-[#c49a45]'
-                      : 'bg-[#0c120e] text-[#e0ded6] border-[#233327] hover:border-[#384e3e]'
+                      ? 'bg-[#b3822a] text-white border-[#b3822a]'
+                      : 'bg-[#faf8f2] text-[#303e35] border-[#e5e1d6] hover:border-[#b3822a]'
                   }`}
                 >
                   <span>{exp}</span>
@@ -392,8 +392,8 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           </div>
 
           {/* Budget Range Selection */}
-          <div className="pt-4 border-t border-[#233327]">
-            <label className="text-xs font-bold uppercase tracking-wider text-[#c49a45] block mb-2">
+          <div className="pt-4 border-t border-[#eeebe2]">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#9e7120] block mb-2">
               Approximate Budget per Person (Excluding International Flights)
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -409,8 +409,8 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   onClick={() => setBudgetRange(b)}
                   className={`p-3 rounded-xl border text-xs font-bold text-center transition-all ${
                     budgetRange === b
-                      ? 'bg-[#1b2920] border-[#c49a45] text-[#c49a45]'
-                      : 'bg-[#0c120e] border-[#233327] text-[#a3b2a7]'
+                      ? 'bg-[#fdfaf2] border-[#b3822a] text-[#9e7120]'
+                      : 'bg-[#faf8f2] border-[#e5e1d6] text-[#5d6e62]'
                   }`}
                 >
                   {b}
@@ -422,13 +422,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           <div className="flex justify-between pt-4">
             <button
               onClick={() => setStep(4)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
             >
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
             <button
               onClick={() => setStep(6)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-bold text-sm transition-all shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-md"
             >
               <span>Build My Safari Plan</span>
               <Sparkles className="w-4 h-4" />
@@ -443,11 +443,11 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
           {!isSubmitted ? (
             <>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#c49a45]">Your Tailored Plan</span>
-                <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb] mt-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#9e7120]">Your Tailored Plan</span>
+                <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19] mt-1">
                   Here are Recommended Matches for You
                 </h3>
-                <p className="text-xs text-[#a3b2a7] mt-1">
+                <p className="text-xs text-[#5d6e62] mt-1 font-medium">
                   Based on: {destinations.join(', ')} · {duration} Days · {travelerType} · {comfortLevel} · {budgetRange}
                 </p>
               </div>
@@ -457,7 +457,7 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                 {matchingTours.map(tour => (
                   <div
                     key={tour.id}
-                    className="p-4 rounded-2xl bg-[#0c120e] border border-[#233327] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="p-4 rounded-2xl bg-[#faf8f2] border border-[#eeebe2] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div className="flex items-center gap-3">
                       <img
@@ -466,9 +466,9 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                         className="w-16 h-16 rounded-xl object-cover"
                       />
                       <div>
-                        <h4 className="font-serif-luxury font-bold text-sm text-[#f4f2eb] line-clamp-1">{tour.title}</h4>
-                        <span className="text-xs text-[#c49a45] block">{tour.durationLabel} · {tour.country}</span>
-                        <span className="text-xs text-[#8b9e90]">From {formatPrice(tour.priceFrom)} / person</span>
+                        <h4 className="font-serif-luxury font-bold text-sm text-[#161f19] line-clamp-1">{tour.title}</h4>
+                        <span className="text-xs text-[#9e7120] block font-semibold">{tour.durationLabel} · {tour.country}</span>
+                        <span className="text-xs text-[#5d6e62]">From {formatPrice(tour.priceFrom)} / person</span>
                       </div>
                     </div>
 
@@ -477,7 +477,7 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                         <button
                           type="button"
                           onClick={() => onSelectTour(tour)}
-                          className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-[#1b2920] hover:bg-[#233327] text-[#c4d4c8] text-xs font-semibold transition-colors"
+                          className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-[#f4f1e8] hover:bg-[#eae5d8] text-[#3d4c42] text-xs font-bold transition-colors border border-[#ded8cb]"
                         >
                           View Full Details
                         </button>
@@ -488,69 +488,69 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
               </div>
 
               {/* Contact Information Form */}
-              <form onSubmit={handleSubmitCustomSafari} className="p-6 rounded-2xl bg-[#0c120e] border border-[#233327] space-y-4">
-                <h4 className="font-serif-luxury text-lg font-bold text-[#f4f2eb] flex items-center gap-2">
-                  <Send className="w-4 h-4 text-[#c49a45]" />
+              <form onSubmit={handleSubmitCustomSafari} className="p-6 rounded-2xl bg-[#faf8f2] border border-[#eeebe2] space-y-4">
+                <h4 className="font-serif-luxury text-lg font-bold text-[#161f19] flex items-center gap-2">
+                  <Send className="w-4 h-4 text-[#9e7120]" />
                   Receive Your Personalized Proposal & Exact Quote
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs text-[#a3b2a7] block mb-1">Your Full Name *</label>
+                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Your Full Name *</label>
                     <input
                       type="text"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="e.g. Eleanor Vance"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141e17] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs text-[#a3b2a7] block mb-1">Email Address *</label>
+                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Email Address *</label>
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="eleanor@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141e17] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs text-[#a3b2a7] block mb-1">WhatsApp / Phone *</label>
+                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">WhatsApp / Phone *</label>
                     <input
                       type="tel"
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+1 (555) 000-0000"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141e17] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs text-[#a3b2a7] block mb-1">Preferred Travel Month / Dates</label>
+                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Preferred Travel Month / Dates</label>
                     <input
                       type="text"
                       value={travelMonth}
                       onChange={(e) => setTravelMonth(e.target.value)}
                       placeholder="e.g. October 2026"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#141e17] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs text-[#a3b2a7] block mb-1">Any Specific Requests or Must-See Animals?</label>
+                  <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Any Specific Requests or Must-See Animals?</label>
                   <textarea
                     rows={2}
                     value={specialRequests}
                     onChange={(e) => setSpecialRequests(e.target.value)}
                     placeholder="e.g. Celebrating our anniversary, want hot air balloon safari, need vegetarian meals..."
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#141e17] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
@@ -558,14 +558,14 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   <button
                     type="button"
                     onClick={() => setStep(5)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] text-sm font-semibold hover:bg-[#eae5d8]"
                   >
                     <ArrowLeft className="w-4 h-4" /> Adjust Choices
                   </button>
 
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-extrabold text-sm transition-all shadow-lg active:scale-95"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
                   >
                     <span>Request My Custom Safari Plan</span>
                     <Send className="w-4 h-4" />
@@ -575,13 +575,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
             </>
           ) : (
             <div className="text-center py-10 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#1b4332] text-[#86efac] flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/30">
+              <div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="font-serif-luxury text-3xl font-bold text-[#f4f2eb]">
+              <h3 className="font-serif-luxury text-3xl font-bold text-[#161f19]">
                 Thank you, {fullName || 'Traveler'}!
               </h3>
-              <p className="text-base text-[#c4d4c8] max-w-lg mx-auto">
+              <p className="text-base text-[#5d6e62] max-w-lg mx-auto">
                 Your safari journey starts here. Our lead safari designer is reviewing your requirements and will contact you via email & WhatsApp within 12 hours with your day-by-day proposal.
               </p>
               <div className="pt-4 flex flex-wrap justify-center gap-3">
@@ -589,13 +589,13 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   href={getWhatsAppUrl({ customMessage: `Hello Good Secrets Safaris, I just completed the Custom Safari Builder for a trip to ${destinations.join(', ')}. My name is ${fullName}.` })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#25D366] text-black font-bold text-sm"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm shadow-md"
                 >
                   Chat with Safari Specialist on WhatsApp
                 </a>
                 <button
                   onClick={() => { setIsSubmitted(false); setStep(1); }}
-                  className="px-6 py-3 rounded-xl bg-[#1b2920] text-[#c4d4c8] text-sm font-semibold"
+                  className="px-6 py-3 rounded-xl bg-[#f4f1e8] text-[#3d4c42] text-sm font-semibold hover:bg-[#eae5d8]"
                 >
                   Build Another Safari
                 </button>

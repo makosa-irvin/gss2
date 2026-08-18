@@ -3,8 +3,8 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #0c120e;
-    color: #f4f2eb;
+    background-color: #fcfbf9;
+    color: #1a241e;
   }
 
   h1, h2, h3, .font-serif-luxury {
@@ -23,16 +23,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d1410;
+  background: #f4f2ec;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a3d31;
+  background: #d1cbbe;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #c49a45;
+  background: #b3822a;
 }
 
 @keyframes floatSlow {

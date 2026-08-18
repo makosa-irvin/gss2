@@ -50,10 +50,10 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
       {/* Breadcrumb */}
-      <div className="flex items-center justify-between text-xs text-[#8b9e90]">
+      <div className="flex items-center justify-between text-xs text-[#707f74]">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 hover:text-[#c49a45] transition-colors font-medium"
+          className="inline-flex items-center gap-1.5 hover:text-[#9e7120] transition-colors font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to All Destinations</span>
@@ -61,42 +61,42 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
 
         <div className="flex items-center gap-2">
           <span>{destination.country}</span>
-          <ChevronRight className="w-3 h-3 text-[#384e3e]" />
-          <span className="text-[#c4d4c8]">{destination.name}</span>
+          <ChevronRight className="w-3 h-3 text-[#b4beb7]" />
+          <span className="text-[#161f19] font-medium">{destination.name}</span>
         </div>
       </div>
 
       {/* Hero Cover */}
-      <div className="relative rounded-3xl overflow-hidden min-h-[380px] sm:min-h-[440px] flex flex-col justify-end p-6 sm:p-12 border border-[#233327] shadow-2xl">
+      <div className="relative rounded-3xl overflow-hidden min-h-[380px] sm:min-h-[440px] flex flex-col justify-end p-6 sm:p-12 border border-[#e8e4da] shadow-xl">
         <img
           src={destination.heroImage}
           alt={destination.name}
           className="absolute inset-0 w-full h-full object-cover -z-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0c120e] via-[#0c120e]/60 to-black/30 -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/25 -z-10" />
 
         <div className="space-y-3 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#c49a45] text-black">
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#b3822a] text-white">
               {destination.country}
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/60 backdrop-blur-md text-[#f4f2eb] border border-white/20">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md text-white border border-white/30">
               {destination.landscape}
             </span>
           </div>
 
-          <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">
+          <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
             {destination.name}
           </h1>
 
-          <p className="text-sm sm:text-base text-[#d4ded6] leading-relaxed">
+          <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
             {destination.tagline}
           </p>
 
           <div className="pt-2 flex items-center gap-4">
             <button
               onClick={() => onOpenEnquiryModal({ initialType: `Safari to ${destination.name}` })}
-              className="px-6 py-2.5 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg"
+              className="px-6 py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md"
             >
               Plan Safari to {destination.name}
             </button>
@@ -107,23 +107,23 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
       {/* Overview & Best Time to Visit Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-6">
-          <div className="p-8 rounded-3xl bg-[#141e17] border border-[#233327] space-y-4">
-            <h2 className="font-serif-luxury text-2xl font-bold text-[#f4f2eb]">
+          <div className="p-8 rounded-3xl bg-white border border-[#e8e4da] space-y-4 shadow-xs">
+            <h2 className="font-serif-luxury text-2xl font-bold text-[#161f19]">
               About {destination.name}
             </h2>
-            <p className="text-sm text-[#c4d4c8] leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-[#4d5c52] leading-relaxed whitespace-pre-line font-normal">
               {destination.description}
             </p>
 
             {/* Highlights */}
-            <div className="pt-4 border-t border-[#233327]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#c49a45] mb-3">
+            <div className="pt-4 border-t border-[#eeebe2]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#9e7120] mb-3">
                 Key Highlights & Wildlife Encounters
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {destination.highlights.map((h, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-[#e0ded6]">
-                    <CheckCircle2 className="w-4 h-4 text-[#c49a45] shrink-0" />
+                  <div key={i} className="flex items-center gap-2 text-xs text-[#303e35]">
+                    <CheckCircle2 className="w-4 h-4 text-[#9e7120] shrink-0" />
                     <span>{h}</span>
                   </div>
                 ))}
@@ -134,24 +134,24 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
 
         {/* Sidebar Info */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-3xl bg-[#141e17] border border-[#233327] space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c49a45]">
+          <div className="p-6 rounded-3xl bg-white border border-[#e8e4da] space-y-4 shadow-xs">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#9e7120]">
               <Calendar className="w-4 h-4" />
               <span>Best Time to Visit</span>
             </div>
-            <p className="text-sm font-semibold text-[#f4f2eb]">
+            <p className="text-sm font-semibold text-[#161f19]">
               {destination.bestTimeToVisit}
             </p>
 
-            <div className="pt-3 border-t border-[#233327] space-y-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#8b9e90] block">
+            <div className="pt-3 border-t border-[#eeebe2] space-y-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#707f74] block">
                 Iconic Wildlife
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {destination.wildlife.map((w, i) => (
                   <span
                     key={i}
-                    className="px-2.5 py-1 rounded-lg bg-[#0c120e] text-xs text-[#f4f2eb] border border-[#233327]"
+                    className="px-2.5 py-1 rounded-lg bg-[#faf8f2] text-xs text-[#161f19] border border-[#ded8cb]"
                   >
                     🐾 {w}
                   </span>
@@ -166,8 +166,8 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
       <div className="space-y-6 pt-4">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">Featured Routes</span>
-            <h3 className="font-serif-luxury text-2xl font-bold text-[#f4f2eb] mt-0.5">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Featured Routes</span>
+            <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19] mt-0.5">
               Safaris Featuring {destination.name}
             </h3>
           </div>
@@ -185,7 +185,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
             ))}
           </div>
         ) : (
-          <div className="p-6 rounded-2xl bg-[#141e17] border border-[#233327] text-center text-sm text-[#8b9e90]">
+          <div className="p-6 rounded-2xl bg-white border border-[#e8e4da] text-center text-sm text-[#707f74]">
             Custom itineraries are available for {destination.name}. Contact us to include this park in your route.
           </div>
         )}
@@ -196,8 +196,8 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="space-y-6 pt-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#86efac]">Recommended Lodging</span>
-              <h3 className="font-serif-luxury text-2xl font-bold text-[#f4f2eb] mt-0.5">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#1b4332]">Recommended Lodging</span>
+              <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19] mt-0.5">
                 Luxury Lodges & Camps near {destination.name}
               </h3>
             </div>

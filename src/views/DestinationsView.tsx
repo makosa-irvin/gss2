@@ -21,14 +21,14 @@ export const DestinationsView: React.FC<DestinationsViewProps> = ({ onSelectDest
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-10">
       {/* Header */}
       <div className="space-y-3 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#c49a45]">
-          <MapPin className="w-4 h-4" />
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">
+          <MapPin className="w-4 h-4 text-[#9e7120]" />
           <span>African Destinations</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
           Iconic Wilderness & Island Sanctuaries
         </h1>
-        <p className="text-sm text-[#a3b2a7] leading-relaxed">
+        <p className="text-sm text-[#5d6e62] leading-relaxed">
           From legendary predator-rich savannahs to the snows of Kilimanjaro and pristine Indian Ocean coral reefs, explore the world's most breathtaking wildlife habitats.
         </p>
       </div>
@@ -46,8 +46,8 @@ export const DestinationsView: React.FC<DestinationsViewProps> = ({ onSelectDest
             onClick={() => setSelectedCountry(filter.value)}
             className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${
               selectedCountry === filter.value
-                ? 'bg-[#c49a45] text-black shadow-lg'
-                : 'bg-[#141e17] text-[#a3b2a7] border border-[#233327] hover:border-[#384e3e]'
+                ? 'bg-[#b3822a] text-white shadow-md'
+                : 'bg-white text-[#5d6e62] border border-[#e8e4da] hover:border-[#b3822a] hover:text-[#161f19]'
             }`}
           >
             {filter.label}

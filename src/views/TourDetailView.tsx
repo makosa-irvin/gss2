@@ -47,10 +47,10 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
       {/* Breadcrumb & Navigation */}
-      <div className="flex items-center justify-between text-xs text-[#8b9e90]">
+      <div className="flex items-center justify-between text-xs text-[#707f74]">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 hover:text-[#c49a45] transition-colors font-medium"
+          className="inline-flex items-center gap-1.5 hover:text-[#9e7120] transition-colors font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to All Safaris</span>
@@ -58,42 +58,42 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
 
         <div className="flex items-center gap-2">
           <span>{tour.country}</span>
-          <ChevronRight className="w-3 h-3 text-[#384e3e]" />
-          <span className="text-[#c4d4c8] truncate max-w-xs">{tour.title}</span>
+          <ChevronRight className="w-3 h-3 text-[#b4beb7]" />
+          <span className="text-[#161f19] font-medium truncate max-w-xs">{tour.title}</span>
         </div>
       </div>
 
       {/* Hero Header & Title */}
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#1b2920] text-[#c49a45] border border-[#2a3d31]">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#faf8f2] text-[#9e7120] border border-[#ded8cb]">
             {tour.country}
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#141e17] text-[#a3b2a7] border border-[#233327]">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#faf8f2] text-[#5d6e62] border border-[#ded8cb]">
             {tour.durationLabel}
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#141e17] text-[#a3b2a7] border border-[#233327]">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#faf8f2] text-[#5d6e62] border border-[#ded8cb]">
             {tour.comfortLevel}
           </span>
           {tour.featured && (
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#c49a45] text-black">
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#b3822a] text-white">
               Featured Safari
             </span>
           )}
         </div>
 
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb] leading-tight">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19] leading-tight">
           {tour.title}
         </h1>
 
-        <p className="text-base text-[#a3b2a7] max-w-3xl leading-relaxed">
+        <p className="text-base text-[#5d6e62] max-w-3xl leading-relaxed">
           {tour.shortDescription}
         </p>
       </div>
 
       {/* Image Gallery */}
       <div className="space-y-3">
-        <div className="aspect-[16/9] sm:aspect-[21/9] rounded-3xl overflow-hidden bg-[#0c120e] border border-[#233327] relative shadow-2xl">
+        <div className="aspect-[16/9] sm:aspect-[21/9] rounded-3xl overflow-hidden bg-[#faf8f2] border border-[#e8e4da] relative shadow-lg">
           <img
             src={tour.images[activeImageIdx] || tour.images[0]}
             alt={tour.title}
@@ -112,7 +112,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
                 key={idx}
                 onClick={() => setActiveImageIdx(idx)}
                 className={`shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all ${
-                  activeImageIdx === idx ? 'border-[#c49a45] scale-105 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'
+                  activeImageIdx === idx ? 'border-[#b3822a] scale-105 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'
                 }`}
               >
                 <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
@@ -123,37 +123,37 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
       </div>
 
       {/* Quick Specs Highlight Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-2xl bg-[#141e17] border border-[#233327]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-2xl bg-white border border-[#e8e4da] shadow-xs">
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#8b9e90]">
-            <Clock className="w-3.5 h-3.5 text-[#c49a45]" />
+          <div className="flex items-center gap-1.5 text-xs text-[#707f74]">
+            <Clock className="w-3.5 h-3.5 text-[#9e7120]" />
             <span>Duration</span>
           </div>
-          <p className="text-sm font-bold text-[#f4f2eb]">{tour.durationLabel}</p>
+          <p className="text-sm font-bold text-[#161f19]">{tour.durationLabel}</p>
         </div>
 
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#8b9e90]">
-            <Car className="w-3.5 h-3.5 text-[#c49a45]" />
+          <div className="flex items-center gap-1.5 text-xs text-[#707f74]">
+            <Car className="w-3.5 h-3.5 text-[#9e7120]" />
             <span>Vehicle Type</span>
           </div>
-          <p className="text-sm font-bold text-[#f4f2eb]">Custom 4x4 Safari Land Cruiser</p>
+          <p className="text-sm font-bold text-[#161f19]">Custom 4x4 Safari Land Cruiser</p>
         </div>
 
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#8b9e90]">
-            <Bed className="w-3.5 h-3.5 text-[#c49a45]" />
+          <div className="flex items-center gap-1.5 text-xs text-[#707f74]">
+            <Bed className="w-3.5 h-3.5 text-[#9e7120]" />
             <span>Accommodation</span>
           </div>
-          <p className="text-sm font-bold text-[#f4f2eb]">{tour.comfortLevel} Tented Lodges</p>
+          <p className="text-sm font-bold text-[#161f19]">{tour.comfortLevel} Tented Lodges</p>
         </div>
 
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#8b9e90]">
-            <Compass className="w-3.5 h-3.5 text-[#c49a45]" />
+          <div className="flex items-center gap-1.5 text-xs text-[#707f74]">
+            <Compass className="w-3.5 h-3.5 text-[#9e7120]" />
             <span>Travel Style</span>
           </div>
-          <p className="text-sm font-bold text-[#c49a45]">{tour.travelStyles.join(', ')}</p>
+          <p className="text-sm font-bold text-[#9e7120]">{tour.travelStyles.join(', ')}</p>
         </div>
       </div>
 
@@ -163,24 +163,24 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
         <div className="lg:col-span-8 space-y-12">
           {/* Detailed Overview */}
           <div className="space-y-4">
-            <h3 className="font-serif-luxury text-2xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19]">
               Safari Overview
             </h3>
-            <p className="text-sm text-[#c4d4c8] leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-[#4d5c52] leading-relaxed whitespace-pre-line font-normal">
               {tour.fullDescription}
             </p>
 
             {/* Wildlife Highlights */}
             {tour.wildlifeHighlights && tour.wildlifeHighlights.length > 0 && (
               <div className="pt-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#a3b2a7] block mb-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#707f74] block mb-2">
                   Featured Wildlife
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {tour.wildlifeHighlights.map(wild => (
                     <span
                       key={wild}
-                      className="px-3 py-1.5 rounded-xl bg-[#0c120e] border border-[#233327] text-xs font-semibold text-[#f4f2eb]"
+                      className="px-3 py-1.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-xs font-semibold text-[#161f19]"
                     >
                       🐾 {wild}
                     </span>
@@ -199,15 +199,15 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
           {/* Included / Excluded Specs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Included */}
-            <div className="p-6 rounded-2xl bg-[#141e17] border border-[#233327] space-y-4">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#86efac]">
+            <div className="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-200 space-y-4">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#1b4332]">
                 <Check className="w-4 h-4 stroke-[3]" />
                 <span>What Is Included</span>
               </div>
-              <ul className="space-y-2.5 text-xs text-[#c4d4c8]">
+              <ul className="space-y-2.5 text-xs text-[#254331]">
                 {tour.included.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#86efac] font-bold">✓</span>
+                    <span className="text-[#1b4332] font-bold">✓</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -215,15 +215,15 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
             </div>
 
             {/* Excluded */}
-            <div className="p-6 rounded-2xl bg-[#141e17] border border-[#233327] space-y-4">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#f87171]">
+            <div className="p-6 rounded-2xl bg-rose-50/40 border border-rose-200 space-y-4">
+              <div className="flex items-center gap-2 text-sm font-bold text-rose-800">
                 <X className="w-4 h-4 stroke-[3]" />
                 <span>What Is Excluded</span>
               </div>
-              <ul className="space-y-2.5 text-xs text-[#a3b2a7]">
+              <ul className="space-y-2.5 text-xs text-rose-900/80">
                 {tour.excluded.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#f87171] font-bold">✕</span>
+                    <span className="text-rose-700 font-bold">✕</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -232,18 +232,18 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
           </div>
 
           {/* FAQs / Travel Prep */}
-          <div className="p-6 rounded-2xl bg-[#141e17] border border-[#233327] space-y-4">
-            <h3 className="font-serif-luxury text-xl font-bold text-[#f4f2eb] flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-[#c49a45]" />
+          <div className="p-6 rounded-2xl bg-white border border-[#e8e4da] space-y-4 shadow-xs">
+            <h3 className="font-serif-luxury text-xl font-bold text-[#161f19] flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-[#9e7120]" />
               Safari Essentials & Questions
             </h3>
-            <div className="space-y-3 text-xs text-[#c4d4c8]">
-              <div className="p-3 rounded-xl bg-[#0c120e] border border-[#233327]">
-                <strong className="text-[#f4f2eb] block mb-1">What should I pack for this safari?</strong>
+            <div className="space-y-3 text-xs text-[#4d5c52]">
+              <div className="p-4 rounded-xl bg-[#faf8f2] border border-[#ded8cb]">
+                <strong className="text-[#161f19] block mb-1 text-sm">What should I pack for this safari?</strong>
                 Neutral-colored lightweight clothing (khaki, beige, olive), a warm fleece or jacket for dawn game drives, binoculars, sun protection, and personal camera equipment. Soft-sided duffel bags are recommended for 4x4 luggage spaces.
               </div>
-              <div className="p-3 rounded-xl bg-[#0c120e] border border-[#233327]">
-                <strong className="text-[#f4f2eb] block mb-1">Is this safari private or shared?</strong>
+              <div className="p-4 rounded-xl bg-[#faf8f2] border border-[#ded8cb]">
+                <strong className="text-[#161f19] block mb-1 text-sm">Is this safari private or shared?</strong>
                 All Good Secrets safaris are strictly private. You will have your own customized 4x4 Land Cruiser with pop-up photography roof, private driver-guide, and flexible daily game drive schedule.
               </div>
             </div>
@@ -252,17 +252,17 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
 
         {/* Right Column: Sticky Booking & Direct Quote Card */}
         <div className="lg:col-span-4">
-          <div className="sticky top-28 rounded-3xl bg-[#141e17] border border-[#233327] p-6 sm:p-8 space-y-6 shadow-2xl">
+          <div className="sticky top-28 rounded-3xl bg-white border border-[#e8e4da] p-6 sm:p-8 space-y-6 shadow-xl">
             <div>
-              <span className="text-xs text-[#8b9e90] uppercase tracking-wider block">Starting Rate Per Person</span>
+              <span className="text-xs text-[#707f74] uppercase tracking-wider block font-medium">Starting Rate Per Person</span>
               <div className="flex items-baseline gap-2 mt-1">
-                <span className="font-serif-luxury text-3xl font-extrabold text-[#f4f2eb]">
+                <span className="font-serif-luxury text-3xl font-extrabold text-[#161f19]">
                   {formatPrice(tour.sharingPrice || tour.priceFrom)}
                 </span>
-                <span className="text-xs text-[#8b9e90]">/ 2 Sharing</span>
+                <span className="text-xs text-[#707f74]">/ 2 Sharing</span>
               </div>
               {isKenyanResidentMode && tour.residentPriceKES && (
-                <span className="text-xs font-semibold text-[#86efac] block mt-1">
+                <span className="text-xs font-semibold text-[#1b4332] block mt-1">
                   Resident: KSH {tour.residentPriceKES.toLocaleString()}
                 </span>
               )}
@@ -271,7 +271,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
             <div className="space-y-3 pt-2">
               <button
                 onClick={() => onOpenEnquiryModal({ selectedTour: tour })}
-                className="w-full py-3.5 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-extrabold text-sm uppercase tracking-wider text-center transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm uppercase tracking-wider text-center transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Book This Safari</span>
@@ -281,24 +281,24 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 rounded-xl bg-[#1b2920] hover:bg-[#233327] text-[#4ade80] font-bold text-xs border border-[#2a3d31] flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-3 rounded-xl bg-[#eef7f2] hover:bg-[#def0e6] text-[#1b4332] font-bold text-xs border border-[#c3e2cf] flex items-center justify-center gap-2 transition-colors"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 text-[#128c7e]" />
                 <span>Chat on WhatsApp</span>
               </a>
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-[#233327] text-xs text-[#a3b2a7]">
+            <div className="space-y-3 pt-4 border-t border-[#eeebe2] text-xs text-[#5d6e62]">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#c49a45] shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#9e7120] shrink-0" />
                 <span>Complimentary AMREF Flying Doctors coverage</span>
               </div>
               <div className="flex items-center gap-2">
-                <HeartHandshake className="w-4 h-4 text-[#c49a45] shrink-0" />
+                <HeartHandshake className="w-4 h-4 text-[#9e7120] shrink-0" />
                 <span>100% Tailor-made & Flexible dates</span>
               </div>
               <div className="flex items-center gap-2">
-                <Car className="w-4 h-4 text-[#c49a45] shrink-0" />
+                <Car className="w-4 h-4 text-[#9e7120] shrink-0" />
                 <span>Exclusive Private 4x4 Land Cruiser with pop-up roof</span>
               </div>
             </div>

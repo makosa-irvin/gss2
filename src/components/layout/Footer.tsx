@@ -24,31 +24,31 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
   const { settings, destinations } = useData();
 
   return (
-    <footer id="main-footer" className="bg-[#080d09] border-t border-[#1b2920] text-[#a3b2a7] pt-16 pb-12">
+    <footer id="main-footer" className="bg-[#f9f8f4] border-t border-[#e8e4da] text-[#4d5c52] pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
         {/* Top Brand Banner */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-[#1b2920]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-[#e2ded2]">
           <div className="lg:col-span-5 space-y-4">
             <div
               onClick={() => onNavigate('home')}
               className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c49a45] to-[#8c6c2b] p-0.5 shadow-md flex items-center justify-center">
-                <div className="w-full h-full bg-[#080d09] rounded-[10px] flex items-center justify-center">
-                  <Compass className="w-5 h-5 text-[#c49a45]" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#b3822a] to-[#8c6214] p-0.5 shadow-md flex items-center justify-center">
+                <div className="w-full h-full bg-[#161f19] rounded-[10px] flex items-center justify-center">
+                  <Compass className="w-5 h-5 text-[#f4f2eb]" />
                 </div>
               </div>
               <div>
-                <span className="font-display-accent text-xl font-bold tracking-wider text-[#f4f2eb] block">
+                <span className="font-display-accent text-xl font-bold tracking-wider text-[#161f19] block">
                   GOOD SECRETS SAFARIS
                 </span>
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[#c49a45] block">
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[#9e7120] block">
                   KENYA · TANZANIA · ZANZIBAR
                 </span>
               </div>
             </div>
 
-            <p className="text-sm text-[#8b9e90] leading-relaxed max-w-md">
+            <p className="text-sm text-[#5d6e62] leading-relaxed max-w-md">
               {settings.description || "Crafting personalized African safaris, Great Migration expeditions, Kilimanjaro views, and Indian Ocean luxury escapes designed around your personal story."}
             </p>
 
@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   href={settings.social.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-[#141e17] text-[#c4d4c8] hover:text-[#c49a45] hover:bg-[#1b2920] transition-colors border border-[#233327]"
+                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-4 h-4" />
@@ -69,7 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   href={settings.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-[#141e17] text-[#c4d4c8] hover:text-[#c49a45] hover:bg-[#1b2920] transition-colors border border-[#233327]"
+                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-4 h-4" />
@@ -80,7 +80,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   href={settings.social.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-[#141e17] text-[#c4d4c8] hover:text-[#c49a45] hover:bg-[#1b2920] transition-colors border border-[#233327]"
+                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
                   aria-label="YouTube"
                 >
                   <Youtube className="w-4 h-4" />
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   href={settings.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-[#141e17] text-[#c4d4c8] hover:text-[#c49a45] hover:bg-[#1b2920] transition-colors border border-[#233327]"
+                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
@@ -103,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
             {/* Column 1: Safaris & Styles */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#f4f2eb]">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
                 Safari Styles
               </h4>
               <ul className="space-y-2 text-xs">
@@ -111,7 +111,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   <li key={style}>
                     <button
                       onClick={() => onNavigate('tours', { travelStyle: style })}
-                      className="hover:text-[#c49a45] transition-colors text-left"
+                      className="text-[#526357] hover:text-[#9e7120] transition-colors text-left"
                     >
                       {style} Safaris
                     </button>
@@ -122,7 +122,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
 
             {/* Column 2: Destinations */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#f4f2eb]">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
                 Destinations
               </h4>
               <ul className="space-y-2 text-xs">
@@ -130,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                   <li key={d.id}>
                     <button
                       onClick={() => onNavigate('destinations', { destinationId: d.id })}
-                      className="hover:text-[#c49a45] transition-colors text-left"
+                      className="text-[#526357] hover:text-[#9e7120] transition-colors text-left"
                     >
                       {d.name}
                     </button>
@@ -141,53 +141,53 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
 
             {/* Column 3: Quick Links & Contact */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#f4f2eb]">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
                 Company & Contact
               </h4>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <button onClick={() => onNavigate('about')} className="hover:text-[#c49a45] transition-colors">
+                  <button onClick={() => onNavigate('about')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
                     About Our Story
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('hotels')} className="text-[#86efac] hover:underline transition-colors">
-                    Kenyan Resident Offers
+                  <button onClick={() => onNavigate('hotels')} className="text-[#1b4332] font-semibold hover:underline transition-colors">
+                    Kenyan Resident Offers 🏖️
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('builder')} className="text-[#c49a45] hover:underline transition-colors">
+                  <button onClick={() => onNavigate('builder')} className="text-[#9e7120] font-semibold hover:underline transition-colors">
                     Custom Safari Builder ✨
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('blog')} className="hover:text-[#c49a45] transition-colors">
+                  <button onClick={() => onNavigate('blog')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
                     Travel Guides & Blog
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('contact')} className="hover:text-[#c49a45] transition-colors">
+                  <button onClick={() => onNavigate('contact')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
                     Contact & Quote Request
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => onNavigate('admin')} className="text-[#c49a45] hover:underline font-bold transition-colors">
+                  <button onClick={() => onNavigate('admin')} className="text-[#9e7120] hover:underline font-bold transition-colors">
                     Admin CMS Login
                   </button>
                 </li>
               </ul>
 
-              <div className="pt-2 text-xs space-y-1.5 text-[#8b9e90]">
+              <div className="pt-2 text-xs space-y-1.5 text-[#67796d]">
                 <div className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-[#c49a45]" />
+                  <Mail className="w-3.5 h-3.5 text-[#9e7120]" />
                   <span>{settings.contact.email}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-[#c49a45]" />
+                  <Phone className="w-3.5 h-3.5 text-[#9e7120]" />
                   <span>{settings.contact.phone}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#c49a45]" />
+                  <MapPin className="w-3.5 h-3.5 text-[#9e7120]" />
                   <span>{settings.contact.address}</span>
                 </div>
               </div>
@@ -196,9 +196,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
         </div>
 
         {/* Bottom Trust and Copyright Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6e8073]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#758479]">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#c49a45]" />
+            <ShieldCheck className="w-4 h-4 text-[#9e7120]" />
             <span>Licensed & Certified East Africa Safari Operator · Full AMREF Flying Doctors Medical Evacuation Cover</span>
           </div>
 

@@ -65,12 +65,12 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-2xl rounded-3xl bg-[#141e17] border border-[#233327] shadow-2xl p-6 sm:p-8 my-8 text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
+      <div className="relative w-full max-w-2xl rounded-3xl bg-white border border-[#e8e4da] shadow-2xl p-6 sm:p-8 my-8 text-left">
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 p-2 rounded-full bg-[#0c120e] hover:bg-[#1b2920] text-[#a3b2a7] transition-colors border border-[#233327]"
+          className="absolute top-5 right-5 p-2 rounded-full bg-[#f4f1e8] hover:bg-[#eae5d8] text-[#5a6a5f] transition-colors border border-[#ded8cb]"
         >
           <X className="w-5 h-5" />
         </button>
@@ -78,13 +78,13 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
         {!isSubmitted ? (
           <div>
             <div className="mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#c49a45]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#9e7120]">
                 {selectedTour ? 'Direct Booking & Availability Request' : selectedHotel ? 'Resort Package Enquiry' : 'Plan Your Africa'}
               </span>
-              <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#f4f2eb] mt-1">
+              <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19] mt-1">
                 {selectedTour?.title || selectedHotel?.name || "Let's Craft Your Bespoke Journey"}
               </h3>
-              <p className="text-xs text-[#a3b2a7] mt-1.5">
+              <p className="text-xs text-[#5d6e62] mt-1.5 font-normal">
                 Tell us your preferences. Our local Kenya & Tanzania travel specialists will reply with availability and a transparent quotation.
               </p>
             </div>
@@ -92,97 +92,97 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Full Name *</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Full Name *</label>
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="e.g. Sarah Jenkins"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Email Address *</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Email Address *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="sarah@example.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">WhatsApp / Phone *</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">WhatsApp / Phone *</label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+1 555 123 4567"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Country of Residence</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Country of Residence</label>
                   <input
                     type="text"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="e.g. United Kingdom / Kenya"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Estimated Travel Dates</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Estimated Travel Dates</label>
                   <input
                     type="text"
                     value={travelDates}
                     onChange={(e) => setTravelDates(e.target.value)}
                     placeholder="e.g. Aug 15 - 25, 2026"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Adults</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Adults</label>
                   <input
                     type="number"
                     min={1}
                     max={30}
                     value={adults}
                     onChange={(e) => setAdults(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Children (under 12)</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Children (under 12)</label>
                   <input
                     type="number"
                     min={0}
                     max={15}
                     value={children}
                     onChange={(e) => setChildren(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Target Budget Range</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Target Budget Range</label>
                   <select
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   >
                     <option value="Under $1,500 / person">Under $1,500 / person</option>
                     <option value="$1,500 - $3,000 / person">$1,500 - $3,000 / person</option>
@@ -193,11 +193,11 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Accommodation Tier</label>
+                  <label className="text-xs font-semibold text-[#303e35] block mb-1">Accommodation Tier</label>
                   <select
                     value={accommodationPreference}
                     onChange={(e) => setAccommodationPreference(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                   >
                     <option value="Luxury Lodges & Camps">Luxury 5-Star Lodges & Tented Camps</option>
                     <option value="Comfortable Midrange Lodges">Comfortable Midrange Lodges</option>
@@ -208,13 +208,13 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[#c4d4c8] block mb-1">Special Requests & Dietary Notes</label>
+                <label className="text-xs font-semibold text-[#303e35] block mb-1">Special Requests & Dietary Notes</label>
                 <textarea
                   rows={2}
                   value={specialRequests}
                   onChange={(e) => setSpecialRequests(e.target.value)}
                   placeholder="e.g. Honeymoon setup, hot air balloon request, wheelchair accessibility, dietary preferences..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0c120e] border border-[#233327] text-sm text-[#f4f2eb] focus:border-[#c49a45] focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
                 />
               </div>
 
@@ -223,15 +223,15 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                   href={getWhatsAppUrl({ tourTitle: selectedTour?.title, hotelTitle: selectedHotel?.name })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#1b2920] hover:bg-[#233327] text-[#4ade80] text-xs font-bold border border-[#2a3d31]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#eef7f2] hover:bg-[#def0e6] text-[#1b4332] text-xs font-bold border border-[#c3e2cf]"
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="w-4 h-4 text-[#128c7e]" />
                   <span>Enquire on WhatsApp</span>
                 </a>
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#c49a45] hover:bg-[#d6b772] text-[#0c120e] font-extrabold text-sm transition-all shadow-lg active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
                 >
                   <span>Request My Safari Plan</span>
                   <Send className="w-4 h-4" />
@@ -241,21 +241,21 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
           </div>
         ) : (
           <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#1b4332] text-[#86efac] flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/30">
+            <div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h3 className="font-serif-luxury text-3xl font-bold text-[#f4f2eb]">
+            <h3 className="font-serif-luxury text-3xl font-bold text-[#161f19]">
               Thank you. Your safari journey starts here.
             </h3>
-            <p className="text-sm text-[#c4d4c8] max-w-md mx-auto">
+            <p className="text-sm text-[#5d6e62] max-w-md mx-auto">
               We have received your enquiry for{' '}
-              <strong className="text-[#c49a45]">{selectedTour?.title || selectedHotel?.name || 'your custom safari'}</strong>.
+              <strong className="text-[#9e7120]">{selectedTour?.title || selectedHotel?.name || 'your custom safari'}</strong>.
               Our dedicated safari specialist will email you the detailed itinerary and price breakdown shortly.
             </p>
             <div className="pt-4">
               <button
                 onClick={handleClose}
-                className="px-6 py-2.5 rounded-xl bg-[#c49a45] text-black font-bold text-xs"
+                className="px-6 py-2.5 rounded-xl bg-[#b3822a] text-white font-bold text-xs hover:bg-[#9e7120]"
               >
                 Close Window
               </button>
