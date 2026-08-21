@@ -79,27 +79,57 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
     e.preventDefault();
     if (!newTourTitle) return;
 
+    // This object literal must satisfy Omit<Tour, 'id' | 'createdAt' | 'updatedAt'>.
+    // The previous version used field names that don't exist on Tour
+    // (wildlifeHighlights/included/excluded — the real fields are
+    // includedActivities/includedServices/exclusions), was missing several
+    // required fields entirely (categories, currency, accommodationSummary,
+    // mealsSummary, importantInformation, childrenPolicy, startingDates,
+    // bookingAvailability, seo), used an invalid TravelerType literal
+    // ('Small Groups' isn't one), and gave its seasonalPricing entry a
+    // `months` field instead of the required `startDate`/`endDate`/
+    // `currency`. None of this was caught because @types/react wasn't
+    // installed, so the whole file was silently type-checked as `any`.
+    // A tour created through this form would have rendered fine in the
+    // tours list (which only reads a few common fields) but crashed the
+    // moment an admin opened its detail page — the exact bug this branch
+    // was meant to fix, reintroduced from the write side.
     addTour({
       title: newTourTitle,
       slug: newTourTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      country: newTourCountry as any,
+      shortDescription: newTourDesc || 'Custom luxury safari experience.',
+      fullDescription: newTourDesc || 'Detailed luxury safari itinerary with private 4x4 Land Cruiser and professional naturalist driver-guide.',
+      country: newTourCountry as Tour['country'],
       destinations: [newTourCountry],
       durationDays: Number(newTourDuration),
       durationLabel: `${newTourDuration} Days / ${newTourDuration - 1} Nights`,
+      startingLocation: 'Nairobi, Kenya',
+      endingLocation: 'Nairobi, Kenya',
+      categories: ['Custom Safari'],
+      travelStyles: ['Big 5', 'Luxury'],
+      comfortLevel: 'Luxury',
+      travelerTypes: ['Couples', 'Families', 'Groups'],
+      featured: true,
+      popular: true,
+      recommended: false,
       priceFrom: Number(newTourPrice),
+      currency: 'USD',
       soloPrice: Math.round(newTourPrice * 1.35),
       sharingPrice: Number(newTourPrice),
       residentPriceKES: Number(newTourResidentPrice),
-      shortDescription: newTourDesc || 'Custom luxury safari experience.',
-      fullDescription: newTourDesc || 'Detailed luxury safari itinerary with private 4x4 Land Cruiser and professional naturalist driver-guide.',
-      featured: true,
-      popular: true,
-      comfortLevel: 'Luxury',
-      travelStyles: ['Big 5', 'Luxury'],
-      travelerTypes: ['Couples', 'Families', 'Small Groups'],
-      wildlifeHighlights: ['Lion', 'Elephant', 'Giraffe'],
-      included: ['Private 4x4 Land Cruiser', 'Park entrance fees', 'Full board lodging', 'AMREF cover'],
-      excluded: ['International flights', 'Tips and gratuities', 'Travel visa'],
+      seasonalPricing: [
+        {
+          id: 'peak',
+          name: 'Peak Season (Jul - Oct)',
+          startDate: '07-01',
+          endDate: '10-31',
+          soloPrice: Math.round(newTourPrice * 1.5),
+          sharingPrice: Math.round(newTourPrice * 1.2),
+          residentPriceKES: Math.round(newTourResidentPrice * 1.25),
+          currency: 'USD',
+          notes: 'Great Migration crossings'
+        }
+      ],
       images: [newTourImage],
       itinerary: [
         {
@@ -107,23 +137,25 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
           title: 'Arrival & Scenic Drive into the Wilderness',
           subtitle: 'Welcome to Africa',
           description: 'Depart Nairobi / Arusha in a private 4x4 Land Cruiser heading into the game reserve with afternoon game drive.',
-          meals: 'Lunch & Dinner',
           accommodation: 'Luxury Tented Camp',
+          meals: 'Lunch & Dinner',
           transport: 'Custom 4x4 Land Cruiser',
           activities: ['Scenic valley descent', 'Sunset predator tracking']
         }
       ],
-      seasonalPricing: [
-        {
-          id: 'peak',
-          name: 'Peak Season (July – Oct)',
-          months: 'Jul, Aug, Sep, Oct',
-          soloPrice: Math.round(newTourPrice * 1.5),
-          sharingPrice: Math.round(newTourPrice * 1.2),
-          residentPriceKES: Math.round(newTourResidentPrice * 1.25),
-          notes: 'Great Migration crossings'
-        }
-      ]
+      accommodationSummary: 'Luxury tented camps and lodges',
+      mealsSummary: 'All meals included',
+      includedActivities: ['Scenic valley descent', 'Sunset predator tracking'],
+      includedServices: ['Private 4x4 Land Cruiser', 'Park entrance fees', 'Full board lodging', 'AMREF Flying Doctors cover'],
+      exclusions: ['International flights', 'Tips and gratuities', 'Travel visa'],
+      importantInformation: [],
+      childrenPolicy: 'Children of all ages welcome.',
+      startingDates: 'Daily Departures (Year-Round)',
+      bookingAvailability: 'Available',
+      seo: {
+        title: newTourTitle,
+        description: newTourDesc || 'Custom luxury safari experience.',
+      },
     });
 
     setIsAddingTour(false);
@@ -222,7 +254,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
               <span className="text-xs text-[#707f74] uppercase tracking-wider block">Total Client Enquiries</span>
               <span className="text-3xl font-extrabold font-serif-luxury text-[#161f19]">{enquiries.length}</span>
               <span className="text-[11px] text-[#707f74] block">
-                {enquiries.filter(e => e.status === 'new').length} Pending Action
+                {enquiries.filter(e => e.status === 'New').length} Pending Action
               </span>
             </div>
 
@@ -274,7 +306,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                       </td>
                       <td className="py-3 px-3">
                         <span className={`px-2 py-0.5 rounded-full font-bold uppercase text-[10px] ${
-                          enq.status === 'new' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+                          enq.status === 'New' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
                         }`}>
                           {enq.status}
                         </span>
@@ -638,12 +670,16 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
 
             <div>
               <label className="text-xs font-semibold text-[#161f19] block mb-1">USD to KES Currency Rate</label>
+              {/* CompanySettings has no top-level `currencyConversionRate` field —
+                  the real value lives at `currency.exchangeRateUsdToKes`. As
+                  written, this input was uncontrolled (always undefined) and
+                  never actually changed the rate `formatPrice` uses. */}
               <input
                 type="number"
-                value={tempSettings.currencyConversionRate}
+                value={tempSettings.currency.exchangeRateUsdToKes}
                 onChange={(e) => setTempSettings({
                   ...tempSettings,
-                  currencyConversionRate: Number(e.target.value)
+                  currency: { ...tempSettings.currency, exchangeRateUsdToKes: Number(e.target.value) }
                 })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19]"
               />

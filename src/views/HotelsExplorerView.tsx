@@ -17,13 +17,9 @@ export const HotelsExplorerView: React.FC<HotelsExplorerViewProps> = ({
 }) => {
   const { hotels, isKenyanResidentMode, setIsKenyanResidentMode } = useData();
   const [selectedLocation, setSelectedLocation] = useState<string>('all');
-  const [selectedMealPlan, setSelectedMealPlan] = useState<string>('all');
 
   const filteredHotels = hotels.filter(h => {
     if (selectedLocation !== 'all' && !h.location.toLowerCase().includes(selectedLocation.toLowerCase())) {
-      return false;
-    }
-    if (selectedMealPlan !== 'all' && !h.mealPlan.toLowerCase().includes(selectedMealPlan.toLowerCase())) {
       return false;
     }
     return true;

@@ -166,28 +166,17 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
             <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19]">
               Safari Overview
             </h3>
+            {/* A "Featured Wildlife" chip list used to render here from
+                `tour.wildlifeHighlights`, which doesn't exist on the Tour
+                type (and never did — no tour in the seed data has it), so
+                the block was always inert and has been removed. Wildlife
+                data lives on Destination.wildlife instead; if this section
+                is wanted back, it should look up the tour's destinations
+                and pull `wildlife` from each rather than reading a
+                non-existent Tour field. */}
             <p className="text-sm text-[#4d5c52] leading-relaxed whitespace-pre-line font-normal">
               {tour.fullDescription}
             </p>
-
-            {/* Wildlife Highlights */}
-            {tour.wildlifeHighlights && tour.wildlifeHighlights.length > 0 && (
-              <div className="pt-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#707f74] block mb-2">
-                  Featured Wildlife
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {tour.wildlifeHighlights.map(wild => (
-                    <span
-                      key={wild}
-                      className="px-3 py-1.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-xs font-semibold text-[#161f19]"
-                    >
-                      🐾 {wild}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Dynamic Day-by-day Itinerary */}
