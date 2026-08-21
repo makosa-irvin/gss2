@@ -539,7 +539,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                   />
                   <div>
                     <h4 className="font-serif-luxury font-bold text-sm text-[#161f19]">{hotel.name}</h4>
-                    <span className="text-xs text-[#1b4332] font-semibold block">Resident: KSH {hotel.residentPriceKES.toLocaleString()} / night ({hotel.mealPlan})</span>
+                    {/* Hotel type has no `residentPriceKES`/`mealPlan` fields — using `priceFromKES`, guarded against a missing price. */}
+                    <span className="text-xs text-[#1b4332] font-semibold block">Resident: KSH {(hotel.priceFromKES ?? 0).toLocaleString()} / night</span>
                     <span className="text-xs text-[#707f74]">{hotel.location}, {hotel.country}</span>
                   </div>
                 </div>

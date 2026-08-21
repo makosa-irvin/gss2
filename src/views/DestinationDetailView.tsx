@@ -76,12 +76,12 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/25 -z-10" />
 
         <div className="space-y-3 max-w-3xl">
+          {/* Destination type has no `landscape` or `tagline` field — dropped
+              the landscape badge (no equivalent data) and swapped tagline
+              for `subtitle`, which is the closest matching field. */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#b3822a] text-white">
               {destination.country}
-            </span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md text-white border border-white/30">
-              {destination.landscape}
             </span>
           </div>
 
@@ -90,7 +90,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
           </h1>
 
           <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
-            {destination.tagline}
+            {destination.subtitle}
           </p>
 
           <div className="pt-2 flex items-center gap-4">
@@ -116,19 +116,24 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
             </p>
 
             {/* Highlights */}
-            <div className="pt-4 border-t border-[#eeebe2]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#9e7120] mb-3">
-                Key Highlights & Wildlife Encounters
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {destination.highlights.map((h, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-[#303e35]">
-                    <CheckCircle2 className="w-4 h-4 text-[#9e7120] shrink-0" />
-                    <span>{h}</span>
-                  </div>
-                ))}
+            {/* Destination type has no `highlights` field — the closest
+                matching data is `wildlife`. Guarded so a destination record
+                with no wildlife list can't crash this page. */}
+            {(destination.wildlife?.length ?? 0) > 0 && (
+              <div className="pt-4 border-t border-[#eeebe2]">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#9e7120] mb-3">
+                  Key Highlights & Wildlife Encounters
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {destination.wildlife.map((h, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-[#303e35]">
+                      <CheckCircle2 className="w-4 h-4 text-[#9e7120] shrink-0" />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

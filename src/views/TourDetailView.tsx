@@ -197,39 +197,61 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
           <DynamicPricingTable tour={tour} />
 
           {/* Included / Excluded Specs */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Included */}
-            <div className="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-200 space-y-4">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#1b4332]">
-                <Check className="w-4 h-4 stroke-[3]" />
-                <span>What Is Included</span>
-              </div>
-              <ul className="space-y-2.5 text-xs text-[#254331]">
-                {tour.included.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#1b4332] font-bold">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {(() => {
+            // Tour data uses `includedServices` + `includedActivities` and `exclusions`
+            // (there is no `included`/`excluded` field on the Tour type). Combine them
+            // here and guard against any of them being missing so this section can
+            // never crash the page.
+            const includedItems = [
+              ...(tour.includedServices ?? []),
+              ...(tour.includedActivities ?? [])
+            ];
+            const excludedItems = tour.exclusions ?? [];
 
-            {/* Excluded */}
-            <div className="p-6 rounded-2xl bg-rose-50/40 border border-rose-200 space-y-4">
-              <div className="flex items-center gap-2 text-sm font-bold text-rose-800">
-                <X className="w-4 h-4 stroke-[3]" />
-                <span>What Is Excluded</span>
+            if (includedItems.length === 0 && excludedItems.length === 0) {
+              return null;
+            }
+
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Included */}
+                {includedItems.length > 0 && (
+                  <div className="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-200 space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-bold text-[#1b4332]">
+                      <Check className="w-4 h-4 stroke-[3]" />
+                      <span>What Is Included</span>
+                    </div>
+                    <ul className="space-y-2.5 text-xs text-[#254331]">
+                      {includedItems.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-[#1b4332] font-bold">✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Excluded */}
+                {excludedItems.length > 0 && (
+                  <div className="p-6 rounded-2xl bg-rose-50/40 border border-rose-200 space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-bold text-rose-800">
+                      <X className="w-4 h-4 stroke-[3]" />
+                      <span>What Is Excluded</span>
+                    </div>
+                    <ul className="space-y-2.5 text-xs text-rose-900/80">
+                      {excludedItems.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-rose-700 font-bold">✕</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-              <ul className="space-y-2.5 text-xs text-rose-900/80">
-                {tour.excluded.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-rose-700 font-bold">✕</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            );
+          })()}
 
           {/* FAQs / Travel Prep */}
           <div className="p-6 rounded-2xl bg-white border border-[#e8e4da] space-y-4 shadow-xs">

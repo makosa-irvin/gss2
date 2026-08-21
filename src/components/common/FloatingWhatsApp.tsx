@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { MessageCircle, X, Sparkles } from 'lucide-react';
 
@@ -8,7 +8,20 @@ interface FloatingWhatsAppProps {
 
 export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentTourTitle }) => {
   const { getWhatsAppUrl, settings } = useData();
-  const [showTooltip, setShowTooltip] = useState(true);
+  // On mobile, this widget sits fixed bottom-right, which is the same area
+  // the homepage search bar occupies just below the hero. Auto-opening the
+  // tooltip on mount covered the "Travel Style" field and Find button. Delay
+  // the auto-open so first-paint doesn't block interaction with content
+  // underneath, and don't show it at all on narrow (mobile) viewports —
+  // it's still reachable via the button itself.
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    if (isMobile) return;
+    const timer = setTimeout(() => setShowTooltip(true), 3500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const whatsappUrl = getWhatsAppUrl({
     tourTitle: currentTourTitle

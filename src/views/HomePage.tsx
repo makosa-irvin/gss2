@@ -398,8 +398,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
+                  {/* Array() throws if rating isn't a non-negative integer;
+                      round/guard so a decimal or missing rating can't crash
+                      the homepage testimonials section. */}
                   <div className="flex text-[#eab308]">
-                    {[...Array(test.rating)].map((_, i) => (
+                    {[...Array(Math.round(test.rating ?? 5))].map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-current" />
                     ))}
                   </div>
