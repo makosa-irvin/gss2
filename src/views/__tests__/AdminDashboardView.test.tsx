@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
+import { installMockApi } from '../../test/mockApi';
 import { AdminDashboardView } from '../AdminDashboardView';
 import { TourDetailView } from '../TourDetailView';
 import type { Tour } from '../../types';
@@ -22,15 +23,31 @@ import type { Tour } from '../../types';
  * `any`. A tour created through this form would look fine in the tours
  * list, then crash the instant an admin opened its detail page - which is
  * exactly what the second test below proves no longer happens.
+ *
+ * The admin CRUD flow now goes through the real backend API (see
+ * src/context/DataContext.tsx and server/src/routes/adminTours.ts), so
+ * these tests mock GET /api/auth/me as an already-logged-in admin and
+ * POST /api/admin/tours as succeeding - the actual auth enforcement and
+ * validation are covered by the backend's own test suite
+ * (server/src/test/adminTours.test.ts) against a real database, not
+ * re-tested here.
  */
+const loggedInAdmin = { status: 200, body: { id: 'admin-1', email: 'admin@example.com', name: 'Admin' } };
+
 describe('AdminDashboardView - Create New Tour form', () => {
   const noop = () => {};
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   async function openAddTourFormAndFillTitle(title: string) {
+    installMockApi({ me: loggedInAdmin, allowAdminTourCreate: true });
+
     const user = userEvent.setup();
     renderWithProviders(<AdminDashboardView onNavigateHome={noop} onPreviewTour={noop} />);
 
-    await user.click(screen.getByRole('button', { name: /tours & safaris/i }));
+    await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
     await user.click(screen.getByRole('button', { name: /add new safari tour/i }));
     await user.type(screen.getByPlaceholderText(/5-Day Masai Mara/i), title);
     await user.click(screen.getByRole('button', { name: /save safari/i }));
@@ -46,6 +63,8 @@ describe('AdminDashboardView - Create New Tour form', () => {
   });
 
   it('produces a tour object that renders successfully in TourDetailView (the page that used to crash)', async () => {
+    installMockApi({ me: loggedInAdmin, allowAdminTourCreate: true });
+
     let capturedTour: Tour | null = null;
 
     renderWithProviders(
@@ -58,7 +77,7 @@ describe('AdminDashboardView - Create New Tour form', () => {
     );
 
     const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: /tours & safaris/i }));
+    await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
     await user.click(screen.getByRole('button', { name: /add new safari tour/i }));
     await user.type(screen.getByPlaceholderText(/5-Day Masai Mara/i), 'Test Preview Tour');
     await user.click(screen.getByRole('button', { name: /save safari/i }));

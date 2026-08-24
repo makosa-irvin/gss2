@@ -24,7 +24,13 @@ export default defineConfig(() => {
       globals: true,
       setupFiles: ['./src/test/setup.ts'],
       css: false,
-      exclude: ['node_modules', 'dist'],
+      // The bare 'node_modules' exclude below only matches top-level
+      // node_modules, not server/node_modules (a sibling package with
+      // its own node_modules and its own test files) - without
+      // explicitly excluding server/, Vitest was also discovering and
+      // running the backend's dependencies' internal test suites here,
+      // inflating "154 test files" into real frontend test runs.
+      exclude: ['**/node_modules/**', 'dist', 'server/**'],
     },
   };
 });

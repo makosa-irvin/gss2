@@ -109,7 +109,7 @@ const MainAppContent: React.FC = () => {
   const legacyNavigate = useLegacyNavigate();
   const navigate = useNavigate();
   const location = useLocation();
-  const { tours } = useData();
+  const { tours, isLoading, loadError } = useData();
 
   // Global Enquiry Modal state - genuinely global (can be triggered from
   // almost any page), so it stays lifted here rather than per-route.
@@ -150,6 +150,33 @@ const MainAppContent: React.FC = () => {
   const currentTourTitleForWhatsApp = location.pathname.startsWith('/safaris/')
     ? tours.find(t => t.slug === location.pathname.split('/')[2])?.title
     : undefined;
+
+  // Every view in this app assumes tours/hotels/destinations/etc. from
+  // useData() are already-populated arrays, same as when this data came
+  // from localStorage synchronously - so gate the whole app behind the
+  // initial API fetch here rather than adding a loading check to every
+  // individual view.
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0c120e] text-[#f4f2eb]">
+        <p className="text-sm text-[#a3b2a7]">Loading Good Secrets Safaris...</p>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#0c120e] text-[#f4f2eb] px-4 text-center">
+        <p className="text-sm text-[#f4f2eb]">{loadError}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-5 py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-xs uppercase tracking-wider"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0c120e] text-[#f4f2eb] selection:bg-[#c49a45] selection:text-black">

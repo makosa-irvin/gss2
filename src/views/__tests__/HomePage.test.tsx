@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../test/test-utils';
 import { makeTestimonial } from '../../test/fixtures';
+import { installMockApi } from '../../test/mockApi';
 import { HomePage } from '../HomePage';
 
 /**
@@ -13,10 +14,12 @@ import { HomePage } from '../HomePage';
  * ratings elsewhere in the app) would have taken down the whole
  * homepage. The fix wraps it in `Math.round(test.rating ?? 5)`.
  *
- * DataProvider seeds its state from localStorage before falling back to
- * src/data/initialData.ts, so pre-seeding 'gss_testimonials_v1' here lets
- * us inject a decimal-rating testimonial without needing to mock the
- * context.
+ * DataContext now fetches testimonials from the real API (see
+ * src/context/DataContext.tsx) rather than reading localStorage
+ * synchronously, so injecting a decimal-rating testimonial means mocking
+ * the GET /api/testimonials response rather than pre-seeding
+ * localStorage - and assertions need findBy* (async) since the data
+ * arrives after the initial render, not before it.
  */
 describe('HomePage testimonials', () => {
   const noop = () => {};
@@ -28,19 +31,25 @@ describe('HomePage testimonials', () => {
     onOpenEnquiryModal: noop,
   };
 
-  it('renders a decimal testimonial rating without throwing', () => {
-    const testimonial = makeTestimonial({ rating: 4.8, reviewText: 'A magical Kenyan honeymoon.' });
-    window.localStorage.setItem('gss_testimonials_v1', JSON.stringify([testimonial]));
-
-    expect(() => renderWithProviders(<HomePage {...homePageProps} />)).not.toThrow();
-    expect(screen.getByText('"A magical Kenyan honeymoon."')).toBeInTheDocument();
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
-  it('renders a missing/undefined rating without throwing, defaulting sensibly', () => {
-    const testimonial = makeTestimonial({ rating: undefined as unknown as number, reviewText: 'No rating supplied.' });
-    window.localStorage.setItem('gss_testimonials_v1', JSON.stringify([testimonial]));
+  it('renders a decimal testimonial rating without throwing', async () => {
+    const testimonial = makeTestimonial({ rating: 4.8, reviewText: 'A magical Kenyan honeymoon.' });
+    installMockApi({ testimonials: [testimonial] });
 
-    expect(() => renderWithProviders(<HomePage {...homePageProps} />)).not.toThrow();
-    expect(screen.getByText('"No rating supplied."')).toBeInTheDocument();
+    renderWithProviders(<HomePage {...homePageProps} />);
+
+    expect(await screen.findByText('"A magical Kenyan honeymoon."')).toBeInTheDocument();
+  });
+
+  it('renders a missing/undefined rating without throwing, defaulting sensibly', async () => {
+    const testimonial = makeTestimonial({ rating: undefined as unknown as number, reviewText: 'No rating supplied.' });
+    installMockApi({ testimonials: [testimonial] });
+
+    renderWithProviders(<HomePage {...homePageProps} />);
+
+    expect(await screen.findByText('"No rating supplied."')).toBeInTheDocument();
   });
 });

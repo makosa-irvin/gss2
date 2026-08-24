@@ -1,55 +1,52 @@
 import { useState, type FormEvent } from 'react';
-import { AlertTriangle, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
+import { useData } from '../context/DataContext';
+import { ApiError } from '../services/api';
 import { PageMeta } from '../components/common/PageMeta';
 
-const SESSION_KEY = 'gss_admin_session_v1';
-
 /**
- * !! THIS IS NOT REAL SECURITY - READ BEFORE RELYING ON IT !!
+ * Gates the admin dashboard behind a real login backed by the API
+ * (POST /api/auth/login, see server/src/routes/auth.ts): bcrypt-checked
+ * credentials, a JWT held in an httpOnly cookie the frontend can't read
+ * or forge. This replaces the earlier client-side-only password gate,
+ * which checked a password baked into the shipped JavaScript bundle and
+ * was explicitly documented as not real security.
  *
- * This checks a password against import.meta.env.VITE_ADMIN_PASSWORD,
- * which Vite inlines directly into the shipped JavaScript bundle. Anyone
- * can open browser devtools, view the bundle, and read the password in
- * plain text - this only stops someone from stumbling onto /admin by
- * accident or guessing a URL, not a person who actually wants in.
- *
- * If VITE_ADMIN_PASSWORD is unset (the default, since it's gitignored via
- * .env.local), this gate blocks access entirely rather than falling back
- * to an "open" or hardcoded default - so an unconfigured deployment fails
- * closed, not open.
- *
- * Before this site goes live, the admin dashboard needs real server-side
- * authentication (a login endpoint that verifies credentials against a
- * database and issues a session/JWT the browser can't forge) rather than
- * a password baked into client code. Tracked as a known gap in the
- * README - do not treat this component as sufficient protection for
- * production data.
+ * `authLoading` covers the brief window on page load while DataContext
+ * asks the backend "is there already a valid session cookie?" (see
+ * DataContext's /api/auth/me check) - without it, a page refresh would
+ * flash the login form for a moment even for an already-logged-in admin.
  */
 export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(
-    () => sessionStorage.getItem(SESSION_KEY) === 'true'
-  );
+  const { currentAdmin, authLoading, login } = useData();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const configuredPassword = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
-
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!configuredPassword) {
-      setError('Admin access is not configured for this deployment.');
-      return;
-    }
-    if (password === configuredPassword) {
-      sessionStorage.setItem(SESSION_KEY, 'true');
-      setIsUnlocked(true);
-      setError('');
-    } else {
-      setError('Incorrect password.');
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await login(email, password);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not sign in. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  if (isUnlocked) return <>{children}</>;
+  if (authLoading) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
+        <PageMeta title="Admin Login" noIndex />
+        <p className="text-sm text-[#707f74]">Checking session...</p>
+      </div>
+    );
+  }
+
+  if (currentAdmin) return <>{children}</>;
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
@@ -60,35 +57,38 @@ export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }
             <Lock className="w-5 h-5 text-[#9e7120]" />
           </div>
           <h1 className="font-serif-luxury text-xl font-bold text-[#161f19]">Admin Access</h1>
-          <p className="text-xs text-[#707f74]">Staff only. Enter the admin password to continue.</p>
+          <p className="text-xs text-[#707f74]">Staff only. Sign in to continue.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
-            type="password"
+            type="email"
             autoFocus
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            autoComplete="username"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19]"
+          />
+          <input
+            type="password"
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+            autoComplete="current-password"
             className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19]"
           />
           {error && <p className="text-xs text-rose-700">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-xs uppercase tracking-wider transition-colors"
+            disabled={isSubmitting}
+            className="w-full py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider transition-colors"
           >
-            Unlock
+            {isSubmitting ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-
-        <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
-          <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-          <span>
-            This is a temporary gate, not production-grade security - the password lives in
-            client-side code and can be read by anyone who inspects the site. Replace with real
-            server-side authentication before handling live customer data.
-          </span>
-        </div>
       </div>
     </div>
   );

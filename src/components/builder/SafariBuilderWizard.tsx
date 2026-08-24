@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Tour } from '../../types';
+import { ApiError } from '../../services/api';
 import {
   Compass,
   Calendar,
@@ -45,6 +46,8 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
   const [travelMonth, setTravelMonth] = useState<string>('July - October 2026');
   const [specialRequests, setSpecialRequests] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>('');
 
   // Toggle multi-select items
   const toggleDestination = (dest: string) => {
@@ -72,29 +75,41 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
     return matchesDest || matchesStyle;
   }).slice(0, 3);
 
-  const handleSubmitCustomSafari = (e: React.FormEvent) => {
+  const handleSubmitCustomSafari = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newEnquiry = addEnquiry({
-      fullName,
-      email,
-      phone,
-      country: 'International Visitor',
-      travelDates: travelMonth,
-      durationDays: duration === '1-3' ? 3 : duration === '4-7' ? 6 : duration === '8-14' ? 10 : 15,
-      numberOfTravelers: {
-        adults: travelerType === 'Solo' ? 1 : travelerType === 'Couple' ? 2 : 4,
-        children: travelerType === 'Family' ? 2 : 0
-      },
-      preferredDestination: destinations.join(', '),
-      safariType: `Custom ${comfortLevel} Safari: ${experiences.join(', ')}`,
-      budget: budgetRange,
-      accommodationPreference: comfortLevel,
-      specialRequests: `Traveler Profile: ${travelerType}. Desired experiences: ${experiences.join(', ')}. ${specialRequests}`,
-      hearAboutUs: 'Custom Safari Builder'
-    });
+    setSubmitError('');
+    setIsSubmitting(true);
+    try {
+      const result = await addEnquiry({
+        fullName,
+        email,
+        phone,
+        country: 'International Visitor',
+        travelDates: travelMonth,
+        durationDays: duration === '1-3' ? 3 : duration === '4-7' ? 6 : duration === '8-14' ? 10 : 15,
+        numberOfTravelers: {
+          adults: travelerType === 'Solo' ? 1 : travelerType === 'Couple' ? 2 : 4,
+          children: travelerType === 'Family' ? 2 : 0
+        },
+        preferredDestination: destinations.join(', '),
+        safariType: `Custom ${comfortLevel} Safari: ${experiences.join(', ')}`,
+        budget: budgetRange,
+        accommodationPreference: comfortLevel,
+        specialRequests: `Traveler Profile: ${travelerType}. Desired experiences: ${experiences.join(', ')}. ${specialRequests}`,
+        hearAboutUs: 'Custom Safari Builder'
+      });
 
-    setIsSubmitted(true);
-    if (onCompleteEnquiry) onCompleteEnquiry(newEnquiry);
+      setIsSubmitted(true);
+      if (onCompleteEnquiry) onCompleteEnquiry(result);
+    } catch (err) {
+      setSubmitError(
+        err instanceof ApiError
+          ? err.message
+          : 'Something went wrong sending your enquiry. Please try again or reach us on WhatsApp.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -554,6 +569,12 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
                   />
                 </div>
 
+                {submitError && (
+                  <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                    {submitError}
+                  </p>
+                )}
+
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                   <button
                     type="button"
@@ -565,9 +586,10 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
 
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
                   >
-                    <span>Request My Custom Safari Plan</span>
+                    <span>{isSubmitting ? 'Sending...' : 'Request My Custom Safari Plan'}</span>
                     <Send className="w-4 h-4" />
                   </button>
                 </div>

@@ -1,4 +1,4 @@
-import type { Tour, Hotel, Destination, Testimonial } from '../types';
+import type { Tour, Hotel, Destination, Testimonial, BlogPost } from '../types';
 
 /**
  * Factory functions for building minimal-but-valid Tour/Hotel/Destination
@@ -133,6 +133,25 @@ export function makeTestimonial(overrides: Partial<Testimonial> = {}): Testimoni
     date: '2025-01-01',
     featured: true,
     platform: 'TripAdvisor',
+    ...overrides,
+  };
+}
+
+export function makeBlogPost(overrides: Partial<BlogPost> = {}): BlogPost {
+  return {
+    id: 'blog-1',
+    title: 'Test Blog Post',
+    slug: 'test-blog-post',
+    excerpt: 'A short test excerpt.',
+    content: 'Full test content.',
+    featuredImage: 'https://example.com/blog.jpg',
+    author: { name: 'Test Author', role: 'Writer', avatar: 'https://example.com/author.jpg' },
+    publishedDate: '2025-01-01',
+    category: 'Safari Guide',
+    readingTime: '5 min read',
+    relatedDestinations: [],
+    relatedTours: [],
+    tags: [],
     ...overrides,
   };
 }

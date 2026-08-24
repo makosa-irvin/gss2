@@ -13,7 +13,7 @@ import {
   Check,
   X,
   Save,
-  RotateCcw,
+  LogOut,
   Eye,
   DollarSign,
   Phone,
@@ -45,9 +45,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
     updateEnquiryStatus,
     settings,
     updateSettings,
-    resetToInitialData,
-    formatPrice
+    formatPrice,
+    currentAdmin,
+    logout
   } = useData();
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<'overview' | 'enquiries' | 'tours' | 'hotels' | 'settings'>('overview');
 
@@ -68,16 +70,22 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
   // Filter inquiries
   const [enquiryFilter, setEnquiryFilter] = useState('all');
 
-  const handleSaveSettings = (e: React.FormEvent) => {
+  const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateSettings(tempSettings);
-    setSettingsSaved(true);
-    setTimeout(() => setSettingsSaved(false), 3000);
+    setActionError(null);
+    try {
+      await updateSettings(tempSettings);
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 3000);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to save settings.');
+    }
   };
 
-  const handleCreateTour = (e: React.FormEvent) => {
+  const handleCreateTour = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTourTitle) return;
+    setActionError(null);
 
     // This object literal must satisfy Omit<Tour, 'id' | 'createdAt' | 'updatedAt'>.
     // The previous version used field names that don't exist on Tour
@@ -93,74 +101,81 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
     // A tour created through this form would have rendered fine in the
     // tours list (which only reads a few common fields) but crashed the
     // moment an admin opened its detail page — the exact bug this branch
-    // was meant to fix, reintroduced from the write side.
-    addTour({
-      title: newTourTitle,
-      slug: newTourTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      shortDescription: newTourDesc || 'Custom luxury safari experience.',
-      fullDescription: newTourDesc || 'Detailed luxury safari itinerary with private 4x4 Land Cruiser and professional naturalist driver-guide.',
-      country: newTourCountry as Tour['country'],
-      destinations: [newTourCountry],
-      durationDays: Number(newTourDuration),
-      durationLabel: `${newTourDuration} Days / ${newTourDuration - 1} Nights`,
-      startingLocation: 'Nairobi, Kenya',
-      endingLocation: 'Nairobi, Kenya',
-      categories: ['Custom Safari'],
-      travelStyles: ['Big 5', 'Luxury'],
-      comfortLevel: 'Luxury',
-      travelerTypes: ['Couples', 'Families', 'Groups'],
-      featured: true,
-      popular: true,
-      recommended: false,
-      priceFrom: Number(newTourPrice),
-      currency: 'USD',
-      soloPrice: Math.round(newTourPrice * 1.35),
-      sharingPrice: Number(newTourPrice),
-      residentPriceKES: Number(newTourResidentPrice),
-      seasonalPricing: [
-        {
-          id: 'peak',
-          name: 'Peak Season (Jul - Oct)',
-          startDate: '07-01',
-          endDate: '10-31',
-          soloPrice: Math.round(newTourPrice * 1.5),
-          sharingPrice: Math.round(newTourPrice * 1.2),
-          residentPriceKES: Math.round(newTourResidentPrice * 1.25),
-          currency: 'USD',
-          notes: 'Great Migration crossings'
-        }
-      ],
-      images: [newTourImage],
-      itinerary: [
-        {
-          day: 1,
-          title: 'Arrival & Scenic Drive into the Wilderness',
-          subtitle: 'Welcome to Africa',
-          description: 'Depart Nairobi / Arusha in a private 4x4 Land Cruiser heading into the game reserve with afternoon game drive.',
-          accommodation: 'Luxury Tented Camp',
-          meals: 'Lunch & Dinner',
-          transport: 'Custom 4x4 Land Cruiser',
-          activities: ['Scenic valley descent', 'Sunset predator tracking']
-        }
-      ],
-      accommodationSummary: 'Luxury tented camps and lodges',
-      mealsSummary: 'All meals included',
-      includedActivities: ['Scenic valley descent', 'Sunset predator tracking'],
-      includedServices: ['Private 4x4 Land Cruiser', 'Park entrance fees', 'Full board lodging', 'AMREF Flying Doctors cover'],
-      exclusions: ['International flights', 'Tips and gratuities', 'Travel visa'],
-      importantInformation: [],
-      childrenPolicy: 'Children of all ages welcome.',
-      startingDates: 'Daily Departures (Year-Round)',
-      bookingAvailability: 'Available',
-      seo: {
+    // was meant to fix, reintroduced from the write side. The backend's
+    // own Zod validation (server/src/lib/validation.ts) now catches this
+    // class of mistake too, so a form like this can't reach the database
+    // malformed even if a future edit reintroduces the bug here.
+    try {
+      await addTour({
         title: newTourTitle,
-        description: newTourDesc || 'Custom luxury safari experience.',
-      },
-    });
+        slug: newTourTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        shortDescription: newTourDesc || 'Custom luxury safari experience.',
+        fullDescription: newTourDesc || 'Detailed luxury safari itinerary with private 4x4 Land Cruiser and professional naturalist driver-guide.',
+        country: newTourCountry as Tour['country'],
+        destinations: [newTourCountry],
+        durationDays: Number(newTourDuration),
+        durationLabel: `${newTourDuration} Days / ${newTourDuration - 1} Nights`,
+        startingLocation: 'Nairobi, Kenya',
+        endingLocation: 'Nairobi, Kenya',
+        categories: ['Custom Safari'],
+        travelStyles: ['Big 5', 'Luxury'],
+        comfortLevel: 'Luxury',
+        travelerTypes: ['Couples', 'Families', 'Groups'],
+        featured: true,
+        popular: true,
+        recommended: false,
+        priceFrom: Number(newTourPrice),
+        currency: 'USD',
+        soloPrice: Math.round(newTourPrice * 1.35),
+        sharingPrice: Number(newTourPrice),
+        residentPriceKES: Number(newTourResidentPrice),
+        seasonalPricing: [
+          {
+            id: 'peak',
+            name: 'Peak Season (Jul - Oct)',
+            startDate: '07-01',
+            endDate: '10-31',
+            soloPrice: Math.round(newTourPrice * 1.5),
+            sharingPrice: Math.round(newTourPrice * 1.2),
+            residentPriceKES: Math.round(newTourResidentPrice * 1.25),
+            currency: 'USD',
+            notes: 'Great Migration crossings'
+          }
+        ],
+        images: [newTourImage],
+        itinerary: [
+          {
+            day: 1,
+            title: 'Arrival & Scenic Drive into the Wilderness',
+            subtitle: 'Welcome to Africa',
+            description: 'Depart Nairobi / Arusha in a private 4x4 Land Cruiser heading into the game reserve with afternoon game drive.',
+            accommodation: 'Luxury Tented Camp',
+            meals: 'Lunch & Dinner',
+            transport: 'Custom 4x4 Land Cruiser',
+            activities: ['Scenic valley descent', 'Sunset predator tracking']
+          }
+        ],
+        accommodationSummary: 'Luxury tented camps and lodges',
+        mealsSummary: 'All meals included',
+        includedActivities: ['Scenic valley descent', 'Sunset predator tracking'],
+        includedServices: ['Private 4x4 Land Cruiser', 'Park entrance fees', 'Full board lodging', 'AMREF Flying Doctors cover'],
+        exclusions: ['International flights', 'Tips and gratuities', 'Travel visa'],
+        importantInformation: [],
+        childrenPolicy: 'Children of all ages welcome.',
+        startingDates: 'Daily Departures (Year-Round)',
+        bookingAvailability: 'Available',
+        seo: {
+          title: newTourTitle,
+          description: newTourDesc || 'Custom luxury safari experience.',
+        },
+      });
 
-    setIsAddingTour(false);
-    setNewTourTitle('');
-    setNewTourDesc('');
+      setIsAddingTour(false);
+      setNewTourTitle('');
+      setNewTourDesc('');
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to create tour.');
+    }
   };
 
   const filteredEnquiries = enquiries.filter(e => {
@@ -170,6 +185,14 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+      {actionError && (
+        <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800">
+          <span>{actionError}</span>
+          <button onClick={() => setActionError(null)} className="text-rose-600 hover:text-rose-800 font-bold">
+            ×
+          </button>
+        </div>
+      )}
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#e8e4da]">
         <div>
@@ -190,17 +213,19 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
             ← View Live Website
           </button>
 
+          {currentAdmin && (
+            <span className="text-xs text-[#707f74] px-2 hidden sm:inline">
+              Signed in as {currentAdmin.email}
+            </span>
+          )}
+
           <button
-            onClick={() => {
-              if (window.confirm('Reset all tours, hotels, and settings back to original defaults?')) {
-                resetToInitialData();
-              }
-            }}
+            onClick={() => logout()}
             className="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold flex items-center gap-1.5 border border-rose-200"
-            title="Reset dataset"
+            title="Log out"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Reset Defaults</span>
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Log Out</span>
           </button>
         </div>
       </div>
@@ -361,7 +386,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                     <span className="text-xs text-[#707f74]">Status:</span>
                     <select
                       value={enq.status}
-                      onChange={(e) => updateEnquiryStatus(enq.id, e.target.value as any)}
+                      onChange={(e) =>
+                        updateEnquiryStatus(enq.id, e.target.value as any).catch((err) =>
+                          setActionError(err instanceof Error ? err.message : 'Failed to update enquiry status.')
+                        )
+                      }
                       className="px-3 py-1.5 rounded-lg bg-[#faf8f2] border border-[#ded8cb] text-xs font-bold text-[#161f19]"
                     >
                       <option value="new">New / Unread</option>
@@ -533,7 +562,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                   <button
                     onClick={() => {
                       if (window.confirm(`Delete tour "${tour.title}"?`)) {
-                        deleteTour(tour.id);
+                        deleteTour(tour.id).catch((err) =>
+                          setActionError(err instanceof Error ? err.message : 'Failed to delete tour.')
+                        );
                       }
                     }}
                     className="p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200"
@@ -581,7 +612,9 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                   <button
                     onClick={() => {
                       if (window.confirm(`Delete hotel "${hotel.name}"?`)) {
-                        deleteHotel(hotel.id);
+                        deleteHotel(hotel.id).catch((err) =>
+                          setActionError(err instanceof Error ? err.message : 'Failed to delete hotel.')
+                        );
                       }
                     }}
                     className="p-2 rounded-lg bg-rose-50 text-rose-700 border border-rose-200"

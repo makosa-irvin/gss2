@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Tour, Hotel } from '../../types';
+import { ApiError } from '../../services/api';
 import { X, Send, CheckCircle2, ShieldCheck, MessageCircle, Calendar, Users, DollarSign } from 'lucide-react';
 
 interface EnquiryModalProps {
@@ -32,31 +33,45 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   const [specialRequests, setSpecialRequests] = useState('');
   const [hearAboutUs, setHearAboutUs] = useState('Google Search');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addEnquiry({
-      fullName,
-      email,
-      phone,
-      country,
-      travelDates: travelDates || 'Flexible in 2026',
-      durationDays: selectedTour?.durationDays || 5,
-      numberOfTravelers: { adults: Number(adults), children: Number(children) },
-      tourId: selectedTour?.id,
-      tourTitle: selectedTour?.title,
-      hotelId: selectedHotel?.id,
-      hotelTitle: selectedHotel?.name,
-      preferredDestination: selectedTour?.destinations.join(', ') || selectedHotel?.location || 'Kenya & Tanzania',
-      safariType: selectedTour?.title || selectedHotel?.name || initialType || 'Custom Safari',
-      budget,
-      accommodationPreference,
-      specialRequests,
-      hearAboutUs
-    });
-    setIsSubmitted(true);
+    setSubmitError('');
+    setIsSubmitting(true);
+    try {
+      await addEnquiry({
+        fullName,
+        email,
+        phone,
+        country,
+        travelDates: travelDates || 'Flexible in 2026',
+        durationDays: selectedTour?.durationDays || 5,
+        numberOfTravelers: { adults: Number(adults), children: Number(children) },
+        tourId: selectedTour?.id,
+        tourTitle: selectedTour?.title,
+        hotelId: selectedHotel?.id,
+        hotelTitle: selectedHotel?.name,
+        preferredDestination: selectedTour?.destinations.join(', ') || selectedHotel?.location || 'Kenya & Tanzania',
+        safariType: selectedTour?.title || selectedHotel?.name || initialType || 'Custom Safari',
+        budget,
+        accommodationPreference,
+        specialRequests,
+        hearAboutUs
+      });
+      setIsSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof ApiError
+          ? err.message
+          : 'Something went wrong sending your enquiry. Please try again or reach us on WhatsApp.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -218,6 +233,12 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                 />
               </div>
 
+              {submitError && (
+                <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                  {submitError}
+                </p>
+              )}
+
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <a
                   href={getWhatsAppUrl({ tourTitle: selectedTour?.title, hotelTitle: selectedHotel?.name })}
@@ -231,9 +252,10 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
                 >
-                  <span>Request My Safari Plan</span>
+                  <span>{isSubmitting ? 'Sending...' : 'Request My Safari Plan'}</span>
                   <Send className="w-4 h-4" />
                 </button>
               </div>
