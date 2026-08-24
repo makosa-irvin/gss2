@@ -1,0 +1,50 @@
+[
+  {
+    "id": "rev-1",
+    "reviewerName": "David & Sarah Jenkins",
+    "reviewerCountry": "United Kingdom",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "rating": 5,
+    "tourTaken": "14-Day Ultimate Kenya & Tanzania Safari Experience",
+    "reviewText": "Good Secrets Safaris exceeded every expectation. From watching thousands of wildebeest cross the Mara River to having breakfast with elephants in Amboseli, everything was flawlessly organized. Our guide Joseph felt like family by day two.",
+    "date": "July 2026",
+    "featured": true,
+    "platform": "TripAdvisor"
+  },
+  {
+    "id": "rev-2",
+    "reviewerName": "Dr. Arthur Vance",
+    "reviewerCountry": "United States",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+    "rating": 5,
+    "tourTaken": "3-Day Amboseli Elephant Encounters",
+    "reviewText": "As an 72-year-old traveler, comfort and pacing were my biggest priorities. Good Secrets Safaris provided the smoothest 4x4 Land Cruiser, an attentive guide, and stunning lodges with step-free access. Waking up to Kilimanjaro was breathtaking.",
+    "date": "June 2026",
+    "featured": true,
+    "platform": "SafariBookings"
+  },
+  {
+    "id": "rev-3",
+    "reviewerName": "Elena & Marco Rossi",
+    "reviewerCountry": "Italy",
+    "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+    "rating": 5,
+    "tourTaken": "8-Day Safari & Zanzibar Spice Beach Escape",
+    "reviewText": "The perfect honeymoon. Three unforgettable days in the Masai Mara spotting 4 out of the Big 5 on day one, followed by pure luxury in Zanzibar. The private sunset dhow cruise was pure magic!",
+    "date": "May 2026",
+    "featured": true,
+    "platform": "Google Reviews"
+  },
+  {
+    "id": "rev-4",
+    "reviewerName": "Wanjiru & Family",
+    "reviewerCountry": "Kenya (Resident)",
+    "avatarUrl": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=150&q=80",
+    "rating": 5,
+    "tourTaken": "Southern Palms Beach Resort Resident Package",
+    "reviewText": "We booked our family holiday through Good Secrets Safaris and the KES resident rates were unbeatable. Check-in was seamless, the kids loved the massive pools, and the Good Secrets team kept in touch throughout.",
+    "date": "August 2026",
+    "featured": true,
+    "platform": "Direct Feedback"
+  }
+]

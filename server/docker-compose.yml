@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: goodsecretssafaris
+    ports:
+      - '5432:5432'
+    volumes:
+      - gss_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '4000:4000'
+    environment:
+      DATABASE_URL: postgresql://postgres:devpassword@postgres:5432/goodsecretssafaris
+      JWT_SECRET: ${JWT_SECRET:-local-dev-secret-change-me-min-32-chars}
+      JWT_EXPIRES_IN: 12h
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      ENQUIRY_FROM_EMAIL: ${ENQUIRY_FROM_EMAIL:-Good Secrets Safaris <enquiries@goodsecretssafaris.com>}
+      ENQUIRY_NOTIFY_EMAIL: ${ENQUIRY_NOTIFY_EMAIL:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      PORT: 4000
+      NODE_ENV: production
+
+volumes:
+  gss_postgres_data:

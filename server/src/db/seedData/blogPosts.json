@@ -1,0 +1,89 @@
+[
+  {
+    "id": "blog-1",
+    "title": "The Great Wildebeest Migration Guide: When and Where to Witness the Crossing",
+    "slug": "great-wildebeest-migration-guide",
+    "excerpt": "Everything you need to know about tracking the 2-million-strong migration across the Serengeti and Maasai Mara plains.",
+    "content": "## What is the Great Migration?\nThe Great Wildebeest Migration is often referred to as the **Eighth Wonder of the World**. Over two million wildebeest, zebras, and gazelles embark on a perpetual circular clockwise journey across the Serengeti-Mara ecosystem in search of fresh grazing.\n\n### Month-by-Month Timing:\n- **July to October**: The iconic Mara River crossings in Kenya's Maasai Mara.\n- **December to March**: Calving season in the southern Serengeti (Ndutu plains).\n- **April to June**: The herds move north through the Western Corridor and Grumeti River.\n\n### Key Safari Tips:\n1. Book at least 6 to 9 months in advance for peak river crossing months.\n2. Choose a camp located inside or near the prime crossing points.\n3. Allow at least 3 full days in the reserve to account for unpredictable crossing moments.",
+    "featuredImage": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85",
+    "author": {
+      "name": "Samson Kimani",
+      "role": "Lead Naturalist & Safari Guide",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+    },
+    "publishedDate": "August 10, 2026",
+    "category": "Safari Guide",
+    "readingTime": "5 min read",
+    "relatedDestinations": [
+      "Maasai Mara National Reserve",
+      "Serengeti National Park"
+    ],
+    "relatedTours": [
+      "14-Day Ultimate Kenya & Tanzania Safari Experience",
+      "3-Day Masai Mara Luxury Big 5 & Migration Safari"
+    ],
+    "tags": [
+      "Great Migration",
+      "Masai Mara",
+      "Serengeti",
+      "Wildlife"
+    ]
+  },
+  {
+    "id": "blog-2",
+    "title": "Senior-Friendly Safari Planning: Comfort, Accessibility, and Pacing",
+    "slug": "senior-friendly-safari-planning-guide",
+    "excerpt": "How to design a stress-free, luxurious African safari tailored for mature travelers, with private 4x4 vehicles and accessible lodges.",
+    "content": "## Pacing Your African Dream\nA safari should never feel like an endurance test. For senior travelers, selecting the right destinations, vehicle configurations, and lodge layouts makes all the difference.\n\n### What We Prioritize for Senior Travelers:\n- **Private 4x4 Land Cruisers**: Ensuring extra legroom, cushioned suspension, and personalized game drive timing.\n- **Ground-Floor Tents & Lodges**: Avoiding steep staircases and lengthy pathways between rooms and dining pavilions.\n- **Direct Fly-In Options**: Minimizing bumpy road transfers by utilizing scheduled bush airstrip flights.",
+    "featuredImage": "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1200&q=85",
+    "author": {
+      "name": "Faith Mwangi",
+      "role": "Travel Specialist",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+    },
+    "publishedDate": "July 28, 2026",
+    "category": "Senior Travel",
+    "readingTime": "4 min read",
+    "relatedDestinations": [
+      "Amboseli National Park",
+      "Maasai Mara National Reserve"
+    ],
+    "relatedTours": [
+      "3-Day Amboseli Safari & Kilimanjaro Views"
+    ],
+    "tags": [
+      "Senior Travel",
+      "Comfort Safaris",
+      "Amboseli"
+    ]
+  },
+  {
+    "id": "blog-3",
+    "title": "Kenya or Tanzania: Which African Safari Destination is Right for You?",
+    "slug": "kenya-or-tanzania-safari-comparison",
+    "excerpt": "A comprehensive comparison of wildlife density, landscapes, travel costs, and unique safari highlights across East Africa's top two safari giants.",
+    "content": "## Comparing Two Safari Powerhouses\nBoth Kenya and Tanzania offer peerless wildlife experiences, but each has its own distinct character.\n\n### Why Choose Kenya:\n- Shorter driving distances and world-class road infrastructure.\n- Year-round high density of Big Cats in Maasai Mara.\n- Iconic views of Mount Kilimanjaro from Amboseli.\n\n### Why Choose Tanzania:\n- Immense wilderness scale (Serengeti is nearly 10 times larger than Mara).\n- The unique enclosed ecosystem of Ngorongoro Crater.\n- Direct proximity to Zanzibar beaches.",
+    "featuredImage": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=85",
+    "author": {
+      "name": "Samson Kimani",
+      "role": "Lead Naturalist & Safari Guide",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+    },
+    "publishedDate": "July 15, 2026",
+    "category": "Safari Guide",
+    "readingTime": "6 min read",
+    "relatedDestinations": [
+      "Maasai Mara National Reserve",
+      "Serengeti National Park",
+      "Ngorongoro Conservation Area"
+    ],
+    "relatedTours": [
+      "14-Day Ultimate Kenya & Tanzania Safari Experience"
+    ],
+    "tags": [
+      "Kenya vs Tanzania",
+      "East Africa",
+      "Safari Planning"
+    ]
+  }
+]

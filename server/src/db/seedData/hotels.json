@@ -1,0 +1,512 @@
+[
+  {
+    "id": "hotel-southern-palms",
+    "name": "Southern Palms Beach Resort",
+    "slug": "southern-palms-beach-resort",
+    "location": "Diani Beach, South Coast, Kenya",
+    "country": "Kenya",
+    "description": "Nestled along the world-renowned white sands of Diani Beach, featuring the largest swimming pool in East Africa, lush coconut groves, and warm Swahili hospitality.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 208,
+    "priceFromKES": 26945,
+    "soloPriceUSD": 245,
+    "sharingPriceUSD": 208,
+    "seasonalPricing": [
+      {
+        "seasonName": "Normal / Low Season",
+        "dates": "Apr 1 - Jun 30",
+        "priceKES": 22000,
+        "priceUSD": 175,
+        "sharingPriceUSD": 175
+      },
+      {
+        "seasonName": "High Season",
+        "dates": "Jul 1 - Oct 31, Jan 5 - Mar 31",
+        "priceKES": 26945,
+        "priceUSD": 208,
+        "sharingPriceUSD": 208
+      },
+      {
+        "seasonName": "Festive & Christmas Peak",
+        "dates": "Dec 22 - Jan 4",
+        "priceKES": 36500,
+        "priceUSD": 285,
+        "sharingPriceUSD": 285
+      }
+    ],
+    "facilities": [
+      "2 Massive Interconnected Swimming Pools",
+      "5 World-Class Restaurants & Bars",
+      "Direct Beachfront Access to Diani Beach",
+      "Water Sports & PADI Diving Centre",
+      "Kids Club & Animation Team",
+      "Tennis & Squash Courts"
+    ],
+    "roomTypes": [
+      "Standard Sea Facing Room",
+      "Superior Deluxe Room",
+      "Ocean Front Suite"
+    ],
+    "inclusions": [
+      "All-Inclusive meal plan (Breakfast, Lunch, Dinner, Selected Drinks)",
+      "Use of swimming pools and beach loungers",
+      "Daily evening entertainment"
+    ],
+    "exclusions": [
+      "Motorized water sports",
+      "Airport transfers",
+      "Spa treatments"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": true,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.8,
+    "seo": {
+      "title": "Southern Palms Beach Resort Diani Rates & Deals | Good Secrets Safaris",
+      "description": "Book Southern Palms Beach Resort Diani from KES 26,945 / $208 per night with all-inclusive resident and tourist packages."
+    }
+  },
+  {
+    "id": "hotel-swahili-beach",
+    "name": "Swahili Beach Resort",
+    "slug": "swahili-beach-resort",
+    "location": "Diani Beach, Kenya",
+    "country": "Kenya",
+    "description": "An architectural masterpiece combining Swahili, Arabian, and Indian influences with an iconic 8-tier cascading swimming pool leading to the Indian Ocean.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 150,
+    "priceFromKES": 17500,
+    "soloPriceUSD": 190,
+    "sharingPriceUSD": 150,
+    "seasonalPricing": [
+      {
+        "seasonName": "Low Season",
+        "dates": "Apr - Jun",
+        "priceKES": 15500,
+        "priceUSD": 130
+      },
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Mar, Jul - Oct",
+        "priceKES": 17500,
+        "priceUSD": 150
+      },
+      {
+        "seasonName": "Peak Festive",
+        "dates": "Dec 20 - Jan 3",
+        "priceKES": 28000,
+        "priceUSD": 230
+      }
+    ],
+    "facilities": [
+      "8-Tier Cascading Cascade Pool",
+      "Award-winning Majilis & Spice Route Restaurants",
+      "Full Service Spa & Ayurvedic Centre",
+      "Private Beach Cabanas"
+    ],
+    "roomTypes": [
+      "Standard Room",
+      "Superior Pool View",
+      "Executive Suite"
+    ],
+    "inclusions": [
+      "Half Board (Breakfast & Dinner)",
+      "Free Wi-Fi",
+      "Access to 8 swimming pools"
+    ],
+    "exclusions": [
+      "Lunch and alcoholic drinks",
+      "Spa treatments"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": true,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.9,
+    "seo": {
+      "title": "Swahili Beach Resort Diani Packages | Good Secrets Safaris",
+      "description": "Book Swahili Beach Resort in Diani from KSH 17,500 / USD 150."
+    }
+  },
+  {
+    "id": "hotel-turtle-bay",
+    "name": "Turtle Bay Beach Club",
+    "slug": "turtle-bay-beach-club",
+    "location": "Watamu, Kenya",
+    "country": "Kenya",
+    "description": "Eco-friendly, award-winning all-inclusive beach resort situated right inside Watamu National Marine Park, renowned for turtle conservation and coral reefs.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 140,
+    "priceFromKES": 17100,
+    "soloPriceUSD": 175,
+    "sharingPriceUSD": 140,
+    "seasonalPricing": [
+      {
+        "seasonName": "Green Season",
+        "dates": "May 1 - Jun 30",
+        "priceKES": 14200,
+        "priceUSD": 115
+      },
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Apr, Jul - Nov",
+        "priceKES": 17100,
+        "priceUSD": 140
+      },
+      {
+        "seasonName": "Christmas Season",
+        "dates": "Dec 21 - Jan 5",
+        "priceKES": 26500,
+        "priceUSD": 215
+      }
+    ],
+    "facilities": [
+      "All-Inclusive Beachfront",
+      "Marine Park Snorkeling Boats",
+      "PADI Dive Centre",
+      "Waterpolo & Windsurfing"
+    ],
+    "roomTypes": [
+      "Club Room",
+      "Lamoo Room",
+      "Ocean Front Room"
+    ],
+    "inclusions": [
+      "All-Inclusive Meals & Selected Local Drinks",
+      "Non-motorized watersports",
+      "Marine conservation tour"
+    ],
+    "exclusions": [
+      "Deep sea fishing",
+      "Spa"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": false,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.7,
+    "seo": {
+      "title": "Turtle Bay Beach Club Watamu Rates | Good Secrets Safaris",
+      "description": "Watamu all-inclusive holidays at Turtle Bay Beach Club from KSH 17,100 / USD 140."
+    }
+  },
+  {
+    "id": "hotel-hemingways-watamu",
+    "name": "Hemingways Watamu",
+    "slug": "hemingways-watamu",
+    "location": "Watamu Marine Park, Kenya",
+    "country": "Kenya",
+    "description": "An iconic 5-star boutique luxury hotel offering premier beachfront ocean suites, Michelin-grade coastal dining, and world-class billfish big game angling.",
+    "category": "Boutique Hotel",
+    "images": [
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 195,
+    "priceFromKES": 25155,
+    "soloPriceUSD": 260,
+    "sharingPriceUSD": 195,
+    "seasonalPricing": [
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Apr, Jul - Nov",
+        "priceKES": 25155,
+        "priceUSD": 195
+      },
+      {
+        "seasonName": "Festive Peak",
+        "dates": "Dec 20 - Jan 5",
+        "priceKES": 39000,
+        "priceUSD": 310
+      }
+    ],
+    "facilities": [
+      "Direct Watamu Sandbar Beach",
+      "Two Infinity Pools",
+      "Hemingways Spa",
+      "Big Game Fishing Fleet"
+    ],
+    "roomTypes": [
+      "Ocean View Room",
+      "1-Bedroom Ocean Apartment",
+      "2-Bedroom Luxury Suite"
+    ],
+    "inclusions": [
+      "Bed & Gourmet Breakfast",
+      "Wi-Fi",
+      "Tennis & Gym"
+    ],
+    "exclusions": [
+      "Lunch, Dinner & Drinks",
+      "Deep sea fishing charters"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": true,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 5,
+    "seo": {
+      "title": "Hemingways Watamu 5-Star Luxury Rates | Good Secrets Safaris",
+      "description": "5-star luxury at Hemingways Watamu from KSH 25,155 / USD 195."
+    }
+  },
+  {
+    "id": "hotel-voyager-beach-resort",
+    "name": "Voyager Beach Resort",
+    "slug": "voyager-beach-resort",
+    "location": "Nyali, North Coast, Mombasa, Kenya",
+    "country": "Kenya",
+    "description": "A famous ship-themed all-inclusive resort overlooking the pristine waters of Nyali Beach with spectacular nautical aesthetics and family entertainment.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 120,
+    "priceFromKES": 15500,
+    "soloPriceUSD": 160,
+    "sharingPriceUSD": 120,
+    "seasonalPricing": [
+      {
+        "seasonName": "Low Season",
+        "dates": "May - Jun",
+        "priceKES": 13500,
+        "priceUSD": 105
+      },
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Apr, Jul - Nov",
+        "priceKES": 15500,
+        "priceUSD": 120
+      },
+      {
+        "seasonName": "Peak Season",
+        "dates": "Dec 20 - Jan 3",
+        "priceKES": 24000,
+        "priceUSD": 190
+      }
+    ],
+    "facilities": [
+      "3 Swimming Pools (including Relaxing Infinity Pool)",
+      "4 Bars & 3 Themed Restaurants",
+      "Adventurers Club for Kids"
+    ],
+    "roomTypes": [
+      "Garden Cabin",
+      "Superior Sea View Cabin",
+      "Deluxe Sea View"
+    ],
+    "inclusions": [
+      "All-Inclusive Meals & Drinks",
+      "Daily Animation & Sports",
+      "Kids Club"
+    ],
+    "exclusions": [
+      "Spa treatments",
+      "Transfers"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": false,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.7,
+    "seo": {
+      "title": "Voyager Beach Resort Mombasa Deals | Good Secrets Safaris",
+      "description": "Mombasa all-inclusive holiday at Voyager Beach Resort from KSH 15,500 / USD 120."
+    }
+  },
+  {
+    "id": "hotel-baobab-beach-resort",
+    "name": "Baobab Beach Resort & Spa",
+    "slug": "baobab-beach-resort-spa",
+    "location": "Diani Beach, Kenya",
+    "country": "Kenya",
+    "description": "Spanning 80 acres of tropical gardens with ancient baobab trees along Diani Beach, offering 3 unique resort wings (Baobab, Maridadi, and Kole Kole).",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 116,
+    "priceFromKES": 11600,
+    "soloPriceUSD": 150,
+    "sharingPriceUSD": 116,
+    "seasonalPricing": [
+      {
+        "seasonName": "Off-Peak Season",
+        "dates": "May - Jun",
+        "priceKES": 9800,
+        "priceUSD": 95
+      },
+      {
+        "seasonName": "Normal Season",
+        "dates": "Jan - Apr, Jul - Oct",
+        "priceKES": 11600,
+        "priceUSD": 116
+      },
+      {
+        "seasonName": "Festive Season",
+        "dates": "Dec 22 - Jan 3",
+        "priceKES": 21000,
+        "priceUSD": 180
+      }
+    ],
+    "facilities": [
+      "3 Large Swimming Pools",
+      "Afya Bora Wellness Spa",
+      "Direct 500m Beachfront",
+      "Amphitheatre"
+    ],
+    "roomTypes": [
+      "Standard Garden Room",
+      "Superior Sea View",
+      "Deluxe Bungalow"
+    ],
+    "inclusions": [
+      "All-Inclusive Dining & Drinks",
+      "Free gym and tennis courts",
+      "Nightly live shows"
+    ],
+    "exclusions": [
+      "Afya Bora Spa treatments",
+      "Transfers"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": true,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.8,
+    "seo": {
+      "title": "Baobab Beach Resort Diani Packages | Good Secrets Safaris",
+      "description": "Diani all-inclusive holidays at Baobab Beach Resort from KSH 11,600 / USD 116."
+    }
+  },
+  {
+    "id": "hotel-diani-reef",
+    "name": "Diani Reef Beach Resort & Spa",
+    "slug": "diani-reef-beach-resort-spa",
+    "location": "Diani Beach, Kenya",
+    "country": "Kenya",
+    "description": "A 5-star beach resort set on 34 acres of lush gardens with direct access to Diani's sparkling sands and vibrant coral reefs.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 184,
+    "priceFromKES": 18480,
+    "soloPriceUSD": 220,
+    "sharingPriceUSD": 184,
+    "seasonalPricing": [
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Nov",
+        "priceKES": 18480,
+        "priceUSD": 184
+      },
+      {
+        "seasonName": "Peak Season",
+        "dates": "Dec 20 - Jan 3",
+        "priceKES": 29500,
+        "priceUSD": 250
+      }
+    ],
+    "facilities": [
+      "Maya Health & Wellness Spa",
+      "Freeform Swimming Pool",
+      "Casino & Cigar Lounge",
+      "Water Sports"
+    ],
+    "roomTypes": [
+      "Standard Garden View",
+      "Deluxe Ocean View",
+      "Junior Suite"
+    ],
+    "inclusions": [
+      "Half Board (Breakfast & Dinner)",
+      "Access to gym & pools",
+      "Wi-Fi"
+    ],
+    "exclusions": [
+      "Lunch & Drinks",
+      "Spa packages"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": true,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.8,
+    "seo": {
+      "title": "Diani Reef Beach Resort & Spa Rates | Good Secrets Safaris",
+      "description": "5-star luxury at Diani Reef Beach Resort from KSH 18,480 / USD 184."
+    }
+  },
+  {
+    "id": "hotel-prideinn-paradise",
+    "name": "PrideInn Paradise Beach Resort & Spa",
+    "slug": "prideinn-paradise-beach-resort",
+    "location": "Shanzu Beach, Mombasa, Kenya",
+    "country": "Kenya",
+    "description": "East Africa's first family resort with a dedicated Aqua Park, private beachfront, and extensive conference and leisure facilities.",
+    "category": "Beach Resort & Spa",
+    "images": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "priceFromUSD": 140,
+    "priceFromKES": 15000,
+    "soloPriceUSD": 180,
+    "sharingPriceUSD": 140,
+    "seasonalPricing": [
+      {
+        "seasonName": "Standard Season",
+        "dates": "Jan - Nov",
+        "priceKES": 15000,
+        "priceUSD": 140
+      },
+      {
+        "seasonName": "Peak Festive Season",
+        "dates": "Dec 20 - Jan 3",
+        "priceKES": 26000,
+        "priceUSD": 210
+      }
+    ],
+    "facilities": [
+      "Aqua Park with Water Slides",
+      "Olympic Size Pool",
+      "Bamboo Spa",
+      "Private Beach Access"
+    ],
+    "roomTypes": [
+      "Deluxe Garden View",
+      "Deluxe Ocean View",
+      "Family Suite"
+    ],
+    "inclusions": [
+      "Half Board or All-Inclusive Options",
+      "Aqua Park access for kids",
+      "Wi-Fi"
+    ],
+    "exclusions": [
+      "Spa treatments",
+      "Transfers"
+    ],
+    "isFamilyFriendly": true,
+    "isHoneymoonFriendly": false,
+    "isSeniorFriendly": true,
+    "isKenyanResidentOffer": true,
+    "rating": 4.7,
+    "seo": {
+      "title": "PrideInn Paradise Beach Resort Shanzu | Good Secrets Safaris",
+      "description": "Mombasa family resort at PrideInn Paradise from KSH 15,000 / USD 140."
+    }
+  }
+]

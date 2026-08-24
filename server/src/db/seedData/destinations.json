@@ -1,0 +1,411 @@
+[
+  {
+    "id": "dest-masai-mara",
+    "name": "Maasai Mara National Reserve",
+    "slug": "maasai-mara",
+    "country": "Kenya",
+    "subtitle": "The Crown Jewel of African Wildlife and the Great Migration",
+    "description": "World-renowned for exceptional populations of lions, leopards, cheetahs, and the dramatic annual Great Wildebeest Migration across the crocodile-infested Mara River.",
+    "heroImage": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "July to October for the Great Wildebeest Migration; Year-round for Big Cat sightings and predator action.",
+    "wildlife": [
+      "Lions",
+      "Cheetahs",
+      "Leopards",
+      "Wildebeest",
+      "Elephants",
+      "Black Rhinos",
+      "Giraffes",
+      "Zebras"
+    ],
+    "activities": [
+      "Hot Air Balloon Safaris",
+      "Mara River Crossing Drives",
+      "Maasai Cultural Village Visits",
+      "Bush Breakfasts & Sundowners",
+      "Night Game Drives in Conservancies"
+    ],
+    "recommendedDuration": "3 to 5 Days",
+    "whereToStay": "Luxury tented river camps along the Talek and Mara Rivers or private conservancy eco-lodges.",
+    "featured": true,
+    "mapLocation": {
+      "lat": -1.4061,
+      "lng": 35.1075,
+      "zoom": 10
+    },
+    "faqs": [
+      {
+        "question": "When is the best time to see the River Crossings in Maasai Mara?",
+        "answer": "River crossings typically occur between late July and mid-October as millions of wildebeest and zebras traverse between the Serengeti and Mara."
+      },
+      {
+        "question": "Is Maasai Mara suitable for families with young children?",
+        "answer": "Yes, family-friendly private lodges and enclosed camps offer customized game drives, children's bush-craft programs, and interconnecting luxury tents."
+      }
+    ],
+    "seo": {
+      "title": "Maasai Mara Safaris & Tours | Good Secrets Safaris",
+      "description": "Discover luxury Maasai Mara safaris, Great Migration river crossings, and private game drives with expert Kenyan guides."
+    }
+  },
+  {
+    "id": "dest-amboseli",
+    "name": "Amboseli National Park",
+    "slug": "amboseli",
+    "country": "Kenya",
+    "subtitle": "Land of Giants with Majestic Mount Kilimanjaro Backdrops",
+    "description": "Famous for being the best place in Africa to get up close to free-ranging elephant herds with snow-capped Mount Kilimanjaro towering in the background.",
+    "heroImage": "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "June to October and January to February for clear Kilimanjaro views and peak dry-season wildlife gatherings.",
+    "wildlife": [
+      "Huge Tusker Elephants",
+      "Lions",
+      "Cheetahs",
+      "Hyenas",
+      "Cape Buffalos",
+      "Giraffes",
+      "Over 400 Bird Species"
+    ],
+    "activities": [
+      "Observation Hill Viewpoint",
+      "Elephant Research Walks",
+      "Maasai Homestead Visits",
+      "Photography at Sunset",
+      "Swamp Birdwatching"
+    ],
+    "recommendedDuration": "2 to 3 Days",
+    "whereToStay": "Tortilis Camp, Ol Tukai Lodge, Amboseli Serena Safari Lodge, and luxury wilderness camps.",
+    "featured": true,
+    "mapLocation": {
+      "lat": -2.6527,
+      "lng": 37.2606,
+      "zoom": 11
+    },
+    "faqs": [
+      {
+        "question": "Can we see Mount Kilimanjaro clearly from Amboseli?",
+        "answer": "Yes! Early mornings and late afternoons offer the clearest, unobstructed vistas of Africa's highest peak before midday clouds roll in."
+      }
+    ],
+    "seo": {
+      "title": "Amboseli Elephant Safaris & Kilimanjaro Views | Good Secrets Safaris",
+      "description": "Book customized Amboseli safaris with big elephant herds and iconic Kilimanjaro views."
+    }
+  },
+  {
+    "id": "dest-samburu",
+    "name": "Samburu National Reserve",
+    "slug": "samburu",
+    "country": "Kenya",
+    "subtitle": "Untamed Northern Wilderness & The Samburu Special Five",
+    "description": "A rugged, dramatic arid paradise bisected by the palm-fringed Ewaso Nyiro River, home to unique wildlife species found nowhere else in southern Kenya.",
+    "heroImage": "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "June to October and December to March for supreme game viewing around the life-giving Ewaso Nyiro River.",
+    "wildlife": [
+      "Grevy's Zebra",
+      "Reticulated Giraffe",
+      "Beisa Oryx",
+      "Gerenuk",
+      "Somali Ostrich",
+      "Leopards",
+      "Lions",
+      "Wild Dogs"
+    ],
+    "activities": [
+      "Tracking the Samburu Special 5",
+      "Samburu Warrior Cultural Encounters",
+      "Camel Trek Safaris",
+      "Riverbank Bush Dinners"
+    ],
+    "recommendedDuration": "3 to 4 Days",
+    "whereToStay": "Saruni Samburu, Elephant Bedroom Camp, Samburu Intrepids, Ashnil Samburu.",
+    "featured": true,
+    "mapLocation": {
+      "lat": 0.6272,
+      "lng": 37.5342,
+      "zoom": 11
+    },
+    "faqs": [
+      {
+        "question": "What are the Samburu Special Five?",
+        "answer": "They are the Grevy's zebra, Reticulated giraffe, Beisa oryx, Gerenuk (long-necked antelope), and the blue-shanked Somali ostrich."
+      }
+    ],
+    "seo": {
+      "title": "Samburu Safaris & Special Five Wildlife | Good Secrets Safaris",
+      "description": "Explore northern Kenya's untamed Samburu reserve with luxury tented camps and rare wildlife."
+    }
+  },
+  {
+    "id": "dest-serengeti",
+    "name": "Serengeti National Park",
+    "slug": "serengeti",
+    "country": "Tanzania",
+    "subtitle": "Endless Plains & the Epic Drama of Nature",
+    "description": "Tanzania's oldest and most iconic national park, encompassing 14,763 square kilometers of untamed savanna hosting over two million herbivores and apex predators.",
+    "heroImage": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "December to March for calving in Ndutu; July to October for Mara River crossings in Northern Serengeti.",
+    "wildlife": [
+      "Wildebeest",
+      "Lions",
+      "Cheetahs",
+      "Leopards",
+      "Hyenas",
+      "Elephants",
+      "Topi",
+      "Hippos"
+    ],
+    "activities": [
+      "Hot Air Balloon Safaris",
+      "Kopje Predator Tracking",
+      "Fly-Camping Experiences",
+      "Ndutu Calving Season Game Drives"
+    ],
+    "recommendedDuration": "4 to 7 Days",
+    "whereToStay": "Four Seasons Safari Lodge, Singita Sasakwa, Sayari Camp, Nomad Serengeti.",
+    "featured": true,
+    "faqs": [
+      {
+        "question": "How do you combine Kenya and Tanzania in one safari?",
+        "answer": "We arrange seamless border transitions or short bush flights directly connecting Maasai Mara to Northern Serengeti or Kilimanjaro airport."
+      }
+    ],
+    "seo": {
+      "title": "Serengeti Safaris & Migration Expeditions | Good Secrets Safaris",
+      "description": "Experience the Serengeti's endless plains with private 4x4 Land Cruisers and premier luxury camps."
+    }
+  },
+  {
+    "id": "dest-ngorongoro",
+    "name": "Ngorongoro Conservation Area",
+    "slug": "ngorongoro",
+    "country": "Tanzania",
+    "subtitle": "Africa's Eden & Intact Volcanic Caldera",
+    "description": "A UNESCO World Heritage site and natural wonder. The 600-meter deep unbroken caldera acts as a natural enclosure for 25,000 large animals, including dense lion prides and rare black rhinos.",
+    "heroImage": "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "Year-round due to the permanent water and resident wildlife population inside the crater floor.",
+    "wildlife": [
+      "Black Rhinos",
+      "Lions",
+      "Huge Bull Elephants",
+      "Flamingos in Lake Magadi",
+      "Spotted Hyenas",
+      "Golden Jackals"
+    ],
+    "activities": [
+      "Crater Floor Game Drives",
+      "Olduvai Gorge Paleontological Tour",
+      "Empakaai Crater Walking Safaris",
+      "Crater Rim Sundowners"
+    ],
+    "recommendedDuration": "2 to 3 Days",
+    "whereToStay": "Ngorongoro Crater Lodge, Ngorongoro Serena Safari Lodge, The Highlands.",
+    "featured": true,
+    "faqs": [
+      {
+        "question": "Can you see the Big 5 in a single day at Ngorongoro?",
+        "answer": "Ngorongoro offers one of the highest probabilities in Africa to encounter Lion, Leopard, Elephant, Buffalo, and Rhino in a single game drive."
+      }
+    ],
+    "seo": {
+      "title": "Ngorongoro Crater Safari Packages | Good Secrets Safaris",
+      "description": "Descend into the Ngorongoro Caldera for unmatched Big 5 encounters and volcanic vistas."
+    }
+  },
+  {
+    "id": "dest-zanzibar",
+    "name": "Zanzibar Archipelago",
+    "slug": "zanzibar",
+    "country": "Zanzibar",
+    "subtitle": "Turquoise Waters, Spice Isles & Ancient Swahili Culture",
+    "description": "An exotic Indian Ocean paradise featuring pristine powder-white sands, kaleidoscopic coral reefs, fragrant spice plantations, and the UNESCO labyrinth of Stone Town.",
+    "heroImage": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "June to October and December to February for sunny skies and tranquil crystal-clear waters.",
+    "wildlife": [
+      "Dolphins at Kizimkazi",
+      "Giant Aldabra Tortoises on Prison Island",
+      "Red Colobus Monkeys in Jozani Forest"
+    ],
+    "activities": [
+      "Stone Town Heritage Walks",
+      "Traditional Dhow Sunset Cruises",
+      "Mnemba Atoll Snorkeling",
+      "Organic Spice Farm Tastings"
+    ],
+    "recommendedDuration": "3 to 6 Days",
+    "whereToStay": "The Residence Zanzibar, Zuri Zanzibar, Baraza Resort & Spa, Emerson Spice.",
+    "featured": true,
+    "faqs": [
+      {
+        "question": "Is Zanzibar a good addition after a Kenya or Tanzania safari?",
+        "answer": "Yes! 'Bush & Beach' is our most popular pairing. A 1-hour flight from Arusha or Nairobi brings you straight to paradise after days in the wild."
+      }
+    ],
+    "seo": {
+      "title": "Zanzibar Beach Holidays & Bush-to-Beach Safaris | Good Secrets Safaris",
+      "description": "Indulge in luxury Zanzibar resorts, private dhow sails, and historic Stone Town explorations."
+    }
+  },
+  {
+    "id": "dest-diani-beach",
+    "name": "Diani Beach",
+    "slug": "diani-beach",
+    "country": "Kenya",
+    "subtitle": "Africa's Leading Beach Destination on the Kenyan Coast",
+    "description": "Voted Africa's leading beach destination multiple times, Diani charms with 17 kilometers of silky white sand, gentle turquoise waters, and lush coastal forests.",
+    "heroImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "November to March and July to October for blissful beach conditions and watersports.",
+    "wildlife": [
+      "Colobus Monkeys",
+      "Sea Turtles",
+      "Whale Sharks (seasonal)",
+      "Dolphins"
+    ],
+    "activities": [
+      "Kitesurfing & Windsurfing",
+      "Wasini Island Dolphin Dhow Tour",
+      "Shimba Hills Rainforest Safari",
+      "Glass-Bottom Boat Reef Tours"
+    ],
+    "recommendedDuration": "3 to 7 Days",
+    "whereToStay": "Swahili Beach Resort, The Sands at Nomad, Southern Palms Beach Resort, Baobab Beach Resort.",
+    "featured": true,
+    "faqs": [],
+    "seo": {
+      "title": "Diani Beach Holidays & Kenyan Coast Resorts | Good Secrets Safaris",
+      "description": "Relax at world-class Diani Beach luxury resorts with resident packages and international all-inclusive stays."
+    }
+  },
+  {
+    "id": "dest-watamu",
+    "name": "Watamu & Malindi",
+    "slug": "watamu",
+    "country": "Kenya",
+    "subtitle": "Marine Reserves, Mangrove Creeks & Hemingways Elegance",
+    "description": "A tranquil coastal jewel renowned for the Watamu Marine National Park, crystalline sandbars, deep-sea fishing heritage, and the mysterious Gede Ruins.",
+    "heroImage": "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "August to April for scuba diving, billfish angling, and sunbathing on sandbars.",
+    "wildlife": [
+      "Green Sea Turtles",
+      "Manta Rays",
+      "Humpback Whales (Aug-Oct)",
+      "Moray Eels"
+    ],
+    "activities": [
+      "Watamu Marine Park Snorkeling",
+      "Mida Creek Boardwalk & Dhow Dining",
+      "Gede Ruins Swahili History",
+      "Deep-Sea Big Game Fishing"
+    ],
+    "recommendedDuration": "3 to 5 Days",
+    "whereToStay": "Hemingways Watamu, Turtle Bay Beach Club, Medina Palms.",
+    "featured": false,
+    "faqs": [],
+    "seo": {
+      "title": "Watamu Beach & Marine Safaris | Good Secrets Safaris",
+      "description": "Experience Watamu's marine sanctuaries, Hemingways luxury, and coastal tranquility."
+    }
+  },
+  {
+    "id": "dest-lake-nakuru-naivasha",
+    "name": "Lake Nakuru & Lake Naivasha",
+    "slug": "lake-nakuru-naivasha",
+    "country": "Kenya",
+    "subtitle": "Great Rift Valley Lakes, Rhinos & Walking Safaris",
+    "description": "An easy and captivating journey from Nairobi into the Great Rift Valley, combining Lake Nakuru's thriving sanctuary for endangered rhinos with Lake Naivasha's serene boat safaris and walking amongst giraffes on Crescent Island.",
+    "heroImage": "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "Year-round destination with exceptional birdlife and reliable rhino encounters.",
+    "wildlife": [
+      "White & Black Rhinos",
+      "Rothschild's Giraffes",
+      "Flamingos & Pelicans",
+      "Hippos",
+      "Fish Eagles",
+      "Zebras"
+    ],
+    "activities": [
+      "Rhino Sanctuary Drives",
+      "Lake Naivasha Boat Rides",
+      "Crescent Island Walking Safari",
+      "Hell's Gate Gorge Cycling"
+    ],
+    "recommendedDuration": "1 to 2 Days",
+    "whereToStay": "Sarova Lion Hill Game Lodge, The Great Rift Valley Lodge, Enashipai Resort & Spa.",
+    "featured": false,
+    "faqs": [],
+    "seo": {
+      "title": "Lake Nakuru & Naivasha Safari Day Trips & Packages",
+      "description": "Explore Lake Nakuru and Naivasha with walking safaris, rhino tracking, and boat cruises."
+    }
+  },
+  {
+    "id": "dest-nairobi",
+    "name": "Nairobi City & Wildlife",
+    "slug": "nairobi",
+    "country": "Kenya",
+    "subtitle": "The Safari Capital of the World",
+    "description": "The only metropolis on earth bordering a full national park where wild lions and rhinos roam against skyscrapers.",
+    "heroImage": "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1600&q=85",
+    "gallery": [
+      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80"
+    ],
+    "bestTimeToVisit": "Year-round for cultural stops, elephant orphan visits, and half-day wildlife drives.",
+    "wildlife": [
+      "Lions",
+      "Black Rhinos",
+      "Orphaned Baby Elephants",
+      "Rothschild Giraffes",
+      "Leopards"
+    ],
+    "activities": [
+      "David Sheldrick Elephant Orphanage",
+      "Giraffe Centre Feeding",
+      "Nairobi National Park Sunrise Drive",
+      "Karen Blixen Museum",
+      "Bomas of Kenya Cultural Dances"
+    ],
+    "recommendedDuration": "1 to 2 Days",
+    "whereToStay": "Hemingways Nairobi, Giraffe Manor, Villa Rosa Kempinski, House of Waine.",
+    "featured": false,
+    "faqs": [],
+    "seo": {
+      "title": "Nairobi Day Tours & Wildlife Excursions | Good Secrets Safaris",
+      "description": "Book Nairobi city safari excursions, elephant orphanage visits, and giraffe encounters."
+    }
+  }
+]

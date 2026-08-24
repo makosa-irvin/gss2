@@ -1,0 +1,35 @@
+{
+  "companyName": "Good Secrets Safaris",
+  "tagline": "Your Africa. Your Story. Your Safari.",
+  "description": "Specializing in personalized Kenya, Tanzania and Zanzibar bespoke wildlife journeys, romantic escapes, and luxury beach holidays designed around you.",
+  "logoUrl": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80",
+  "contact": {
+    "email": "info@goodsecretssafaris.com",
+    "phone": "+254 700 000 000",
+    "whatsapp": "+254700000000",
+    "address": "Westlands Commercial Centre, Nairobi, Kenya",
+    "businessHours": "Monday - Sunday: 7:00 AM - 9:00 PM EAT (24/7 Safari Support)"
+  },
+  "social": {
+    "instagram": "https://instagram.com/goodsecretssafaris",
+    "facebook": "https://facebook.com/goodsecretssafaris",
+    "tiktok": "https://tiktok.com/@goodsecretssafaris",
+    "youtube": "https://youtube.com/@goodsecretssafaris",
+    "linkedin": "https://linkedin.com/company/good-secrets-safaris"
+  },
+  "currency": {
+    "primary": "USD",
+    "exchangeRateUsdToKes": 130
+  },
+  "booking": {
+    "defaultEnquiryMessage": "Hello Good Secrets Safaris, I would like to enquire about planning a customized safari trip.",
+    "bookingEmail": "safaris@goodsecretssafaris.com",
+    "whatsappNumber": "+254700000000",
+    "whatsappDefaultMessage": "Hello Good Secrets Safaris, I'd like to enquire about a safari."
+  },
+  "seo": {
+    "defaultTitle": "Good Secrets Safaris | Kenya, Tanzania & Zanzibar Safaris",
+    "defaultDescription": "Experience bespoke African wildlife safaris, Kilimanjaro views, Serengeti migration tours, and Zanzibar beach holidays with Good Secrets Safaris.",
+    "defaultOgImage": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1600&q=85"
+  }
+}
