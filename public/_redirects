@@ -1,1 +1,8 @@
-/*  /index.html  200
+/about-2                 /about              301
+/about-2/                /about              301
+/contact-2               /contact            301
+/contact-2/              /contact            301
+/all-tours-and-safaris   /safaris            301
+/all-tours-and-safaris/  /safaris            301
+/accommodation-packag/*  /hotels/:splat      301
+/*                       /index.html          200

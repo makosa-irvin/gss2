@@ -20,7 +20,7 @@ export const DestinationsView: React.FC<DestinationsViewProps> = ({ onSelectDest
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-10">
-      <PageMeta title="Destinations" description="Explore Maasai Mara, Serengeti, Zanzibar, and the other destinations we cover across East Africa." />
+      <PageMeta title="Destinations" description="Explore Maasai Mara, Serengeti, Zanzibar, and the other destinations we cover across East Africa." canonicalPath="/destinations" />
       {/* Header */}
       <div className="space-y-3 text-center max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">

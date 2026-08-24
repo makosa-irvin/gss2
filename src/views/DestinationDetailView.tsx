@@ -54,6 +54,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         title={destination.name}
         description={destination.description || destination.subtitle}
         image={destination.heroImage}
+        canonicalPath={`/destinations/${destination.slug}`}
       />
       {/* Breadcrumb */}
       <div className="flex items-center justify-between text-xs text-[#707f74]">

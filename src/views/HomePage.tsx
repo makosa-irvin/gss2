@@ -62,7 +62,21 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="space-y-24 sm:space-y-32 pb-16">
-      <PageMeta title="Good Secrets Safaris" />
+      <PageMeta
+        title="Good Secrets Safaris"
+        canonicalPath="/"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'TravelAgency',
+          name: settings.companyName,
+          url: 'https://www.goodsecretssafaris.com',
+          description: settings.description,
+          email: settings.contact.email,
+          telephone: settings.contact.phone,
+          address: settings.contact.address,
+          areaServed: ['Kenya', 'Tanzania', 'Zanzibar'],
+        }}
+      />
       {/* 1. CINEMATIC HERO SECTION */}
       <section className="relative min-h-[90vh] flex flex-col justify-between pt-16 pb-12 px-4 sm:px-8 overflow-hidden">
         {/* Background Image & Overlay */}

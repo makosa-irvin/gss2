@@ -1,4 +1,14 @@
 {
+  "redirects": [
+    { "source": "/about-2", "destination": "/about", "permanent": true },
+    { "source": "/about-2/", "destination": "/about", "permanent": true },
+    { "source": "/contact-2", "destination": "/contact", "permanent": true },
+    { "source": "/contact-2/", "destination": "/contact", "permanent": true },
+    { "source": "/all-tours-and-safaris", "destination": "/safaris", "permanent": true },
+    { "source": "/all-tours-and-safaris/", "destination": "/safaris", "permanent": true },
+    { "source": "/accommodation-packag/:slug", "destination": "/hotels/:slug", "permanent": true },
+    { "source": "/accommodation-packag/:slug/", "destination": "/hotels/:slug", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

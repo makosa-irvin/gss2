@@ -51,6 +51,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
         title={tour.title}
         description={tour.shortDescription}
         image={tour.images?.[0]}
+        canonicalPath={`/safaris/${tour.slug}`}
       />
       {/* Breadcrumb & Navigation */}
       <div className="flex items-center justify-between text-xs text-[#707f74]">

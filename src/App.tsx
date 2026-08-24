@@ -84,6 +84,7 @@ const BuilderPage: React.FC<{ onOpenEnquiryModal: (payload?: any) => void }> = (
       <PageMeta
         title="Custom Safari Builder"
         description="Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate."
+        canonicalPath="/safari-builder"
       />
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">

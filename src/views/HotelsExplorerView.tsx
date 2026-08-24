@@ -28,7 +28,7 @@ export const HotelsExplorerView: React.FC<HotelsExplorerViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-10">
-      <PageMeta title="Beach Resorts & Lodges" description="Browse beach resorts and lodges in Kenya, including Kenyan resident rates." />
+      <PageMeta title="Beach Resorts & Lodges" description="Browse beach resorts and lodges in Kenya, including Kenyan resident rates." canonicalPath="/hotels" />
       {/* Header */}
       <div className="space-y-4 text-center max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 rounded-full bg-[#eef7f2] px-4 py-1 text-xs font-bold text-[#1b4332] border border-[#c3e2cf]">

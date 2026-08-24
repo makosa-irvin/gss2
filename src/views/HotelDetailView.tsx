@@ -37,6 +37,7 @@ export const HotelDetailView: React.FC<HotelDetailViewProps> = ({
         title={hotel.name}
         description={hotel.description}
         image={hotel.images?.[0]}
+        canonicalPath={`/hotels/${hotel.slug}`}
       />
       {/* Back Button */}
       <button
