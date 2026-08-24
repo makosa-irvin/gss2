@@ -1,57 +1,74 @@
 /**
- * Generates public/sitemap.xml from the current data.
+ * Generates public/sitemap.xml from the content exposed by the backend.
  *
- * Run automatically as part of `npm run build` (see package.json) and can
- * be run standalone via `npm run sitemap`.
- *
- * IMPORTANT LIMITATION: this reads from src/data/initialData.ts, the
- * static seed data - not whatever an admin has actually published. There
- * is currently no real backend, so seed data IS the site's content. Once
- * a real backend/CMS exists (see README "Known gaps"), this script should
- * be changed to fetch the live, published catalog instead, or the sitemap
- * should be generated server-side per request.
+ * Production builds should set SITEMAP_API_URL (normally the deployed API
+ * origin, e.g. https://api.goodsecretssafaris.com). This keeps the sitemap
+ * aligned with the database/CMS instead of the legacy frontend seed file.
+ * Local builds without an API remain possible: only static routes are emitted
+ * and the script prints a warning rather than publishing stale catalog URLs.
  */
 import { writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  initialTours,
-  initialHotels,
-  initialDestinations,
-  initialBlogPosts,
-} from '../src/data/initialData';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.com';
+const SITE_URL = (process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.com').replace(/\/$/, '');
+const API_URL = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || '').replace(/\/$/, '');
 
 const staticRoutes = ['/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/about', '/contact'];
 
-const dynamicRoutes = [
-  ...initialTours.map(t => `/safaris/${t.slug}`),
-  ...initialHotels.map(h => `/hotels/${h.slug}`),
-  ...initialDestinations.map(d => `/destinations/${d.slug}`),
-  ...initialBlogPosts.map(p => `/blog/${p.slug}`),
+type SlugRecord = { slug: string; updatedAt?: string; publishedDate?: string };
+type SitemapEntry = { path: string; lastmod?: string };
+
+async function fetchCollection(path: string): Promise<SlugRecord[]> {
+  const response = await fetch(`${API_URL}${path}`);
+  if (!response.ok) {
+    throw new Error(`Sitemap API request failed: ${response.status} ${path}`);
+  }
+  const data = await response.json();
+  if (!Array.isArray(data)) throw new Error(`Sitemap API returned non-array data for ${path}`);
+  return data;
+}
+
+function isoDate(value?: string): string | undefined {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString().slice(0, 10);
+}
+
+async function dynamicEntries(): Promise<SitemapEntry[]> {
+  if (!API_URL) {
+    console.warn('SITEMAP_API_URL/VITE_API_URL is not set; generating static routes only.');
+    return [];
+  }
+
+  const [tours, hotels, destinations, posts] = await Promise.all([
+    fetchCollection('/api/tours'),
+    fetchCollection('/api/hotels'),
+    fetchCollection('/api/destinations'),
+    fetchCollection('/api/blog'),
+  ]);
+
+  return [
+    ...tours.map((item) => ({ path: `/safaris/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
+    ...hotels.map((item) => ({ path: `/hotels/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
+    ...destinations.map((item) => ({ path: `/destinations/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
+    ...posts.map((item) => ({ path: `/blog/${item.slug}`, lastmod: isoDate(item.updatedAt || item.publishedDate) })),
+  ];
+}
+
+const today = new Date().toISOString().slice(0, 10);
+const entries: SitemapEntry[] = [
+  ...staticRoutes.map((path) => ({ path, lastmod: today })),
+  ...(await dynamicEntries()),
 ];
 
-const allRoutes = [...staticRoutes, ...dynamicRoutes];
-
-const today = new Date().toISOString().split('T')[0];
-
-const body = allRoutes
-  .map(
-    path => `  <url>
-    <loc>${SITE_URL}${path}</loc>
-    <lastmod>${today}</lastmod>
-  </url>`
-  )
+const body = entries
+  .map(({ path, lastmod }) => `  <url>\n    <loc>${SITE_URL}${path}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`)
   .join('\n');
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${body}
-</urlset>
-`;
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 
 const outPath = resolve(__dirname, '../public/sitemap.xml');
 writeFileSync(outPath, xml, 'utf-8');
-console.log(`sitemap.xml written with ${allRoutes.length} URLs -> ${outPath}`);
+console.log(`sitemap.xml written with ${entries.length} URLs -> ${outPath}`);
