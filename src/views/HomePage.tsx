@@ -1,6 +1,7 @@
 import React from 'react';
 import { useData } from '../context/DataContext';
 import { Tour, Destination, Hotel } from '../types';
+import { PageMeta } from '../components/common/PageMeta';
 import { SafariFinderBar } from '../components/search/SafariFinderBar';
 import { TourCard } from '../components/tours/TourCard';
 import { DestinationCard } from '../components/destinations/DestinationCard';
@@ -61,6 +62,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <div className="space-y-24 sm:space-y-32 pb-16">
+      <PageMeta title="Good Secrets Safaris" />
       {/* 1. CINEMATIC HERO SECTION */}
       <section className="relative min-h-[90vh] flex flex-col justify-between pt-16 pb-12 px-4 sm:px-8 overflow-hidden">
         {/* Background Image & Overlay */}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Hotel } from '../types';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import {
   MapPin,
   Star,
@@ -32,6 +33,11 @@ export const HotelDetailView: React.FC<HotelDetailViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-10">
+      <PageMeta
+        title={hotel.name}
+        description={hotel.description}
+        image={hotel.images?.[0]}
+      />
       {/* Back Button */}
       <button
         onClick={onBack}

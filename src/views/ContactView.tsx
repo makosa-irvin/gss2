@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import {
   Phone,
   Mail,
@@ -49,6 +50,7 @@ export const ContactView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-12">
+      <PageMeta title="Contact Us" description="Get in touch with Good Secrets Safaris to plan your Kenya, Tanzania, or Zanzibar trip." />
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">

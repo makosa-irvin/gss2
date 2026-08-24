@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import { Tour } from '../types';
 import { TourCard } from '../components/tours/TourCard';
 import {
@@ -138,6 +139,7 @@ export const ToursExplorerView: React.FC<ToursExplorerViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8">
+      <PageMeta title="Safaris & Tours" description="Browse our full range of Kenya, Tanzania and Zanzibar safari packages." />
       {/* Header Banner */}
       <div className="space-y-3">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">

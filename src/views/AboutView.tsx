@@ -1,5 +1,6 @@
 import React from 'react';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import {
   Compass,
   Heart,
@@ -23,6 +24,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-16">
+      <PageMeta title="About Us" description="Learn about Good Secrets Safaris and our approach to personalized East Africa travel." />
       {/* Header Banner */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">

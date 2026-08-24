@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tour } from '../types';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import { ItineraryTimeline } from '../components/itinerary/ItineraryTimeline';
 import { DynamicPricingTable } from '../components/pricing/DynamicPricingTable';
 import {
@@ -46,6 +47,11 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
+      <PageMeta
+        title={tour.title}
+        description={tour.shortDescription}
+        image={tour.images?.[0]}
+      />
       {/* Breadcrumb & Navigation */}
       <div className="flex items-center justify-between text-xs text-[#707f74]">
         <button

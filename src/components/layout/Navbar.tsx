@@ -17,12 +17,11 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
-  currentView: string;
   onNavigate: (view: string, payload?: any) => void;
   onOpenEnquiryModal: (payload?: any) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenEnquiryModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }) => {
   const { settings, activeCurrency, setActiveCurrency, isKenyanResidentMode, setIsKenyanResidentMode, getWhatsAppUrl } = useData();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -89,18 +88,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenE
                 KES (Sh)
               </button>
             </div>
-
-            {/* Admin Live Dashboard Switch */}
-            <button
-              onClick={() => onNavigate('admin')}
-              className={`px-2.5 py-0.5 rounded-lg text-[11px] font-bold border transition-colors ${
-                currentView.startsWith('admin')
-                  ? 'bg-[#161f19] text-white border-[#161f19]'
-                  : 'bg-white text-[#8c6214] border-[#dcd7cb] hover:bg-[#161f19] hover:text-white'
-              }`}
-            >
-              Admin CMS
-            </button>
           </div>
         </div>
       </div>
@@ -442,12 +429,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate, onOpenE
                 className="w-full text-left py-2.5 px-4 rounded-xl font-bold text-sm text-[#2d3b31] hover:bg-[#f6f4ee]"
               >
                 Contact & Custom Quote
-              </button>
-              <button
-                onClick={() => { onNavigate('admin'); setMobileMenuOpen(false); }}
-                className="w-full text-left py-2.5 px-4 rounded-xl font-bold text-sm text-[#9e7120] border border-[#e5dfd0] mt-2"
-              >
-                Admin CMS Dashboard
               </button>
             </div>
 

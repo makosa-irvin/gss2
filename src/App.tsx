@@ -1,65 +1,124 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { DataProvider, useData } from './context/DataContext';
-import { Tour, Destination, Hotel } from './types';
+import { Tour, Hotel, Destination } from './types';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { EnquiryModal } from './components/common/EnquiryModal';
+import { PageMeta } from './components/common/PageMeta';
 
 import { HomePage } from './views/HomePage';
-import { ToursExplorerView } from './views/ToursExplorerView';
-import { TourDetailView } from './views/TourDetailView';
 import { DestinationsView } from './views/DestinationsView';
-import { DestinationDetailView } from './views/DestinationDetailView';
-import { HotelsExplorerView } from './views/HotelsExplorerView';
-import { HotelDetailView } from './views/HotelDetailView';
 import { SafariBuilderWizard } from './components/builder/SafariBuilderWizard';
-import { BlogView } from './views/BlogView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
 import { AdminDashboardView } from './views/AdminDashboardView';
 
+import { TourDetailRoute } from './routes/TourDetailRoute';
+import { HotelDetailRoute } from './routes/HotelDetailRoute';
+import { DestinationDetailRoute } from './routes/DestinationDetailRoute';
+import { ToursExplorerRoute } from './routes/ToursExplorerRoute';
+import { HotelsExplorerRoute } from './routes/HotelsExplorerRoute';
+import { BlogRoute } from './routes/BlogRoute';
+import { AdminRoute } from './routes/AdminRoute';
+import { NotFoundView } from './routes/NotFoundView';
+
+/**
+ * Translates the app's old string-based `onNavigate(view, payload)` calls
+ * (still used throughout Navbar, Footer, and HomePage) into real URLs.
+ * Keeping this adapter in one place means none of those ~40 existing call
+ * sites needed to change - only what "navigate" actually does underneath
+ * changed, from setting local state to pushing a real browser URL.
+ */
+function useLegacyNavigate() {
+  const navigate = useNavigate();
+  const { destinations } = useData();
+
+  return (view: string, payload?: any) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    switch (view) {
+      case 'home':
+        return navigate('/');
+      case 'tours': {
+        const params = new URLSearchParams();
+        if (payload) {
+          for (const key of ['destination', 'duration', 'travelStyle', 'travelerType', 'country']) {
+            if (payload[key]) params.set(key, payload[key]);
+          }
+        }
+        const qs = params.toString();
+        return navigate(qs ? `/safaris?${qs}` : '/safaris');
+      }
+      case 'destinations': {
+        if (payload?.destinationId) {
+          const dest = destinations.find(d => d.id === payload.destinationId);
+          if (dest) return navigate(`/destinations/${dest.slug}`);
+        }
+        return navigate('/destinations');
+      }
+      case 'hotels': {
+        return navigate(payload?.residentOnly ? '/hotels?resident=true' : '/hotels');
+      }
+      case 'builder':
+        return navigate('/safari-builder');
+      case 'blog':
+        return navigate(payload?.postSlug ? `/blog/${payload.postSlug}` : '/blog');
+      case 'about':
+        return navigate('/about');
+      case 'contact':
+        return navigate('/contact');
+      case 'admin':
+        return navigate('/admin');
+      default:
+        return navigate('/');
+    }
+  };
+}
+
+const BuilderPage: React.FC<{ onOpenEnquiryModal: (payload?: any) => void }> = ({ onOpenEnquiryModal }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8">
+      <PageMeta
+        title="Custom Safari Builder"
+        description="Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate."
+      />
+      <div className="text-center max-w-3xl mx-auto space-y-3">
+        <span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">
+          Tailor-Made Journey Engine
+        </span>
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">
+          Custom Safari Builder
+        </h1>
+        <p className="text-sm text-[#a3b2a7]">
+          Answer 6 quick questions to discover your ideal route, pricing estimate, and receive a bespoke itinerary proposal from our lead safari naturalists.
+        </p>
+      </div>
+
+      <SafariBuilderWizard
+        onSelectTour={(tour: Tour) => navigate(`/safaris/${tour.slug}`)}
+        onCompleteEnquiry={onOpenEnquiryModal}
+      />
+    </div>
+  );
+};
+
 const MainAppContent: React.FC = () => {
-  const { tours, destinations, hotels } = useData();
+  const legacyNavigate = useLegacyNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { tours } = useData();
 
-  // Navigation State
-  const [currentView, setCurrentView] = useState<string>('home');
-  const [viewPayload, setViewPayload] = useState<any>(null);
-
-  // Selected Entities for detail views
-  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
-  const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
-  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
-
-  // Global Enquiry Modal state
+  // Global Enquiry Modal state - genuinely global (can be triggered from
+  // almost any page), so it stays lifted here rather than per-route.
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [enquiryModalData, setEnquiryModalData] = useState<{
     selectedTour?: Tour | null;
     selectedHotel?: Hotel | null;
     initialType?: string;
   }>({});
-
-  // Scroll to top on navigation
-  const navigate = (view: string, payload?: any) => {
-    setCurrentView(view);
-    setViewPayload(payload || null);
-
-    if (view === 'tour-detail' && payload?.tour) {
-      setSelectedTour(payload.tour);
-    } else if (view === 'destination-detail' && payload?.destination) {
-      setSelectedDestination(payload.destination);
-    } else if (view === 'destinations' && payload?.destinationId) {
-      const found = destinations.find(d => d.id === payload.destinationId);
-      if (found) {
-        setSelectedDestination(found);
-        setCurrentView('destination-detail');
-      }
-    } else if (view === 'hotel-detail' && payload?.hotel) {
-      setSelectedHotel(payload.hotel);
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const openEnquiryModal = (data?: {
     selectedTour?: Tour | null;
@@ -71,150 +130,86 @@ const MainAppContent: React.FC = () => {
   };
 
   const handleSelectTour = (tour: Tour) => {
-    setSelectedTour(tour);
-    navigate('tour-detail', { tour });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/safaris/${tour.slug}`);
   };
 
   const handleSelectDestination = (destination: Destination) => {
-    setSelectedDestination(destination);
-    navigate('destination-detail', { destination });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/destinations/${destination.slug}`);
   };
 
   const handleSelectHotel = (hotel: Hotel) => {
-    setSelectedHotel(hotel);
-    navigate('hotel-detail', { hotel });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/hotels/${hotel.slug}`);
   };
+
+  // FloatingWhatsApp wants the tour's title (for a friendlier prefilled
+  // WhatsApp message), but the URL only has the slug - look the real tour
+  // up from context rather than guessing a title from the slug string.
+  const currentTourTitleForWhatsApp = location.pathname.startsWith('/safaris/')
+    ? tours.find(t => t.slug === location.pathname.split('/')[2])?.title
+    : undefined;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0c120e] text-[#f4f2eb] selection:bg-[#c49a45] selection:text-black">
-      {/* Global Header */}
-      <Navbar
-        currentView={currentView}
-        onNavigate={navigate}
-        onOpenEnquiryModal={openEnquiryModal}
-      />
+      <Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal} />
 
-      {/* Dynamic Main Body Content */}
       <main className="flex-1">
-        {currentView === 'home' && (
-          <HomePage
-            onNavigate={navigate}
-            onSelectTour={handleSelectTour}
-            onSelectDestination={handleSelectDestination}
-            onSelectHotel={handleSelectHotel}
-            onOpenEnquiryModal={openEnquiryModal}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                onNavigate={legacyNavigate}
+                onSelectTour={handleSelectTour}
+                onSelectDestination={handleSelectDestination}
+                onSelectHotel={handleSelectHotel}
+                onOpenEnquiryModal={openEnquiryModal}
+              />
+            }
           />
-        )}
 
-        {currentView === 'tours' && (
-          <ToursExplorerView
-            initialFilters={viewPayload}
-            onSelectTour={handleSelectTour}
-            onOpenEnquiryModal={openEnquiryModal}
+          <Route path="/safaris" element={<ToursExplorerRoute onOpenEnquiryModal={openEnquiryModal} />} />
+          <Route path="/safaris/:slug" element={<TourDetailRoute onOpenEnquiryModal={openEnquiryModal} />} />
+
+          <Route
+            path="/destinations"
+            element={<DestinationsView onSelectDestination={handleSelectDestination} />}
           />
-        )}
+          <Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal} />} />
 
-        {currentView === 'tour-detail' && selectedTour && (
-          <TourDetailView
-            tour={selectedTour}
-            onBack={() => navigate('tours')}
-            onOpenEnquiryModal={openEnquiryModal}
+          <Route path="/hotels" element={<HotelsExplorerRoute onOpenEnquiryModal={openEnquiryModal} />} />
+          <Route path="/hotels/:slug" element={<HotelDetailRoute onOpenEnquiryModal={openEnquiryModal} />} />
+
+          <Route path="/safari-builder" element={<BuilderPage onOpenEnquiryModal={openEnquiryModal} />} />
+
+          <Route path="/blog" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal} />} />
+          <Route path="/blog/:slug" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal} />} />
+
+          <Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal} />} />
+          <Route path="/contact" element={<ContactView />} />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboardView
+                  onNavigateHome={() => navigate('/')}
+                  onPreviewTour={(tour) => navigate(`/safaris/${tour.slug}`)}
+                />
+              </AdminRoute>
+            }
           />
-        )}
 
-        {currentView === 'destinations' && (
-          <DestinationsView
-            onSelectDestination={handleSelectDestination}
-          />
-        )}
-
-        {currentView === 'destination-detail' && selectedDestination && (
-          <DestinationDetailView
-            destination={selectedDestination}
-            onBack={() => navigate('destinations')}
-            onSelectTour={handleSelectTour}
-            onSelectHotel={handleSelectHotel}
-            onOpenEnquiryModal={openEnquiryModal}
-          />
-        )}
-
-        {currentView === 'hotels' && (
-          <HotelsExplorerView
-            onSelectHotel={handleSelectHotel}
-            onOpenEnquiryModal={openEnquiryModal}
-            initialResidentOnly={viewPayload?.residentOnly}
-          />
-        )}
-
-        {currentView === 'hotel-detail' && selectedHotel && (
-          <HotelDetailView
-            hotel={selectedHotel}
-            onBack={() => navigate('hotels')}
-            onOpenEnquiryModal={openEnquiryModal}
-          />
-        )}
-
-        {currentView === 'builder' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">
-                Tailor-Made Journey Engine
-              </span>
-              <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">
-                Custom Safari Builder
-              </h1>
-              <p className="text-sm text-[#a3b2a7]">
-                Answer 6 quick questions to discover your ideal route, pricing estimate, and receive a bespoke itinerary proposal from our lead safari naturalists.
-              </p>
-            </div>
-
-            <SafariBuilderWizard
-              onSelectTour={handleSelectTour}
-              onCompleteEnquiry={openEnquiryModal}
-            />
-          </div>
-        )}
-
-        {currentView === 'blog' && (
-          <BlogView
-            initialSlug={viewPayload?.postSlug}
-            onOpenEnquiryModal={openEnquiryModal}
-          />
-        )}
-
-        {currentView === 'about' && (
-          <AboutView
-            onOpenEnquiryModal={openEnquiryModal}
-          />
-        )}
-
-        {currentView === 'contact' && (
-          <ContactView />
-        )}
-
-        {currentView === 'admin' && (
-          <AdminDashboardView
-            onNavigateHome={() => navigate('home')}
-            onPreviewTour={(tour) => {
-              setSelectedTour(tour);
-              navigate('tour-detail', { tour });
-            }}
-          />
-        )}
+          <Route path="*" element={<NotFoundView />} />
+        </Routes>
       </main>
 
-      {/* Global Footer */}
-      <Footer
-        onNavigate={navigate}
-        onOpenEnquiryModal={openEnquiryModal}
-      />
+      <Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal} />
 
-      {/* Persistent Floating WhatsApp Concierge */}
-      <FloatingWhatsApp
-        currentTourTitle={currentView === 'tour-detail' ? selectedTour?.title : undefined}
-      />
+      <FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp} />
 
-      {/* Global Booking & Enquiry Modal */}
       <EnquiryModal
         isOpen={isEnquiryModalOpen}
         onClose={() => setIsEnquiryModalOpen(false)}
@@ -228,8 +223,10 @@ const MainAppContent: React.FC = () => {
 
 export default function App() {
   return (
-    <DataProvider>
-      <MainAppContent />
-    </DataProvider>
+    <BrowserRouter>
+      <DataProvider>
+        <MainAppContent />
+      </DataProvider>
+    </BrowserRouter>
   );
 }

@@ -1,6 +1,0 @@
-{
-  "name": "Good Secrets Safaris",
-  "description": "Luxury African safari and personalized travel platform for Kenya, Tanzania, and Zanzibar with dynamic CMS, tour manager, seasonal pricing, and custom safari builder.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

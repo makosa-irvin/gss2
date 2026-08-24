@@ -1,6 +1,7 @@
 import React from 'react';
 import { Destination, Tour, Hotel } from '../types';
 import { useData } from '../context/DataContext';
+import { PageMeta } from '../components/common/PageMeta';
 import { TourCard } from '../components/tours/TourCard';
 import { HotelCard } from '../components/hotels/HotelCard';
 import {
@@ -49,6 +50,11 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
+      <PageMeta
+        title={destination.name}
+        description={destination.description || destination.subtitle}
+        image={destination.heroImage}
+      />
       {/* Breadcrumb */}
       <div className="flex items-center justify-between text-xs text-[#707f74]">
         <button

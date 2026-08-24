@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
 import { Destination } from '../types';
+import { PageMeta } from '../components/common/PageMeta';
 import { DestinationCard } from '../components/destinations/DestinationCard';
 import { MapPin, Compass, Sparkles } from 'lucide-react';
 
@@ -19,6 +20,7 @@ export const DestinationsView: React.FC<DestinationsViewProps> = ({ onSelectDest
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-10">
+      <PageMeta title="Destinations" description="Explore Maasai Mara, Serengeti, Zanzibar, and the other destinations we cover across East Africa." />
       {/* Header */}
       <div className="space-y-3 text-center max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">

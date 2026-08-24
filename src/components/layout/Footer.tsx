@@ -170,11 +170,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
                     Contact & Quote Request
                   </button>
                 </li>
-                <li>
-                  <button onClick={() => onNavigate('admin')} className="text-[#9e7120] hover:underline font-bold transition-colors">
-                    Admin CMS Login
-                  </button>
-                </li>
               </ul>
 
               <div className="pt-2 text-xs space-y-1.5 text-[#67796d]">

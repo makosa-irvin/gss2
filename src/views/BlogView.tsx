@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
 import { BlogPost } from '../types';
 import { BookOpen, Clock, User, ArrowLeft, ArrowRight, Sparkles, Tag } from 'lucide-react';
+import { PageMeta } from '../components/common/PageMeta';
 
 interface BlogViewProps {
   initialSlug?: string;
@@ -10,6 +12,7 @@ interface BlogViewProps {
 
 export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryModal }) => {
   const { blogPosts } = useData();
+  const navigate = useNavigate();
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(
     initialSlug ? blogPosts.find(p => p.slug === initialSlug) || null : null
   );
@@ -17,8 +20,19 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
   if (selectedPost) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+        <PageMeta
+          title={selectedPost.title}
+          description={selectedPost.excerpt}
+          image={selectedPost.featuredImage}
+        />
         <button
-          onClick={() => setSelectedPost(null)}
+          onClick={() => {
+            // Clear local state and sync the URL back to /blog - without
+            // this, the browser bar would still show /blog/:slug while the
+            // list is displayed, so a refresh would show the article again.
+            setSelectedPost(null);
+            navigate('/blog');
+          }}
           className="inline-flex items-center gap-1.5 text-xs text-[#707f74] hover:text-[#9e7120] transition-colors font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -91,6 +105,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-10">
+      <PageMeta title="Travel Guides & Blog" description="Safari planning guides, wildlife migration timing, and travel tips for Kenya, Tanzania, and Zanzibar." />
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">
           <BookOpen className="w-4 h-4" />
@@ -108,7 +123,10 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
         {blogPosts.map(post => (
           <div
             key={post.id}
-            onClick={() => setSelectedPost(post)}
+            onClick={() => {
+              setSelectedPost(post);
+              navigate(`/blog/${post.slug}`);
+            }}
             className="group cursor-pointer rounded-2xl bg-white border border-[#e8e4da] overflow-hidden hover:border-[#b3822a] transition-all flex flex-col justify-between shadow-xs"
           >
             <div>
