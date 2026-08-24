@@ -20,7 +20,9 @@ import {
   Mail,
   Calendar,
   Sparkles,
-  Search
+  Search,
+  FileText,
+  MessageSquare
 } from 'lucide-react';
 
 interface AdminDashboardViewProps {
@@ -41,6 +43,18 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
     addHotel,
     updateHotel,
     deleteHotel,
+    destinations,
+    addDestination,
+    updateDestination,
+    deleteDestination,
+    blogPosts,
+    addBlogPost,
+    updateBlogPost,
+    deleteBlogPost,
+    testimonials,
+    addTestimonial,
+    updateTestimonial,
+    deleteTestimonial,
     enquiries,
     updateEnquiryStatus,
     settings,
@@ -51,7 +65,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
   } = useData();
   const [actionError, setActionError] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'enquiries' | 'tours' | 'hotels' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'enquiries' | 'tours' | 'hotels' | 'content' | 'settings'>('overview');
 
   // Local settings edit state
   const [tempSettings, setTempSettings] = useState<CompanySettings>(settings);
@@ -69,6 +83,61 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
 
   // Filter inquiries
   const [enquiryFilter, setEnquiryFilter] = useState('all');
+
+  const [newDestinationName, setNewDestinationName] = useState('');
+  const [newDestinationCountry, setNewDestinationCountry] = useState('Kenya');
+  const [newBlogTitle, setNewBlogTitle] = useState('');
+  const [newBlogExcerpt, setNewBlogExcerpt] = useState('');
+  const [newTestimonialName, setNewTestimonialName] = useState('');
+  const [newTestimonialText, setNewTestimonialText] = useState('');
+
+  const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+  const handleAddDestination = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDestinationName.trim()) return;
+    try {
+      await addDestination({
+        name: newDestinationName.trim(),
+        slug: slugify(newDestinationName),
+        country: newDestinationCountry as any,
+        subtitle: `Explore ${newDestinationName.trim()}`,
+        description: `Discover ${newDestinationName.trim()} with Good Secrets Safaris.`,
+        heroImage: '', gallery: [], bestTimeToVisit: 'Year-round', wildlife: [], activities: [],
+        recommendedDuration: '2-3 days', thingsToDo: [], whereToStay: 'Ask our safari specialists for recommendations.',
+        featured: false, faqs: [], seo: { title: newDestinationName.trim(), description: `Travel guide to ${newDestinationName.trim()}.` }, published: false,
+      });
+      setNewDestinationName('');
+    } catch (err) { setActionError(err instanceof Error ? err.message : 'Failed to add destination.'); }
+  };
+
+  const handleAddBlogPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newBlogTitle.trim()) return;
+    try {
+      await addBlogPost({
+        title: newBlogTitle.trim(), slug: slugify(newBlogTitle), excerpt: newBlogExcerpt || 'Draft article',
+        content: newBlogExcerpt || 'Draft article content.', featuredImage: '',
+        author: { name: currentAdmin?.name || 'Good Secrets Safaris', role: 'Travel Specialist', avatar: '' },
+        publishedDate: new Date().toISOString(), category: 'Safari Travel', readingTime: '5 min read',
+        relatedDestinations: [], relatedTours: [], tags: [], published: false,
+      });
+      setNewBlogTitle(''); setNewBlogExcerpt('');
+    } catch (err) { setActionError(err instanceof Error ? err.message : 'Failed to add blog post.'); }
+  };
+
+  const handleAddTestimonial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTestimonialName.trim() || !newTestimonialText.trim()) return;
+    try {
+      await addTestimonial({
+        reviewerName: newTestimonialName.trim(), reviewerCountry: 'Unknown', avatarUrl: '', rating: 5,
+        tourTaken: 'Good Secrets Safaris', reviewText: newTestimonialText.trim(), date: new Date().toISOString(),
+        featured: false, platform: 'Direct Feedback', published: false,
+      });
+      setNewTestimonialName(''); setNewTestimonialText('');
+    } catch (err) { setActionError(err instanceof Error ? err.message : 'Failed to add testimonial.'); }
+  };
 
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -237,6 +306,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
           { id: 'enquiries', label: `Client Enquiries (${enquiries.length})`, icon: Inbox },
           { id: 'tours', label: `Tours & Safaris (${tours.length})`, icon: Compass },
           { id: 'hotels', label: `Resorts & Lodges (${hotels.length})`, icon: Palmtree },
+          { id: 'content', label: 'Website Content', icon: FileText },
           { id: 'settings', label: 'Company Settings & WhatsApp', icon: Settings }
         ].map(tab => {
           const Icon = tab.icon;
@@ -628,7 +698,59 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
         </div>
       )}
 
-      {/* 5. SETTINGS & WHATSAPP TAB */}
+      {/* 5. WEBSITE CONTENT TAB */}
+      {activeTab === 'content' && (
+        <div className="space-y-8">
+          <div>
+            <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19]">Website Content</h3>
+            <p className="text-sm text-[#707f74] mt-1">New entries start as drafts. Publish only after content, imagery, and SEO have been reviewed.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <form onSubmit={handleAddDestination} className="p-5 bg-white border border-[#e8e4da] rounded-2xl space-y-3">
+              <h4 className="font-bold text-[#161f19] flex items-center gap-2"><Compass className="w-4 h-4" /> New Destination Draft</h4>
+              <input value={newDestinationName} onChange={e => setNewDestinationName(e.target.value)} placeholder="Destination name" className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]" />
+              <select value={newDestinationCountry} onChange={e => setNewDestinationCountry(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]"><option>Kenya</option><option>Tanzania</option><option>Zanzibar</option></select>
+              <button className="w-full px-3 py-2 rounded-lg bg-[#1b4332] text-white text-xs font-bold">Create Draft</button>
+            </form>
+            <form onSubmit={handleAddBlogPost} className="p-5 bg-white border border-[#e8e4da] rounded-2xl space-y-3">
+              <h4 className="font-bold text-[#161f19] flex items-center gap-2"><FileText className="w-4 h-4" /> New Blog Draft</h4>
+              <input value={newBlogTitle} onChange={e => setNewBlogTitle(e.target.value)} placeholder="Article title" className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]" />
+              <textarea value={newBlogExcerpt} onChange={e => setNewBlogExcerpt(e.target.value)} placeholder="Short draft/excerpt" className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]" rows={2} />
+              <button className="w-full px-3 py-2 rounded-lg bg-[#1b4332] text-white text-xs font-bold">Create Draft</button>
+            </form>
+            <form onSubmit={handleAddTestimonial} className="p-5 bg-white border border-[#e8e4da] rounded-2xl space-y-3">
+              <h4 className="font-bold text-[#161f19] flex items-center gap-2"><MessageSquare className="w-4 h-4" /> New Testimonial Draft</h4>
+              <input value={newTestimonialName} onChange={e => setNewTestimonialName(e.target.value)} placeholder="Traveller name" className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]" />
+              <textarea value={newTestimonialText} onChange={e => setNewTestimonialText(e.target.value)} placeholder="Review text" className="w-full px-3 py-2 rounded-lg border border-[#ded8cb]" rows={2} />
+              <button className="w-full px-3 py-2 rounded-lg bg-[#1b4332] text-white text-xs font-bold">Create Draft</button>
+            </form>
+          </div>
+
+          {[
+            { title: 'Destinations', items: destinations, label: (item: any) => item.name, update: updateDestination, remove: deleteDestination },
+            { title: 'Blog Posts', items: blogPosts, label: (item: any) => item.title, update: updateBlogPost, remove: deleteBlogPost },
+            { title: 'Testimonials', items: testimonials, label: (item: any) => item.reviewerName, update: updateTestimonial, remove: deleteTestimonial },
+          ].map(section => (
+            <div key={section.title} className="p-5 bg-white border border-[#e8e4da] rounded-2xl space-y-3">
+              <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{section.title} ({section.items.length})</h4>
+              <div className="divide-y divide-[#eeebe2]">
+                {section.items.map((item: any) => (
+                  <div key={item.id} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div><div className="font-semibold text-sm text-[#161f19]">{section.label(item)}</div><div className="text-xs text-[#707f74]">{item.slug || item.platform || ''}</div></div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => section.update(item.id, { published: !item.published } as any).catch((err: unknown) => setActionError(err instanceof Error ? err.message : 'Failed to update content.'))} className={`px-3 py-1.5 rounded-lg text-xs font-bold border ${item.published ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>{item.published ? 'Published' : 'Draft'}</button>
+                      <button onClick={() => { if (window.confirm(`Delete ${section.label(item)}?`)) section.remove(item.id).catch((err: unknown) => setActionError(err instanceof Error ? err.message : 'Failed to delete content.')); }} className="p-2 rounded-lg bg-rose-50 text-rose-700 border border-rose-200"><Trash2 className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 6. SETTINGS & WHATSAPP TAB */}
       {activeTab === 'settings' && (
         <form onSubmit={handleSaveSettings} className="p-8 rounded-3xl bg-white border border-[#e8e4da] space-y-6 max-w-3xl shadow-sm">
           <div className="space-y-1">
