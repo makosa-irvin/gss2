@@ -25,6 +25,34 @@ cp .env.example .env   # fill in JWT_SECRET at minimum
 docker compose up --build
 ```
 
+The first `--build` genuinely takes a few minutes, not seconds - it
+pulls two base images (`node:22-slim`, `postgres:16-alpine`) and runs
+`npm ci` twice (once per Dockerfile stage - see the comment in
+`Dockerfile` for why), which is roughly 250 packages downloaded and
+installed twice on a completely cold cache. That's normal. What's not
+normal is it hanging with zero progress for a long stretch. To tell
+those apart:
+
+```bash
+docker compose up --build --progress=plain
+```
+
+This prints every build step as it happens instead of a collapsed
+progress bar, so you can see whether `npm ci` is actively downloading
+packages (slow but working) or nothing is happening at all (actually
+stuck). If it's genuinely stuck, the usual causes are Docker Desktop
+being starved of CPU/memory (check Settings > Resources and increase
+the allocation) or a slow/unstable network connection timing out
+mid-download rather than failing outright. Every build *after* the
+first reuses BuildKit's npm cache (configured in the Dockerfile) and
+Docker's own layer cache, so it should be much faster from then on -
+if it's still slow on the second run, that points at Docker Desktop's
+resource allocation rather than the download.
+
+If you just want to get developing quickly and don't need Docker
+specifically, Option B below skips all of this - it's the faster path
+for local iteration.
+
 **Option B - your own local Postgres:**
 ```bash
 createdb goodsecretssafaris

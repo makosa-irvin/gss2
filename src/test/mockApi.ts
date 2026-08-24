@@ -22,6 +22,7 @@ export interface MockApiOverrides {
   settings?: unknown;
   /** Response for GET /api/auth/me - defaults to a 401 (no session), matching a logged-out visitor. */
   me?: { status: number; body: unknown };
+  enquiries?: unknown;
   /**
    * If true, POST /api/admin/tours succeeds and echoes back a full Tour
    * object built from the request body plus fixture defaults for
@@ -41,6 +42,11 @@ export function installMockApi(overrides: MockApiOverrides = {}) {
     'GET /api/testimonials': { status: 200, body: overrides.testimonials ?? [makeTestimonial()] },
     'GET /api/settings': { status: 200, body: overrides.settings ?? initialCompanySettings },
     'GET /api/auth/me': overrides.me ?? { status: 401, body: { error: 'Not authenticated.' } },
+    // AdminDashboardView fetches this once a session exists (see
+    // DataContext's admin-only enquiries effect); default to an empty
+    // list so admin-focused tests that aren't specifically about
+    // enquiries don't need to think about this endpoint at all.
+    'GET /api/enquiries': { status: 200, body: overrides.enquiries ?? [] },
   };
 
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {

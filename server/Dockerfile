@@ -2,7 +2,13 @@
 FROM node:22-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# --mount=type=cache persists npm's download cache in a BuildKit cache
+# volume across builds (not inside the image itself, so it doesn't
+# bloat it). Doesn't speed up the very first build on a machine - npm
+# still has to download everything once - but every build after that
+# reuses the cache instead of re-downloading, which matters a lot here
+# since npm ci runs twice (once per stage below).
+RUN --mount=type=cache,target=/root/.npm npm ci
 COPY . .
 RUN npm run build
 
@@ -14,7 +20,7 @@ FROM node:22-slim
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/src/db/seedData ./src/db/seedData
 COPY --from=build /app/src/db/migrations ./src/db/migrations

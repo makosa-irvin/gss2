@@ -48,8 +48,13 @@ describe('AdminDashboardView - Create New Tour form', () => {
     renderWithProviders(<AdminDashboardView onNavigateHome={noop} onPreviewTour={noop} />);
 
     await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
-    await user.click(screen.getByRole('button', { name: /add new safari tour/i }));
-    await user.type(screen.getByPlaceholderText(/5-Day Masai Mara/i), title);
+    await user.click(await screen.findByRole('button', { name: /add new safari tour/i }));
+    // findByPlaceholderText (not getBy*) tolerates the form's render
+    // lagging a tick behind the click - on a loaded machine (e.g.
+    // running alongside a `docker compose build`), a synchronous getBy*
+    // right after a click can fire before React has committed the
+    // re-render, even though userEvent.click itself awaits act().
+    await user.type(await screen.findByPlaceholderText(/5-Day Masai Mara/i), title);
     await user.click(screen.getByRole('button', { name: /save safari/i }));
 
     return user;
@@ -78,8 +83,8 @@ describe('AdminDashboardView - Create New Tour form', () => {
 
     const user = userEvent.setup();
     await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
-    await user.click(screen.getByRole('button', { name: /add new safari tour/i }));
-    await user.type(screen.getByPlaceholderText(/5-Day Masai Mara/i), 'Test Preview Tour');
+    await user.click(await screen.findByRole('button', { name: /add new safari tour/i }));
+    await user.type(await screen.findByPlaceholderText(/5-Day Masai Mara/i), 'Test Preview Tour');
     await user.click(screen.getByRole('button', { name: /save safari/i }));
 
     // Find the newly created tour's row by its title, then click the
