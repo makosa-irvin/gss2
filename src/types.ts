@@ -86,6 +86,7 @@ export interface Tour {
     description: string;
     keywords?: string[];
   };
+  published?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -119,6 +120,7 @@ export interface Destination {
     title: string;
     description: string;
   };
+  published?: boolean;
 }
 
 export interface Hotel {
@@ -155,6 +157,7 @@ export interface Hotel {
     title: string;
     description: string;
   };
+  published?: boolean;
 }
 
 export interface Enquiry {
@@ -195,6 +198,7 @@ export interface Testimonial {
   date: string;
   featured: boolean;
   platform: 'TripAdvisor' | 'Google Reviews' | 'Direct Feedback' | 'SafariBookings';
+  published?: boolean;
 }
 
 export interface BlogPost {
@@ -215,6 +219,7 @@ export interface BlogPost {
   relatedDestinations: string[];
   relatedTours: string[];
   tags: string[];
+  published?: boolean;
 }
 
 export interface CompanySettings {

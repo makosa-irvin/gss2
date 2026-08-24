@@ -127,6 +127,7 @@ export const tours = pgTable(
     viewsCount: integer('views_count').notNull().default(0),
 
     seo: jsonb('seo').$type<SeoMeta>().notNull(),
+    published: boolean('published').notNull().default(true),
 
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -164,6 +165,7 @@ export const destinations = pgTable(
 
     faqs: jsonb('faqs').$type<Faq[]>().notNull().default([]),
     seo: jsonb('seo').$type<SeoMeta>().notNull(),
+    published: boolean('published').notNull().default(true),
 
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -205,6 +207,7 @@ export const hotels = pgTable(
     rating: doublePrecision('rating'),
 
     seo: jsonb('seo').$type<SeoMeta>().notNull(),
+    published: boolean('published').notNull().default(true),
 
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -230,6 +233,7 @@ export const blogPosts = pgTable('blog_posts', {
   relatedDestinations: text('related_destinations').array().notNull().default([]),
   relatedTours: text('related_tours').array().notNull().default([]),
   tags: text('tags').array().notNull().default([]),
+  published: boolean('published').notNull().default(true),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -247,6 +251,7 @@ export const testimonials = pgTable('testimonials', {
   date: timestamp('date').notNull(),
   featured: boolean('featured').notNull().default(false),
   platform: text('platform').notNull(),
+  published: boolean('published').notNull().default(true),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });

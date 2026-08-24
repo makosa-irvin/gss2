@@ -109,6 +109,7 @@ async function main() {
       isKenyanResidentPackage: t.isKenyanResidentPackage ?? false,
       viewsCount: t.viewsCount ?? 0,
       seo: t.seo,
+      published: true,
     });
   }
 
@@ -139,6 +140,7 @@ async function main() {
       bookingLink: h.bookingLink,
       rating: h.rating,
       seo: h.seo,
+      published: true,
     });
   }
 
@@ -163,6 +165,7 @@ async function main() {
       mapLocation: d.mapLocation,
       faqs: d.faqs,
       seo: d.seo,
+      published: true,
     });
   }
 
@@ -179,6 +182,7 @@ async function main() {
       date: parseDateSafe(t.date),
       featured: t.featured,
       platform: t.platform,
+      published: true,
     });
   }
 
@@ -198,6 +202,7 @@ async function main() {
       relatedDestinations: p.relatedDestinations,
       relatedTours: p.relatedTours,
       tags: p.tags,
+      published: true,
     });
   }
 

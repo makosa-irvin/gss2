@@ -104,6 +104,7 @@ export const tourInputSchema = z.object({
   bookingAvailability: z.enum(['Available', 'Limited Seats', 'On Request']).default('Available'),
   isKenyanResidentPackage: z.boolean().default(false),
   seo: seoSchema,
+  published: z.boolean().default(true),
 });
 
 export const tourUpdateSchema = tourInputSchema.partial();
@@ -145,9 +146,65 @@ export const hotelInputSchema = z.object({
   bookingLink: z.string().optional().nullable(),
   rating: z.number().min(0).max(5).optional().nullable(),
   seo: seoSchema,
+  published: z.boolean().default(true),
 });
 
 export const hotelUpdateSchema = hotelInputSchema.partial();
+
+const faqSchema = z.object({ question: z.string().min(1), answer: z.string().min(1) });
+
+export const destinationInputSchema = z.object({
+  name: z.string().trim().min(1).max(300),
+  slug: z.string().trim().min(1).max(300).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  country: z.string().min(1),
+  subtitle: z.string().min(1),
+  description: z.string().min(1).max(10000),
+  heroImage: z.string().min(1),
+  gallery: z.array(z.string()).default([]),
+  bestTimeToVisit: z.string().min(1),
+  wildlife: z.array(z.string()).default([]),
+  activities: z.array(z.string()).default([]),
+  recommendedDuration: z.string().min(1),
+  thingsToDo: z.array(z.string()).default([]),
+  whereToStay: z.string().min(1),
+  featured: z.boolean().default(false),
+  mapLocation: z.object({ lat: z.number(), lng: z.number(), zoom: z.number() }).optional().nullable(),
+  faqs: z.array(faqSchema).default([]),
+  seo: seoSchema,
+  published: z.boolean().default(true),
+});
+export const destinationUpdateSchema = destinationInputSchema.partial();
+
+export const blogPostInputSchema = z.object({
+  title: z.string().trim().min(1).max(300),
+  slug: z.string().trim().min(1).max(300).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  excerpt: z.string().min(1).max(2000),
+  content: z.string().min(1),
+  featuredImage: z.string().min(1),
+  author: z.object({ name: z.string().min(1), role: z.string().min(1), avatar: z.string() }),
+  publishedDate: z.coerce.date(),
+  category: z.string().min(1),
+  readingTime: z.string().min(1),
+  relatedDestinations: z.array(z.string()).default([]),
+  relatedTours: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
+  published: z.boolean().default(true),
+});
+export const blogPostUpdateSchema = blogPostInputSchema.partial();
+
+export const testimonialInputSchema = z.object({
+  reviewerName: z.string().trim().min(1).max(200),
+  reviewerCountry: z.string().trim().min(1).max(100),
+  avatarUrl: z.string(),
+  rating: z.number().min(1).max(5),
+  tourTaken: z.string().max(300),
+  reviewText: z.string().min(1).max(5000),
+  date: z.coerce.date(),
+  featured: z.boolean().default(false),
+  platform: z.enum(['TripAdvisor', 'Google Reviews', 'Direct Feedback', 'SafariBookings']),
+  published: z.boolean().default(true),
+});
+export const testimonialUpdateSchema = testimonialInputSchema.partial();
 
 export const settingsUpdateSchema = z.object({
   companyName: z.string().min(1).optional(),

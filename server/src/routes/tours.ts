@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { tours } from '../db/schema.js';
 import { asyncHandler } from '../middleware/common.js';
@@ -9,7 +9,7 @@ export const toursRouter = Router();
 toursRouter.get(
   '/',
   asyncHandler(async (_req, res) => {
-    const rows = await db.select().from(tours).orderBy(tours.createdAt);
+    const rows = await db.select().from(tours).where(eq(tours.published, true)).orderBy(tours.createdAt);
     res.json(rows);
   })
 );
@@ -17,7 +17,7 @@ toursRouter.get(
 toursRouter.get(
   '/:slug',
   asyncHandler(async (req, res) => {
-    const [tour] = await db.select().from(tours).where(eq(tours.slug, req.params.slug)).limit(1);
+    const [tour] = await db.select().from(tours).where(and(eq(tours.slug, req.params.slug), eq(tours.published, true))).limit(1);
     if (!tour) return res.status(404).json({ error: 'Tour not found.' });
 
     // Fire-and-forget view counter - not awaited, and never lets a

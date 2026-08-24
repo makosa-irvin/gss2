@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { destinations } from '../db/schema.js';
 import { asyncHandler } from '../middleware/common.js';
@@ -9,7 +9,7 @@ export const destinationsRouter = Router();
 destinationsRouter.get(
   '/',
   asyncHandler(async (_req, res) => {
-    const rows = await db.select().from(destinations).orderBy(destinations.createdAt);
+    const rows = await db.select().from(destinations).where(eq(destinations.published, true)).orderBy(destinations.createdAt);
     res.json(rows);
   })
 );
@@ -20,7 +20,7 @@ destinationsRouter.get(
     const [destination] = await db
       .select()
       .from(destinations)
-      .where(eq(destinations.slug, req.params.slug))
+      .where(and(eq(destinations.slug, req.params.slug), eq(destinations.published, true)))
       .limit(1);
     if (!destination) return res.status(404).json({ error: 'Destination not found.' });
     res.json(destination);
