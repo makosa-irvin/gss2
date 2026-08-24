@@ -8,6 +8,13 @@ import { tourInputSchema, tourUpdateSchema } from '../lib/validation.js';
 
 export const adminToursRouter = Router();
 adminToursRouter.use(requireAdmin);
+adminToursRouter.get(
+  '/',
+  asyncHandler(async (_req, res) => {
+    res.json(await db.select().from(tours).orderBy(tours.createdAt));
+  })
+);
+
 
 adminToursRouter.post(
   '/',

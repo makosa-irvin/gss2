@@ -15,6 +15,9 @@ import { settingsRouter } from './routes/settings.js';
 import { enquiriesRouter } from './routes/enquiries.js';
 import { adminToursRouter } from './routes/adminTours.js';
 import { adminHotelsRouter } from './routes/adminHotels.js';
+import { adminDestinationsRouter } from './routes/adminDestinations.js';
+import { adminBlogRouter } from './routes/adminBlog.js';
+import { adminTestimonialsRouter } from './routes/adminTestimonials.js';
 import { errorHandler } from './middleware/common.js';
 import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
 
@@ -77,6 +80,9 @@ export function createApp() {
   app.use('/api/enquiries', enquiriesRouter);
   app.use('/api/admin/tours', adminToursRouter);
   app.use('/api/admin/hotels', adminHotelsRouter);
+  app.use('/api/admin/destinations', adminDestinationsRouter);
+  app.use('/api/admin/blog', adminBlogRouter);
+  app.use('/api/admin/testimonials', adminTestimonialsRouter);
 
   app.use((req, res) => {
     res.status(404).json({ error: `Not found: ${req.method} ${req.path}` });

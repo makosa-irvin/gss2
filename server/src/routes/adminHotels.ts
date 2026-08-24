@@ -8,6 +8,13 @@ import { hotelInputSchema, hotelUpdateSchema } from '../lib/validation.js';
 
 export const adminHotelsRouter = Router();
 adminHotelsRouter.use(requireAdmin);
+adminHotelsRouter.get(
+  '/',
+  asyncHandler(async (_req, res) => {
+    res.json(await db.select().from(hotels).orderBy(hotels.createdAt));
+  })
+);
+
 
 adminHotelsRouter.post(
   '/',
