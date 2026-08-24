@@ -286,6 +286,11 @@ export const enquiries = pgTable(
     notes: text('notes'),
 
     createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    contactedAt: timestamp('contacted_at'),
+    quotedAt: timestamp('quoted_at'),
+    confirmedAt: timestamp('confirmed_at'),
+    cancelledAt: timestamp('cancelled_at'),
   },
   (table) => [
     index('enquiries_status_idx').on(table.status),

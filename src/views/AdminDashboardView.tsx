@@ -350,7 +350,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              {['all', 'new', 'contacted', 'quoted', 'booked'].map(status => (
+              {['all', 'New', 'Contacted', 'Quoted', 'Confirmed', 'Cancelled'].map(status => (
                 <button
                   key={status}
                   onClick={() => setEnquiryFilter(status)}
@@ -393,11 +393,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                       }
                       className="px-3 py-1.5 rounded-lg bg-[#faf8f2] border border-[#ded8cb] text-xs font-bold text-[#161f19]"
                     >
-                      <option value="new">New / Unread</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="quoted">Proposal Quoted</option>
-                      <option value="booked">Booked & Confirmed</option>
-                      <option value="closed">Closed</option>
+                      <option value="New">New / Unread</option>
+                      <option value="Contacted">Contacted</option>
+                      <option value="Quoted">Proposal Quoted</option>
+                      <option value="Confirmed">Booked & Confirmed</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>

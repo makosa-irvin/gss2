@@ -54,9 +54,16 @@ enquiriesRouter.put(
   requireAdmin,
   validateBody(updateEnquiryStatusSchema),
   asyncHandler(async (req, res) => {
+    const now = new Date();
+    const lifecycleTimestamp =
+      req.body.status === 'Contacted' ? { contactedAt: now } :
+      req.body.status === 'Quoted' ? { quotedAt: now } :
+      req.body.status === 'Confirmed' ? { confirmedAt: now } :
+      req.body.status === 'Cancelled' ? { cancelledAt: now } : {};
+
     const [updated] = await db
       .update(enquiries)
-      .set(req.body)
+      .set({ ...req.body, ...lifecycleTimestamp, updatedAt: now })
       .where(eq(enquiries.id, req.params.id))
       .returning();
     if (!updated) return res.status(404).json({ error: 'Enquiry not found.' });
