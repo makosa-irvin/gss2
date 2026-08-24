@@ -52,6 +52,13 @@ function parseDateSafe(value: string): Date {
 }
 
 async function main() {
+  const destructiveSeedAllowed = process.env.ALLOW_DESTRUCTIVE_SEED === 'true';
+  if (process.env.NODE_ENV === 'production' && !destructiveSeedAllowed) {
+    throw new Error(
+      'Refusing to run destructive seed in production. Set ALLOW_DESTRUCTIVE_SEED=true only for an intentional reset.'
+    );
+  }
+
   console.log('Clearing existing rows...');
   await db.delete(tours);
   await db.delete(hotels);
