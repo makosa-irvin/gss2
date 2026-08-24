@@ -16,6 +16,7 @@ import { enquiriesRouter } from './routes/enquiries.js';
 import { adminToursRouter } from './routes/adminTours.js';
 import { adminHotelsRouter } from './routes/adminHotels.js';
 import { errorHandler } from './middleware/common.js';
+import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
 
 const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
   .split(',')
@@ -39,6 +40,9 @@ export function createApp() {
   );
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
+  app.use('/api/auth/logout', requireTrustedOrigin);
+  app.use('/api/enquiries/:id/status', requireTrustedOrigin);
+  app.use('/api/admin', requireTrustedOrigin);
 
   // Global rate limit as a baseline against abuse; routes.ts adds a
   // tighter limit specifically on the public enquiry-submission endpoint

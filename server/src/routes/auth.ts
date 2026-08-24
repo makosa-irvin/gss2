@@ -16,10 +16,17 @@ const isProduction = process.env.NODE_ENV === 'production';
 // deployment; if the frontend and API end up on genuinely different
 // top-level domains, this needs to become 'none' + secure: true, which
 // requires HTTPS on both sides.
+const configuredSameSite = process.env.ADMIN_COOKIE_SAME_SITE?.toLowerCase();
+const sameSite = configuredSameSite === 'none' ? 'none' : configuredSameSite === 'strict' ? 'strict' : 'lax';
+
+if (isProduction && sameSite === 'none' && process.env.ADMIN_COOKIE_SECURE === 'false') {
+  throw new Error('ADMIN_COOKIE_SAME_SITE=none requires secure cookies in production.');
+}
+
 const cookieOptions = {
   httpOnly: true,
-  secure: isProduction,
-  sameSite: 'lax' as const,
+  secure: isProduction || process.env.ADMIN_COOKIE_SECURE === 'true',
+  sameSite: sameSite as 'lax' | 'strict' | 'none',
   maxAge: 12 * 60 * 60 * 1000, // 12h, should match JWT_EXPIRES_IN
   path: '/',
 };
