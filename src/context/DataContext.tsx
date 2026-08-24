@@ -55,6 +55,17 @@ interface DataContextType {
   updateHotel: (id: string, updated: Partial<Hotel>) => Promise<void>;
   deleteHotel: (id: string) => Promise<void>;
 
+  // CMS content
+  addDestination: (destination: Omit<Destination, 'id'>) => Promise<void>;
+  updateDestination: (id: string, updated: Partial<Destination>) => Promise<void>;
+  deleteDestination: (id: string) => Promise<void>;
+  addBlogPost: (post: Omit<BlogPost, 'id'>) => Promise<void>;
+  updateBlogPost: (id: string, updated: Partial<BlogPost>) => Promise<void>;
+  deleteBlogPost: (id: string) => Promise<void>;
+  addTestimonial: (testimonial: Omit<Testimonial, 'id'>) => Promise<void>;
+  updateTestimonial: (id: string, updated: Partial<Testimonial>) => Promise<void>;
+  deleteTestimonial: (id: string) => Promise<void>;
+
   // Enquiries
   addEnquiry: (enquiry: Omit<Enquiry, 'id' | 'createdAt' | 'status'>) => Promise<{ id: string }>;
   updateEnquiryStatus: (id: string, status: Enquiry['status'], notes?: string) => Promise<void>;
@@ -67,15 +78,8 @@ interface DataContextType {
   getWhatsAppUrl: (options?: { tourTitle?: string; hotelTitle?: string; customMessage?: string }) => string;
 }
 
-// destinations/testimonials/blogPosts CRUD and resetToInitialData used to
-// live on this context, but nothing in the app ever called them (no
-// admin UI exists for managing destinations, testimonials, or blog
-// posts) and the backend has no routes for them either - see server/
-// README.md's route table. Removed rather than carried forward as
-// interface surface that looks like it works but doesn't persist
-// anywhere real. Same for deleteEnquiry (unused) and resetToInitialData
-// (a "wipe the production database back to seed data" button has no
-// sane place in a live admin panel).
+// Public visitors receive only published content; authenticated admins
+// load the complete catalog, including drafts, from the admin endpoints.
 
 const STORAGE_KEYS = {
   CURRENCY: 'gss_currency_v1',
@@ -218,6 +222,28 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [currentAdmin]);
 
+  useEffect(() => {
+    if (!currentAdmin) return;
+    let cancelled = false;
+    Promise.all([
+      api.get<Tour[]>('/api/admin/tours'),
+      api.get<Hotel[]>('/api/admin/hotels'),
+      api.get<Destination[]>('/api/admin/destinations'),
+      api.get<BlogPost[]>('/api/admin/blog'),
+      api.get<Testimonial[]>('/api/admin/testimonials'),
+    ])
+      .then(([adminTours, adminHotels, adminDestinations, adminBlog, adminTestimonials]) => {
+        if (cancelled) return;
+        setTours(adminTours);
+        setHotels(adminHotels);
+        setDestinations(adminDestinations);
+        setBlogPosts(adminBlog);
+        setTestimonials(adminTestimonials);
+      })
+      .catch((err) => console.error('Failed to load admin content:', err));
+    return () => { cancelled = true; };
+  }, [currentAdmin]);
+
   const setActiveCurrency = (curr: 'USD' | 'KES') => {
     setActiveCurrencyState(curr);
     localStorage.setItem(STORAGE_KEYS.CURRENCY, curr);
@@ -239,6 +265,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = useCallback(async () => {
     await api.post('/api/auth/logout');
     setCurrentAdmin(null);
+    const [publicTours, publicHotels, publicDestinations, publicBlog, publicTestimonials] = await Promise.all([
+      api.get<Tour[]>('/api/tours'),
+      api.get<Hotel[]>('/api/hotels'),
+      api.get<Destination[]>('/api/destinations'),
+      api.get<BlogPost[]>('/api/blog'),
+      api.get<Testimonial[]>('/api/testimonials'),
+    ]);
+    setTours(publicTours);
+    setHotels(publicHotels);
+    setDestinations(publicDestinations);
+    setBlogPosts(publicBlog);
+    setTestimonials(publicTestimonials);
   }, []);
 
   // TOUR OPERATIONS
@@ -271,6 +309,48 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const deleteHotel = async (id: string) => {
     await api.delete(`/api/admin/hotels/${id}`);
     setHotels(prev => prev.filter(h => h.id !== id));
+  };
+
+  // DESTINATION OPERATIONS
+  const addDestination = async (data: Omit<Destination, 'id'>) => {
+    const created = await api.post<Destination>('/api/admin/destinations', data);
+    setDestinations(prev => [created, ...prev]);
+  };
+  const updateDestination = async (id: string, updated: Partial<Destination>) => {
+    const saved = await api.put<Destination>(`/api/admin/destinations/${id}`, updated);
+    setDestinations(prev => prev.map(item => item.id === id ? saved : item));
+  };
+  const deleteDestination = async (id: string) => {
+    await api.delete(`/api/admin/destinations/${id}`);
+    setDestinations(prev => prev.filter(item => item.id !== id));
+  };
+
+  // BLOG OPERATIONS
+  const addBlogPost = async (data: Omit<BlogPost, 'id'>) => {
+    const created = await api.post<BlogPost>('/api/admin/blog', data);
+    setBlogPosts(prev => [created, ...prev]);
+  };
+  const updateBlogPost = async (id: string, updated: Partial<BlogPost>) => {
+    const saved = await api.put<BlogPost>(`/api/admin/blog/${id}`, updated);
+    setBlogPosts(prev => prev.map(item => item.id === id ? saved : item));
+  };
+  const deleteBlogPost = async (id: string) => {
+    await api.delete(`/api/admin/blog/${id}`);
+    setBlogPosts(prev => prev.filter(item => item.id !== id));
+  };
+
+  // TESTIMONIAL OPERATIONS
+  const addTestimonial = async (data: Omit<Testimonial, 'id'>) => {
+    const created = await api.post<Testimonial>('/api/admin/testimonials', data);
+    setTestimonials(prev => [created, ...prev]);
+  };
+  const updateTestimonial = async (id: string, updated: Partial<Testimonial>) => {
+    const saved = await api.put<Testimonial>(`/api/admin/testimonials/${id}`, updated);
+    setTestimonials(prev => prev.map(item => item.id === id ? saved : item));
+  };
+  const deleteTestimonial = async (id: string) => {
+    await api.delete(`/api/admin/testimonials/${id}`);
+    setTestimonials(prev => prev.filter(item => item.id !== id));
   };
 
   // ENQUIRY OPERATIONS
@@ -352,6 +432,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addHotel,
         updateHotel,
         deleteHotel,
+        addDestination,
+        updateDestination,
+        deleteDestination,
+        addBlogPost,
+        updateBlogPost,
+        deleteBlogPost,
+        addTestimonial,
+        updateTestimonial,
+        deleteTestimonial,
         addEnquiry,
         updateEnquiryStatus,
         updateSettings,
