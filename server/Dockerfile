@@ -22,7 +22,7 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/src/db/seedData ./src/db/seedData
+COPY --from=build /app/src/db/seedData ./dist/db/seedData
 COPY --from=build /app/src/db/migrations ./src/db/migrations
 
 EXPOSE 4000
@@ -32,4 +32,4 @@ EXPOSE 4000
 # zero-downtime multi-instance deploy, run `node dist/db/migrate.js` as a
 # separate one-off release/pre-deploy command instead and drop it from
 # CMD, so N replicas don't all try to run migrations at once.
-CMD ["sh", "-c", "node dist/db/migrate.js && node dist/index.js"]
+CMD ["sh", "-c", "npm run db:migrate:prod && npm start"]

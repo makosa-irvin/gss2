@@ -21,7 +21,7 @@ import { adminTestimonialsRouter } from './routes/adminTestimonials.js';
 import { errorHandler } from './middleware/common.js';
 import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
 
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
   .split(',')
   .map((o) => o.trim())
   .filter(Boolean);

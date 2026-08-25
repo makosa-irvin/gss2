@@ -17,61 +17,101 @@ and admin edits were only visible in the editing browser.
 
 ## Getting started (local dev)
 
-You need a Postgres database. Either:
+You need Docker Desktop (recommended) or a local PostgreSQL installation.
 
-**Option A - Docker (recommended, includes Postgres):**
-```bash
-cp .env.example .env   # fill in JWT_SECRET at minimum
-docker compose up --build
-```
+### Option A - Docker (recommended)
 
-The first `--build` genuinely takes a few minutes, not seconds - it
-pulls two base images (`node:22-slim`, `postgres:16-alpine`) and runs
-`npm ci` twice (once per Dockerfile stage - see the comment in
-`Dockerfile` for why), which is roughly 250 packages downloaded and
-installed twice on a completely cold cache. That's normal. What's not
-normal is it hanging with zero progress for a long stretch. To tell
-those apart:
+From the `server/` directory:
 
 ```bash
-docker compose up --build --progress=plain
+cp .env.example .env   # PowerShell: Copy-Item .env.example .env
+docker compose up --build -d
 ```
 
-This prints every build step as it happens instead of a collapsed
-progress bar, so you can see whether `npm ci` is actively downloading
-packages (slow but working) or nothing is happening at all (actually
-stuck). If it's genuinely stuck, the usual causes are Docker Desktop
-being starved of CPU/memory (check Settings > Resources and increase
-the allocation) or a slow/unstable network connection timing out
-mid-download rather than failing outright. Every build *after* the
-first reuses BuildKit's npm cache (configured in the Dockerfile) and
-Docker's own layer cache, so it should be much faster from then on -
-if it's still slow on the second run, that points at Docker Desktop's
-resource allocation rather than the download.
+The API container runs the compiled database migration automatically before
+starting Express. Verify both services are healthy/running with:
 
-If you just want to get developing quickly and don't need Docker
-specifically, Option B below skips all of this - it's the faster path
-for local iteration.
+```bash
+docker compose ps
+docker compose logs api
+```
 
-**Option B - your own local Postgres:**
+The expected local endpoints are PostgreSQL on `localhost:5432` and the API on
+`http://localhost:4000`. Test the API with:
+
+```bash
+curl http://localhost:4000/health
+# PowerShell: Invoke-RestMethod http://localhost:4000/health
+```
+
+To manually re-run migrations **inside the runtime Docker container**, use
+the compiled production script (the container intentionally does not include
+`tsx` or other dev dependencies):
+
+```bash
+docker compose exec api npm run db:migrate:prod
+```
+
+Seed the database only once for a fresh development database. Seeding clears
+catalog/content rows. The included Compose file is explicitly a local-development
+setup (`NODE_ENV=development`) so HTTP admin cookies work on localhost. Set
+`SEED_ADMIN_PASSWORD` in `server/.env`, then run:
+
+```bash
+docker compose exec api npm run seed:prod
+```
+
+For a real production deployment, `NODE_ENV=production` restores the destructive
+seed guard; `ALLOW_DESTRUCTIVE_SEED=true` must then be explicitly set before a
+seed can run.
+
+Do **not** run plain `npm run db:migrate` or `npm run seed` inside the Docker API
+container; those are TypeScript development commands and depend on `tsx`, which
+is deliberately omitted from the runtime image.
+
+If a Docker build appears quiet, the `--progress` flag belongs to the Compose
+command, not `up`:
+
+```bash
+docker compose --progress=plain up --build
+```
+
+or build separately:
+
+```bash
+docker compose build --progress=plain
+docker compose up -d
+```
+
+If pulling `postgres:16-alpine` times out at `registry-1.docker.io`, that is a
+Docker Hub/network/DNS issue rather than an application error. Confirm Docker
+Desktop is running and test `docker pull postgres:16-alpine` before retrying.
+
+For active development, you may instead keep only PostgreSQL in Docker and run
+the API on the host for hot reload:
+
+```bash
+docker compose up postgres -d
+npm install
+npm run db:migrate
+npm run seed
+npm run dev
+```
+
+When the API runs on the host, `DATABASE_URL` should use `localhost:5432`. When
+the API runs inside Compose, it uses the Compose service hostname
+`postgres:5432` automatically. Vite uses port `5173` by default, and the Compose
+CORS default already allows `http://localhost:5173`.
+
+### Option B - your own local Postgres
+
 ```bash
 createdb goodsecretssafaris
 cp .env.example .env   # point DATABASE_URL at it, fill in JWT_SECRET
 npm install
 npm run db:migrate
-```
-
-Either way, seed the database once (creates the initial catalog data and
-the first admin user - set `SEED_ADMIN_EMAIL`/`SEED_ADMIN_PASSWORD` in
-`.env` first):
-
-```bash
 npm run seed
-```
-
-Then for local development with hot reload:
-```bash
-npm run dev   # http://localhost:4000
+npm run dev
 ```
 
 ## Scripts
@@ -82,9 +122,11 @@ npm run dev   # http://localhost:4000
 | `npm run build` | Type-check and compile to `dist/` |
 | `npm start` | Run the compiled server (`dist/index.js`) |
 | `npm run db:generate` | Generate a new migration after changing `src/db/schema.ts` |
-| `npm run db:migrate` | Apply pending migrations |
+| `npm run db:migrate` | Apply pending migrations from TypeScript during host development |
+| `npm run db:migrate:prod` | Apply pending migrations from compiled JS (Docker/production) |
 | `npm run db:studio` | Open Drizzle Studio, a GUI for browsing the database |
-| `npm run seed` | Seed/reset the database from `src/db/seedData/*.json` - clears existing rows first, so treat it as a one-time migration step, not a routine command |
+| `npm run seed` | Seed/reset from TypeScript during host development - destructive |
+| `npm run seed:prod` | Seed/reset from compiled JS (Docker/production); requires `ALLOW_DESTRUCTIVE_SEED=true` when `NODE_ENV=production` |
 | `npm test` | Run the test suite against a real database (see below) |
 
 ## Environment variables
