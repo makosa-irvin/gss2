@@ -4,6 +4,8 @@ import { useData } from '../context/DataContext';
 import { BlogPost } from '../types';
 import { BookOpen, Clock, User, ArrowLeft, ArrowRight, Sparkles, Tag } from 'lucide-react';
 import { PageMeta } from '../components/common/PageMeta';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogViewProps {
   initialSlug?: string;
@@ -83,8 +85,8 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
             {selectedPost.excerpt}
           </p>
 
-          <div className="whitespace-pre-line leading-loose text-sm sm:text-base text-[#4d5c52]">
-            {selectedPost.content}
+          <div className="text-sm sm:text-base text-[#4d5c52]">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{selectedPost.content}</ReactMarkdown>
           </div>
         </article>
 
