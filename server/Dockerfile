@@ -2,13 +2,20 @@
 FROM node:22-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-# --mount=type=cache persists npm's download cache in a BuildKit cache
-# volume across builds (not inside the image itself, so it doesn't
-# bloat it). Doesn't speed up the very first build on a machine - npm
-# still has to download everything once - but every build after that
-# reuses the cache instead of re-downloading, which matters a lot here
-# since npm ci runs twice (once per stage below).
-RUN --mount=type=cache,target=/root/.npm npm ci
+# Deliberately plain `npm ci` here, not `RUN --mount=type=cache,...`.
+# A cache-mount version was tried and broke Railway's build with
+# "flag '--mount=type=cache,target=/root/.npm' is missing an id
+# argument" - Railway's Dockerfile builder doesn't parse that extended
+# BuildKit syntax the same way plain `docker build` does. The cache
+# mount was only ever a repeat-build speed optimization (it doesn't
+# help the very first build at all), never something the app needs to
+# function, so it's not worth chasing exact BuildKit-dialect
+# compatibility with every hosting provider. Standard Docker layer
+# caching already gives some speedup on repeat builds anyway, as long
+# as package.json/package-lock.json haven't changed - this COPY+RUN
+# layer is skipped entirely in that case on any Docker-compatible
+# builder, no special syntax required.
+RUN npm ci
 COPY . .
 RUN npm run build
 
@@ -20,7 +27,7 @@ FROM node:22-slim
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
+RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/src/db/seedData ./dist/db/seedData
 COPY --from=build /app/src/db/migrations ./src/db/migrations
