@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 
 const allowedOrigins = new Set(
-  (process.env.CORS_ORIGINS || 'http://localhost:5173')
+  (process.env.CORS_ORIGINS || 'http://localhost:3000')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean)

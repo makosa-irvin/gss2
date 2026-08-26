@@ -31,7 +31,7 @@ services:
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       ENQUIRY_FROM_EMAIL: ${ENQUIRY_FROM_EMAIL:-Good Secrets Safaris <enquiries@goodsecretssafaris.com>}
       ENQUIRY_NOTIFY_EMAIL: ${ENQUIRY_NOTIFY_EMAIL:-}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
       PORT: 4000
       NODE_ENV: development
       SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@goodsecretssafaris.com}

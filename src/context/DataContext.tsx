@@ -134,23 +134,43 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
-  // Initial catalog fetch. Runs once on mount; admin mutations below
-  // update local state directly from the server's response rather than
-  // re-fetching everything, so this isn't re-triggered on every edit.
+  // Loads the catalog (tours/hotels/destinations/blog/testimonials) plus
+  // settings, and re-runs whenever the admin session state changes so an
+  // admin sees drafts and a logged-out visitor only sees published
+  // content. Deliberately waits for the auth check (authLoading) to
+  // resolve before fetching anything, rather than firing an unconditional
+  // public-catalog fetch on mount alongside a separate admin-catalog
+  // fetch once login resolves: two independent effects racing to call
+  // setTours/setHotels/etc meant whichever fetch happened to resolve
+  // last would silently win, so an already-logged-in admin refreshing
+  // the page could occasionally end up seeing only published content
+  // (their own drafts missing) if the public fetch happened to resolve
+  // after the admin one. Waiting for authLoading first means only one
+  // fetch (the correct one) ever runs per auth state.
   useEffect(() => {
+    if (authLoading) return;
     let cancelled = false;
 
     async function loadCatalog() {
       try {
         const [toursData, hotelsData, destinationsData, blogData, testimonialsData, settingsData] =
-          await Promise.all([
-            api.get<Tour[]>('/api/tours'),
-            api.get<Hotel[]>('/api/hotels'),
-            api.get<Destination[]>('/api/destinations'),
-            api.get<BlogPost[]>('/api/blog'),
-            api.get<Testimonial[]>('/api/testimonials'),
-            api.get<CompanySettings>('/api/settings'),
-          ]);
+          currentAdmin
+            ? await Promise.all([
+                api.get<Tour[]>('/api/admin/tours'),
+                api.get<Hotel[]>('/api/admin/hotels'),
+                api.get<Destination[]>('/api/admin/destinations'),
+                api.get<BlogPost[]>('/api/admin/blog'),
+                api.get<Testimonial[]>('/api/admin/testimonials'),
+                api.get<CompanySettings>('/api/settings'),
+              ])
+            : await Promise.all([
+                api.get<Tour[]>('/api/tours'),
+                api.get<Hotel[]>('/api/hotels'),
+                api.get<Destination[]>('/api/destinations'),
+                api.get<BlogPost[]>('/api/blog'),
+                api.get<Testimonial[]>('/api/testimonials'),
+                api.get<CompanySettings>('/api/settings'),
+              ]);
 
         if (cancelled) return;
         setTours(toursData);
@@ -177,7 +197,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [authLoading, currentAdmin]);
 
   // Restores the admin session on page load/refresh by asking the
   // backend whether the httpOnly cookie (if any) is still valid - the
@@ -222,28 +242,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [currentAdmin]);
 
-  useEffect(() => {
-    if (!currentAdmin) return;
-    let cancelled = false;
-    Promise.all([
-      api.get<Tour[]>('/api/admin/tours'),
-      api.get<Hotel[]>('/api/admin/hotels'),
-      api.get<Destination[]>('/api/admin/destinations'),
-      api.get<BlogPost[]>('/api/admin/blog'),
-      api.get<Testimonial[]>('/api/admin/testimonials'),
-    ])
-      .then(([adminTours, adminHotels, adminDestinations, adminBlog, adminTestimonials]) => {
-        if (cancelled) return;
-        setTours(adminTours);
-        setHotels(adminHotels);
-        setDestinations(adminDestinations);
-        setBlogPosts(adminBlog);
-        setTestimonials(adminTestimonials);
-      })
-      .catch((err) => console.error('Failed to load admin content:', err));
-    return () => { cancelled = true; };
-  }, [currentAdmin]);
-
   const setActiveCurrency = (curr: 'USD' | 'KES') => {
     setActiveCurrencyState(curr);
     localStorage.setItem(STORAGE_KEYS.CURRENCY, curr);
@@ -264,19 +262,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback(async () => {
     await api.post('/api/auth/logout');
+    // Setting currentAdmin to null re-triggers the consolidated catalog
+    // effect above, which re-fetches from the public (published-only)
+    // endpoints on its own - no need to duplicate that fetch here.
     setCurrentAdmin(null);
-    const [publicTours, publicHotels, publicDestinations, publicBlog, publicTestimonials] = await Promise.all([
-      api.get<Tour[]>('/api/tours'),
-      api.get<Hotel[]>('/api/hotels'),
-      api.get<Destination[]>('/api/destinations'),
-      api.get<BlogPost[]>('/api/blog'),
-      api.get<Testimonial[]>('/api/testimonials'),
-    ]);
-    setTours(publicTours);
-    setHotels(publicHotels);
-    setDestinations(publicDestinations);
-    setBlogPosts(publicBlog);
-    setTestimonials(publicTestimonials);
   }, []);
 
   // TOUR OPERATIONS

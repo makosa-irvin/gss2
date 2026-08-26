@@ -21,7 +21,7 @@ import { adminTestimonialsRouter } from './routes/adminTestimonials.js';
 import { errorHandler } from './middleware/common.js';
 import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
 
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
   .split(',')
   .map((o) => o.trim())
   .filter(Boolean);
@@ -43,9 +43,12 @@ export function createApp() {
   );
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
-  app.use('/api/auth/logout', requireTrustedOrigin);
-  app.use('/api/enquiries/:id/status', requireTrustedOrigin);
-  app.use('/api/admin', requireTrustedOrigin);
+  // Applied globally (it already no-ops for GET/HEAD/OPTIONS) rather than
+  // mounted on a hand-picked list of routes: that approach previously
+  // missed PUT /api/settings, a state-changing, cookie-authenticated
+  // route that isn't under /api/admin. A global mount means a future
+  // mutating route can't be forgotten the same way.
+  app.use(requireTrustedOrigin);
 
   // Global rate limit as a baseline against abuse; routes.ts adds a
   // tighter limit specifically on the public enquiry-submission endpoint

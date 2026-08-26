@@ -48,7 +48,21 @@ export const PageMeta: React.FC<PageMetaProps> = ({
       {image && <meta name="twitter:image" content={image} />}
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
       {structuredData && (
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">
+          {
+            // Admin-controlled content (blog titles/excerpts, company
+            // settings) flows into structuredData, and JSON.stringify
+            // does NOT escape '<' by default - a value containing the
+            // literal sequence "</script>" would break out of this tag
+            // and let arbitrary HTML/script run in every visitor's
+            // browser. Escaping '<' to its unicode form keeps the JSON
+            // semantically identical (any consumer parsing this as JSON
+            // or JSON-LD sees the same string back) while making it
+            // impossible for the HTML parser to see a literal closing
+            // tag inside this element.
+            JSON.stringify(structuredData).replace(/</g, '\\u003c')
+          }
+        </script>
       )}
     </>
   );
