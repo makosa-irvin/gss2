@@ -23,7 +23,7 @@ includes Postgres). Then:
 ```bash
 npm install
 cp .env.example .env.local   # VITE_API_URL should point at your running backend
-npm run dev                  # http://localhost:5173
+npm run dev                  # http://localhost:3000
 ```
 
 ## Scripts

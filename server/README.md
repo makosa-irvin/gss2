@@ -100,8 +100,8 @@ npm run dev
 
 When the API runs on the host, `DATABASE_URL` should use `localhost:5432`. When
 the API runs inside Compose, it uses the Compose service hostname
-`postgres:5432` automatically. Vite uses port `5173` by default, and the Compose
-CORS default already allows `http://localhost:5173`.
+`postgres:5432` automatically. Vite uses port `3000` by default, and the Compose
+CORS default already allows `http://localhost:3000`.
 
 ### Option B - your own local Postgres
 
