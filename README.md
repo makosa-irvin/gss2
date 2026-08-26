@@ -17,7 +17,7 @@ intended to replace the current WordPress/Elementor live site.
 ## Getting started
 
 You need both the API and the frontend running. See `server/README.md`
-first to get the backend up (Docker Compose is the fastest path - it
+first to get the backend up (Docker Compose is the fastest path  - it
 includes Postgres). Then:
 
 ```bash
