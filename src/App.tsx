@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { DataProvider, useData } from './context/DataContext';
 import { Tour, Hotel, Destination } from './types';
@@ -8,21 +8,45 @@ import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { EnquiryModal } from './components/common/EnquiryModal';
 import { PageMeta } from './components/common/PageMeta';
 
+// HomePage is the entry point for the large majority of visits, so it
+// (and its own imports, e.g. SafariBuilderWizard - see below) stays in
+// the main bundle: lazy-loading it would just add a waterfall for the
+// route almost everyone lands on. Every other route is genuinely
+// optional per-visit, so it's lazy-loaded below - this is what was
+// driving the "58% of the JS bundle is unused on this page" Lighthouse
+// finding: the homepage was shipping and parsing code for the admin
+// dashboard, every detail page template, and the blog, none of which a
+// homepage visitor necessarily ever uses.
 import { HomePage } from './views/HomePage';
-import { DestinationsView } from './views/DestinationsView';
 import { SafariBuilderWizard } from './components/builder/SafariBuilderWizard';
-import { AboutView } from './views/AboutView';
-import { ContactView } from './views/ContactView';
-import { AdminDashboardView } from './views/AdminDashboardView';
 
-import { TourDetailRoute } from './routes/TourDetailRoute';
-import { HotelDetailRoute } from './routes/HotelDetailRoute';
-import { DestinationDetailRoute } from './routes/DestinationDetailRoute';
-import { ToursExplorerRoute } from './routes/ToursExplorerRoute';
-import { HotelsExplorerRoute } from './routes/HotelsExplorerRoute';
-import { BlogRoute } from './routes/BlogRoute';
-import { AdminRoute } from './routes/AdminRoute';
-import { NotFoundView } from './routes/NotFoundView';
+const DestinationsView = lazy(() => import('./views/DestinationsView').then(m => ({ default: m.DestinationsView })));
+const AboutView = lazy(() => import('./views/AboutView').then(m => ({ default: m.AboutView })));
+const ContactView = lazy(() => import('./views/ContactView').then(m => ({ default: m.ContactView })));
+// The admin dashboard is by far the heaviest view (CMS forms/tables for
+// every content type) and is only ever loaded by one person - the site
+// owner - so it's the single biggest win to keep out of the shared
+// bundle entirely.
+const AdminDashboardView = lazy(() => import('./views/AdminDashboardView').then(m => ({ default: m.AdminDashboardView })));
+
+const TourDetailRoute = lazy(() => import('./routes/TourDetailRoute').then(m => ({ default: m.TourDetailRoute })));
+const HotelDetailRoute = lazy(() => import('./routes/HotelDetailRoute').then(m => ({ default: m.HotelDetailRoute })));
+const DestinationDetailRoute = lazy(() => import('./routes/DestinationDetailRoute').then(m => ({ default: m.DestinationDetailRoute })));
+const ToursExplorerRoute = lazy(() => import('./routes/ToursExplorerRoute').then(m => ({ default: m.ToursExplorerRoute })));
+const HotelsExplorerRoute = lazy(() => import('./routes/HotelsExplorerRoute').then(m => ({ default: m.HotelsExplorerRoute })));
+const BlogRoute = lazy(() => import('./routes/BlogRoute').then(m => ({ default: m.BlogRoute })));
+const AdminRoute = lazy(() => import('./routes/AdminRoute').then(m => ({ default: m.AdminRoute })));
+const NotFoundView = lazy(() => import('./routes/NotFoundView').then(m => ({ default: m.NotFoundView })));
+
+// Minimal, layout-stable fallback shown only while a lazy route chunk is
+// downloading (typically well under a second on a warm connection) -
+// deliberately not a full-page spinner, since the Navbar/Footer around
+// it are already visible and interactive.
+const RouteFallback = () => (
+  <div className="min-h-[50vh] flex items-center justify-center">
+    <p className="text-sm text-[#a3b2a7]">Loading…</p>
+  </div>
+);
 
 /**
  * Translates the app's old string-based `onNavigate(view, payload)` calls
@@ -184,6 +208,7 @@ const MainAppContent: React.FC = () => {
       <Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal} />
 
       <main className="flex-1">
+        <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route
             path="/"
@@ -232,6 +257,7 @@ const MainAppContent: React.FC = () => {
 
           <Route path="*" element={<NotFoundView />} />
         </Routes>
+        </Suspense>
       </main>
 
       <Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal} />
