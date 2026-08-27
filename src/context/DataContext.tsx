@@ -134,43 +134,93 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
-  // Loads the catalog (tours/hotels/destinations/blog/testimonials) plus
-  // settings, and re-runs whenever the admin session state changes so an
-  // admin sees drafts and a logged-out visitor only sees published
-  // content. Deliberately waits for the auth check (authLoading) to
-  // resolve before fetching anything, rather than firing an unconditional
-  // public-catalog fetch on mount alongside a separate admin-catalog
-  // fetch once login resolves: two independent effects racing to call
-  // setTours/setHotels/etc meant whichever fetch happened to resolve
-  // last would silently win, so an already-logged-in admin refreshing
-  // the page could occasionally end up seeing only published content
-  // (their own drafts missing) if the public fetch happened to resolve
-  // after the admin one. Waiting for authLoading first means only one
-  // fetch (the correct one) ever runs per auth state.
+  // Tracks admin status synchronously (independent of React's render/
+  // commit timing) so the public-catalog fetch below can check "are we
+  // an admin *right now*" at the moment it resolves, not at the moment
+  // it was fired. See the race-condition note on that effect for why
+  // this matters.
+  const isAdminRef = React.useRef(false);
+
+  // PERFORMANCE NOTE: this used to wait for the auth check (authLoading)
+  // to resolve before firing the catalog fetch at all, which serialized
+  // two network round trips (auth/me, then tours/hotels/etc.) before the
+  // app rendered anything but a full-page spinner - directly inflating
+  // LCP. Lighthouse traced this: /api/auth/me wasn't finishing until
+  // ~12s in, and the catalog calls only started after that. Visitors are
+  // overwhelmingly anonymous, so the public catalog fetch now fires
+  // immediately and unconditionally on mount, in parallel with the auth
+  // check below, instead of waiting on it.
+  //
+  // This reintroduces the two-effects-racing hazard the old comment
+  // described (an admin's own drafts briefly missing if the public fetch
+  // resolves after the admin one) - closed here via isAdminRef: the
+  // public fetch's setters are skipped if we've since learned the
+  // visitor is an admin, so the admin-catalog effect below is always the
+  // authoritative last write for an admin session. The only visible
+  // trade-off is that a logged-in admin may see published-only content
+  // for a moment before their drafts pop in, which is an acceptable
+  // trade for not delaying first paint for every anonymous visitor.
   useEffect(() => {
-    if (authLoading) return;
     let cancelled = false;
 
-    async function loadCatalog() {
+    async function loadPublicCatalog() {
       try {
         const [toursData, hotelsData, destinationsData, blogData, testimonialsData, settingsData] =
-          currentAdmin
-            ? await Promise.all([
-                api.get<Tour[]>('/api/admin/tours'),
-                api.get<Hotel[]>('/api/admin/hotels'),
-                api.get<Destination[]>('/api/admin/destinations'),
-                api.get<BlogPost[]>('/api/admin/blog'),
-                api.get<Testimonial[]>('/api/admin/testimonials'),
-                api.get<CompanySettings>('/api/settings'),
-              ])
-            : await Promise.all([
-                api.get<Tour[]>('/api/tours'),
-                api.get<Hotel[]>('/api/hotels'),
-                api.get<Destination[]>('/api/destinations'),
-                api.get<BlogPost[]>('/api/blog'),
-                api.get<Testimonial[]>('/api/testimonials'),
-                api.get<CompanySettings>('/api/settings'),
-              ]);
+          await Promise.all([
+            api.get<Tour[]>('/api/tours'),
+            api.get<Hotel[]>('/api/hotels'),
+            api.get<Destination[]>('/api/destinations'),
+            api.get<BlogPost[]>('/api/blog'),
+            api.get<Testimonial[]>('/api/testimonials'),
+            api.get<CompanySettings>('/api/settings'),
+          ]);
+
+        if (cancelled || isAdminRef.current) return;
+        setTours(toursData);
+        setHotels(hotelsData);
+        setDestinations(destinationsData);
+        setBlogPosts(blogData);
+        setTestimonials(testimonialsData);
+        setSettings(settingsData);
+        setLoadError(null);
+      } catch (err) {
+        if (cancelled || isAdminRef.current) return;
+        const message =
+          err instanceof ApiError
+            ? err.message
+            : 'Could not load site content. Please check your connection and try refreshing.';
+        setLoadError(message);
+        console.error('Failed to load catalog data:', err);
+      } finally {
+        if (!cancelled && !isAdminRef.current) setIsLoading(false);
+      }
+    }
+
+    loadPublicCatalog();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Once we know the visitor is a logged-in admin, fetch the admin
+  // catalog (which includes drafts) and overwrite the public data above.
+  // Runs after the auth check resolves, so it's always the last write
+  // for an admin session - see isAdminRef note above.
+  useEffect(() => {
+    if (authLoading || !currentAdmin) return;
+    let cancelled = false;
+
+    async function loadAdminCatalog() {
+      try {
+        const [toursData, hotelsData, destinationsData, blogData, testimonialsData, settingsData] =
+          await Promise.all([
+            api.get<Tour[]>('/api/admin/tours'),
+            api.get<Hotel[]>('/api/admin/hotels'),
+            api.get<Destination[]>('/api/admin/destinations'),
+            api.get<BlogPost[]>('/api/admin/blog'),
+            api.get<Testimonial[]>('/api/admin/testimonials'),
+            api.get<CompanySettings>('/api/settings'),
+          ]);
 
         if (cancelled) return;
         setTours(toursData);
@@ -187,13 +237,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             ? err.message
             : 'Could not load site content. Please check your connection and try refreshing.';
         setLoadError(message);
-        console.error('Failed to load catalog data:', err);
+        console.error('Failed to load admin catalog data:', err);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
     }
 
-    loadCatalog();
+    loadAdminCatalog();
     return () => {
       cancelled = true;
     };
@@ -201,17 +251,22 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Restores the admin session on page load/refresh by asking the
   // backend whether the httpOnly cookie (if any) is still valid - the
-  // frontend has no way to read that cookie itself, by design.
+  // frontend has no way to read that cookie itself, by design. Fires in
+  // parallel with the public catalog fetch above rather than blocking it.
   useEffect(() => {
     let cancelled = false;
 
     api
       .get<AdminUser>('/api/auth/me')
       .then((user) => {
-        if (!cancelled) setCurrentAdmin(user);
+        if (cancelled) return;
+        isAdminRef.current = !!user;
+        setCurrentAdmin(user);
       })
       .catch(() => {
-        if (!cancelled) setCurrentAdmin(null);
+        if (cancelled) return;
+        isAdminRef.current = false;
+        setCurrentAdmin(null);
       })
       .finally(() => {
         if (!cancelled) setAuthLoading(false);

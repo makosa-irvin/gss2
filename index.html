@@ -18,9 +18,38 @@
       the real fix is prerendering/SSR, not adding tags back here.
     -->
     <title>Good Secrets Safaris</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
+    <!--
+      Fonts are now self-hosted (see src/index.css, @fontsource-variable
+      imports) rather than loaded from Google Fonts. That removed a
+      render-blocking third-party stylesheet request (~410ms per
+      Lighthouse) and, more importantly, the network waterfall it
+      created: the actual .woff2 files couldn't start downloading until
+      that separate CSS response came back and was parsed. Self-hosting
+      lets Vite bundle+fingerprint the font CSS with the rest of the
+      app's CSS, so the font files are discoverable and start
+      downloading immediately.
+    -->
+    <!--
+      Preconnect to the API origin: it was flagged as a ~630ms preconnect
+      opportunity (network-dependency-tree-insight) since every page's
+      catalog data comes from here.
+    -->
+    <link rel="preconnect" href="https://good-secrets-safaris-staging-production.up.railway.app">
+    <!--
+      Preload the hero background image referenced in HomePage.tsx. It's
+      not the LCP element (that's the H1 text), but it's a large
+      above-the-fold visual and was otherwise only discoverable once
+      React mounted and rendered the <img> tag - preloading it from the
+      HTML lets the browser start the fetch immediately, in parallel
+      with the JS bundle. If the hero image URL in HomePage.tsx ever
+      changes, update this href to match.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=2000&q=90"
+      fetchpriority="high"
+    />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
   </head>

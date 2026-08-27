@@ -85,6 +85,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=2000&q=90"
             alt="East Africa Safari Elephants Kilimanjaro"
             referrerPolicy="no-referrer"
+            fetchPriority="high"
             className="w-full h-full object-cover object-center scale-105 animate-in fade-in duration-1000"
           />
           {/* Subtle cinematic gradient layers */}

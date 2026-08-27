@@ -1,19 +1,39 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+ * Self-hosted fonts (via @fontsource-variable), replacing the Google
+ * Fonts <link> in index.html. That external stylesheet was
+ * render-blocking (Lighthouse: ~410ms) and, worse, meant the actual
+ * .woff2 files couldn't even start downloading until that separate
+ * round trip's CSS came back - a real network waterfall on top of the
+ * page's own JS/API waterfall. Bundling the font CSS here means Vite
+ * fingerprints and serves the font files from the same origin, and one
+ * variable-font file per family covers the whole weight range instead
+ * of shipping 4-6 separate static-weight files.
+ */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/plus-jakarta-sans/wght-italic.css";
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+@import "@fontsource-variable/cinzel";
+
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    /* Variable-font family name, per @fontsource-variable's @font-face
+       declarations above (not the plain 'Plus Jakarta Sans' name used
+       by the old Google Fonts static-weight files). */
+    font-family: 'Plus Jakarta Sans Variable', sans-serif;
     background-color: #fcfbf9;
     color: #1a241e;
   }
 
   h1, h2, h3, .font-serif-luxury {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Playfair Display Variable', Georgia, serif;
   }
 
   .font-display-accent {
-    font-family: 'Cinzel', serif;
+    font-family: 'Cinzel Variable', serif;
   }
 }
 
