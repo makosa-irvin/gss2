@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tour } from '../../types';
 import { useData } from '../../context/DataContext';
+import { unsplashCardImage } from '../../lib/imageUrl';
 import { Clock, MapPin, Users, Sparkles, MessageCircle, ArrowRight, Check } from 'lucide-react';
 
 interface TourCardProps {
@@ -25,7 +26,10 @@ export const TourCard: React.FC<TourCardProps> = ({ tour, onSelect, onEnquire })
       {/* Image Container */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#f4f2ec]">
         <img
-          src={tour.images[0] || 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80'}
+          src={unsplashCardImage(
+            tour.images[0] || 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
+            800
+          )}
           alt={tour.title}
           referrerPolicy="no-referrer"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

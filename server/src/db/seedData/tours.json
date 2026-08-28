@@ -3,20 +3,22 @@
     "id": "tour-14-day-ultimate-kenya-tanzania",
     "title": "14-Day Ultimate Kenya & Tanzania Safari Experience",
     "slug": "14-day-ultimate-kenya-tanzania-safari",
-    "shortDescription": "The grand East African safari uniting Maasai Mara, Serengeti, Ngorongoro Crater, Amboseli, Lake Manyara, and Samburu in an epic two-week adventure.",
-    "fullDescription": "Immerse yourself in the definitive East African safari. Traverse across the savannahs of Kenya and Tanzania, tracking the Big 5, witnessing the Great Wildebeest Migration, encountering huge elephant herds beneath Mount Kilimanjaro, and descending into the geological marvel of Ngorongoro Crater with dedicated private 4x4 Land Cruisers and expert naturalist guides.",
+    "shortDescription": "Discover the ultimate East African adventure on this 14-Day Ultimate Kenya & Tanzania Safari Experience, combining iconic wildlife destinations with breathtaking landscapes and unforgettable experiences.",
+    "fullDescription": "Discover the ultimate East African adventure on this 14-Day Ultimate Kenya & Tanzania Safari Experience, combining iconic wildlife destinations with breathtaking landscapes and unforgettable experiences. Traveling in a private 4x4 Land Cruiser with a professional driver-guide, guests explore Amboseli's elephant herds with Mount Kilimanjaro views, the serene waters of Lake Naivasha, rhinos and flamingos at Lake Nakuru, predator-packed plains of Masai Mara and Serengeti, and the unique crater ecosystems of Ngorongoro and Tarangire. Luxurious lodges and tented camps, combined with expertly guided game drives, sundowners, and hot air balloon safaris, ensure a perfect balance of adventure, relaxation, and photography opportunities across Kenya and Tanzania.",
     "country": "Kenya + Tanzania",
     "destinations": [
-      "Maasai Mara National Reserve",
+      "Amboseli National Park",
+      "Lake Naivasha",
+      "Lake Nakuru National Park",
+      "Masai Mara National Reserve",
       "Serengeti National Park",
       "Ngorongoro Conservation Area",
-      "Amboseli National Park",
-      "Samburu National Reserve"
+      "Tarangire National Park"
     ],
     "durationDays": 14,
     "durationLabel": "14 Days / 13 Nights",
     "startingLocation": "Nairobi, Kenya",
-    "endingLocation": "Arusha / Kilimanjaro, Tanzania",
+    "endingLocation": "Nairobi, Kenya",
     "categories": [
       "Multi-Country",
       "Big 5 Safari",
@@ -40,297 +42,301 @@
     "recommended": true,
     "priceFrom": 9759,
     "currency": "USD",
-    "soloPrice": 11450,
+    "soloPrice": 15251,
     "sharingPrice": 9759,
-    "residentPriceKES": 980000,
     "seasonalPricing": [
       {
-        "id": "sp-14-green",
-        "name": "Green Season (Jan - May)",
-        "startDate": "01-05",
-        "endDate": "05-31",
-        "soloPrice": 10200,
-        "sharingPrice": 8850,
-        "currency": "USD",
-        "notes": "Lush green landscapes, excellent predator sightings, fewer vehicles"
-      },
-      {
-        "id": "sp-14-migration",
-        "name": "Migration Peak (Jul - Oct)",
-        "startDate": "07-01",
-        "endDate": "10-31",
-        "soloPrice": 11450,
-        "sharingPrice": 9759,
-        "currency": "USD",
-        "notes": "Peak River Crossing and Great Migration season across Mara & Serengeti"
-      },
-      {
-        "id": "sp-14-shoulder",
-        "name": "Shoulder Season (Nov - Dec 20)",
-        "startDate": "11-01",
-        "endDate": "12-20",
-        "soloPrice": 10400,
-        "sharingPrice": 8990,
+        "id": "sp-14-jan-jun",
+        "name": "January - June 2026",
+        "startDate": "01-01",
+        "endDate": "06-30",
+        "soloPrice": 15861,
+        "sharingPrice": 10548,
         "currency": "USD"
       },
       {
-        "id": "sp-14-festive",
-        "name": "Festive Season (Dec 21 - Jan 4)",
-        "startDate": "12-21",
-        "endDate": "01-04",
-        "soloPrice": 11800,
-        "sharingPrice": 9990,
+        "id": "sp-14-jul-sep",
+        "name": "July - September 2026",
+        "startDate": "07-01",
+        "endDate": "09-30",
+        "soloPrice": 18814,
+        "sharingPrice": 12260,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-14-oct-nov",
+        "name": "October - November 2026",
+        "startDate": "10-01",
+        "endDate": "11-30",
+        "soloPrice": 15251,
+        "sharingPrice": 9759,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-14-dec",
+        "name": "December 2026",
+        "startDate": "12-01",
+        "endDate": "12-31",
+        "soloPrice": 18633,
+        "sharingPrice": 12300,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1400&q=85",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/mara-cheetahs-top.jpg",
+      "/images/catalog/mara-savannah.jpg",
+      "/images/catalog/elephants-in-amboseli-np.jpg",
+      "/images/catalog/lake-nakuru-rhino.jpg",
+      "/images/catalog/wilderbeest-calving-in-the-serengeti.jpg",
+      "/images/catalog/zeebra-in-ngorongoro-crater.jpg"
     ],
-    "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     "itinerary": [
       {
         "day": 1,
-        "title": "Arrival in Nairobi & Welcome Reception",
-        "subtitle": "Nairobi City",
-        "description": "Arrive at Jomo Kenyatta International Airport where your Good Secrets Safaris concierge welcomes you and transfers you to your boutique hotel. Safari briefing and welcome dinner.",
-        "accommodation": "Hemingways Nairobi / Villa Rosa Kempinski",
-        "meals": "Dinner Included",
-        "transport": "Private Luxury Alphard / Land Cruiser Transfer",
+        "title": "Nairobi → Amboseli National Park",
+        "subtitle": "Overnight at Oltukai Lodge",
+        "description": "Depart Nairobi in the morning, traveling through scenic southern Kenya to Amboseli National Park. Arrive at Oltukai Lodge for lunch. In the afternoon, embark on a game drive with excellent opportunities to photograph elephants, lions, zebras, and giraffes against the stunning backdrop of Mount Kilimanjaro. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "Oltukai Lodge",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "VIP Airport Meet & Greet",
-          "Welcome Dinner",
-          "Safari Briefing"
-        ]
+          "Afternoon game drive with Mount Kilimanjaro views",
+          "Elephant, lion, zebra, and giraffe sightings"
+        ],
+        "image": "/images/catalog/sundowner-at-amboseli.jpg"
       },
       {
         "day": 2,
-        "title": "Nairobi to Samburu National Reserve",
-        "subtitle": "Northern Wilderness & Ewaso Nyiro River",
-        "description": "Depart north passing Mount Kenya into the arid beauty of Samburu. Afternoon game drive tracking the Samburu Special 5 species.",
-        "accommodation": "Elephant Bedroom Camp / Saruni Samburu",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser with pop-up roof",
+        "title": "Full Day in Amboseli National Park",
+        "subtitle": "Overnight at Oltukai Lodge",
+        "description": "Spend a full day exploring Amboseli's diverse habitats. Morning and afternoon game drives take you to swamps, plains, and acacia forests, where you'll encounter large elephant herds, cheetahs, hyenas, and other wildlife. Enjoy a picnic lunch in the park. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "Oltukai Lodge",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser for full-day game drives",
         "activities": [
-          "Scenic drive through Central Highlands",
-          "Afternoon Samburu Special 5 Game Drive"
-        ]
+          "Morning and afternoon game drives",
+          "Picnic lunch in the park"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli.jpg"
       },
       {
         "day": 3,
-        "title": "Full Day in Samburu & Cultural Immersion",
-        "subtitle": "Rare Wildlife & Samburu Heritage",
-        "description": "Morning and afternoon game drives. Spot Reticulated giraffes, Grevy's zebras, and leopards resting in acacia trees. Visit a local Samburu cultural village.",
-        "accommodation": "Elephant Bedroom Camp",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Amboseli – Lake Naivasha",
+        "subtitle": "Overnight at Naivasha Simba Lodge",
+        "description": "After breakfast, drive northwest to Lake Naivasha. Arrive at Naivasha Simba Lodge for lunch. In the afternoon, enjoy an optional boat safari on the lake to spot hippos, birdlife, and papyrus islands. Dinner and overnight at the lodge.",
+        "accommodation": "Naivasha Simba Lodge",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Morning Game Drive",
-          "Authentic Samburu Village Visit",
-          "Sundowner by the Ewaso Nyiro River"
-        ]
+          "Optional boat safari on Lake Naivasha",
+          "Hippo and birdlife spotting"
+        ],
+        "image": "/images/catalog/lake-naivasha.jpg"
       },
       {
         "day": 4,
-        "title": "Samburu to Lake Nakuru National Park",
-        "subtitle": "Rhino Sanctuary & Birdlife",
-        "description": "Descend into the Great Rift Valley to Lake Nakuru. Afternoon game drive seeking white and black rhinos, tree-climbing lions, and Rothschild giraffes.",
-        "accommodation": "Sarova Lion Hill Game Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Lake Naivasha – Lake Nakuru",
+        "subtitle": "Overnight at The Cliff",
+        "description": "Travel to Lake Nakuru National Park after breakfast. Arrive in time for lunch at The Cliff. Afternoon game drive explores the park's flamingo-filled shores, black and white rhinos, Rothschild giraffes, and lions. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "The Cliff",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Rift Valley Viewpoint Stop",
-          "Rhino Sanctuary Game Drive"
-        ]
+          "Flamingo shoreline game drive",
+          "Black and white rhino tracking"
+        ],
+        "image": "/images/catalog/pink-flamingo-lake-nakuru.jpg"
       },
       {
         "day": 5,
-        "title": "Lake Nakuru to Maasai Mara National Reserve",
-        "subtitle": "Into the World's Premier Wildlife Sanctuary",
-        "description": "Journey into the Maasai Mara savannah. Arrive in time for an exhilarating late afternoon game drive across the golden grasslands.",
-        "accommodation": "Mara Serena Safari Lodge / Ashnil Mara Camp",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Lake Nakuru – Masai Mara",
+        "subtitle": "Overnight at Mara Maisha Camp",
+        "description": "Drive to Masai Mara National Reserve after breakfast. Arrive at Mara Maisha Camp for lunch. Afternoon game drive offers your first chance to spot the Big Five. Return to camp for dinner.",
+        "accommodation": "Mara Maisha Camp",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Afternoon Big Cat Game Drive",
-          "Campfire Stargazing"
-        ]
+          "First Big Five game drive in the Mara"
+        ],
+        "image": "/images/catalog/mara-wildebeest.jpg"
       },
       {
         "day": 6,
-        "title": "Full Day Maasai Mara & Mara River Excursion",
-        "subtitle": "Predator Action & Migration Crossings",
-        "description": "Spend an unforgettable full day traversing the Mara plains. Picnic lunch in the bush beside the Mara River watching hippos and Nile crocodiles.",
-        "accommodation": "Mara Serena Safari Lodge / Ashnil Mara Camp",
-        "meals": "Breakfast, Picnic Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Masai Mara Full Day",
+        "subtitle": "Overnight at Mara Maisha Camp",
+        "description": "Enjoy a full-day safari in Masai Mara with morning and afternoon game drives. Optional hot air balloon safari can be arranged for an early morning adventure the next day. Return to camp for full-board meals and overnight stay.",
+        "accommodation": "Mara Maisha Camp",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Full Day Game Drive",
-          "Bush Picnic by Mara River",
-          "Big 5 Tracking"
-        ]
+          "Full-day Mara game drives",
+          "Optional hot air balloon safari booking"
+        ],
+        "image": "/images/catalog/lioness-mara.jpg"
       },
       {
         "day": 7,
-        "title": "Maasai Mara to Lake Victoria / Speke Bay",
-        "subtitle": "Cross-Border Journey into Tanzania",
-        "description": "Morning transfer to the Isebania border with smooth assisted customs clearance. Proceed to the shores of Lake Victoria for a peaceful afternoon.",
-        "accommodation": "Speke Bay Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Private 4x4 Safari Land Cruiser",
+        "title": "Masai Mara Full Day – Hot Air Balloon Safari",
+        "subtitle": "Overnight at Mara Maisha Camp",
+        "description": "Morning hot air balloon safari over the Masai Mara plains with a champagne breakfast upon landing. Afternoon game drive allows further exploration of the Mara ecosystem. Sundowners in the savannah before returning to the camp for dinner and overnight.",
+        "accommodation": "Mara Maisha Camp",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Border crossing assistance",
-          "Lake Victoria sunset cruise"
-        ]
+          "Hot air balloon safari with champagne breakfast",
+          "Sundowners in the savannah"
+        ],
+        "image": "/images/catalog/mara-wildebeest-balloon.jpg"
       },
       {
         "day": 8,
-        "title": "Lake Victoria to Serengeti National Park",
-        "subtitle": "Western Corridor & Central Serengeti",
-        "description": "Enter the vast Serengeti plains through Ndabaka gate. Game drive en route through the Western Corridor into Seronera central valley.",
-        "accommodation": "Four Seasons Safari Lodge / Kubu Kubu Tented Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Masai Mara – Serengeti",
+        "subtitle": "Overnight at Serengeti Pioneer Camp",
+        "description": "Drive south into Tanzania's Serengeti National Park. Arrive at Serengeti Pioneer Camp for lunch. Afternoon game drive explores the Serengeti plains, tracking lions, cheetahs, elephants, and other wildlife. Dinner and overnight at the camp.",
+        "accommodation": "Serengeti Pioneer Camp",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Grumeti River Game Drive",
-          "Central Serengeti Predator Patrol"
-        ]
+          "Cross-border drive into Tanzania",
+          "Serengeti plains game drive"
+        ],
+        "image": "/images/catalog/serengeti22.jpg"
       },
       {
         "day": 9,
-        "title": "Full Day Serengeti Exploration",
-        "subtitle": "Endless Plains & Pride of Lions",
-        "description": "Full day game tracking across the Seronera Valley and rocky Kopjes where cheetahs and leopards scout for prey.",
-        "accommodation": "Four Seasons Safari Lodge / Kubu Kubu Tented Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Full Day Serengeti",
+        "subtitle": "Overnight at Serengeti Pioneer Camp",
+        "description": "Spend a full day on game drives in the Serengeti, exploring different areas of the park. Picnic lunch in the bush or lunch at camp. Photograph predator-rich landscapes and vast herds of wildebeest and zebras. Dinner and overnight at the camp.",
+        "accommodation": "Serengeti Pioneer Camp",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser for full-day game drives",
         "activities": [
-          "Optional Sunrise Hot Air Balloon Safari",
-          "All-day Serengeti Game Drive"
-        ]
+          "Full-day Serengeti game drives",
+          "Wildebeest and zebra herd photography"
+        ],
+        "image": "/images/catalog/serengeti-safaris5.jpg"
       },
       {
         "day": 10,
-        "title": "Serengeti to Ngorongoro Conservation Area",
-        "subtitle": "Olduvai Gorge & Caldera Rim",
-        "description": "Morning game drive in Serengeti. Stop at Olduvai Gorge, the cradle of mankind, before ascending to the breathtaking rim of Ngorongoro Crater.",
-        "accommodation": "Ngorongoro Serena Safari Lodge / Ngorongoro Crater Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Serengeti – Ngorongoro Crater",
+        "subtitle": "Overnight at The Manor Ngorongoro",
+        "description": "After breakfast, drive to Ngorongoro Conservation Area. Arrive at The Manor Ngorongoro for lunch. Optional late afternoon visit to the crater rim for views of the crater floor. Dinner and overnight at the lodge.",
+        "accommodation": "The Manor Ngorongoro",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Olduvai Gorge Museum Visit",
-          "Crater Rim Sunset Viewing"
-        ]
+          "Optional crater rim viewpoint visit"
+        ],
+        "image": "/images/catalog/ngorongoro-crater6.jpg"
       },
       {
         "day": 11,
-        "title": "Ngorongoro Crater Floor Safari",
-        "subtitle": "Big 5 in Africa's Lost World",
-        "description": "Descend 600 meters to the caldera floor for a 6-hour safari. Spot black rhinos, massive bull tuskers, and flamingoes at Lake Magadi.",
-        "accommodation": "Ngorongoro Serena Safari Lodge",
-        "meals": "Breakfast, Picnic Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Full Day Ngorongoro Crater",
+        "subtitle": "Overnight at The Manor Ngorongoro",
+        "description": "Early morning descent into Ngorongoro Crater for a full-day safari. Track black rhinos, lions, elephants, and flamingos across the crater floor. Picnic lunch in the crater. Return to lodge for dinner and overnight stay.",
+        "accommodation": "The Manor Ngorongoro",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser (crater descent & game drives)",
         "activities": [
-          "Crater Floor Game Drive",
-          "Picnic at Ngoitokitok Springs"
-        ]
+          "Full-day crater floor safari",
+          "Black rhino tracking"
+        ],
+        "image": "/images/catalog/ngorongoro-crater-tanzania.jpg"
       },
       {
         "day": 12,
-        "title": "Ngorongoro to Amboseli National Park",
-        "subtitle": "Re-entering Kenya beneath Kilimanjaro",
-        "description": "Drive through Arusha and Namanga border to Amboseli National Park in Kenya. Marvel at the sheer majesty of Mount Kilimanjaro.",
-        "accommodation": "Ol Tukai Lodge / Amboseli Serena Safari Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Ngorongoro – Tarangire",
+        "subtitle": "Overnight at Tarangire Treetops",
+        "description": "Drive to Tarangire National Park after breakfast. Afternoon game drive explores the park's elephant herds and baobab-studded plains. Dinner and overnight at Tarangire Treetops.",
+        "accommodation": "Tarangire Treetops",
+        "meals": "Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser",
         "activities": [
-          "Cross-border transfer",
-          "Afternoon Elephant Herd Safari"
-        ]
+          "Baobab-studded plains game drive",
+          "Elephant herd sightings"
+        ],
+        "image": "/images/catalog/elephants-tarangire.jpg"
       },
       {
         "day": 13,
-        "title": "Full Day Amboseli Wildlife Safari",
-        "subtitle": "Observation Hill & Giant Tusker Herds",
-        "description": "Marvel at hundreds of elephants wading through the Enkongo Narok swamps. Climb Observation Hill for panoramic views of Kilimanjaro.",
-        "accommodation": "Ol Tukai Lodge / Amboseli Serena Safari Lodge",
-        "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Full Day Tarangire",
+        "subtitle": "Overnight at Tarangire Treetops",
+        "description": "Spend a full day on safari in Tarangire, enjoying morning and afternoon drives. Spot wildlife including lions, elephants, giraffes, and diverse bird species. Picnic lunch in the park. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "Tarangire Treetops",
+        "meals": "Breakfast, Lunch & Dinner",
+        "transport": "Private 4x4 Land Cruiser for full-day game drives",
         "activities": [
-          "Sunrise Kilimanjaro Photography",
-          "Swamp Elephant Watching",
-          "Observation Hill Hike"
-        ]
+          "Full-day Tarangire game drives",
+          "Birdwatching"
+        ],
+        "image": "/images/catalog/tarangire-elephants.jpg"
       },
       {
         "day": 14,
-        "title": "Amboseli to Nairobi / Departure",
-        "subtitle": "Farewell Africa",
-        "description": "Final early morning game drive in Amboseli. Hearty breakfast before driving back to Nairobi for a farewell lunch at Carnivore Restaurant and airport drop-off.",
-        "accommodation": "Day Room / Departure Flight",
-        "meals": "Breakfast, Farewell Lunch Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Tarangire – Nairobi (Departure)",
+        "subtitle": "Departure day",
+        "description": "After breakfast, drive back to Nairobi. Arrive in time for a private transfer to Jomo Kenyatta International Airport for departure. End of safari.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "Private 4x4 Land Cruiser to Nairobi",
         "activities": [
-          "Morning Game Drive",
-          "Farewell Lunch in Nairobi",
-          "Airport Transfer"
-        ]
+          "Private airport transfer to Jomo Kenyatta International Airport"
+        ],
+        "image": "/images/catalog/baobab-tarangire.jpg"
       }
     ],
-    "accommodationSummary": "Premier 4-star & 5-star luxury safari lodges and tented camps throughout.",
-    "mealsSummary": "All meals included during safari (Full Board) + Selected Welcome & Farewell Dinners.",
+    "accommodationSummary": "Full-board accommodation in premium lodges and tented camps throughout, unless listed as an upgrade.",
+    "mealsSummary": "Meals as specified in the day-by-day itinerary (breakfast, lunch, and dinner on full days).",
     "includedActivities": [
-      "All park conservation & concession fees for Kenya and Tanzania",
-      "Unlimited game drives in customized 4x4 Land Cruiser with pop-up roof",
-      "Dedicated professional English-speaking safari guide / driver",
-      "Ngorongoro Crater descent vehicle fee",
-      "Samburu cultural village entry",
-      "Complimentary bottled mineral water throughout",
-      "Olduvai Gorge historical museum tour",
-      "All government taxes and VAT"
+      "Elephants with Mount Kilimanjaro backdrop in Amboseli",
+      "Scenic boat safari at Lake Naivasha",
+      "Rhinos and flamingos at Lake Nakuru",
+      "Big Five game drives in Masai Mara and Serengeti",
+      "Hot air balloon safari in Masai Mara",
+      "Ngorongoro Crater wildlife and dramatic landscapes",
+      "Baobab-studded Tarangire National Park"
     ],
     "includedServices": [
-      "24/7 Concierge & Operations Support",
-      "Emergency AMREF Flying Doctors Medical Evacuation Cover",
-      "Airport pick-up and drop-off"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)",
+      "All flights during the tour"
     ],
     "exclusions": [
-      "International flights to/from East Africa",
-      "Tanzania and Kenya entry e-Visas",
-      "Hot Air Balloon Safari (optional $550/person)",
-      "Gratuities for safari driver-guides and lodge staff",
-      "Travel insurance",
-      "Alcoholic & premium beverages unless specified"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Passport must have at least 6 months validity.",
-      "Yellow fever vaccination certificate is required for border crossing between Kenya and Tanzania.",
-      "Luggage is restricted to 15-20 kg in soft duffel bags."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Children of all ages welcome. Special child discounts available for ages 3-11 sharing with adults.",
-    "startingDates": "Weekly Guaranteed Departures & Private Custom Dates Daily",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
     "isKenyanResidentPackage": false,
     "seo": {
-      "title": "14-Day Ultimate Kenya & Tanzania Safari | Good Secrets Safaris",
-      "description": "Book the 14-day ultimate Kenya and Tanzania safari package covering Maasai Mara, Serengeti, Amboseli, and Ngorongoro with luxury lodges.",
-      "keywords": [
-        "14 day safari kenya tanzania",
-        "ultimate east africa safari",
-        "serengeti masai mara tour"
-      ]
+      "title": "14-Day Ultimate Kenya & Tanzania Safari Experience - Good Secrets Safaris",
+      "description": "Discover the ultimate East African adventure on this 14-Day Ultimate Kenya & Tanzania Safari Experience, combining iconic wildlife destinations with breathtaking landscapes and unforgettable experiences."
     },
+    "published": true,
     "createdAt": "2026-01-10T08:00:00Z",
-    "updatedAt": "2026-08-15T12:00:00Z"
+    "updatedAt": "2026-03-09T11:25:40+03:00"
   },
   {
     "id": "tour-3-day-amboseli-kilimanjaro-views",
-    "title": "3-Day Amboseli Safari & Kilimanjaro Views",
+    "title": "3-Day Amboseli Safari & Kilimanjaro Views Budget Adventure",
     "slug": "3-day-amboseli-safari-kilimanjaro-views",
-    "shortDescription": "Experience intimate elephant encounters and iconic panoramic views of Mount Kilimanjaro in Africa's premier elephant sanctuary.",
-    "fullDescription": "Journey from Nairobi into the dramatic plains of Amboseli National Park. Witness hundreds of free-ranging elephants grazing across lush swamp ecosystems directly beneath snow-capped Mount Kilimanjaro, with comfortable accommodation and private 4x4 game drives.",
+    "shortDescription": "Embark on a 3-Day Budget Amboseli Safari in Kenya with a 4x4 Land Cruiser, pop-up roof game drives, and up-close encounters with elephants. Witness Mount Kilimanjaro, lions, and giraffes.",
+    "fullDescription": "This 3-Day Amboseli Elephant Encounters & Kilimanjaro Budget Safari is designed for travelers seeking affordable yet immersive wildlife experiences. Explore Amboseli National Park, famous for its large elephant herds, panoramic views of Mount Kilimanjaro, and open plains teeming with wildlife. Travel in a 4x4 Safari Land Cruiser with a pop-up roof, ideal for wildlife spotting and photography. Stay in budget-friendly lodges or tented camps, offering comfort without compromising your safari experience. Perfect for solo travelers, couples, or small groups, this short safari delivers the core Amboseli adventure while keeping costs reasonable.",
     "country": "Kenya",
     "destinations": [
       "Amboseli National Park"
@@ -340,22 +346,18 @@
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Wildlife Safari",
-      "Photography",
-      "Short Safaris"
+      "Budget Safari",
+      "Elephant Encounters"
     ],
     "travelStyles": [
-      "Big 5",
-      "Family",
-      "Senior Friendly",
-      "Midrange"
+      "Budget",
+      "Photography"
     ],
-    "comfortLevel": "Midrange",
+    "comfortLevel": "Budget",
     "travelerTypes": [
-      "Couples",
-      "Families",
       "Solo",
-      "Seniors"
+      "Couples",
+      "Families"
     ],
     "featured": true,
     "popular": true,
@@ -364,134 +366,135 @@
     "currency": "USD",
     "soloPrice": 1236,
     "sharingPrice": 747,
-    "residentPriceKES": 48500,
     "seasonalPricing": [
       {
-        "id": "sp-amb-jan-jun",
-        "name": "January – June (Standard Season)",
+        "id": "sp-3day-amboseli-budget-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
         "soloPrice": 1236,
         "sharingPrice": 747,
-        "residentPriceKES": 48500,
-        "currency": "USD",
-        "notes": "Great photography, calm season, lush plains"
+        "currency": "USD"
       },
       {
-        "id": "sp-amb-jul-oct",
-        "name": "July – October (Peak Season)",
+        "id": "sp-3day-amboseli-budget-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
         "soloPrice": 1263,
         "sharingPrice": 759,
-        "residentPriceKES": 52000,
-        "currency": "USD",
-        "notes": "Peak dry season with maximum elephant concentration around waterholes"
+        "currency": "USD"
       },
       {
-        "id": "sp-amb-nov-dec20",
-        "name": "November 1 – December 20",
+        "id": "sp-3day-amboseli-budget-novDec",
+        "name": "1 November - 20 December",
         "startDate": "11-01",
         "endDate": "12-20",
         "soloPrice": 1236,
         "sharingPrice": 747,
-        "residentPriceKES": 48500,
         "currency": "USD"
       },
       {
-        "id": "sp-amb-festive",
-        "name": "December 21 – January 3 (Festive Peak)",
+        "id": "sp-3day-amboseli-budget-festive",
+        "name": "21 December - 3 January",
         "startDate": "12-21",
         "endDate": "01-03",
         "soloPrice": 1263,
         "sharingPrice": 759,
-        "residentPriceKES": 54000,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/elephants-in-amboseli-np-game-drive.jpg",
+      "/images/catalog/elephant-1.jpg",
+      "/images/catalog/2-wildebeests-fighting.jpg",
+      "/images/catalog/governorscampcollection-1751458623830.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Amboseli & Afternoon Game Drive",
-        "subtitle": "Kilimanjaro Welcomes You",
-        "description": "Depart early from Nairobi through the Athi plains to Amboseli National Park. Arrive at your lodge for lunch, followed by an afternoon game drive watching elephant herds trek to the swamp.",
-        "accommodation": "Amboseli Sopa Lodge / AA Lodge Amboseli",
-        "meals": "Lunch, Dinner Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Nairobi → Amboseli | Afternoon Game Drive",
+        "subtitle": "Overnight at Little Amanya Camp",
+        "description": "Your safari begins early in Nairobi as you depart for Amboseli, a 4-5 hour scenic drive through open countryside and Maasai settlements. Upon arrival, check into your budget lodge, refresh, and enjoy lunch with views of Mount Kilimanjaro rising in the distance. In the afternoon, head out for your first game drive inside Amboseli National Park, spotting elephants, lions, giraffes, cheetahs, and countless birds. Return to your lodge for dinner and a relaxed evening.",
+        "accommodation": "Little Amanya Camp",
+        "meals": "Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Scenic drive",
-          "Afternoon Elephant Game Drive",
-          "Sunset Drinks"
-        ]
+          "Scenic drive through Maasai country",
+          "Afternoon game drive with Kilimanjaro sunset views"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np.jpg"
       },
       {
         "day": 2,
-        "title": "Full Day Amboseli Safari with Observation Hill",
-        "subtitle": "Swamps, Predators & Snow-Capped Peaks",
-        "description": "Enjoy early morning game drive when Kilimanjaro is most visible. Ascend Observation Hill for a panoramic view of herds submerged in water lilies. Afternoon game drive tracking lions and cheetahs.",
-        "accommodation": "Amboseli Sopa Lodge / AA Lodge Amboseli",
+        "title": "Full Day in Amboseli | Big Elephants & Kilimanjaro Views",
+        "subtitle": "Overnight at Little Amanya Camp",
+        "description": "Start your day with a sunrise game drive, the best time to see predators on the move and catch the early morning light illuminating the snow-capped peak of Kilimanjaro. Watch elephant families trek across the plains, sometimes walking right beside your vehicle. Return to your lodge for breakfast and relaxation time. In the afternoon, head back into the park for another game drive, exploring the swamp areas that attract hippos, buffalo, and abundant birdlife, and search for lions, cheetahs, and hyenas.",
+        "accommodation": "Little Amanya Camp",
         "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser",
         "activities": [
-          "Morning Kilimanjaro Photography",
-          "Observation Hill Lookout",
-          "Evening Game Drive"
-        ]
+          "Sunrise game drive with Kilimanjaro views",
+          "Afternoon swamp-area game drive"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np-game-drive.jpg"
       },
       {
         "day": 3,
-        "title": "Amboseli Morning Safari & Return to Nairobi",
-        "subtitle": "Final Wildlife Memories",
-        "description": "Final early morning game drive. Hearty breakfast before checking out and driving comfortably back to Nairobi, arriving in the afternoon.",
-        "accommodation": "Nairobi Hotel or Airport Drop-off",
-        "meals": "Breakfast Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Amboseli → Nairobi | Morning Game Drive & Departure",
+        "subtitle": "Departure day",
+        "description": "Enjoy a final early morning game drive before leaving the park, capturing your final photographs of wildlife framed against Mount Kilimanjaro. After breakfast, begin your 4-5 hour drive back to Nairobi, arriving in the afternoon for drop-off.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Morning Game Drive",
-          "Nairobi drop-off"
-        ]
+          "Final morning game drive"
+        ],
+        "image": "/images/catalog/nairobi-city-1.jpg"
       }
     ],
-    "accommodationSummary": "Comfortable safari lodge with swimming pool and Kilimanjaro viewing deck.",
-    "mealsSummary": "Full board meal plan (Breakfast, Lunch, Dinner).",
+    "accommodationSummary": "Comfortable budget lodges and tented camps.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Park entrance fees for Amboseli National Park",
-      "Game drives in 4x4 Land Cruiser with pop-up roof",
-      "Professional English-speaking driver/guide",
-      "Drinking water in safari vehicle"
+      "Close encounters with large elephant herds",
+      "Stunning views of Mount Kilimanjaro",
+      "Private 4x4 Land Cruiser with pop-up roof",
+      "Sunrise and sunset game drives",
+      "Scenic drive through Maasai country"
     ],
     "includedServices": [
-      "Airport / Hotel pickup and drop-off in Nairobi",
-      "All Government taxes"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips and gratuities",
-      "Personal expenses",
-      "Optional Maasai village visit ($30/person)"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Ideal for all age groups including seniors and children.",
-      "Warm clothing advised for early morning drives."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Children below 3 years free; 3-11 years pay 50% sharing with 2 adults.",
-    "startingDates": "Daily Departures (Year-Round)",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "3-Day Amboseli Safari & Kilimanjaro Views | Good Secrets Safaris",
-      "description": "Book our popular 3-day Amboseli safari starting from $747 with seasonal pricing, solo and sharing rates.",
-      "keywords": [
-        "3 day amboseli safari",
-        "amboseli kilimanjaro tour",
-        "kenya elephant safari"
-      ]
+      "title": "3-Day Amboseli Safari & Kilimanjaro Views Budget Adventure - Good Secrets Safaris",
+      "description": "Embark on a 3-Day Budget Amboseli Safari in Kenya with a 4x4 Land Cruiser, witnessing Mount Kilimanjaro, elephants, lions, and giraffes."
     },
+    "published": true,
     "createdAt": "2026-01-15T09:00:00Z",
-    "updatedAt": "2026-08-15T10:00:00Z"
+    "updatedAt": "2025-12-08T11:22:57+03:00"
   },
   {
     "id": "tour-3-day-masai-mara-luxury-migration",
@@ -641,328 +644,403 @@
   },
   {
     "id": "tour-1-day-nairobi-wildlife-culture",
-    "title": "1-Day Nairobi Wildlife & Cultural Discovery Safari",
+    "title": "1-Day Nairobi Wildlife & Cultural Discovery Safari Tour in the City",
     "slug": "1-day-nairobi-wildlife-cultural-discovery",
-    "shortDescription": "Encounter baby elephants at Sheldrick Wildlife Trust, hand-feed Rothschild giraffes, and enjoy a game drive in Nairobi National Park.",
-    "fullDescription": "Make the most of your time in Kenya's capital with this full-day adventure. Start with an early morning game drive in Nairobi National Park with city skyscrapers in the background, visit the world-famous David Sheldrick Elephant Orphanage during the 11 AM public feeding, feed endangered giraffes at the Giraffe Centre, and experience traditional dances at Bomas of Kenya.",
+    "shortDescription": "Explore Nairobi's wildlife and culture on this 1-Day Nairobi Tour. Visit Nairobi National Park, David Sheldrick Elephant Orphanage, Giraffe Center, and optional Masai Market, traveling in a comfortable 4x4 safari van with pop-up roof.",
+    "fullDescription": "This 1-Day Nairobi Tour offers a perfect combination of wildlife, culture, and city adventure for travelers with limited time. Start your day early at Nairobi National Park, where lions, giraffes, rhinos, and zebras roam against the backdrop of the city skyline. Continue to the David Sheldrick Elephant Orphanage to witness the daily elephant feeding and learn about vital conservation efforts. Enjoy lunch at a choice of Nairobi's iconic restaurants, Carnivore or Talisman, before visiting the Giraffe Center, where you can feed Rothschild giraffes and take incredible photos. For a cultural experience, optionally explore a Masai Market before returning to your drop-off point. Travel in a 4x4 Safari Van with a pop-up roof, ensuring comfort and excellent views throughout the day. Perfect for solo travelers, families, or short-stay tourists seeking both wildlife and Kenyan culture in a single day.",
     "country": "Kenya",
     "destinations": [
-      "Nairobi City & Wildlife"
+      "Nairobi National Park",
+      "David Sheldrick Elephant Orphanage",
+      "Giraffe Center"
     ],
     "durationDays": 1,
-    "durationLabel": "1 Day / Full Day",
+    "durationLabel": "1 Day",
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Day Tours",
-      "Family Friendly",
-      "Culture"
+      "Day Trip",
+      "Wildlife & Culture"
     ],
     "travelStyles": [
-      "Family",
-      "Senior Friendly",
-      "Budget",
-      "Cultural Encounters"
+      "Cultural Encounters",
+      "Budget"
     ],
-    "comfortLevel": "Midrange",
+    "comfortLevel": "Budget",
     "travelerTypes": [
       "Solo",
       "Couples",
       "Families",
-      "Seniors",
-      "Groups"
+      "Seniors"
     ],
     "featured": true,
     "popular": true,
     "recommended": false,
     "priceFrom": 253,
     "currency": "USD",
-    "soloPrice": 380,
+    "soloPrice": 414,
     "sharingPrice": 253,
-    "residentPriceKES": 14500,
     "seasonalPricing": [
       {
-        "id": "sp-nbo-1",
-        "name": "Year-Round Standard",
+        "id": "sp-1day-nairobi-yearround",
+        "name": "January - December",
         "startDate": "01-01",
         "endDate": "12-31",
-        "soloPrice": 380,
+        "soloPrice": 414,
         "sharingPrice": 253,
-        "currency": "USD"
+        "currency": "USD",
+        "notes": "Same rate year-round"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/20250731-160955-scaled.jpg",
+      "/images/catalog/nairobi-national-park-zebras.jpg",
+      "/images/catalog/gazzelles-in-nairobi-national-park.jpg",
+      "/images/catalog/elephants-feeding-time-at-the-david-sheldriks-animal-orphanage.jpg",
+      "/images/catalog/kikinetworktraveladventures-1750926887236.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Full Day Nairobi Safari & Cultural Circuit",
-        "subtitle": "Park, Elephants, Giraffes & Swahili Culture",
-        "description": "6:30 AM pickup for a morning game drive in Nairobi National Park. 11:00 AM visit to Sheldrick Elephant Orphanage. Lunch at the Karen Blixen Coffee Garden. Afternoon at Giraffe Centre followed by Bomas of Kenya cultural performances.",
-        "accommodation": "Not Applicable (Day Tour)",
-        "meals": "Lunch Included at Tamambo Karen Blixen",
-        "transport": "Private Safari Minivan / 4x4 Land Cruiser",
+        "title": "Nairobi National Park → David Sheldrick → Giraffe Center → Masai Market",
+        "subtitle": "Full day city wildlife & culture circuit",
+        "description": "6:00 AM – Depart early in a 4x4 Safari Van with a pop-up roof and enter Nairobi National Park for a 4.5-hour game drive, spotting lions, giraffes, zebras, buffalo, and rhinos against the backdrop of Nairobi's skyline. 11:00 AM – Head to the David Sheldrick Elephant Orphanage to witness the daily elephant feeding and mud bath (approx. 1 hour). 12:30 PM – Optional lunch at Carnivore or Talisman restaurant. 2:00 PM – Visit the Giraffe Center to hand-feed Rothschild giraffes. Optionally stop at a Masai Market for handcrafted souvenirs before a 4:00 PM drop-off at your hotel or the airport.",
+        "accommodation": "",
+        "meals": "Optional Lunch",
+        "transport": "4x4 Safari Van with pop-up roof",
         "activities": [
-          "Nairobi National Park Safari",
-          "Sheldrick Elephant Feeding",
-          "Giraffe Centre visit",
-          "Bomas of Kenya Dances"
-        ]
+          "4.5-hour game drive in Nairobi National Park",
+          "David Sheldrick Elephant Orphanage feeding & mud bath",
+          "Hand-feeding giraffes at the Giraffe Center",
+          "Optional Masai Market cultural stop"
+        ],
+        "image": "/images/catalog/zebra-in-nairobi-national-park.jpg"
       }
     ],
-    "accommodationSummary": "Day excursion (accommodation not included).",
-    "mealsSummary": "Lunch included at a scenic Karen restaurant.",
+    "accommodationSummary": "No accommodation - this is a single-day tour.",
+    "mealsSummary": "Optional lunch at Carnivore or Talisman restaurant; drinking water included.",
     "includedActivities": [
-      "Nairobi National Park entry fee",
-      "Sheldrick Elephant Orphanage donation entry",
-      "Giraffe Centre admission",
-      "Bomas of Kenya ticket",
-      "Private vehicle with professional guide"
+      "Early morning game drive at Nairobi National Park with city skyline backdrop",
+      "Visit David Sheldrick Elephant Orphanage to see rescued baby elephants",
+      "Optional lunch at Carnivore or Talisman Restaurant",
+      "Interactive visit at the Giraffe Center, feeding Rothschild giraffes",
+      "Optional stop at a Masai Market for souvenirs and cultural items",
+      "Travel comfortably in a 4x4 Safari Van with pop-up roof"
     ],
     "includedServices": [
-      "Door-to-door hotel / airport pickup in Nairobi",
-      "Bottled water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Alcoholic drinks"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Sheldrick Elephant visit requires advance booking as slots are strictly limited."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free.",
+      "Availability is limited - book early for a seamless day trip.",
+      "The itinerary can be tailored with optional activities like the Karen Blixen Museum."
     ],
-    "childrenPolicy": "Highly recommended for children of all ages.",
-    "startingDates": "Daily Departures (Year-Round)",
-    "bookingAvailability": "Available",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
+    "bookingAvailability": "Limited Seats",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "1-Day Nairobi Wildlife & Elephant Orphanage Tour | Good Secrets Safaris",
-      "description": "Book Nairobi full-day tour with elephant orphanage, Giraffe Centre, and Nairobi National Park starting from $253."
+      "title": "1-Day Nairobi Wildlife & Cultural Discovery Safari Tour - Good Secrets Safaris",
+      "description": "Explore Nairobi's wildlife and culture on this 1-Day Nairobi Tour. Visit Nairobi National Park, David Sheldrick Elephant Orphanage, Giraffe Center, and optional Masai Market."
     },
+    "published": true,
     "createdAt": "2026-01-20T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-10T14:22:29+03:00"
   },
   {
     "id": "tour-1-day-lake-nakuru-naivasha",
-    "title": "1-Day Lake Nakuru & Lake Naivasha Adventure",
+    "title": "1-Day Lake Nakuru & Lake Naivasha Wildlife & Scenic Adventure Day Trip",
     "slug": "1-day-lake-nakuru-lake-naivasha-adventure",
-    "shortDescription": "An exhilarating day trip from Nairobi featuring rhino sanctuaries, millions of pelicans, a boat ride on Lake Naivasha, and walking among zebras.",
-    "fullDescription": "Escape Nairobi for a day in the Great Rift Valley. Search for black and white rhinos at Lake Nakuru National Park, then take a boat safari on fresh-water Lake Naivasha to Crescent Island for a rare guided walking safari among zebras, giraffes, and wildebeest without predators.",
+    "shortDescription": "Experience Kenya's Rift Valley in one day on a Lake Nakuru and Naivasha Day Trip from Nairobi. Enjoy wildlife spotting, flamingos, boat rides, and guided nature walks in a 4x4 safari van with a pop-up roof.",
+    "fullDescription": "This 1-Day Lake Nakuru and Lake Naivasha Day Trip is perfect for travelers who want a quick yet immersive glimpse of Kenya's Rift Valley wildlife and scenic lakes. Explore Lake Nakuru National Park, home to flamingos, rhinos, and lions, before heading to Lake Naivasha, where a tranquil boat ride and nature walk immerse you in Kenya's natural beauty. Travel comfortably in a 4x4 Safari Van with a pop-up roof, ideal for wildlife viewing and photography. This day trip blends adventure, wildlife, and serene landscapes, making it ideal for nature lovers, photographers, or travelers with limited time who still want an authentic safari experience.",
     "country": "Kenya",
     "destinations": [
-      "Lake Nakuru & Lake Naivasha"
+      "Lake Nakuru National Park",
+      "Lake Naivasha"
     ],
     "durationDays": 1,
-    "durationLabel": "1 Day / Full Day",
+    "durationLabel": "1 Day",
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Day Tours",
-      "Family Friendly",
-      "Walking Safari"
+      "Day Trip",
+      "Rift Valley Lakes"
     ],
     "travelStyles": [
-      "Family",
-      "Senior Friendly",
-      "Budget"
+      "Budget",
+      "Photography"
     ],
-    "comfortLevel": "Midrange",
+    "comfortLevel": "Budget",
     "travelerTypes": [
       "Solo",
       "Couples",
       "Families",
-      "Groups"
+      "Seniors"
     ],
     "featured": false,
     "popular": true,
     "recommended": false,
     "priceFrom": 259,
     "currency": "USD",
-    "soloPrice": 395,
+    "soloPrice": 394,
     "sharingPrice": 259,
-    "residentPriceKES": 16500,
     "seasonalPricing": [
       {
-        "id": "sp-nakuru-1",
-        "name": "Year-Round Rate",
+        "id": "sp-1day-nakuru-yearround",
+        "name": "January - December",
         "startDate": "01-01",
         "endDate": "12-31",
-        "soloPrice": 395,
+        "soloPrice": 394,
         "sharingPrice": 259,
-        "currency": "USD"
+        "currency": "USD",
+        "notes": "Same rate year-round"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/governorscampcollection-1751458589032.jpg",
+      "/images/catalog/flamingoes-in-lake-nakuru.jpg",
+      "/images/catalog/boatride-in-lake-naivasha.jpg",
+      "/images/catalog/hippo-in-lake-nakuru-and-naivashaa.jpg",
+      "/images/catalog/cresent-island-in-lake-naivasha.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
         "title": "Nairobi → Lake Nakuru → Lake Naivasha → Nairobi",
-        "subtitle": "Rift Valley Wildlife Blitz",
-        "description": "6:00 AM pickup. Drive to Lake Nakuru for a 3-hour rhino and flamingo game drive. Proceed to Lake Naivasha for lunch, followed by an afternoon boat ride and Crescent Island walking safari. Return to Nairobi by 7:00 PM.",
-        "accommodation": "Not Applicable",
-        "meals": "Lunch Included at Lake Naivasha Country Club",
-        "transport": "Private Safari Minivan / 4x4 Land Cruiser",
+        "subtitle": "Full day Rift Valley lakes circuit",
+        "description": "Depart Nairobi early in a 4x4 Safari Van with a pop-up roof and head to Lake Nakuru National Park (approx. 2-3 hours). Enjoy a morning game drive exploring the park's iconic flamingo-filled lake, rhinos, giraffes, and lions. Continue to Lake Naivasha (approx. 1 hour) for an optional lunch at a lakeside hotel, followed by a boat ride to spot hippos, waterbirds, and scenery. End with a short nature walk in the sanctuary or along Crescent Island, observing giraffes, zebras, and antelopes. Depart for Nairobi by late afternoon (approx. 1.5-2 hours), arriving in time for drop-off.",
+        "accommodation": "",
+        "meals": "Lunch",
+        "transport": "4x4 Safari Van with pop-up roof (total driving ~5-6 hours)",
         "activities": [
-          "Lake Nakuru Rhino Safari",
-          "Lake Naivasha Boat Cruise",
-          "Crescent Island Walking Safari"
-        ]
+          "Morning game drive in Lake Nakuru National Park",
+          "Boat ride on Lake Naivasha with hippos and waterbirds",
+          "Nature walk in the sanctuary or Crescent Island (optional)"
+        ],
+        "image": "/images/catalog/flamingo-flock-in-lake-nakuru-1.jpg"
       }
     ],
-    "accommodationSummary": "Day trip.",
-    "mealsSummary": "Buffet lunch included at Lake Naivasha resort.",
+    "accommodationSummary": "No accommodation - this is a single-day tour.",
+    "mealsSummary": "Optional lunch at a lakeside hotel; drinking water included.",
     "includedActivities": [
-      "Lake Nakuru National Park entry fees",
-      "Lake Naivasha boat ride & Crescent Island entry fee",
-      "Professional safari guide"
+      "Game drives in Lake Nakuru National Park with rhinos, lions, and flamingos",
+      "Scenic views of the Rift Valley and rolling hills",
+      "Boat ride on Lake Naivasha with hippos, waterbirds, and scenic vistas",
+      "Nature walk in the sanctuary or along Crescent Island (optional)",
+      "Travel in a comfortable 4x4 safari van with a pop-up roof"
     ],
     "includedServices": [
-      "Hotel pickup and drop-off in Nairobi",
-      "Mineral water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips and personal items"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Comfortable walking shoes recommended for Crescent Island."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free.",
+      "Availability is limited - book early for a seamless day trip.",
+      "The itinerary can be tailored with optional activities like Crescent Island walks."
     ],
-    "childrenPolicy": "Child-friendly.",
-    "startingDates": "Daily Departures",
-    "bookingAvailability": "Available",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
+    "bookingAvailability": "Limited Seats",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "1-Day Lake Nakuru & Lake Naivasha Tour | Good Secrets Safaris",
-      "description": "Full-day Lake Nakuru & Naivasha safari with boat ride and walking safari from $259."
+      "title": "1-Day Lake Nakuru & Lake Naivasha Wildlife & Scenic Adventure - Good Secrets Safaris",
+      "description": "Experience Kenya's Rift Valley in one day on a Lake Nakuru and Naivasha Day Trip from Nairobi. Enjoy wildlife spotting, flamingos, boat rides, and guided nature walks."
     },
+    "published": true,
     "createdAt": "2026-01-22T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-01T00:00:00.000Z"
   },
   {
     "id": "tour-2-day-masai-mara-lion-encounters",
-    "title": "2-Day Masai Mara Lion Encounters & Endless Savannah Safari",
+    "title": "2-Day Masai Mara Lion Encounters & Endless Savannah Safari Tour",
     "slug": "2-day-masai-mara-lion-encounters",
-    "shortDescription": "A fast-paced overnight safari designed for travelers with limited time who still want the authentic Masai Mara Big Cat experience.",
-    "fullDescription": "Maximize your safari time with this 2-day overnight excursion to the Masai Mara. Enjoy two extensive game drives across premier lion territories, overnight in a tented safari camp, and immerse yourself in the African bush.",
+    "shortDescription": "Experience the magic of the Masai Mara on this immersive 2-Day Big Five Safari from Nairobi. Travel in a 4x4 Safari Land Cruiser, enjoy breathtaking game drives, and explore Kenya's most iconic wildlife reserve.",
+    "fullDescription": "Designed for travelers with a desire for rich wildlife encounters and a deep emotional connection to nature, this 2-Day Masai Mara Safari offers a powerful, time-efficient immersion into Kenya's most celebrated reserve. From sunrise-lit savannahs to thundering hooves of migrating herds, the Mara delivers extraordinary moments within a compact timeframe. Your journey begins and ends in Nairobi, featuring smooth transfers and full game drive experiences aboard a 4x4 Safari Land Cruiser with a pop-up roof - perfect for photography and panoramic viewing. Spend a night in a comfortable lodge or tented camp, surrounded by the sounds of the African wilderness. Ideal for travelers seeking a quick getaway, business trip extension, or first-time safari sample - without compromising on the magic and drama of the Masai Mara.",
     "country": "Kenya",
     "destinations": [
-      "Maasai Mara National Reserve"
+      "Masai Mara National Reserve"
     ],
     "durationDays": 2,
     "durationLabel": "2 Days / 1 Night",
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Short Safaris",
+      "Short Getaway",
       "Big 5 Safari"
     ],
     "travelStyles": [
       "Big 5",
-      "Budget",
-      "Midrange"
+      "Great Migration"
     ],
     "comfortLevel": "Midrange",
     "travelerTypes": [
       "Solo",
       "Couples",
-      "Groups"
+      "Families",
+      "Seniors"
     ],
     "featured": false,
     "popular": true,
     "recommended": false,
     "priceFrom": 612,
     "currency": "USD",
-    "soloPrice": 890,
+    "soloPrice": 995,
     "sharingPrice": 612,
-    "residentPriceKES": 38000,
     "seasonalPricing": [
       {
-        "id": "sp-2mara-std",
-        "name": "Standard Season (Jan - Jun, Nov)",
+        "id": "sp-2day-mara-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
-        "soloPrice": 890,
+        "soloPrice": 995,
         "sharingPrice": 612,
         "currency": "USD"
       },
       {
-        "id": "sp-2mara-peak",
-        "name": "Peak Season (Jul - Oct, Dec)",
+        "id": "sp-2day-mara-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
-        "soloPrice": 990,
-        "sharingPrice": 685,
+        "soloPrice": 1230,
+        "sharingPrice": 813,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-2day-mara-novDec",
+        "name": "1 November - 20 December",
+        "startDate": "11-01",
+        "endDate": "12-20",
+        "soloPrice": 1089,
+        "sharingPrice": 716,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-2day-mara-festive",
+        "name": "21 December - 3 January",
+        "startDate": "12-21",
+        "endDate": "01-03",
+        "soloPrice": 1230,
+        "sharingPrice": 813,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/governorscampcollection-1751458371431.jpg",
+      "/images/catalog/lions-in-masai-mara.jpg",
+      "/images/catalog/elephants.jpg",
+      "/images/catalog/wildebeest-migration.jpg",
+      "/images/catalog/vehicle-next-to-the-great-migration.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Masai Mara & Afternoon Big Cat Drive",
-        "subtitle": "Into the Savannah",
-        "description": "Early morning pickup in Nairobi. Drive through the Great Rift Valley floor to Masai Mara. Check in, lunch, and an extensive afternoon game drive tracking lions and cheetahs until sunset.",
-        "accommodation": "Enkorok Mara Camp / Mara Sopa Lodge",
-        "meals": "Lunch, Dinner Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Nairobi → Masai Mara | Scenic Drive & Afternoon Game Drive",
+        "subtitle": "Overnight at Enkorok Mara Camp",
+        "description": "Your safari begins early with a morning pick-up from your Nairobi hotel or the airport. Settle into your comfortable 4x4 Safari Land Cruiser and travel through the Great Rift Valley, pausing at scenic viewpoints for photos. Arrive at the Masai Mara in time for lunch at your lodge or tented camp. After settling in, embark on an exhilarating afternoon game drive, exploring the sweeping plains where lions stalk, elephants roam, and cheetahs scan the horizon. Return to camp for dinner and an overnight stay.",
+        "accommodation": "Enkorok Mara Camp",
+        "meals": "Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser (5-6 hrs)",
         "activities": [
-          "Rift Valley Viewpoint",
-          "Afternoon Lion Safari"
-        ]
+          "Scenic drive through the Great Rift Valley",
+          "Afternoon Big Five game drive"
+        ],
+        "image": "/images/catalog/elephant-1.jpg"
       },
       {
         "day": 2,
-        "title": "Early Morning Mara Game Drive & Return to Nairobi",
-        "subtitle": "Sunrise on the Plains",
-        "description": "6:30 AM sunrise game drive to spot active predators returning from hunts. Hearty breakfast at camp and return journey to Nairobi arriving late afternoon.",
-        "accommodation": "Departure",
-        "meals": "Breakfast Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Masai Mara → Nairobi | Sunrise Game Drive & Return Journey",
+        "subtitle": "Departure day",
+        "description": "Rise early for a sunrise game drive, when predators are most active and the plains come to life - your chance to spot the Big Five as well as giraffes, zebras, and hundreds of bird species. Return to your lodge for a late breakfast, then begin your drive back to Nairobi with scenic stops along the way. Arrive in the late afternoon for drop-off at your preferred location.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "4x4 Safari Land Cruiser (5-6 hrs)",
         "activities": [
-          "Dawn Game Drive",
-          "Return to Nairobi"
-        ]
+          "Sunrise Big Five game drive",
+          "Scenic return drive to Nairobi"
+        ],
+        "image": "/images/catalog/nairobi-city.jpg"
       }
     ],
-    "accommodationSummary": "Ensuite safari tented camp near the reserve gate.",
-    "mealsSummary": "Lunch, dinner on day 1; breakfast on day 2.",
+    "accommodationSummary": "Comfortable Midrange lodges and tented camps.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Masai Mara park entrance fees",
-      "All game drives in 4x4 Land Cruiser",
-      "Driver/guide"
+      "Big Five sightings in Kenya's most iconic reserve",
+      "Wide-open plains, dramatic sunsets, and unforgettable wildlife action",
+      "Travel in a premium 4x4 Land Cruiser with pop-up roof for the best views",
+      "Opportunity to witness resident herds or seasonal Great Migration movement",
+      "Authentic lodge/tented camp experience in the heart of the Mara"
     ],
     "includedServices": [
-      "Roundtrip Nairobi transport",
-      "Mineral water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Maasai village visit ($30)",
-      "Drinks"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Early departure on Day 1 is essential to maximize safari time."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free.",
+      "Availability is limited, especially during migration season.",
+      "Add-on experiences can be arranged on request (e.g., balloon rides, cultural visits, extra nights)."
     ],
-    "childrenPolicy": "Children welcome.",
-    "startingDates": "Daily Departures",
-    "bookingAvailability": "Available",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
+    "bookingAvailability": "Limited Seats",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "2-Day Masai Mara Safari from Nairobi | Good Secrets Safaris",
-      "description": "Quick 2-day Masai Mara safari starting from $612 with private 4x4 game drives."
+      "title": "2-Day Masai Mara Lion Encounters & Endless Savannah Safari - Good Secrets Safaris",
+      "description": "Experience the magic of the Masai Mara on this immersive 2-Day Big Five Safari from Nairobi in a 4x4 Safari Land Cruiser."
     },
+    "published": true,
     "createdAt": "2026-01-25T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-10T11:09:57+03:00"
   },
   {
     "id": "tour-3-day-samburu-untamed-beauty",
-    "title": "3-Day Samburu Untamed Beauty & Rare Wildlife Safari",
+    "title": "3-Day Samburu Untamed Beauty & Rare Wildlife Luxury Safari Tour",
     "slug": "3-day-samburu-untamed-beauty-rare-wildlife",
-    "shortDescription": "Explore northern Kenya's dramatic arid landscapes and track the Samburu Special 5 rare wildlife species.",
-    "fullDescription": "Samburu offers an untouched safari frontier. Spot Grevy's zebras, reticulated giraffes, gerenuks feeding on their hind legs, and enjoy luxury safari lodge comfort along the life-giving Ewaso Nyiro River.",
+    "shortDescription": "Experience the wild elegance of northern Kenya on this 3-Day Samburu Luxury Safari. Encounter rare species like Grevy's zebras, reticulated giraffes, and elephants while staying in a luxury lodge and exploring by private 4x4 Land Cruiser.",
+    "fullDescription": "This 3-Day Samburu Luxury Safari Tour is crafted for short-stay travelers seeking an unforgettable and rare wildlife experience in one of Kenya's most dramatic and culturally rich landscapes. Samburu is home to the legendary 'Samburu Special Five' species found nowhere else in Kenya, including the majestic reticulated giraffe and the striking Grevy's zebra. Your journey begins and ends in Nairobi, with seamless travel in a private 4x4 Land Cruiser with a pop-up roof for exceptional photography and uninterrupted wildlife encounters. Stay in a luxury lodge or tented camp, where stunning river views, infinity pools, world-class dining, and tranquil ambience elevate your safari into a deeply immersive, high-end escape. Perfect for couples, luxury adventurers, photographers, and travelers wanting a rare, short yet meaningful safari in northern Kenya.",
     "country": "Kenya",
     "destinations": [
       "Samburu National Reserve"
@@ -972,129 +1050,165 @@
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Luxury Safaris",
-      "Wildlife Safari"
+      "Luxury Experience",
+      "Rare Wildlife"
     ],
     "travelStyles": [
       "Luxury",
-      "Photography",
-      "Big 5"
+      "Photography"
     ],
     "comfortLevel": "Luxury",
     "travelerTypes": [
       "Couples",
       "Solo",
-      "Families"
+      "Photographers"
     ],
     "featured": true,
-    "popular": false,
+    "popular": true,
     "recommended": true,
     "priceFrom": 1187,
     "currency": "USD",
-    "soloPrice": 1650,
+    "soloPrice": 2064,
     "sharingPrice": 1187,
-    "residentPriceKES": 78000,
     "seasonalPricing": [
       {
-        "id": "sp-sam-lux-std",
-        "name": "Standard Season (Jan - Jun, Nov)",
+        "id": "sp-3day-samburu-lux-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
-        "soloPrice": 1550,
+        "soloPrice": 2064,
         "sharingPrice": 1187,
         "currency": "USD"
       },
       {
-        "id": "sp-sam-lux-peak",
-        "name": "Peak Season (Jul - Oct, Dec)",
+        "id": "sp-3day-samburu-lux-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
-        "soloPrice": 1780,
-        "sharingPrice": 1295,
+        "soloPrice": 2374,
+        "sharingPrice": 1490,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-samburu-lux-novDec",
+        "name": "1 November - 20 December",
+        "startDate": "11-01",
+        "endDate": "12-20",
+        "soloPrice": 2072,
+        "sharingPrice": 1288,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-samburu-lux-festive",
+        "name": "21 December - 3 January",
+        "startDate": "12-21",
+        "endDate": "01-03",
+        "soloPrice": 2374,
+        "sharingPrice": 1490,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/okonjima-nature-reserve-1764659394965-e1765184861267.jpg",
+      "/images/catalog/samburu-culture.jpg",
+      "/images/catalog/governorscampcollection-1751458928842.jpg",
+      "/images/catalog/cheetah-chasing-an-antelope.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Samburu National Reserve",
-        "subtitle": "Crossing the Equator into the North",
-        "description": "Drive north past Mount Kenya pineapple and coffee plantations to Samburu. Afternoon game drive along the palm-fringed riverbanks.",
-        "accommodation": "Elephant Bedroom Camp / Ashnil Samburu",
-        "meals": "Lunch, Dinner Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Nairobi → Samburu | Arrival & Afternoon Game Drive",
+        "subtitle": "Overnight at Samburu Intrepids Tented Camp",
+        "description": "Depart Nairobi early in a 5-6 hour scenic drive north toward Samburu, passing semi-arid plains and Maasai villages along the way. Arrive at your lodge and check-in, enjoying lunch with views of the Ewaso Nyiro River. In the afternoon, embark on your first game drive, spotting elephants, lions, reticulated giraffes, and Grevy's zebras. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "Samburu Intrepids Tented Camp",
+        "meals": "Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser (5-6 hours)",
         "activities": [
-          "Equator marker stop",
-          "Afternoon Special 5 Game Drive"
-        ]
+          "Scenic drive to Samburu",
+          "Afternoon game drive spotting the Samburu Special Five"
+        ],
+        "image": "/images/catalog/naturally-namibia-1764659480879.jpg"
       },
       {
         "day": 2,
-        "title": "Full Day Samburu Wildlife & Cultural Discovery",
-        "subtitle": "Predators & Samburu Traditions",
-        "description": "Morning and late afternoon game drives. High likelihood of seeing leopards resting on acacia branches. Optional Samburu village visit.",
-        "accommodation": "Elephant Bedroom Camp / Ashnil Samburu",
+        "title": "Full Day in Samburu | Wildlife & Cultural Experience",
+        "subtitle": "Overnight at Samburu Intrepids Tented Camp",
+        "description": "Wake up early for a sunrise game drive along the riverbanks and open plains. Return to the lodge for breakfast and leisure time. In the afternoon, embark on a second game drive deeper into the reserve's scenic valleys. Optionally visit a Samburu village to learn about local culture and traditions, then enjoy a sundowner overlooking the plains before dinner at the lodge.",
+        "accommodation": "Samburu Intrepids Tented Camp",
         "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser",
         "activities": [
-          "Morning Game Drive",
-          "Riverbank Wildlife Watching",
-          "Evening Sundowner"
-        ]
+          "Sunrise game drive",
+          "Afternoon game drive into the reserve's valleys",
+          "Optional Samburu village visit",
+          "Sundowner overlooking the plains"
+        ],
+        "image": "/images/catalog/family-safari-game-drive.jpg"
       },
       {
         "day": 3,
-        "title": "Samburu Morning Drive & Return to Nairobi",
-        "subtitle": "Return Journey",
-        "description": "Early morning drive, delicious breakfast, and scenic drive back to Nairobi arriving around 4:00 PM.",
-        "accommodation": "Departure",
-        "meals": "Breakfast Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Samburu → Nairobi | Morning Game Drive & Departure",
+        "subtitle": "Departure day",
+        "description": "Enjoy a final early morning game drive, capturing last glimpses of Samburu's unique wildlife and dramatic landscapes. After breakfast, begin the 5-6 hour drive back to Nairobi, arriving in the afternoon for drop-off at your hotel or airport.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "4x4 Safari Land Cruiser (5-6 hours)",
         "activities": [
-          "Sunrise Game Drive",
-          "Return to Nairobi"
-        ]
+          "Final early-morning game drive",
+          "Scenic return drive to Nairobi"
+        ],
+        "image": "/images/catalog/nairobi-city-1.jpg"
       }
     ],
-    "accommodationSummary": "Luxury riverfront tented camp with private viewing decks.",
-    "mealsSummary": "Full board meals.",
+    "accommodationSummary": "Luxury lodges and tented camps throughout.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Samburu reserve entrance fees",
-      "All game drives in 4x4 Land Cruiser",
-      "Guide fees"
+      "Luxury lodge overlooking Samburu's rugged landscapes or river",
+      "Encounters with Samburu's rare 'Special Five'",
+      "Private 4x4 Land Cruiser with pop-up roof for premium game viewing",
+      "Exclusive sunrise & sunset game drives",
+      "Optional Samburu cultural visit"
     ],
     "includedServices": [
-      "Nairobi hotel transfers",
-      "Bottled water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Drinks",
-      "Samburu village visit"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Warm, arid climate during day; cool evenings."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Children welcome.",
-    "startingDates": "Daily Departures",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "3-Day Samburu Luxury Safari | Good Secrets Safaris",
-      "description": "Discover Samburu's rare wildlife and luxury tented camps from $1,187."
+      "title": "3-Day Samburu Untamed Beauty & Rare Wildlife Luxury Safari - Good Secrets Safaris",
+      "description": "Experience the wild elegance of northern Kenya on this 3-Day Samburu Luxury Safari, encountering Grevy's zebras, reticulated giraffes, and elephants."
     },
+    "published": true,
     "createdAt": "2026-01-26T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-09T12:53:51+03:00"
   },
   {
     "id": "tour-3-day-samburu-midrange",
     "title": "3-Day Midrange Wildlife Safari Escape in Samburu",
     "slug": "3-day-midrange-wildlife-safari-samburu",
-    "shortDescription": "Exceptional wildlife viewing in Samburu with comfortable safari lodge amenities at a great value.",
-    "fullDescription": "A balanced safari package designed for comfort and value. Experience the rich wildlife of Samburu National Reserve without paying ultra-luxury lodge premiums.",
+    "shortDescription": "Discover the wild heart of Kenya on a 3-Day Samburu Safari. Explore rare northern wildlife, including Grevy's zebras and reticulated giraffes, in a midrange lodge, with private 4x4 game drives.",
+    "fullDescription": "This 3-Day Samburu Safari Midrange Tour is designed for travelers seeking a short yet immersive northern Kenya safari. Journey into Samburu National Reserve, a rugged and captivating landscape, home to unique species like Grevy's zebra, Somali ostriches, and reticulated giraffes. Experience the magic of wildlife close encounters, all set against the backdrop of the dramatic Ewaso Nyiro River and semi-arid plains. Travel in a private 4x4 Land Cruiser with a pop-up roof, giving you the flexibility to stop for photography and capture wildlife moments in real-time. Stay in midrange lodges or tented camps, offering comfort, hot showers, and genuine local hospitality. This safari is ideal for short-stay travelers, couples, or families craving adventure, wildlife, and a touch of northern Kenya culture.",
     "country": "Kenya",
     "destinations": [
       "Samburu National Reserve"
@@ -1104,125 +1218,164 @@
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Midrange Safaris",
-      "Wildlife Safari"
+      "Midrange Safari",
+      "Rare Wildlife"
     ],
     "travelStyles": [
       "Midrange",
-      "Family",
       "Photography"
     ],
     "comfortLevel": "Midrange",
     "travelerTypes": [
       "Couples",
       "Families",
-      "Solo",
-      "Groups"
+      "Solo"
     ],
     "featured": false,
     "popular": true,
     "recommended": false,
     "priceFrom": 988,
     "currency": "USD",
-    "soloPrice": 1380,
+    "soloPrice": 1686,
     "sharingPrice": 988,
-    "residentPriceKES": 62000,
     "seasonalPricing": [
       {
-        "id": "sp-sam-mid-std",
-        "name": "Standard Season",
+        "id": "sp-3day-samburu-mid-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
-        "soloPrice": 1380,
+        "soloPrice": 1686,
         "sharingPrice": 988,
         "currency": "USD"
       },
       {
-        "id": "sp-sam-mid-peak",
-        "name": "Peak Season (Jul - Oct)",
+        "id": "sp-3day-samburu-mid-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
-        "soloPrice": 1490,
-        "sharingPrice": 1060,
+        "soloPrice": 1781,
+        "sharingPrice": 1042,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-samburu-mid-novDec",
+        "name": "1 November - 20 December",
+        "startDate": "11-01",
+        "endDate": "12-20",
+        "soloPrice": 1686,
+        "sharingPrice": 988,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-samburu-mid-festive",
+        "name": "21 December - 3 January",
+        "startDate": "12-21",
+        "endDate": "01-03",
+        "soloPrice": 1781,
+        "sharingPrice": 1042,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/picnic-lunch-in-the-wild.jpg",
+      "/images/catalog/honey-moon-in-samburu.jpg",
+      "/images/catalog/wild-dogs-in-samburu.jpg",
+      "/images/catalog/samburu-culture.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Samburu National Reserve",
-        "subtitle": "Northern Journey",
-        "description": "Depart Nairobi for Samburu. Check into lodge for lunch, followed by afternoon game drive searching for elephants and the Samburu Special 5.",
-        "accommodation": "Samburu Sopa Lodge / Simba Lodge",
-        "meals": "Lunch, Dinner Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Nairobi → Samburu | Arrival & Afternoon Game Drive",
+        "subtitle": "Overnight at Samburu Simba Lodge",
+        "description": "Depart Nairobi early in a 5-6 hour scenic drive north toward Samburu, passing semi-arid plains and Maasai villages along the way. Arrive at your midrange lodge and check-in, enjoying lunch with views of the Ewaso Nyiro River. In the afternoon, embark on your first game drive, spotting elephants, lions, reticulated giraffes, and Grevy's zebras. Return to the lodge for dinner and overnight stay.",
+        "accommodation": "Samburu Simba Lodge",
+        "meals": "Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser (5-6 hours)",
         "activities": [
-          "Afternoon Game Drive"
-        ]
+          "Scenic drive to Samburu",
+          "Afternoon game drive"
+        ],
+        "image": "/images/catalog/okonjima-nature-reserve-1764659394965-e1765184861267.jpg"
       },
       {
         "day": 2,
-        "title": "Full Day Samburu Game Drives",
-        "subtitle": "Ewaso Nyiro River Banks",
-        "description": "Morning and afternoon game drives with time to relax by the pool during midday heat.",
-        "accommodation": "Samburu Sopa Lodge / Simba Lodge",
+        "title": "Full Day in Samburu | Wildlife & Cultural Experience",
+        "subtitle": "Overnight at Samburu Simba Lodge",
+        "description": "Wake up early for a sunrise game drive along the riverbanks and open plains. Return to the lodge for breakfast and leisure time. In the afternoon, embark on a second game drive deeper into the reserve's scenic valleys. Optionally visit a Samburu village to learn about local culture and traditions, then enjoy a sundowner overlooking the plains before dinner at the lodge.",
+        "accommodation": "Samburu Simba Lodge",
         "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser",
         "activities": [
-          "Morning & Afternoon Game Drives"
-        ]
+          "Sunrise game drive",
+          "Afternoon game drive into the reserve's valleys",
+          "Optional Samburu village visit"
+        ],
+        "image": "/images/catalog/okonjima-nature-reserve-1764659403984-e1765185901129.jpg"
       },
       {
         "day": 3,
-        "title": "Samburu to Nairobi",
-        "subtitle": "Return",
-        "description": "Early morning drive, breakfast, and return journey to Nairobi.",
-        "accommodation": "Departure",
-        "meals": "Breakfast Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Samburu → Nairobi | Morning Game Drive & Departure",
+        "subtitle": "Departure day",
+        "description": "Enjoy a final early morning game drive, capturing last glimpses of Samburu's unique wildlife and dramatic landscapes. After breakfast, begin the 5-6 hour drive back to Nairobi, arriving in the afternoon for drop-off at your hotel or airport.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "4x4 Safari Land Cruiser (5-6 hours)",
         "activities": [
-          "Return drive"
-        ]
+          "Final early-morning game drive",
+          "Scenic return drive to Nairobi"
+        ],
+        "image": "/images/catalog/nairobi-city-1.jpg"
       }
     ],
-    "accommodationSummary": "Comfortable safari lodge with swimming pool and buffet dining.",
-    "mealsSummary": "Full board meal plan.",
+    "accommodationSummary": "Comfortable midrange lodges and tented camps.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Park entrance fees",
-      "All game drives in 4x4 vehicle",
-      "Driver/guide"
+      "Encounter northern Kenya's rare wildlife, including elephants, Grevy's zebras, and reticulated giraffes",
+      "Private 4x4 Land Cruiser with pop-up roof for immersive game drives",
+      "Sunrise and sunset drives for optimal wildlife viewing",
+      "Scenic views of Ewaso Nyiro River and the Samburu landscape",
+      "Cultural insights with optional Samburu village visit"
     ],
     "includedServices": [
-      "Nairobi transfers",
-      "Drinking water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Personal expenses"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Hat and sunscreen recommended."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Family friendly.",
-    "startingDates": "Daily Departures",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "3-Day Midrange Samburu Safari | Good Secrets Safaris",
-      "description": "Affordable 3-day Samburu safari from $988 with comfortable lodge accommodations."
+      "title": "3-Day Midrange Wildlife Safari Escape in Samburu - Good Secrets Safaris",
+      "description": "Discover the wild heart of Kenya on a 3-Day Samburu Safari, exploring rare northern wildlife in a midrange lodge with private 4x4 game drives."
     },
+    "published": true,
     "createdAt": "2026-01-27T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-08T12:38:40+03:00"
   },
   {
     "id": "tour-3-day-amboseli-luxury-elephant",
     "title": "3-Day Amboseli Elephant Encounters & Kilimanjaro Luxury Safari",
     "slug": "3-day-amboseli-luxury-elephant-kilimanjaro",
-    "shortDescription": "Five-star luxury safari camp experience in Amboseli with prime elephant herd positioning and views of Mount Kilimanjaro.",
-    "fullDescription": "Experience Amboseli in pure luxury. Stay at premier properties like Tortilis Camp or Ol Tukai, enjoy private sundowners overlooking the swamps, and witness majestic tusker elephants walking in front of Mount Kilimanjaro.",
+    "shortDescription": "Experience a Luxury Amboseli Safari on this 3-day tour featuring panoramic views of Mount Kilimanjaro, close encounters with elephants, private 4x4 game drives, and premium lodge accommodation.",
+    "fullDescription": "This 3-Day Amboseli Elephant Encounters & Kilimanjaro Luxury Safari is crafted for travelers who crave comfort, exclusivity, and unforgettable wildlife moments. Amboseli National Park is Kenya's premier destination for close-range elephant viewing, offering dramatic views of Mount Kilimanjaro, Africa's tallest mountain. This luxury journey blends immersive wildlife experiences with premium accommodation, gourmet meals, and seamless transport in a 4x4 Land Cruiser with a pop-up roof. Your lodge sits within or near the park, often offering direct views of Kilimanjaro and wildlife-rich marshlands. From sunrise game drives to sundowner moments under wide African skies, this experience is designed to feel elevated, relaxed, and deeply memorable - ideal for couples, families, photographers, or anyone seeking a luxury yet intimate safari.",
     "country": "Kenya",
     "destinations": [
       "Amboseli National Park"
@@ -1232,129 +1385,162 @@
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Luxury Safaris",
-      "Photography"
+      "Luxury Experience",
+      "Elephant Encounters"
     ],
     "travelStyles": [
       "Luxury",
-      "Honeymoon",
-      "Photography",
-      "Big 5"
+      "Photography"
     ],
     "comfortLevel": "Luxury",
     "travelerTypes": [
       "Couples",
-      "Solo",
-      "Families"
+      "Families",
+      "Photographers"
     ],
     "featured": false,
     "popular": true,
     "recommended": true,
-    "priceFrom": 1058,
+    "priceFrom": 1094,
     "currency": "USD",
-    "soloPrice": 1540,
-    "sharingPrice": 1058,
-    "residentPriceKES": 69000,
+    "soloPrice": 1799,
+    "sharingPrice": 1094,
     "seasonalPricing": [
       {
-        "id": "sp-amb-lux-std",
-        "name": "Standard Season (Jan - Jun, Nov)",
+        "id": "sp-3day-amboseli-lux-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
-        "soloPrice": 1540,
-        "sharingPrice": 1058,
+        "soloPrice": 1852,
+        "sharingPrice": 1129,
         "currency": "USD"
       },
       {
-        "id": "sp-amb-lux-peak",
-        "name": "Peak Season (Jul - Oct, Dec)",
+        "id": "sp-3day-amboseli-lux-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
-        "soloPrice": 1690,
-        "sharingPrice": 1180,
+        "soloPrice": 2048,
+        "sharingPrice": 1261,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-amboseli-lux-novDec",
+        "name": "1 November - 20 December",
+        "startDate": "11-01",
+        "endDate": "12-20",
+        "soloPrice": 1799,
+        "sharingPrice": 1094,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-amboseli-lux-festive",
+        "name": "21 December - 3 January",
+        "startDate": "12-21",
+        "endDate": "01-03",
+        "soloPrice": 2048,
+        "sharingPrice": 1261,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/amboseli-serena-safari-lodge-4.jpg",
+      "/images/catalog/wake-up-to-a-breathtaking-view-of-mt-kilimanjaro-in-amboseli.jpg",
+      "/images/catalog/photography-session-in-amboseli-national-park.jpg",
+      "/images/catalog/elephants-in-amboseli-with-a-back-drop-of-mt-kilimanjaro.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Amboseli Luxury Camp",
-        "subtitle": "VIP Arrival",
-        "description": "Private transfer to Amboseli. Check into your luxury suite with unobstructed Kilimanjaro views. Afternoon game drive and luxury sundowner.",
-        "accommodation": "Ol Tukai Lodge / Tortilis Camp",
-        "meals": "Lunch, Gourmet Dinner Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Nairobi → Amboseli | Afternoon Game Drive",
+        "subtitle": "Overnight at Amboseli Serena Safari Lodge",
+        "description": "Your safari begins early in Nairobi as you depart for Amboseli, a 4-5 hour scenic drive through the open countryside and Maasai settlements. Upon arrival, check into your lodge, refresh, and enjoy lunch with views of Mount Kilimanjaro rising in the distance. In the afternoon, head out for your first game drive inside Amboseli National Park, spotting elephants, lions, giraffes, cheetahs, and countless birds. Return to your lodge for dinner and a relaxed evening.",
+        "accommodation": "Amboseli Serena Safari Lodge",
+        "meals": "Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Private afternoon safari",
-          "Champagne sundowner"
-        ]
+          "Scenic drive through Maasai country",
+          "Afternoon game drive with Kilimanjaro sunset views"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np.jpg"
       },
       {
         "day": 2,
-        "title": "Full Day Amboseli Wildlife Luxury Experience",
-        "subtitle": "Swamp Elephants & Predators",
-        "description": "Sunrise photography session. Full day tracking cheetahs, lions, and hundred-strong elephant families. Gourmet bush lunch.",
-        "accommodation": "Ol Tukai Lodge / Tortilis Camp",
-        "meals": "Breakfast, Gourmet Bush Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Full Day in Amboseli | Big Elephants & Kilimanjaro Views",
+        "subtitle": "Overnight at Amboseli Serena Safari Lodge",
+        "description": "Start your day with a sunrise game drive, the best time to catch the early morning light illuminating the snow-capped peak of Kilimanjaro and watch elephant families trek across the plains. Return to your lodge for a hearty breakfast and relaxation time at the pool or lounge. In the afternoon, head back into the park for another game drive, exploring the swamp areas that attract hippos, buffalo, and abundant birdlife, and search for lions, cheetahs, and hyenas.",
+        "accommodation": "Amboseli Serena Safari Lodge",
+        "meals": "Breakfast, Lunch, Dinner",
+        "transport": "4x4 Safari Land Cruiser",
         "activities": [
-          "Sunrise Photography",
-          "Bush Lunch",
-          "Evening Safari"
-        ]
+          "Sunrise game drive with Kilimanjaro views",
+          "Afternoon swamp-area game drive"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np-game-drive.jpg"
       },
       {
         "day": 3,
-        "title": "Morning Safari & Return to Nairobi",
-        "subtitle": "Farewell Kilimanjaro",
-        "description": "Early morning drive, hearty breakfast, and transfer back to Nairobi.",
-        "accommodation": "Departure",
-        "meals": "Breakfast Included",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "title": "Amboseli → Nairobi | Morning Game Drive & Departure",
+        "subtitle": "Departure day",
+        "description": "Enjoy a final early morning game drive before leaving the park, capturing your final photographs of wildlife framed against Mount Kilimanjaro. After breakfast, begin your 4-5 hour drive back to Nairobi, arriving in the afternoon for drop-off at your hotel, residence, or Jomo Kenyatta International Airport.",
+        "accommodation": "",
+        "meals": "Breakfast",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Morning game drive",
-          "Return transfer"
-        ]
+          "Final morning game drive"
+        ],
+        "image": "/images/catalog/nairobi-city-1.jpg"
       }
     ],
-    "accommodationSummary": "5-star luxury lodge in prime Amboseli location.",
-    "mealsSummary": "Gourmet full board dining with selected drinks.",
+    "accommodationSummary": "Astounding luxury lodges and tented camps.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Amboseli park fees",
-      "Private 4x4 Land Cruiser with guide",
-      "Bush sundowner"
+      "Close encounters with large elephant herds",
+      "Stunning views of Mount Kilimanjaro",
+      "Private 4x4 Land Cruiser with pop-up roof",
+      "Sunrise and sunset game drives",
+      "Scenic drive through Maasai country"
     ],
     "includedServices": [
-      "VIP door-to-door Nairobi transfers",
-      "Emergency medical cover"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Premium champagne"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Bring warm layers for early mornings."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Family suites available.",
-    "startingDates": "Daily Departures",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "3-Day Amboseli Luxury Elephant Safari | Good Secrets Safaris",
-      "description": "5-star Amboseli luxury safari from $1,058 with private Land Cruiser and Kilimanjaro views."
+      "title": "3-Day Amboseli Elephant Encounters & Kilimanjaro Luxury Safari - Good Secrets Safaris",
+      "description": "Experience a Luxury Amboseli Safari featuring panoramic views of Mount Kilimanjaro, close encounters with elephants, and premium lodge accommodation."
     },
+    "published": true,
     "createdAt": "2026-01-28T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-08T10:16:06+03:00"
   },
   {
     "id": "tour-3-day-midrange-amboseli",
-    "title": "3-Day Midrange Amboseli Big Elephant Safari",
+    "title": "3-Day Midrange Amboseli Big Elephant Safari – Kenya",
     "slug": "3-day-midrange-amboseli-big-elephant-safari",
-    "shortDescription": "A great value safari adventure beneath Mount Kilimanjaro featuring extensive game drives and comfortable lodge stays.",
-    "fullDescription": "Experience all the wildlife wonders of Amboseli National Park with great comfort at an accessible price. Perfect for families, couples, and small groups.",
+    "shortDescription": "Experience a 3-Day Midrange Amboseli Big Elephant Safari with midrange accommodation, private 4x4 Land Cruiser game drives, and stunning views of Mount Kilimanjaro.",
+    "fullDescription": "This 3-Day Midrange Amboseli Big Elephant Safari Kenya is crafted for travelers who want a well-balanced experience of comfort, wildlife immersion, and Kenya's breathtaking landscapes. Amboseli National Park is best known for its massive elephant herds, unmatched views of Mount Kilimanjaro, and serene open plains that make wildlife viewing effortless and deeply rewarding. Travel in a 4x4 Safari Land Cruiser with a pop-up roof, perfect for photography and panoramic game viewing. Enjoy midrange lodges with comfortable rooms, excellent meals, swimming pools, and unbeatable views. Whether you're a first-time safari-goer, a couple, a family, or a small group, this short safari offers the perfect wildlife escape from Nairobi.",
     "country": "Kenya",
     "destinations": [
       "Amboseli National Park"
@@ -1364,19 +1550,17 @@
     "startingLocation": "Nairobi, Kenya",
     "endingLocation": "Nairobi, Kenya",
     "categories": [
-      "Midrange Safaris",
-      "Family Friendly"
+      "Midrange Safari",
+      "Elephant Encounters"
     ],
     "travelStyles": [
       "Midrange",
-      "Family",
-      "Senior Friendly"
+      "Photography"
     ],
     "comfortLevel": "Midrange",
     "travelerTypes": [
-      "Families",
       "Couples",
-      "Groups",
+      "Families",
       "Solo"
     ],
     "featured": false,
@@ -1384,100 +1568,137 @@
     "recommended": true,
     "priceFrom": 917,
     "currency": "USD",
-    "soloPrice": 1290,
+    "soloPrice": 1383,
     "sharingPrice": 917,
-    "residentPriceKES": 56000,
     "seasonalPricing": [
       {
-        "id": "sp-amb-mid-std",
-        "name": "Standard Season",
+        "id": "sp-3day-amboseli-mid-janjun",
+        "name": "January - June",
         "startDate": "01-01",
         "endDate": "06-30",
-        "soloPrice": 1290,
+        "soloPrice": 1383,
         "sharingPrice": 917,
         "currency": "USD"
       },
       {
-        "id": "sp-amb-mid-peak",
-        "name": "Peak Season (Jul - Oct)",
+        "id": "sp-3day-amboseli-mid-julOct",
+        "name": "July - October",
         "startDate": "07-01",
         "endDate": "10-31",
-        "soloPrice": 1390,
+        "soloPrice": 1519,
+        "sharingPrice": 980,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-amboseli-mid-novDec",
+        "name": "1 November - 20 December",
+        "startDate": "11-01",
+        "endDate": "12-20",
+        "soloPrice": 1383,
+        "sharingPrice": 917,
+        "currency": "USD"
+      },
+      {
+        "id": "sp-3day-amboseli-mid-festive",
+        "name": "21 December - 3 January",
+        "startDate": "12-21",
+        "endDate": "01-03",
+        "soloPrice": 1519,
         "sharingPrice": 980,
         "currency": "USD"
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/elephants-in-amboseli.jpg",
+      "/images/catalog/flamingoes-in-amboseli-np.jpg",
+      "/images/catalog/giraffes-in-amboseli-np.jpg",
+      "/images/catalog/photography-session-in-amboseli-national-park.jpg"
     ],
     "itinerary": [
       {
         "day": 1,
-        "title": "Nairobi to Amboseli National Park",
-        "subtitle": "Arrival & Afternoon Drive",
-        "description": "Drive to Amboseli, check in, lunch, and afternoon game drive watching elephants and Kilimanjaro.",
-        "accommodation": "Amboseli Sopa Lodge / Kibo Safari Camp",
+        "title": "Nairobi → Amboseli | Afternoon Game Drive",
+        "subtitle": "Overnight at Sentrim Amboseli Lodge",
+        "description": "Your safari begins early in Nairobi as you depart for Amboseli, a 4-5 hour scenic drive through the open countryside and Maasai settlements. Upon arrival, check into your midrange lodge, refresh, and enjoy lunch with views of Mount Kilimanjaro rising in the distance. In the afternoon, head out for your first game drive inside Amboseli National Park, spotting elephants, lions, giraffes, cheetahs, and countless birds. Return to your lodge for dinner and a relaxed evening.",
+        "accommodation": "Sentrim Amboseli Lodge",
         "meals": "Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Afternoon Safari"
-        ]
+          "Scenic drive through Maasai country",
+          "Afternoon game drive with Kilimanjaro sunset views"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np.jpg"
       },
       {
         "day": 2,
-        "title": "Full Day Amboseli Safari",
-        "subtitle": "Observation Hill & Swamps",
-        "description": "Morning and afternoon game drives with time to relax by the lodge swimming pool.",
-        "accommodation": "Amboseli Sopa Lodge / Kibo Safari Camp",
+        "title": "Full Day in Amboseli | Big Elephants & Kilimanjaro Views",
+        "subtitle": "Overnight at Sentrim Amboseli Lodge",
+        "description": "Start your day with a sunrise game drive, the best time to catch the early morning light illuminating the snow-capped peak of Kilimanjaro and watch elephant families trek across the plains. Return to your lodge for a hearty breakfast and relaxation time. In the afternoon, head back into the park for another game drive, exploring the swamp areas that attract hippos, buffalo, and abundant birdlife, and search for lions, cheetahs, and hyenas.",
+        "accommodation": "Sentrim Amboseli Lodge",
         "meals": "Breakfast, Lunch, Dinner",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser",
         "activities": [
-          "Full Day Game Drives",
-          "Observation Hill"
-        ]
+          "Sunrise game drive with Kilimanjaro views",
+          "Afternoon swamp-area game drive"
+        ],
+        "image": "/images/catalog/elephants-in-amboseli-np-game-drive.jpg"
       },
       {
         "day": 3,
-        "title": "Amboseli to Nairobi",
-        "subtitle": "Return Journey",
-        "description": "Morning game drive, breakfast, and return drive to Nairobi.",
-        "accommodation": "Departure",
+        "title": "Amboseli → Nairobi | Morning Game Drive & Departure",
+        "subtitle": "Departure day",
+        "description": "Enjoy a final early morning game drive before leaving the park, capturing your final photographs of wildlife framed against Mount Kilimanjaro. After breakfast, begin your 4-5 hour drive back to Nairobi, arriving in the afternoon for drop-off at your hotel, residence, or Jomo Kenyatta International Airport.",
+        "accommodation": "",
         "meals": "Breakfast",
-        "transport": "Custom 4x4 Safari Land Cruiser",
+        "transport": "4x4 Safari Land Cruiser (4-5 hours)",
         "activities": [
-          "Morning Safari",
-          "Return Transfer"
-        ]
+          "Final morning game drive"
+        ],
+        "image": "/images/catalog/nairobi-city-1.jpg"
       }
     ],
-    "accommodationSummary": "Comfortable tented camp or lodge with en-suite amenities.",
-    "mealsSummary": "Full board meals.",
+    "accommodationSummary": "Comfortable midrange lodges and tented camps.",
+    "mealsSummary": "Breakfast, lunch, and dinner as specified in the day-by-day itinerary.",
     "includedActivities": [
-      "Park fees",
-      "Game drives in 4x4 Land Cruiser",
-      "Driver/guide"
+      "Close encounters with large elephant herds",
+      "Stunning views of Mount Kilimanjaro",
+      "Private 4x4 Land Cruiser with pop-up roof",
+      "Sunrise and sunset game drives",
+      "Scenic drive through Maasai country"
     ],
     "includedServices": [
-      "Nairobi transfers",
-      "Drinking water"
+      "Park fees (for non-residents)",
+      "All activities (unless labeled as optional)",
+      "All accommodation (unless listed as upgrade)",
+      "A professional driver/guide",
+      "All transportation (unless labeled as optional)",
+      "All taxes/VAT",
+      "Roundtrip airport transfer",
+      "Meals (as specified in the day-by-day section)",
+      "Drinks (as specified in the day-by-day section)"
     ],
     "exclusions": [
-      "Tips",
-      "Personal items"
+      "International flights (from/to home)",
+      "Additional accommodation before and at the end of the tour",
+      "Tips (tipping guideline US$10.00 pp per day)",
+      "Personal items (souvenirs, travel insurance, visa fees, etc.)",
+      "Government-imposed increase of taxes and/or park fees"
     ],
     "importantInformation": [
-      "Great for all age groups."
+      "Rates are per person and exclude the international flight from/to your home country.",
+      "This tour accepts children who are 1 year and older. Children under 3 are free."
     ],
-    "childrenPolicy": "Child discounts apply.",
-    "startingDates": "Daily Departures",
+    "childrenPolicy": "This tour accepts children who are 1 year and older. Children under 3 are free.",
+    "startingDates": "Can start any day, subject to availability",
     "bookingAvailability": "Available",
+    "isKenyanResidentPackage": false,
     "seo": {
-      "title": "3-Day Midrange Amboseli Big Elephant Safari | Good Secrets Safaris",
-      "description": "Enjoy Amboseli safari at $917 with comfortable lodge accommodation and private 4x4 drives."
+      "title": "3-Day Midrange Amboseli Big Elephant Safari – Good Secrets Safaris",
+      "description": "Experience a 3-Day Midrange Amboseli Big Elephant Safari with midrange accommodation and stunning views of Mount Kilimanjaro."
     },
+    "published": true,
     "createdAt": "2026-01-29T08:00:00Z",
-    "updatedAt": "2026-08-15T08:00:00Z"
+    "updatedAt": "2025-12-03T15:44:52+03:00"
   },
   {
     "id": "tour-8-day-safari-zanzibar-beach",

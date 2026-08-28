@@ -1,5 +1,6 @@
 import React from 'react';
 import { Destination } from '../../types';
+import { unsplashCardImage } from '../../lib/imageUrl';
 import { MapPin, ArrowRight, Compass } from 'lucide-react';
 
 interface DestinationCardProps {
@@ -21,7 +22,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
     >
       <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden">
         <img
-          src={destination.heroImage}
+          src={unsplashCardImage(destination.heroImage, 800)}
           alt={destination.name}
           referrerPolicy="no-referrer"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
