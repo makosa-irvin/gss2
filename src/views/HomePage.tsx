@@ -10,7 +10,7 @@ import { HotelCard } from '../components/hotels/HotelCard';
 import { SafariBuilderWizard } from '../components/builder/SafariBuilderWizard';
 import {
   Sparkles, Star, ShieldCheck, Award, Heart, Compass, CheckCircle2, ArrowRight,
-  MessageCircle, Users, Calendar, Send, Binoculars, Flame, Sun, Camera, Palmtree, Plane
+  MessageCircle, Users, Binoculars, Flame, Palmtree, Plane
 } from 'lucide-react';
 
 interface HomePageProps {
