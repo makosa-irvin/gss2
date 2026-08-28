@@ -1,335 +1,39 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Tour } from '../types';
 import { useData } from '../context/DataContext';
 import { PageMeta } from '../components/common/PageMeta';
 import { ItineraryTimeline } from '../components/itinerary/ItineraryTimeline';
 import { DynamicPricingTable } from '../components/pricing/DynamicPricingTable';
-import {
-  Clock,
-  MapPin,
-  Calendar,
-  Compass,
-  DollarSign,
-  ShieldCheck,
-  Check,
-  X,
-  Sparkles,
-  MessageCircle,
-  Share2,
-  ChevronRight,
-  ArrowLeft,
-  Bed,
-  Car,
-  Camera,
-  HeartHandshake,
-  HelpCircle
-} from 'lucide-react';
+import { TourRouteMap } from '../components/tours/TourRouteMap';
+import { ArrowLeft, CalendarDays, Camera, Check, CircleHelp, Clock, Compass, Map, MapPin, MessageCircle, ShieldCheck, Sparkles, X } from 'lucide-react';
 
-interface TourDetailViewProps {
-  tour: Tour;
-  onBack: () => void;
-  onOpenEnquiryModal: (payload?: any) => void;
-  onSelectDestination?: (destName: string) => void;
-}
+interface TourDetailViewProps { tour: Tour; onBack: () => void; onOpenEnquiryModal: (payload?: any) => void; onSelectDestination?: (destName: string) => void; }
+const sectionLinks = [{ id: 'overview', label: 'Overview', Icon: Compass }, { id: 'itinerary', label: 'Itinerary', Icon: CalendarDays }, { id: 'route', label: 'Route', Icon: Map }, { id: 'inclusions', label: 'Inclusions', Icon: Check }, { id: 'gallery', label: 'Gallery', Icon: Camera }, { id: 'pricing', label: 'Pricing', Icon: Sparkles }, { id: 'faqs', label: 'FAQs', Icon: CircleHelp }];
 
-export const TourDetailView: React.FC<TourDetailViewProps> = ({
-  tour,
-  onBack,
-  onOpenEnquiryModal,
-  onSelectDestination
-}) => {
+export const TourDetailView: React.FC<TourDetailViewProps> = ({ tour, onBack, onOpenEnquiryModal }) => {
   const { formatPrice, getWhatsAppUrl, isKenyanResidentMode } = useData();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const price = formatPrice(tour.sharingPrice || tour.priceFrom);
+  const whatsappUrl = getWhatsAppUrl({ tourTitle: tour.title });
+  const includedItems = [...(tour.includedServices ?? []), ...(tour.includedActivities ?? [])];
+  const excludedItems = tour.exclusions ?? [];
+  const goTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  const whatsappUrl = getWhatsAppUrl({
-    tourTitle: tour.title
-  });
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
-      <PageMeta
-        title={tour.title}
-        description={tour.shortDescription}
-        image={tour.images?.[0]}
-        canonicalPath={`/safaris/${tour.slug}`}
-      />
-      {/* Breadcrumb & Navigation */}
-      <div className="flex items-center justify-between text-xs text-[#c7d2cb]">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 hover:text-[#e6bc65] transition-colors font-semibold min-h-11"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Safaris</span>
-        </button>
-
-        <div className="hidden sm:flex items-center gap-2" aria-label="Breadcrumb">
-          <span>{tour.country}</span>
-          <ChevronRight className="w-3 h-3 text-[#8f9d94]" aria-hidden="true" />
-          <span className="text-white/90 font-medium truncate max-w-xs">{tour.title}</span>
-        </div>
-      </div>
-
-      {/* Hero Header & Title */}
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#faf8f2] text-[#765217] border border-[#ded8cb]">
-            {tour.country}
-          </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#faf8f2] text-[#405046] border border-[#ded8cb]">
-            {tour.durationLabel}
-          </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#faf8f2] text-[#405046] border border-[#ded8cb]">
-            {tour.comfortLevel}
-          </span>
-          {tour.featured && (
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#8a611d] text-white">
-              Featured Safari
-            </span>
-          )}
-        </div>
-
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">
-          {tour.title}
-        </h1>
-
-        <p className="text-base sm:text-lg text-[#c7d2cb] max-w-3xl leading-relaxed">
-          {tour.shortDescription}
-        </p>
-      </div>
-
-      {/* Image Gallery */}
-      <div className="space-y-3">
-        <div className="aspect-[16/9] sm:aspect-[21/9] rounded-3xl overflow-hidden bg-[#faf8f2] border border-[#e8e4da] relative shadow-lg">
-          <img
-            src={tour.images[activeImageIdx] || tour.images[0]}
-            alt={`${tour.title} safari view ${activeImageIdx + 1}`}
-            className="w-full h-full object-cover transition-all duration-500"
-          />
-          <div className="absolute bottom-4 right-4 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs text-white border border-white/20">
-            Photo {activeImageIdx + 1} of {tour.images.length}
-          </div>
-        </div>
-
-        {/* Thumbnail row */}
-        {tour.images.length > 1 && (
-          <div className="flex items-center gap-3 overflow-x-auto pb-2" aria-label="Safari photo gallery">
-            {tour.images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveImageIdx(idx)}
-                aria-label={`View safari photo ${idx + 1}`}
-                aria-pressed={activeImageIdx === idx}
-                className={`shrink-0 w-24 h-16 rounded-xl overflow-hidden border-2 transition-all ${
-                  activeImageIdx === idx ? 'border-[#b3822a] scale-105 shadow-md' : 'border-transparent opacity-70 hover:opacity-100'
-                }`}
-              >
-                <img src={img} alt="" className="w-full h-full object-cover" />
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Quick Specs Highlight Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-2xl bg-white border border-[#e8e4da] shadow-xs">
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#536158]">
-            <Clock className="w-3.5 h-3.5 text-[#765217]" />
-            <span>Duration</span>
-          </div>
-          <p className="text-sm font-bold text-[#161f19]">{tour.durationLabel}</p>
-        </div>
-
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#536158]">
-            <Car className="w-3.5 h-3.5 text-[#765217]" />
-            <span>Vehicle Type</span>
-          </div>
-          <p className="text-sm font-bold text-[#161f19]">Custom 4x4 Safari Land Cruiser</p>
-        </div>
-
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#536158]">
-            <Bed className="w-3.5 h-3.5 text-[#765217]" />
-            <span>Accommodation</span>
-          </div>
-          <p className="text-sm font-bold text-[#161f19]">{tour.comfortLevel} Tented Lodges</p>
-        </div>
-
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-[#536158]">
-            <Compass className="w-3.5 h-3.5 text-[#765217]" />
-            <span>Travel Style</span>
-          </div>
-          <p className="text-sm font-bold text-[#765217]">{tour.travelStyles.join(', ')}</p>
-        </div>
-      </div>
-
-      {/* Main Content & Sidebar Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Left Column: Itinerary, Pricing, Inclusions */}
-        <div className="lg:col-span-8 space-y-12">
-          {/* Detailed Overview */}
-          <div className="space-y-4">
-            <h3 className="font-serif-luxury text-2xl font-bold text-white">
-              Safari Overview
-            </h3>
-            {/* A "Featured Wildlife" chip list used to render here from
-                `tour.wildlifeHighlights`, which doesn't exist on the Tour
-                type (and never did — no tour in the seed data has it), so
-                the block was always inert and has been removed. Wildlife
-                data lives on Destination.wildlife instead; if this section
-                is wanted back, it should look up the tour's destinations
-                and pull `wildlife` from each rather than reading a
-                non-existent Tour field. */}
-            <p className="text-base text-[#c7d2cb] leading-relaxed whitespace-pre-line font-normal">
-              {tour.fullDescription}
-            </p>
-          </div>
-
-          {/* Dynamic Day-by-day Itinerary */}
-          <ItineraryTimeline itinerary={tour.itinerary} />
-
-          {/* Dynamic Seasonal Pricing Table */}
-          <DynamicPricingTable tour={tour} />
-
-          {/* Included / Excluded Specs */}
-          {(() => {
-            // Tour data uses `includedServices` + `includedActivities` and `exclusions`
-            // (there is no `included`/`excluded` field on the Tour type). Combine them
-            // here and guard against any of them being missing so this section can
-            // never crash the page.
-            const includedItems = [
-              ...(tour.includedServices ?? []),
-              ...(tour.includedActivities ?? [])
-            ];
-            const excludedItems = tour.exclusions ?? [];
-
-            if (includedItems.length === 0 && excludedItems.length === 0) {
-              return null;
-            }
-
-            return (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Included */}
-                {includedItems.length > 0 && (
-                  <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-4">
-                    <div className="flex items-center gap-2 text-sm font-bold text-[#1b4332]">
-                      <Check className="w-4 h-4 stroke-[3]" />
-                      <span>What Is Included</span>
-                    </div>
-                    <ul className="space-y-2.5 text-sm text-[#254331]">
-                      {includedItems.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-[#1b4332] font-bold">✓</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Excluded */}
-                {excludedItems.length > 0 && (
-                  <div className="p-6 rounded-2xl bg-rose-50 border border-rose-200 space-y-4">
-                    <div className="flex items-center gap-2 text-sm font-bold text-rose-800">
-                      <X className="w-4 h-4 stroke-[3]" />
-                      <span>What Is Excluded</span>
-                    </div>
-                    <ul className="space-y-2.5 text-sm text-rose-900/90">
-                      {excludedItems.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-rose-700 font-bold">✕</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* FAQs / Travel Prep */}
-          <div className="p-6 rounded-2xl bg-white border border-[#e8e4da] space-y-4 shadow-xs">
-            <h3 className="font-serif-luxury text-xl font-bold text-[#161f19] flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-[#765217]" />
-              Safari Essentials & Questions
-            </h3>
-            <div className="space-y-3 text-sm text-[#4d5c52]">
-              <div className="p-4 rounded-xl bg-[#faf8f2] border border-[#ded8cb]">
-                <strong className="text-[#161f19] block mb-1 text-sm">What should I pack for this safari?</strong>
-                Neutral-colored lightweight clothing (khaki, beige, olive), a warm fleece or jacket for dawn game drives, binoculars, sun protection, and personal camera equipment. Soft-sided duffel bags are recommended for 4x4 luggage spaces.
-              </div>
-              <div className="p-4 rounded-xl bg-[#faf8f2] border border-[#ded8cb]">
-                <strong className="text-[#161f19] block mb-1 text-sm">Is this safari private or shared?</strong>
-                All Good Secrets safaris are strictly private. You will have your own customized 4x4 Land Cruiser with pop-up photography roof, private driver-guide, and flexible daily game drive schedule.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Sticky Booking & Direct Quote Card */}
-        <div className="lg:col-span-4">
-          <div className="sticky top-28 rounded-3xl bg-white border border-[#ded8cb] p-6 sm:p-8 space-y-6 shadow-xl ring-1 ring-black/5">
-            <div>
-              <span className="text-xs text-[#536158] uppercase tracking-wider block font-semibold">Indicative rate per person</span>
-              <div className="flex items-baseline gap-2 mt-1">
-                <span className="font-serif-luxury text-3xl font-extrabold text-[#161f19]">
-                  {formatPrice(tour.sharingPrice || tour.priceFrom)}
-                </span>
-                <span className="text-xs text-[#536158]">/ 2 sharing</span>
-              </div>
-              {isKenyanResidentMode && tour.residentPriceKES && (
-                <span className="text-xs font-semibold text-[#1b4332] block mt-1">
-                  Resident: KSH {tour.residentPriceKES.toLocaleString()}
-                </span>
-              )}
-              <p className="mt-3 text-sm text-[#4d5c52] leading-relaxed">
-                Tell us your travel dates and preferences for a personalized itinerary and confirmed quote.
-              </p>
-            </div>
-
-            <div className="space-y-3 pt-1">
-              <button
-                onClick={() => onOpenEnquiryModal({ selectedTour: tour })}
-                className="w-full min-h-12 py-3.5 rounded-xl bg-[#8a611d] hover:bg-[#704d15] text-white font-extrabold text-sm uppercase tracking-wider text-center transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>Request My Safari Quote</span>
-              </button>
-              <p className="text-center text-xs font-medium text-[#536158]">No payment required to enquire.</p>
-
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Ask about ${tour.title} on WhatsApp`}
-                className="w-full min-h-12 py-3 rounded-xl bg-[#eef7f2] hover:bg-[#def0e6] text-[#1b4332] font-bold text-sm border border-[#b6d8c3] flex items-center justify-center gap-2 transition-colors"
-              >
-                <MessageCircle className="w-4 h-4 text-[#0c756b]" />
-                <span>Ask on WhatsApp</span>
-              </a>
-            </div>
-
-            <div className="space-y-3 pt-4 border-t border-[#eeebe2] text-sm text-[#405046]">
-              <div className="flex items-start gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#765217] shrink-0 mt-0.5" />
-                <span>Complimentary AMREF Flying Doctors coverage</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <HeartHandshake className="w-4 h-4 text-[#765217] shrink-0 mt-0.5" />
-                <span>100% tailor-made with flexible travel dates</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Car className="w-4 h-4 text-[#765217] shrink-0 mt-0.5" />
-                <span>Exclusive private 4x4 Land Cruiser with pop-up roof</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className="pb-28 lg:pb-12">
+    <PageMeta title={tour.title} description={tour.shortDescription} image={tour.images?.[0]} canonicalPath={`/safaris/${tour.slug}`} />
+    <section className="relative min-h-[440px] sm:min-h-[520px] lg:min-h-[570px] overflow-hidden bg-[#0c120e]"><img src={tour.images?.[0]} alt={`${tour.title} safari`} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-[#07100a]/95 via-[#07100a]/35 to-black/25" /><div className="relative max-w-7xl mx-auto px-4 sm:px-8 pt-6 pb-10 min-h-[440px] sm:min-h-[520px] lg:min-h-[570px] flex flex-col justify-between"><button type="button" onClick={onBack} className="self-start min-h-11 inline-flex items-center gap-2 rounded-full bg-black/45 px-4 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 hover:bg-black/60"><ArrowLeft className="w-4 h-4" />All safaris</button><div className="max-w-3xl">{(tour.featured || tour.popular) && <span className="inline-flex rounded-full bg-[#1b4332] px-3 py-1.5 text-xs font-bold text-white shadow-sm mb-4">{tour.popular ? 'Popular Choice' : 'Featured Safari'}</span>}<h1 className="font-serif-luxury text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.08] sm:leading-[1.05] break-words">{tour.title}</h1><div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-white/95"><span className="inline-flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#e6bc65]" />{tour.durationLabel}</span><span className="inline-flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#e6bc65]" />{tour.country}</span></div></div></div></section>
+    <div className="sticky top-16 sm:top-24 z-30 bg-[#fffdf8]/98 backdrop-blur-xl border-b border-[#ddd7ca] shadow-md"><div className="max-w-7xl mx-auto lg:flex lg:items-stretch"><nav aria-label="Tour sections" className="min-w-0 flex-1 px-2 sm:px-8 flex overflow-x-auto scrollbar-hide">{sectionLinks.map(({ id, label, Icon }) => <button type="button" key={id} onClick={() => goTo(id)} className="shrink-0 min-h-16 px-3 sm:px-5 inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-semibold text-[#405046] hover:text-[#76541a] border-b-2 border-transparent hover:border-[#b3822a]"><Icon className="w-5 h-5" aria-hidden="true" />{label}</button>)}</nav><div className="hidden lg:flex shrink-0 items-center gap-4 border-l border-[#ddd7ca] px-5 bg-white"><div><span className="block text-xs font-semibold text-[#76541a]">From</span><strong className="font-serif-luxury text-xl text-[#161f19]">{price}</strong><span className="block text-[11px] text-[#536158]">Per person sharing</span></div><button type="button" onClick={() => onOpenEnquiryModal({ selectedTour: tour })} className="min-h-11 rounded-xl bg-[#1b4332] hover:bg-[#123524] px-5 text-sm font-extrabold text-white">Get Quote</button></div></div></div>
+    <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-14">
+      <section id="overview" className="scroll-mt-24 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start"><div className="lg:col-span-5 space-y-5"><div><span className="text-xs font-bold uppercase tracking-wider text-[#e6bc65]">The experience</span><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white mt-1">Safari overview</h2></div><p className="text-base text-[#c7d2cb] leading-relaxed whitespace-pre-line">{tour.fullDescription || tour.shortDescription}</p><div className="grid grid-cols-2 gap-3 pt-2"><div className="rounded-xl border border-white/10 bg-white/5 p-3"><Clock className="w-5 h-5 text-[#e6bc65] mb-2" /><span className="text-xs text-[#aebbb2] block">Duration</span><strong className="text-sm text-white">{tour.durationLabel}</strong></div><div className="rounded-xl border border-white/10 bg-white/5 p-3"><Compass className="w-5 h-5 text-[#e6bc65] mb-2" /><span className="text-xs text-[#aebbb2] block">Travel style</span><strong className="text-sm text-white">{tour.travelStyles?.[0] || 'Tailor-made'}</strong></div></div></div><div id="gallery" className="scroll-mt-24 lg:col-span-7 space-y-3"><div className="aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden relative bg-[#f4f2ec] border border-white/10"><img src={tour.images?.[activeImageIdx] || tour.images?.[0]} alt={`${tour.title} gallery image ${activeImageIdx + 1}`} loading="lazy" className="w-full h-full object-cover" /><span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-3 py-1.5 text-xs font-semibold text-white">{activeImageIdx + 1} / {tour.images?.length || 1}</span></div>{tour.images?.length > 1 && <div className="flex gap-2 overflow-x-auto pb-1">{tour.images.map((img, idx) => <button type="button" key={img + idx} onClick={() => setActiveImageIdx(idx)} aria-pressed={activeImageIdx === idx} aria-label={`View photo ${idx + 1}`} className={`shrink-0 w-20 h-16 sm:w-28 sm:h-20 rounded-xl overflow-hidden border-2 ${activeImageIdx === idx ? 'border-[#e6bc65]' : 'border-transparent opacity-75'}`}><img src={img} alt="" loading="lazy" className="w-full h-full object-cover" /></button>)}</div>}</div></section>
+      <section id="itinerary" className="scroll-mt-24"><ItineraryTimeline itinerary={tour.itinerary} /></section>
+      <section id="route" className="scroll-mt-24 space-y-5"><div><span className="text-xs font-bold uppercase tracking-wider text-[#e6bc65]">Your route</span><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white mt-1">The journey on the map</h2><p className="text-sm text-[#c7d2cb] mt-2">An illustrative static map shows the sequence of the journey without the performance cost of an interactive map.</p></div><TourRouteMap tour={tour} /></section>
+      <section id="inclusions" className="scroll-mt-24 grid sm:grid-cols-2 gap-5">{includedItems.length > 0 && <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-5 sm:p-6"><h2 className="font-serif-luxury text-xl font-bold text-[#163524]">What Is Included</h2><ul className="mt-4 space-y-2.5">{includedItems.map((item, idx) => <li key={idx} className="flex gap-2 text-sm text-[#254331]"><Check className="w-4 h-4 mt-0.5 shrink-0" /><span>{item}</span></li>)}</ul></div>}{excludedItems.length > 0 && <div className="rounded-2xl bg-rose-50 border border-rose-200 p-5 sm:p-6"><h2 className="font-serif-luxury text-xl font-bold text-rose-900">What Is Excluded</h2><ul className="mt-4 space-y-2.5">{excludedItems.map((item, idx) => <li key={idx} className="flex gap-2 text-sm text-rose-900"><X className="w-4 h-4 mt-0.5 shrink-0" /><span>{item}</span></li>)}</ul></div>}</section>
+      <section id="pricing" className="scroll-mt-24"><DynamicPricingTable tour={tour} /></section><section id="faqs" className="scroll-mt-24 rounded-2xl bg-white border border-[#ded8cb] p-5 sm:p-7"><h2 className="font-serif-luxury text-2xl font-bold text-[#161f19]">Safari essentials</h2><div className="mt-5 grid md:grid-cols-2 gap-3 text-sm text-[#405046]"><div className="rounded-xl bg-[#faf8f2] border border-[#e3ddcf] p-4"><strong className="block text-[#161f19] mb-1">What should I pack?</strong>Light neutral clothing, a warm layer for dawn drives, sun protection, binoculars and a soft-sided travel bag are practical starting points.</div><div className="rounded-xl bg-[#faf8f2] border border-[#e3ddcf] p-4"><strong className="block text-[#161f19] mb-1">Can this itinerary change?</strong>Yes. This safari is a starting point and can be adapted around your dates, pace, interests and accommodation preferences.</div></div></section><section className="hidden lg:grid grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-[#c7d2cb]"><span className="flex gap-2"><ShieldCheck className="w-5 h-5 text-[#e6bc65] shrink-0" />No payment required to enquire</span><span className="flex gap-2"><Sparkles className="w-5 h-5 text-[#e6bc65] shrink-0" />Tailor-made around your preferences</span><a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2 hover:text-white"><MessageCircle className="w-5 h-5 text-[#e6bc65] shrink-0" />Ask about this safari on WhatsApp</a></section>
+    </main>
+    {createPortal(
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-50 border-t border-[#d7d1c4] bg-[#fffdf8]/98 backdrop-blur-xl px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(0,0,0,0.16)]"><div className="max-w-lg mx-auto flex items-center gap-4"><div className="min-w-0 flex-1"><span className="block text-xs font-semibold text-[#76541a]">From</span><strong className="font-serif-luxury text-2xl leading-none text-[#161f19]">{price}</strong><span className="block text-[11px] text-[#536158] mt-1">Per person sharing</span></div><button type="button" onClick={() => onOpenEnquiryModal({ selectedTour: tour })} className="min-h-12 min-w-[150px] shrink-0 rounded-xl bg-[#1b4332] hover:bg-[#123524] px-5 text-sm font-extrabold text-white shadow-md">Book This Safari</button></div>{isKenyanResidentMode && tour.residentPriceKES && <p className="max-w-lg mx-auto mt-1 text-xs font-semibold text-[#1b4332]">Resident rate: KSH {tour.residentPriceKES.toLocaleString()}</p>}</div>,
+      document.body
+    )}
+  </div>;
 };

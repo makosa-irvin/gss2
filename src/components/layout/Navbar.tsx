@@ -38,8 +38,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
-      {/* TOP ANNOUNCEMENT & UTILITIES BAR */}
-      <div className="bg-[#f5f3ec] border-b border-[#e6e2d6] px-4 sm:px-8 py-1.5 text-xs text-[#526156]">
+      {/* TOP ANNOUNCEMENT & UTILITIES BAR - collapses on scroll on small screens
+          only, since the combined sticky header + page sub-nav was eating close
+          to a fifth of a phone's viewport height once scrolled. Stays visible
+          at rest, and always visible at sm+ where vertical space is less tight. */}
+      <div
+        className={`bg-[#f5f3ec] border-b border-[#e6e2d6] px-4 sm:px-8 text-xs text-[#526156] overflow-hidden transition-[max-height,opacity,padding] duration-200 ${
+          isScrolled ? 'max-h-0 opacity-0 py-0 sm:max-h-20 sm:opacity-100 sm:py-1.5' : 'max-h-20 opacity-100 py-1.5'
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-[#243329] font-medium">
