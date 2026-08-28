@@ -35,6 +35,37 @@
   .font-display-accent {
     font-family: 'Cinzel Variable', serif;
   }
+
+  /*
+   * Give every keyboard user a consistent, highly visible focus treatment.
+   * The gold ring is intentionally paired with a dark offset so it remains
+   * visible on both the site's cream cards and its dark green shell.
+   */
+  :where(a, button, input, select, textarea, summary, [role='button'], [tabindex]):focus-visible {
+    outline: 3px solid #e6bc65;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 5px rgba(12, 18, 14, 0.9);
+  }
+}
+
+/*
+ * Several homepage section introductions live directly on the dark shell,
+ * while their original muted-green text utilities were chosen for white
+ * cards. Restrict the correction to the first (header) block of sections
+ * that contain a white heading, leaving card typography untouched.
+ *
+ * Contrast against #0c120e:
+ *   #5d6e62 -> ~3.49:1 (fails WCAG AA for normal text)
+ *   #c7d2cb -> ~12.19:1
+ *   #9e7120 -> ~4.36:1 (just below AA for normal text)
+ *   #e6bc65 -> ~10.60:1
+ */
+section:has(h2.text-white) > div:first-child .text-\[\#5d6e62\] {
+  color: #c7d2cb;
+}
+
+section:has(h2.text-white) > div:first-child .text-\[\#9e7120\] {
+  color: #e6bc65;
 }
 
 /*
@@ -87,4 +118,22 @@
 
 .animate-float-slow {
   animation: floatSlow 6s ease-in-out infinite;
+}
+
+/* Respect OS-level motion preferences across both custom and utility animations. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-float-slow {
+    animation: none !important;
+  }
 }

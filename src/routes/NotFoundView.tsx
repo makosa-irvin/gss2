@@ -8,7 +8,7 @@ export const NotFoundView: React.FC = () => {
       <PageMeta title="Page Not Found" noIndex />
       <Compass className="w-12 h-12 text-[#9e7120]" />
       <div className="space-y-2">
-        <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">
           This trail doesn't exist
         </h1>
         <p className="text-sm text-[#5d6e62] max-w-md">

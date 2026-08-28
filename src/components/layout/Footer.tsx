@@ -1,205 +1,48 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
-import {
-  Compass,
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  ShieldCheck,
-  Award,
-  Instagram,
-  Facebook,
-  Youtube,
-  Linkedin,
-  ArrowUpRight
-} from 'lucide-react';
+import { Compass, MapPin, Phone, Mail, ShieldCheck, Instagram, Facebook, Youtube, Linkedin, Sparkles } from 'lucide-react';
 
-interface FooterProps {
-  onNavigate: (view: string, payload?: any) => void;
-  onOpenEnquiryModal: (payload?: any) => void;
-}
+interface FooterProps { onNavigate: (view: string, payload?: any) => void; onOpenEnquiryModal: (payload?: any) => void; }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }) => {
   const { settings, destinations } = useData();
+  const linkClass = 'min-h-9 inline-flex items-center text-sm text-[#46544b] hover:text-[#704d15] transition-colors text-left';
 
   return (
-    <footer id="main-footer" className="bg-[#f9f8f4] border-t border-[#e8e4da] text-[#4d5c52] pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
-        {/* Top Brand Banner */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-[#e2ded2]">
-          <div className="lg:col-span-5 space-y-4">
-            <div
-              onClick={() => onNavigate('home')}
-              className="flex items-center gap-3 cursor-pointer select-none"
-            >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#b3822a] to-[#8c6214] p-0.5 shadow-md flex items-center justify-center">
-                <div className="w-full h-full bg-[#161f19] rounded-[10px] flex items-center justify-center">
-                  <Compass className="w-5 h-5 text-[#f4f2eb]" />
-                </div>
-              </div>
-              <div>
-                <span className="font-display-accent text-xl font-bold tracking-wider text-[#161f19] block">
-                  GOOD SECRETS SAFARIS
-                </span>
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[#9e7120] block">
-                  KENYA · TANZANIA · ZANZIBAR
-                </span>
-              </div>
-            </div>
-
-            <p className="text-sm text-[#5d6e62] leading-relaxed max-w-md">
-              {settings.description || "Crafting personalized African safaris, Great Migration expeditions, Kilimanjaro views, and Indian Ocean luxury escapes designed around your personal story."}
-            </p>
-
-            <div className="flex items-center gap-3 pt-2">
-              {settings.social.instagram && (
-                <a
-                  href={settings.social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-              )}
-              {settings.social.facebook && (
-                <a
-                  href={settings.social.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
-                  aria-label="Facebook"
-                >
-                  <Facebook className="w-4 h-4" />
-                </a>
-              )}
-              {settings.social.youtube && (
-                <a
-                  href={settings.social.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
-                  aria-label="YouTube"
-                >
-                  <Youtube className="w-4 h-4" />
-                </a>
-              )}
-              {settings.social.linkedin && (
-                <a
-                  href={settings.social.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-xl bg-white text-[#4d5c52] hover:text-[#9e7120] hover:bg-[#f6f4ee] transition-colors border border-[#ded9cb] shadow-xs"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              )}
+    <footer id="main-footer" className="bg-[#f9f8f4] border-t border-[#ded8cb] text-[#46544b] pt-14 pb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-9 pb-10 border-b border-[#ddd7c9]">
+          <div className="lg:col-span-5 space-y-5">
+            <button type="button" onClick={() => onNavigate('home')} aria-label="Good Secrets Safaris home" className="flex items-center gap-3 text-left rounded-xl">
+              <div className="w-11 h-11 rounded-xl bg-[#8a611d] p-0.5 shadow-md flex items-center justify-center"><div className="w-full h-full bg-[#161f19] rounded-[10px] flex items-center justify-center"><Compass className="w-5 h-5 text-[#f4f2eb]" aria-hidden="true" /></div></div>
+              <div><span className="font-display-accent text-xl font-bold tracking-wider text-[#161f19] block">GOOD SECRETS SAFARIS</span><span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#76541a] block">KENYA · TANZANIA · ZANZIBAR</span></div>
+            </button>
+            <p className="text-sm text-[#46544b] leading-relaxed max-w-md">{settings.description || 'Private East Africa safaris and coastal escapes shaped around your dates, interests and travel style.'}</p>
+            <button type="button" onClick={() => onOpenEnquiryModal()} className="min-h-11 inline-flex items-center gap-2 px-5 rounded-xl bg-[#8a611d] hover:bg-[#704d15] text-white text-sm font-bold shadow-sm"><Sparkles className="w-4 h-4" />Request a safari quote</button>
+            <div className="flex items-center gap-2 pt-1">
+              {settings.social.instagram && <a href={settings.social.instagram} target="_blank" rel="noopener noreferrer" className="min-w-11 min-h-11 rounded-xl bg-white text-[#405046] hover:text-[#704d15] flex items-center justify-center border border-[#d7d1c4]" aria-label="Good Secrets Safaris on Instagram"><Instagram className="w-4 h-4" /></a>}
+              {settings.social.facebook && <a href={settings.social.facebook} target="_blank" rel="noopener noreferrer" className="min-w-11 min-h-11 rounded-xl bg-white text-[#405046] hover:text-[#704d15] flex items-center justify-center border border-[#d7d1c4]" aria-label="Good Secrets Safaris on Facebook"><Facebook className="w-4 h-4" /></a>}
+              {settings.social.youtube && <a href={settings.social.youtube} target="_blank" rel="noopener noreferrer" className="min-w-11 min-h-11 rounded-xl bg-white text-[#405046] hover:text-[#704d15] flex items-center justify-center border border-[#d7d1c4]" aria-label="Good Secrets Safaris on YouTube"><Youtube className="w-4 h-4" /></a>}
+              {settings.social.linkedin && <a href={settings.social.linkedin} target="_blank" rel="noopener noreferrer" className="min-w-11 min-h-11 rounded-xl bg-white text-[#405046] hover:text-[#704d15] flex items-center justify-center border border-[#d7d1c4]" aria-label="Good Secrets Safaris on LinkedIn"><Linkedin className="w-4 h-4" /></a>}
             </div>
           </div>
 
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            {/* Column 1: Safaris & Styles */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
-                Safari Styles
-              </h4>
-              <ul className="space-y-2 text-xs">
-                {['Big 5', 'Great Migration', 'Family', 'Honeymoon', 'Senior Friendly', 'Luxury', 'Budget', 'Safari & Beach'].map(style => (
-                  <li key={style}>
-                    <button
-                      onClick={() => onNavigate('tours', { travelStyle: style })}
-                      className="text-[#526357] hover:text-[#9e7120] transition-colors text-left"
-                    >
-                      {style} Safaris
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 2: Destinations */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
-                Destinations
-              </h4>
-              <ul className="space-y-2 text-xs">
-                {destinations.slice(0, 7).map(d => (
-                  <li key={d.id}>
-                    <button
-                      onClick={() => onNavigate('destinations', { destinationId: d.id })}
-                      className="text-[#526357] hover:text-[#9e7120] transition-colors text-left"
-                    >
-                      {d.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 3: Quick Links & Contact */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#161f19]">
-                Company & Contact
-              </h4>
-              <ul className="space-y-2 text-xs">
-                <li>
-                  <button onClick={() => onNavigate('about')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
-                    About Our Story
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => onNavigate('hotels')} className="text-[#1b4332] font-semibold hover:underline transition-colors">
-                    Kenyan Resident Offers 🏖️
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => onNavigate('builder')} className="text-[#9e7120] font-semibold hover:underline transition-colors">
-                    Custom Safari Builder ✨
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => onNavigate('blog')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
-                    Travel Guides & Blog
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => onNavigate('contact')} className="text-[#526357] hover:text-[#9e7120] transition-colors">
-                    Contact & Quote Request
-                  </button>
-                </li>
-              </ul>
-
-              <div className="pt-2 text-xs space-y-1.5 text-[#67796d]">
-                <div className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-[#9e7120]" />
-                  <span>{settings.contact.email}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-[#9e7120]" />
-                  <span>{settings.contact.phone}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#9e7120]" />
-                  <span>{settings.contact.address}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <nav className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-8" aria-label="Footer navigation">
+            <div><h2 className="text-xs font-extrabold uppercase tracking-wider text-[#161f19] mb-2">Safari styles</h2><ul>{['Big 5', 'Great Migration', 'Family', 'Honeymoon', 'Luxury', 'Safari & Beach'].map(style => <li key={style}><button onClick={() => onNavigate('tours', { travelStyle: style })} className={linkClass}>{style}</button></li>)}</ul></div>
+            <div><h2 className="text-xs font-extrabold uppercase tracking-wider text-[#161f19] mb-2">Destinations</h2><ul>{destinations.slice(0, 6).map(d => <li key={d.id}><button onClick={() => onNavigate('destinations', { destinationId: d.id })} className={linkClass}>{d.name}</button></li>)}</ul></div>
+            <div><h2 className="text-xs font-extrabold uppercase tracking-wider text-[#161f19] mb-2">Plan your trip</h2><ul><li><button onClick={() => onNavigate('about')} className={linkClass}>About us</button></li><li><button onClick={() => onNavigate('hotels')} className={linkClass}>Beach resorts & stays</button></li><li><button onClick={() => onNavigate('builder')} className={linkClass}>Safari builder</button></li><li><button onClick={() => onNavigate('blog')} className={linkClass}>Travel guides</button></li><li><button onClick={() => onNavigate('contact')} className={linkClass}>Contact</button></li></ul></div>
+          </nav>
         </div>
 
-        {/* Bottom Trust and Copyright Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#758479]">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#9e7120]" />
-            <span>Licensed & Certified East Africa Safari Operator · Full AMREF Flying Doctors Medical Evacuation Cover</span>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-[#46544b]">
+          <a href={`mailto:${settings.contact.email}`} className="min-h-11 flex items-center gap-2 rounded-xl hover:text-[#704d15]"><Mail className="w-4 h-4 text-[#76541a]" /><span className="break-all">{settings.contact.email}</span></a>
+          <a href={`tel:${settings.contact.phone}`} className="min-h-11 flex items-center gap-2 rounded-xl hover:text-[#704d15]"><Phone className="w-4 h-4 text-[#76541a]" />{settings.contact.phone}</a>
+          <div className="min-h-11 flex items-center gap-2"><MapPin className="w-4 h-4 text-[#76541a] shrink-0" />{settings.contact.address}</div>
+        </div>
 
-          <div>
-            © {new Date().getFullYear()} Good Secrets Safaris. All rights reserved. Your Africa. Your Story. Your Safari.
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#5b6b60] border-t border-[#ddd7c9] pt-6">
+          <div className="flex items-start gap-2"><ShieldCheck className="w-4 h-4 text-[#76541a] shrink-0" /><span>East Africa safari operator · AMREF Flying Doctors medical evacuation cover included where stated in your itinerary.</span></div>
+          <div className="sm:text-right">© {new Date().getFullYear()} Good Secrets Safaris. All rights reserved.</div>
         </div>
       </div>
     </footer>

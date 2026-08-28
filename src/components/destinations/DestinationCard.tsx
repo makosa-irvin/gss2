@@ -1,7 +1,7 @@
 import React from 'react';
 import { Destination } from '../../types';
 import { unsplashCardImage } from '../../lib/imageUrl';
-import { MapPin, ArrowRight, Compass } from 'lucide-react';
+import { ArrowRight, Compass } from 'lucide-react';
 
 interface DestinationCardProps {
   destination: Destination;
@@ -12,73 +12,78 @@ interface DestinationCardProps {
 export const DestinationCard: React.FC<DestinationCardProps> = ({
   destination,
   onSelect,
-  variant = 'standard'
 }) => {
   return (
-    <div
+    <article
       id={`dest-card-${destination.id}`}
-      onClick={() => onSelect(destination)}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl bg-white border border-[#e8e4da] transition-all duration-500 hover:border-[#b3822a] hover:shadow-xl shadow-xs"
+      className="group relative overflow-hidden rounded-2xl bg-white border border-[#ded8cc] transition-all duration-500 hover:-translate-y-1 hover:border-[#b3822a] hover:shadow-xl focus-within:border-[#b3822a] focus-within:shadow-xl shadow-sm"
     >
-      <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden">
-        <img
-          src={unsplashCardImage(destination.heroImage, 800)}
-          alt={destination.name}
-          referrerPolicy="no-referrer"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-          loading="lazy"
-        />
-        {/* Cinematic gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-95" />
+      <button
+        type="button"
+        onClick={() => onSelect(destination)}
+        aria-label={`Explore ${destination.name}, ${destination.country}`}
+        className="block w-full text-left rounded-2xl"
+      >
+        <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden">
+          <img
+            src={unsplashCardImage(destination.heroImage, 800)}
+            alt={destination.name}
+            referrerPolicy="no-referrer"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+          {/* Strong bottom gradient keeps overlaid copy readable on bright photography. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/10 transition-opacity duration-300" />
 
-        {/* Country Badge */}
-        <div className="absolute top-3 left-3">
-          <span className="rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-xs font-semibold text-white border border-white/20 uppercase tracking-wider">
-            {destination.country}
-          </span>
-        </div>
-
-        {/* Content overlaid on bottom of image */}
-        <div className="absolute inset-x-0 bottom-0 p-5 flex flex-col justify-end">
-          <div className="flex items-center gap-1.5 text-xs text-[#e6bc65] font-semibold mb-1">
-            <Compass className="w-3.5 h-3.5" />
-            <span>{destination.recommendedDuration || '2 - 4 Days'}</span>
-          </div>
-
-          <h3 className="font-serif-luxury text-xl font-bold text-white group-hover:text-[#e6bc65] transition-colors leading-snug">
-            {destination.name}
-          </h3>
-
-          <p className="mt-1 text-xs text-white/80 line-clamp-2 leading-relaxed font-normal">
-            {destination.subtitle || destination.description}
-          </p>
-
-          {/* Wildlife preview tags */}
-          {destination.wildlife && destination.wildlife.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1">
-              {destination.wildlife.slice(0, 3).map(animal => (
-                <span
-                  key={animal}
-                  className="rounded bg-black/50 backdrop-blur-sm px-2 py-0.5 text-[10px] text-white/90 border border-white/15"
-                >
-                  {animal}
-                </span>
-              ))}
-              {destination.wildlife.length > 3 && (
-                <span className="text-[10px] text-[#e6bc65] font-semibold self-center ml-1">
-                  +{destination.wildlife.length - 3} more
-                </span>
-              )}
-            </div>
-          )}
-
-          <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/15">
-            <span className="text-xs font-semibold text-[#e6bc65] group-hover:underline flex items-center gap-1">
-              Explore Destination <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+          {/* Country Badge */}
+          <div className="absolute top-3 left-3">
+            <span className="rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-xs font-bold text-white border border-white/30 uppercase tracking-wider">
+              {destination.country}
             </span>
           </div>
+
+          {/* Content overlaid on bottom of image */}
+          <div className="absolute inset-x-0 bottom-0 p-5 flex flex-col justify-end">
+            <div className="flex items-center gap-1.5 text-xs text-[#f0cb7a] font-bold mb-1">
+              <Compass className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>{destination.recommendedDuration || '2 - 4 Days'}</span>
+            </div>
+
+            <h3 className="font-serif-luxury text-xl font-bold text-white group-hover:text-[#f0cb7a] transition-colors leading-snug">
+              {destination.name}
+            </h3>
+
+            <p className="mt-1 text-sm text-white/95 line-clamp-2 leading-relaxed font-medium">
+              {destination.subtitle || destination.description}
+            </p>
+
+            {/* Wildlife preview tags */}
+            {destination.wildlife && destination.wildlife.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {destination.wildlife.slice(0, 3).map(animal => (
+                  <span
+                    key={animal}
+                    className="rounded-md bg-black/70 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white border border-white/25"
+                  >
+                    {animal}
+                  </span>
+                ))}
+                {destination.wildlife.length > 3 && (
+                  <span className="text-xs text-[#f0cb7a] font-bold self-center ml-1">
+                    +{destination.wildlife.length - 3} more
+                  </span>
+                )}
+              </div>
+            )}
+
+            <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/30">
+              <span className="text-sm font-bold text-[#f0cb7a] group-hover:underline flex items-center gap-1">
+                Explore Destination <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </button>
+    </article>
   );
 };
