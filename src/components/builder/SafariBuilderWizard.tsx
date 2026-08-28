@@ -2,76 +2,72 @@ import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Tour } from '../../types';
 import { ApiError } from '../../services/api';
-import {
-  Compass,
-  Calendar,
-  Users,
-  Sparkles,
-  Heart,
-  Camera,
-  Sun,
-  ShieldCheck,
-  ArrowRight,
-  ArrowLeft,
-  Check,
-  CheckCircle2,
-  DollarSign,
-  Send
-} from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check, CheckCircle2, Send, Sparkles, ShieldCheck } from 'lucide-react';
 
 interface SafariBuilderWizardProps {
   onSelectTour?: (tour: Tour) => void;
   onCompleteEnquiry?: (enquiryData: any) => void;
 }
 
-export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
-  onSelectTour,
-  onCompleteEnquiry
-}) => {
+type Choice = { id: string; title: string; desc?: string; label?: string };
+
+export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({ onSelectTour, onCompleteEnquiry }) => {
   const { tours, addEnquiry, getWhatsAppUrl, formatPrice } = useData();
-  const [step, setStep] = useState<number>(1);
-
-  // Wizard state
+  const [step, setStep] = useState(1);
   const [destinations, setDestinations] = useState<string[]>(['Kenya']);
-  const [duration, setDuration] = useState<string>('4-7');
-  const [travelerType, setTravelerType] = useState<string>('Couple');
-  const [comfortLevel, setComfortLevel] = useState<string>('Luxury');
-  const [experiences, setExperiences] = useState<string[]>(['Big 5', 'Elephants', 'Migration']);
-  const [budgetRange, setBudgetRange] = useState<string>('$3,000 - $6,000 / person');
+  const [duration, setDuration] = useState('4-7');
+  const [travelerType, setTravelerType] = useState('Couple');
+  const [comfortLevel, setComfortLevel] = useState('Luxury');
+  const [experiences, setExperiences] = useState<string[]>(['Big 5 Tracking', 'Elephants & Kilimanjaro']);
+  const [budgetRange, setBudgetRange] = useState('Not sure yet');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [travelMonth, setTravelMonth] = useState('');
+  const [specialRequests, setSpecialRequests] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  // Contact for final step
-  const [fullName, setFullName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [travelMonth, setTravelMonth] = useState<string>('July - October 2026');
-  const [specialRequests, setSpecialRequests] = useState<string>('');
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [submitError, setSubmitError] = useState<string>('');
+  const destinationChoices: Choice[] = [
+    { id: 'Kenya', title: 'Kenya', desc: 'Maasai Mara, Amboseli, Rift Valley and more.' },
+    { id: 'Tanzania', title: 'Tanzania', desc: 'Serengeti, Ngorongoro, Tarangire and more.' },
+    { id: 'Zanzibar', title: 'Zanzibar & Coast', desc: 'Beach time, Stone Town and Indian Ocean stays.' },
+    { id: 'Combined', title: 'Kenya + Tanzania', desc: 'Combine both countries in one route.' },
+    { id: 'BushBeach', title: 'Safari + Beach', desc: 'Wildlife first, then time on the coast.' }
+  ];
 
-  // Toggle multi-select items
-  const toggleDestination = (dest: string) => {
-    setDestinations(prev =>
-      prev.includes(dest) ? (prev.length > 1 ? prev.filter(d => d !== dest) : prev) : [...prev, dest]
-    );
-  };
+  const durationChoices: Choice[] = [
+    { id: '1-3', title: '1–3 days', label: 'Short escape', desc: 'Useful for stopovers, extensions and short breaks.' },
+    { id: '4-7', title: '4–7 days', label: 'Classic safari', desc: 'Enough time for a focused route through two or three areas.' },
+    { id: '8-14', title: '8–14 days', label: 'In-depth journey', desc: 'More variety, slower pacing and easier cross-border combinations.' },
+    { id: '15+', title: '15+ days', label: 'Extended journey', desc: 'For a broad safari, culture and coast itinerary.' }
+  ];
 
-  const toggleExperience = (exp: string) => {
-    setExperiences(prev =>
-      prev.includes(exp) ? prev.filter(e => e !== exp) : [...prev, exp]
-    );
-  };
+  const travelerChoices: Choice[] = [
+    { id: 'Solo', title: 'Solo traveler', desc: 'Private or shared options can be discussed.' },
+    { id: 'Couple', title: 'Couple', desc: 'Romantic stays and a flexible private pace.' },
+    { id: 'Family', title: 'Family', desc: 'Family-friendly stays and practical pacing.' },
+    { id: 'Friends', title: 'Friends / small group', desc: 'A private vehicle and shared itinerary.' },
+    { id: 'Seniors', title: 'Senior travelers', desc: 'Comfortable pacing and suitable properties.' },
+    { id: 'Photography', title: 'Photography focused', desc: 'More time around light, sightings and positioning.' }
+  ];
 
-  // Find matching tours from dataset
+  const comfortChoices: Choice[] = [
+    { id: 'Midrange', title: 'Comfortable midrange', desc: 'Reliable lodges and camps with good comfort and value.' },
+    { id: 'Luxury', title: 'Luxury', desc: 'Smaller camps, strong locations and elevated service.' },
+    { id: 'Ultra Luxury', title: 'Ultra-luxury', desc: 'Top-tier private stays, fly-in options and highly personalized service.' }
+  ];
+
+  const experienceChoices = ['Big 5 Tracking', 'Wildebeest Migration', 'Elephants & Kilimanjaro', 'Maasai & Samburu Culture', 'Hot Air Balloon Safari', 'Zanzibar Beach Relaxation', 'Rhino Sanctuary', 'Predators & Big Cats', 'Birdwatching & Rift Lakes', 'Walking Safaris', 'Photography', 'Bush Dining'];
+  const budgetChoices = ['Not sure yet', 'Under $1,500', '$1,500 – $3,500', '$3,500 – $7,000', '$7,000+'];
+
+  const toggleDestination = (id: string) => setDestinations(prev => prev.includes(id) ? (prev.length > 1 ? prev.filter(item => item !== id) : prev) : [...prev, id]);
+  const toggleExperience = (id: string) => setExperiences(prev => prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]);
+
   const matchingTours = tours.filter(tour => {
-    const matchesDest = destinations.some(d =>
-      tour.country.toLowerCase().includes(d.toLowerCase()) ||
-      tour.destinations.some(td => td.toLowerCase().includes(d.toLowerCase()))
-    );
-    const matchesStyle = experiences.some(exp =>
-      tour.travelStyles.some(ts => ts.toLowerCase().includes(exp.toLowerCase())) ||
-      tour.title.toLowerCase().includes(exp.toLowerCase())
-    );
+    const matchesDest = destinations.some(d => tour.country.toLowerCase().includes(d.toLowerCase()) || tour.destinations.some(td => td.toLowerCase().includes(d.toLowerCase())));
+    const matchesStyle = experiences.some(exp => tour.travelStyles.some(ts => ts.toLowerCase().includes(exp.toLowerCase())) || tour.title.toLowerCase().includes(exp.toLowerCase()));
     return matchesDest || matchesStyle;
   }).slice(0, 3);
 
@@ -84,548 +80,63 @@ export const SafariBuilderWizard: React.FC<SafariBuilderWizardProps> = ({
         fullName,
         email,
         phone,
-        country: 'International Visitor',
-        travelDates: travelMonth,
+        country: 'Not specified',
+        travelDates: travelMonth || 'Flexible',
         durationDays: duration === '1-3' ? 3 : duration === '4-7' ? 6 : duration === '8-14' ? 10 : 15,
-        numberOfTravelers: {
-          adults: travelerType === 'Solo' ? 1 : travelerType === 'Couple' ? 2 : 4,
-          children: travelerType === 'Family' ? 2 : 0
-        },
+        numberOfTravelers: { adults: travelerType === 'Solo' ? 1 : travelerType === 'Couple' ? 2 : 4, children: travelerType === 'Family' ? 2 : 0 },
         preferredDestination: destinations.join(', '),
         safariType: `Custom ${comfortLevel} Safari: ${experiences.join(', ')}`,
         budget: budgetRange,
         accommodationPreference: comfortLevel,
-        specialRequests: `Traveler Profile: ${travelerType}. Desired experiences: ${experiences.join(', ')}. ${specialRequests}`,
+        specialRequests: `Traveler profile: ${travelerType}. Desired experiences: ${experiences.join(', ')}. ${specialRequests}`,
         hearAboutUs: 'Custom Safari Builder'
       });
-
       setIsSubmitted(true);
-      if (onCompleteEnquiry) onCompleteEnquiry(result);
+      onCompleteEnquiry?.(result);
     } catch (err) {
-      setSubmitError(
-        err instanceof ApiError
-          ? err.message
-          : 'Something went wrong sending your enquiry. Please try again or reach us on WhatsApp.'
-      );
+      setSubmitError(err instanceof ApiError ? err.message : 'Something went wrong sending your enquiry. Please try again or reach us on WhatsApp.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const choiceClass = (selected: boolean) => `min-h-24 w-full p-4 sm:p-5 rounded-2xl border text-left transition-all ${selected ? 'bg-[#fdfaf2] border-[#8a611d] shadow-sm' : 'bg-[#faf8f2] border-[#ddd7ca] hover:border-[#8a611d]'}`;
+  const navButton = 'min-h-11 inline-flex items-center justify-center gap-2 px-5 rounded-xl text-sm font-bold';
+  const inputClass = 'w-full min-h-11 px-3.5 py-2.5 rounded-xl bg-white border border-[#d7d1c4] text-sm text-[#161f19] focus:border-[#8a611d] focus:outline-none';
+  const labelClass = 'text-sm font-semibold text-[#303e35] block mb-1.5';
+
+  const renderSingleChoice = (items: Choice[], value: string, setValue: (value: string) => void, columns = 'sm:grid-cols-2') => (
+    <div role="radiogroup" className={`grid grid-cols-1 ${columns} gap-3`}>
+      {items.map(item => {
+        const selected = value === item.id;
+        return <button type="button" role="radio" aria-checked={selected} key={item.id} onClick={() => setValue(item.id)} className={choiceClass(selected)}>
+          <div className="flex items-start justify-between gap-3"><div><span className="font-serif-luxury text-lg font-bold text-[#161f19] block">{item.title}</span>{item.label && <span className="text-xs font-bold text-[#76541a] block mt-1">{item.label}</span>}</div><span aria-hidden="true" className={`mt-0.5 w-5 h-5 shrink-0 rounded-full flex items-center justify-center ${selected ? 'bg-[#8a611d] text-white' : 'border border-[#a9a093]'}`}>{selected && <Check className="w-3 h-3 stroke-[3]" />}</span></div>
+          {item.desc && <span className="text-sm text-[#46544b] mt-2 leading-relaxed block">{item.desc}</span>}
+        </button>;
+      })}
+    </div>
+  );
+
   return (
-    <div id="custom-safari-builder" className="rounded-3xl bg-white border border-[#e8e4da] overflow-hidden shadow-xl p-6 sm:p-10 max-w-4xl mx-auto">
-      {/* Wizard Step Progress */}
+    <section id="custom-safari-builder" aria-labelledby="builder-title" className="rounded-3xl bg-white border border-[#ded8cb] overflow-hidden shadow-xl p-5 sm:p-10 max-w-4xl mx-auto">
       <div className="mb-8">
-        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#5d6e62] mb-3">
-          <span className="text-[#9e7120]">Step {step} of 6</span>
-          <span>{step === 1 ? 'Destination' : step === 2 ? 'Duration' : step === 3 ? 'Companions' : step === 4 ? 'Comfort & Style' : step === 5 ? 'Experiences' : 'Your Customized Plan'}</span>
-        </div>
-        <div className="h-2 w-full bg-[#f2efe6] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#b3822a] transition-all duration-500 rounded-full"
-            style={{ width: `${(step / 6) * 100}%` }}
-          />
-        </div>
+        <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-bold text-[#46544b] mb-3"><span className="text-[#76541a]">Step {step} of 6</span><span>{['', 'Destination', 'Duration', 'Travel party', 'Comfort', 'Experiences', 'Your plan'][step]}</span></div>
+        <div className="h-2.5 w-full bg-[#f2efe6] rounded-full overflow-hidden" role="progressbar" aria-valuemin={1} aria-valuemax={6} aria-valuenow={step} aria-label={`Step ${step} of 6`}><div className="h-full bg-[#8a611d] transition-all duration-300 rounded-full" style={{ width: `${(step / 6) * 100}%` }} /></div>
       </div>
 
-      {/* STEP 1: WHERE DO YOU WANT TO GO */}
-      {step === 1 && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
-              Where in East Africa calls to you?
-            </h3>
-            <p className="text-sm text-[#5d6e62] mt-1">
-              Select one or combine multiple destinations for your tailor-made route.
-            </p>
-          </div>
+      {step === 1 && <div className="space-y-6"><div><h2 id="builder-title" className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">Where would you like to go?</h2><p className="text-base text-[#46544b] mt-2">Choose one or combine several places. You can change this later.</p></div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{destinationChoices.map(item => { const selected = destinations.includes(item.id); return <button type="button" aria-pressed={selected} key={item.id} onClick={() => toggleDestination(item.id)} className={choiceClass(selected)}><div className="flex items-start justify-between gap-3"><span className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</span><span aria-hidden="true" className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#8a611d] text-white' : 'border border-[#a9a093]'}`}>{selected && <Check className="w-3 h-3 stroke-[3]" />}</span></div><span className="text-sm text-[#46544b] mt-2 block">{item.desc}</span></button>; })}</div><div className="flex justify-end"><button type="button" onClick={() => setStep(2)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>Next: trip length <ArrowRight className="w-4 h-4" /></button></div></div>}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { id: 'Kenya', title: 'Kenya', desc: 'Maasai Mara, Amboseli Elephants & Rift Valley' },
-              { id: 'Tanzania', title: 'Tanzania', desc: 'Serengeti Migration, Ngorongoro Crater & Tarangire' },
-              { id: 'Zanzibar', title: 'Zanzibar & Coast', desc: 'Turquoise beaches, Stone Town & Spice Tours' },
-              { id: 'Combined', title: 'Kenya + Tanzania Grand Safari', desc: 'The ultimate 2-country wildlife expedition' },
-              { id: 'BushBeach', title: 'Bush & Beach Combo', desc: 'Big 5 savannah safari followed by Indian Ocean relaxation' }
-            ].map(item => {
-              const selected = destinations.includes(item.id);
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => toggleDestination(item.id)}
-                  className={`p-5 rounded-2xl border cursor-pointer transition-all duration-200 ${
-                    selected
-                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
-                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
-                      {selected && <Check className="w-3 h-3 stroke-[3]" />}
-                    </div>
-                  </div>
-                  <p className="text-xs text-[#5d6e62] mt-1.5">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+      {step === 2 && <div className="space-y-6"><div><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">How long would you like to travel?</h2><p className="text-base text-[#46544b] mt-2">Choose the closest range. The final itinerary can be shorter or longer.</p></div>{renderSingleChoice(durationChoices, duration, setDuration)}<div className="flex justify-between gap-3"><button type="button" onClick={() => setStep(1)} className={`${navButton} bg-[#f4f1e8] text-[#303e35]`}><ArrowLeft className="w-4 h-4" />Back</button><button type="button" onClick={() => setStep(3)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>Next: travelers <ArrowRight className="w-4 h-4" /></button></div></div>}
 
-          <div className="flex justify-end pt-4">
-            <button
-              onClick={() => setStep(2)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
-            >
-              <span>Next: How Many Days?</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+      {step === 3 && <div className="space-y-6"><div><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">Who are you traveling with?</h2><p className="text-base text-[#46544b] mt-2">This helps with room setup, vehicle planning and pacing.</p></div>{renderSingleChoice(travelerChoices, travelerType, setTravelerType, 'sm:grid-cols-3')}<div className="flex justify-between gap-3"><button type="button" onClick={() => setStep(2)} className={`${navButton} bg-[#f4f1e8] text-[#303e35]`}><ArrowLeft className="w-4 h-4" />Back</button><button type="button" onClick={() => setStep(4)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>Next: comfort <ArrowRight className="w-4 h-4" /></button></div></div>}
 
-      {/* STEP 2: HOW MANY DAYS */}
-      {step === 2 && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
-              How long is your ideal journey?
-            </h3>
-            <p className="text-sm text-[#5d6e62] mt-1">
-              Every itinerary is completely flexible and can be customized down to the day.
-            </p>
-          </div>
+      {step === 4 && <div className="space-y-6"><div><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">What level of comfort suits you?</h2><p className="text-base text-[#46544b] mt-2">This is a starting preference, not a fixed package.</p></div>{renderSingleChoice(comfortChoices, comfortLevel, setComfortLevel, 'sm:grid-cols-3')}<div className="flex justify-between gap-3"><button type="button" onClick={() => setStep(3)} className={`${navButton} bg-[#f4f1e8] text-[#303e35]`}><ArrowLeft className="w-4 h-4" />Back</button><button type="button" onClick={() => setStep(5)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>Next: experiences <ArrowRight className="w-4 h-4" /></button></div></div>}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { id: '1-3', title: '1 – 3 Days', label: 'Short Break / Day Excursion', desc: 'Ideal for quick stopovers, Nairobi day trips or Amboseli/Mara weekend getaways.' },
-              { id: '4-7', title: '4 – 7 Days', label: 'Classic African Safari', desc: 'The most popular duration for visiting 2 to 3 world-class national reserves.' },
-              { id: '8-14', title: '8 – 14 Days', label: 'In-Depth Expedition', desc: 'Ample time for cross-border Kenya + Tanzania or complete Bush & Beach.' },
-              { id: '15+', title: '15+ Days', label: 'Grand Bespoke Odyssey', desc: 'Unrushed luxury encompassing wildlife, culture, mountains, and tropical islands.' }
-            ].map(item => {
-              const selected = duration === item.id;
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => setDuration(item.id)}
-                  className={`p-5 rounded-2xl border cursor-pointer transition-all ${
-                    selected
-                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
-                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
-                      {selected && <Check className="w-3 h-3 stroke-[3]" />}
-                    </div>
-                  </div>
-                  <span className="text-xs font-bold text-[#9e7120] block mt-1">{item.label}</span>
-                  <p className="text-xs text-[#5d6e62] mt-1">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+      {step === 5 && <div className="space-y-6"><div><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">What do you most want to experience?</h2><p className="text-base text-[#46544b] mt-2">Pick as many as you like. These choices help shape recommendations.</p></div><div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">{experienceChoices.map(exp => { const selected = experiences.includes(exp); return <button type="button" aria-pressed={selected} key={exp} onClick={() => toggleExperience(exp)} className={`min-h-12 p-3 rounded-xl text-left border text-sm font-semibold transition-all flex items-center justify-between gap-2 ${selected ? 'bg-[#8a611d] text-white border-[#8a611d]' : 'bg-[#faf8f2] text-[#303e35] border-[#ddd7ca] hover:border-[#8a611d]'}`}><span>{exp}</span>{selected && <Check className="w-4 h-4 shrink-0" />}</button>; })}</div><div className="pt-4 border-t border-[#e6e0d4]"><p className="text-sm font-bold text-[#303e35] mb-2">Approximate budget per person <span className="font-normal text-[#66766b]">(excluding international flights)</span></p><div role="radiogroup" aria-label="Approximate budget" className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-2">{budgetChoices.map(b => <button type="button" role="radio" aria-checked={budgetRange === b} key={b} onClick={() => setBudgetRange(b)} className={`min-h-11 p-3 rounded-xl border text-sm font-bold text-center ${budgetRange === b ? 'bg-[#fdfaf2] border-[#8a611d] text-[#704d15]' : 'bg-[#faf8f2] border-[#ddd7ca] text-[#46544b]'}`}>{b}</button>)}</div></div><div className="flex justify-between gap-3"><button type="button" onClick={() => setStep(4)} className={`${navButton} bg-[#f4f1e8] text-[#303e35]`}><ArrowLeft className="w-4 h-4" />Back</button><button type="button" onClick={() => setStep(6)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>See my starting points <Sparkles className="w-4 h-4" /></button></div></div>}
 
-          <div className="flex justify-between pt-4">
-            <button
-              onClick={() => setStep(1)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              onClick={() => setStep(3)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
-            >
-              <span>Next: Who is Traveling?</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+      {step === 6 && <div className="space-y-8">{!isSubmitted ? <><div><span className="text-xs font-bold uppercase tracking-wider text-[#76541a]">Your preferences</span><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19] mt-1">A few safari ideas to start from</h2><p className="text-sm text-[#46544b] mt-2">These are examples based on your choices. Your final route can be adjusted around dates, pace, budget and availability.</p></div>{matchingTours.length > 0 && <div className="space-y-3">{matchingTours.map(tour => <article key={tour.id} className="p-4 rounded-2xl bg-[#faf8f2] border border-[#e3ddcf] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"><div className="flex items-center gap-3"><img src={tour.images[0]} alt="" className="w-16 h-16 rounded-xl object-cover" /><div><h3 className="font-serif-luxury font-bold text-base text-[#161f19]">{tour.title}</h3><span className="text-sm text-[#76541a] block font-semibold">{tour.durationLabel} · {tour.country}</span><span className="text-sm text-[#46544b]">Guide price from {formatPrice(tour.priceFrom)} / person</span></div></div>{onSelectTour && <button type="button" onClick={() => onSelectTour(tour)} className="min-h-11 px-4 rounded-lg bg-[#f4f1e8] hover:bg-[#eae5d8] text-[#303e35] text-sm font-bold border border-[#d7d1c4]">View details</button>}</article>)}</div>}
 
-      {/* STEP 3: WHO ARE YOU TRAVELING WITH */}
-      {step === 3 && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
-              Who are you traveling with?
-            </h3>
-            <p className="text-sm text-[#5d6e62] mt-1">
-              We tailor lodge room arrangements, private safari vehicles, and pacing accordingly.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              { id: 'Solo', title: 'Solo Explorer', desc: 'Private or small group matching' },
-              { id: 'Couple', title: 'Couple / Romance', desc: 'Romantic camps & candlelit dining' },
-              { id: 'Family', title: 'Family with Children', desc: 'Interconnecting tents & child safety' },
-              { id: 'Friends', title: 'Friends & Small Group', desc: 'Private 4x4 Land Cruiser exclusivity' },
-              { id: 'Seniors', title: 'Senior Travelers', desc: 'Gentle pacing & accessible lodges' },
-              { id: 'Photography', title: 'Photo Enthusiasts', desc: 'Dedicated angles & golden hour timing' }
-            ].map(item => {
-              const selected = travelerType === item.id;
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => setTravelerType(item.id)}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all text-center ${
-                    selected
-                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
-                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
-                  }`}
-                >
-                  <h4 className="font-serif-luxury text-base font-bold text-[#161f19]">{item.title}</h4>
-                  <p className="text-[11px] text-[#5d6e62] mt-1">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex justify-between pt-4">
-            <button
-              onClick={() => setStep(2)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              onClick={() => setStep(4)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
-            >
-              <span>Next: Travel Style</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 4: COMFORT & TRAVEL STYLE */}
-      {step === 4 && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
-              What level of comfort do you prefer?
-            </h3>
-            <p className="text-sm text-[#5d6e62] mt-1">
-              Choose your accommodation standard and luxury level.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { id: 'Midrange', title: 'Classic Midrange', desc: 'Comfortable 3 to 4-star safari lodges with en-suite baths, swimming pools, and great meals.' },
-              { id: 'Luxury', title: '5-Star Luxury', desc: 'Intimate boutique tented camps, fine dining, private decks, and prime wildlife locations.' },
-              { id: 'Ultra Luxury', title: 'Ultra Luxury & Private Fly-In', desc: 'Top-tier luxury estates, private planes, personal butler service, and private conservancies.' }
-            ].map(item => {
-              const selected = comfortLevel === item.id;
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => setComfortLevel(item.id)}
-                  className={`p-5 rounded-2xl border cursor-pointer transition-all ${
-                    selected
-                      ? 'bg-[#fdfaf2] border-[#b3822a] shadow-md'
-                      : 'bg-[#faf8f2] border-[#e5e1d6] hover:border-[#b3822a]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</h4>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#b3822a] text-white' : 'border border-[#c7bfb1]'}`}>
-                      {selected && <Check className="w-3 h-3 stroke-[3]" />}
-                    </div>
-                  </div>
-                  <p className="text-xs text-[#5d6e62] mt-2 leading-relaxed">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex justify-between pt-4">
-            <button
-              onClick={() => setStep(3)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              onClick={() => setStep(5)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-sm"
-            >
-              <span>Next: Experiences</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 5: EXPERIENCES & BUCKET LIST */}
-      {step === 5 && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
-              What do you most want to experience?
-            </h3>
-            <p className="text-sm text-[#5d6e62] mt-1">
-              Pick as many highlights as you like to help us shape your dream itinerary.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-            {[
-              'Big 5 Tracking',
-              'Wildebeest Migration',
-              'Elephants & Kilimanjaro',
-              'Maasai & Samburu Culture',
-              'Hot Air Balloon Safari',
-              'Zanzibar Beach Relaxation',
-              'Rhino Sanctuary',
-              'Predator Action & Big Cats',
-              'Birdwatching & Rift Lakes',
-              'Walking Safaris',
-              'Photography Angles',
-              'Gourmet Bush Dining'
-            ].map(exp => {
-              const selected = experiences.includes(exp);
-              return (
-                <button
-                  type="button"
-                  key={exp}
-                  onClick={() => toggleExperience(exp)}
-                  className={`p-3 rounded-xl text-left border text-xs font-semibold transition-all flex items-center justify-between ${
-                    selected
-                      ? 'bg-[#b3822a] text-white border-[#b3822a]'
-                      : 'bg-[#faf8f2] text-[#303e35] border-[#e5e1d6] hover:border-[#b3822a]'
-                  }`}
-                >
-                  <span>{exp}</span>
-                  {selected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Budget Range Selection */}
-          <div className="pt-4 border-t border-[#eeebe2]">
-            <label className="text-xs font-bold uppercase tracking-wider text-[#9e7120] block mb-2">
-              Approximate Budget per Person (Excluding International Flights)
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                'Under $1,500',
-                '$1,500 – $3,500',
-                '$3,500 – $7,000',
-                '$7,000+'
-              ].map(b => (
-                <button
-                  type="button"
-                  key={b}
-                  onClick={() => setBudgetRange(b)}
-                  className={`p-3 rounded-xl border text-xs font-bold text-center transition-all ${
-                    budgetRange === b
-                      ? 'bg-[#fdfaf2] border-[#b3822a] text-[#9e7120]'
-                      : 'bg-[#faf8f2] border-[#e5e1d6] text-[#5d6e62]'
-                  }`}
-                >
-                  {b}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex justify-between pt-4">
-            <button
-              onClick={() => setStep(4)}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] font-semibold text-sm hover:bg-[#eae5d8]"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back
-            </button>
-            <button
-              onClick={() => setStep(6)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-sm transition-all shadow-md"
-            >
-              <span>Build My Safari Plan</span>
-              <Sparkles className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 6: RECOMMENDED SAFARIS & SUBMISSION */}
-      {step === 6 && (
-        <div className="space-y-8">
-          {!isSubmitted ? (
-            <>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#9e7120]">Your Tailored Plan</span>
-                <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19] mt-1">
-                  Here are Recommended Matches for You
-                </h3>
-                <p className="text-xs text-[#5d6e62] mt-1 font-medium">
-                  Based on: {destinations.join(', ')} · {duration} Days · {travelerType} · {comfortLevel} · {budgetRange}
-                </p>
-              </div>
-
-              {/* Recommended tours matching */}
-              <div className="space-y-3">
-                {matchingTours.map(tour => (
-                  <div
-                    key={tour.id}
-                    className="p-4 rounded-2xl bg-[#faf8f2] border border-[#eeebe2] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={tour.images[0]}
-                        alt={tour.title}
-                        className="w-16 h-16 rounded-xl object-cover"
-                      />
-                      <div>
-                        <h4 className="font-serif-luxury font-bold text-sm text-[#161f19] line-clamp-1">{tour.title}</h4>
-                        <span className="text-xs text-[#9e7120] block font-semibold">{tour.durationLabel} · {tour.country}</span>
-                        <span className="text-xs text-[#5d6e62]">From {formatPrice(tour.priceFrom)} / person</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
-                      {onSelectTour && (
-                        <button
-                          type="button"
-                          onClick={() => onSelectTour(tour)}
-                          className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-[#f4f1e8] hover:bg-[#eae5d8] text-[#3d4c42] text-xs font-bold transition-colors border border-[#ded8cb]"
-                        >
-                          View Full Details
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Contact Information Form */}
-              <form onSubmit={handleSubmitCustomSafari} className="p-6 rounded-2xl bg-[#faf8f2] border border-[#eeebe2] space-y-4">
-                <h4 className="font-serif-luxury text-lg font-bold text-[#161f19] flex items-center gap-2">
-                  <Send className="w-4 h-4 text-[#9e7120]" />
-                  Receive Your Personalized Proposal & Exact Quote
-                </h4>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Your Full Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="e.g. Eleanor Vance"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="eleanor@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">WhatsApp / Phone *</label>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Preferred Travel Month / Dates</label>
-                    <input
-                      type="text"
-                      value={travelMonth}
-                      onChange={(e) => setTravelMonth(e.target.value)}
-                      placeholder="e.g. October 2026"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs text-[#5d6e62] font-semibold block mb-1">Any Specific Requests or Must-See Animals?</label>
-                  <textarea
-                    rows={2}
-                    value={specialRequests}
-                    onChange={(e) => setSpecialRequests(e.target.value)}
-                    placeholder="e.g. Celebrating our anniversary, want hot air balloon safari, need vegetarian meals..."
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-                  />
-                </div>
-
-                {submitError && (
-                  <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
-                    {submitError}
-                  </p>
-                )}
-
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setStep(5)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#f4f1e8] text-[#3d4c42] text-sm font-semibold hover:bg-[#eae5d8]"
-                  >
-                    <ArrowLeft className="w-4 h-4" /> Adjust Choices
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white font-extrabold text-sm transition-all shadow-md active:scale-95"
-                  >
-                    <span>{isSubmitting ? 'Sending...' : 'Request My Custom Safari Plan'}</span>
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
-              </form>
-            </>
-          ) : (
-            <div className="text-center py-10 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h3 className="font-serif-luxury text-3xl font-bold text-[#161f19]">
-                Thank you, {fullName || 'Traveler'}!
-              </h3>
-              <p className="text-base text-[#5d6e62] max-w-lg mx-auto">
-                Your safari journey starts here. Our lead safari designer is reviewing your requirements and will contact you via email & WhatsApp within 12 hours with your day-by-day proposal.
-              </p>
-              <div className="pt-4 flex flex-wrap justify-center gap-3">
-                <a
-                  href={getWhatsAppUrl({ customMessage: `Hello Good Secrets Safaris, I just completed the Custom Safari Builder for a trip to ${destinations.join(', ')}. My name is ${fullName}.` })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#25D366] text-white font-bold text-sm shadow-md"
-                >
-                  Chat with Safari Specialist on WhatsApp
-                </a>
-                <button
-                  onClick={() => { setIsSubmitted(false); setStep(1); }}
-                  className="px-6 py-3 rounded-xl bg-[#f4f1e8] text-[#3d4c42] text-sm font-semibold hover:bg-[#eae5d8]"
-                >
-                  Build Another Safari
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+      <form onSubmit={handleSubmitCustomSafari} className="p-5 sm:p-6 rounded-2xl bg-[#faf8f2] border border-[#e3ddcf] space-y-5"><div><h3 className="font-serif-luxury text-xl font-bold text-[#161f19]">Send these preferences to our team</h3><p className="text-sm text-[#46544b] mt-1">Only your name and email are required. You can keep dates and phone flexible.</p></div><div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label htmlFor="builder-name" className={labelClass}>Full name *</label><input id="builder-name" autoComplete="name" required value={fullName} onChange={e => setFullName(e.target.value)} className={inputClass} /></div><div><label htmlFor="builder-email" className={labelClass}>Email *</label><input id="builder-email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={inputClass} /></div><div><label htmlFor="builder-phone" className={labelClass}>Phone / WhatsApp <span className="font-normal text-[#66766b]">(optional)</span></label><input id="builder-phone" type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} className={inputClass} /></div><div><label htmlFor="builder-dates" className={labelClass}>Travel month or dates</label><input id="builder-dates" value={travelMonth} onChange={e => setTravelMonth(e.target.value)} placeholder="Flexible is fine" className={inputClass} /></div></div><div><label htmlFor="builder-notes" className={labelClass}>Anything else we should know? <span className="font-normal text-[#66766b]">(optional)</span></label><textarea id="builder-notes" rows={3} value={specialRequests} onChange={e => setSpecialRequests(e.target.value)} className={`${inputClass} min-h-24`} /></div>{submitError && <p role="alert" className="text-sm text-rose-800 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2.5">{submitError}</p>}<div className="rounded-xl bg-white border border-[#e3ddcf] p-3 flex gap-2 text-xs text-[#46544b]"><ShieldCheck className="w-4 h-4 text-[#76541a] shrink-0 mt-0.5" /><span>This is a planning enquiry only. No payment is taken and no booking is confirmed.</span></div><div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3"><button type="button" onClick={() => setStep(5)} className={`${navButton} bg-[#f4f1e8] text-[#303e35]`}><ArrowLeft className="w-4 h-4" />Adjust choices</button><button type="submit" disabled={isSubmitting} className={`${navButton} min-h-12 px-7 bg-[#8a611d] hover:bg-[#704d15] disabled:opacity-60 text-white`}><span>{isSubmitting ? 'Sending…' : 'Request my safari plan'}</span><Send className="w-4 h-4" /></button></div></form></> : <div role="status" className="text-center py-10 space-y-4"><div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15"><CheckCircle2 className="w-8 h-8" /></div><h2 className="font-serif-luxury text-3xl font-bold text-[#161f19]">Thanks, {fullName || 'traveler'}.</h2><p className="text-base text-[#46544b] max-w-lg mx-auto">We received your safari preferences. Our team can now review them and follow up with suggested next steps.</p><div className="pt-3 flex flex-wrap justify-center gap-3"><a href={getWhatsAppUrl({ customMessage: `Hello Good Secrets Safaris, I just completed the Custom Safari Builder for ${destinations.join(', ')}. My name is ${fullName}.` })} target="_blank" rel="noopener noreferrer" className="min-h-11 inline-flex items-center justify-center px-5 rounded-xl bg-[#128c5a] hover:bg-[#0f744b] text-white font-bold text-sm">Continue on WhatsApp</a><button type="button" onClick={() => { setIsSubmitted(false); setStep(1); }} className="min-h-11 px-5 rounded-xl bg-[#f4f1e8] text-[#303e35] text-sm font-semibold hover:bg-[#eae5d8]">Build another safari</button></div></div>}</div>}
+    </section>
   );
 };
