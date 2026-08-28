@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Search, MapPin, Calendar, Compass, Users, Sparkles, Filter } from 'lucide-react';
+import { Search, MapPin, Calendar, Compass } from 'lucide-react';
 
 interface SafariFinderBarProps {
   onSearch: (filters: {
@@ -17,7 +17,7 @@ export const SafariFinderBar: React.FC<SafariFinderBarProps> = ({ onSearch, comp
   const [destination, setDestination] = useState<string>('all');
   const [duration, setDuration] = useState<string>('all');
   const [travelStyle, setTravelStyle] = useState<string>('all');
-  const [travelerType, setTravelerType] = useState<string>('all');
+  const [travelerType] = useState<string>('all');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,21 +33,23 @@ export const SafariFinderBar: React.FC<SafariFinderBarProps> = ({ onSearch, comp
     <form
       id="safari-finder-bar"
       onSubmit={handleSubmit}
-      className={`w-full rounded-2xl bg-white/95 backdrop-blur-xl border border-[#e2ded4] shadow-2xl p-4 sm:p-5 ${
+      aria-label="Find a safari"
+      className={`w-full rounded-2xl bg-white/95 backdrop-blur-xl border border-[#d7d1c4] shadow-2xl p-4 sm:p-5 ${
         compact ? '' : 'max-w-5xl mx-auto'
       }`}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Destination Picker */}
-        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#e8e4da]">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#9e7120] flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-[#9e7120]" />
+        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#ded8cc] focus-within:border-[#b3822a] focus-within:ring-2 focus-within:ring-[#b3822a]/20 transition-colors">
+          <label htmlFor="safari-destination" className="text-xs font-extrabold uppercase tracking-wider text-[#76541a] flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
             Where in Africa?
           </label>
           <select
+            id="safari-destination"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
-            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer"
+            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer min-h-7"
           >
             <option value="all">All Destinations</option>
             <optgroup label="Regions">
@@ -68,15 +70,16 @@ export const SafariFinderBar: React.FC<SafariFinderBarProps> = ({ onSearch, comp
         </div>
 
         {/* Duration Picker */}
-        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#e8e4da]">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#9e7120] flex items-center gap-1.5">
-            <Calendar className="w-3.5 h-3.5 text-[#9e7120]" />
+        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#ded8cc] focus-within:border-[#b3822a] focus-within:ring-2 focus-within:ring-[#b3822a]/20 transition-colors">
+          <label htmlFor="safari-duration" className="text-xs font-extrabold uppercase tracking-wider text-[#76541a] flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
             Duration
           </label>
           <select
+            id="safari-duration"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer"
+            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer min-h-7"
           >
             <option value="all">Any Duration</option>
             <option value="1">1 Day Excursion</option>
@@ -88,15 +91,16 @@ export const SafariFinderBar: React.FC<SafariFinderBarProps> = ({ onSearch, comp
         </div>
 
         {/* Travel Style */}
-        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#e8e4da]">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#9e7120] flex items-center gap-1.5">
-            <Compass className="w-3.5 h-3.5 text-[#9e7120]" />
+        <div className="flex flex-col gap-1 bg-[#fcfbf9] p-3 rounded-xl border border-[#ded8cc] focus-within:border-[#b3822a] focus-within:ring-2 focus-within:ring-[#b3822a]/20 transition-colors">
+          <label htmlFor="safari-style" className="text-xs font-extrabold uppercase tracking-wider text-[#76541a] flex items-center gap-1.5">
+            <Compass className="w-3.5 h-3.5" aria-hidden="true" />
             Travel Style
           </label>
           <select
+            id="safari-style"
             value={travelStyle}
             onChange={(e) => setTravelStyle(e.target.value)}
-            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer"
+            className="bg-transparent text-sm font-bold text-[#161f19] focus:outline-none cursor-pointer min-h-7"
           >
             <option value="all">All Travel Styles</option>
             <option value="Big 5">Big 5 Wildlife Safari</option>
@@ -115,9 +119,9 @@ export const SafariFinderBar: React.FC<SafariFinderBarProps> = ({ onSearch, comp
           <button
             type="submit"
             id="hero-find-safari-btn"
-            className="w-full h-full min-h-[52px] rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.98]"
+            className="w-full h-full min-h-[52px] rounded-xl bg-[#8a611d] hover:bg-[#704d15] text-white font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
           >
-            <Search className="w-4 h-4 stroke-[2.5]" />
+            <Search className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
             <span>Find My Safari</span>
           </button>
         </div>
