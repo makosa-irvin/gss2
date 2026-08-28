@@ -1,7 +1,7 @@
 # Good Secrets Safaris
 
 Kenya, Tanzania & Zanzibar safari and travel platform. React + TypeScript
-frontend backed by a real PostgreSQL + Express API (see `server/`),
+frontend backed by a  real PostgreSQL + Express API (see `server/`),
 intended to replace the current WordPress/Elementor live site.
 
 ## Stack
