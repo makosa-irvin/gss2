@@ -7,12 +7,28 @@ const routeImageFiles: Record<string, string> = {
   '3-day-masai-mara-luxury-big-5-migration-safari': '3-day-maasai-mara-safari.webp',
   '1-day-nairobi-wildlife-cultural-discovery': '1-day-nairobi-safari.webp',
   '1-day-lake-nakuru-lake-naivasha-adventure': '1-day-nakuru-naivasha.webp',
-  '3-day-samburu-untamed-beauty-rare-wildlife': '3-day-samburu-safari.webp'
+  '3-day-samburu-untamed-beauty-rare-wildlife': '3-day-samburu-safari.webp',
+  '8-day-safari-zanzibar-spice-beach-escape': '8-day-zanzibar-combo.webp',
+  // These four share an existing route image with another tour to the same
+  // destination - the geographic route is identical, only the itinerary
+  // pacing/comfort tier differs, so the map itself doesn't need to change.
+  '2-day-masai-mara-lion-encounters': '3-day-maasai-mara-safari.webp',
+  '3-day-midrange-wildlife-safari-samburu': '3-day-samburu-safari.webp',
+  '3-day-amboseli-luxury-elephant-kilimanjaro': '3-day-amboseli-safari.webp',
+  '3-day-midrange-amboseli-big-elephant-safari': '3-day-amboseli-safari.webp'
 };
 
 const correctedTitles: Record<string, string> = {
   '3-day-amboseli-safari-kilimanjaro-views': '3 DAY AMBOSELI SAFARI',
-  '1-day-nairobi-wildlife-cultural-discovery': '1 DAY NAIROBI SAFARI'
+  '1-day-nairobi-wildlife-cultural-discovery': '1 DAY NAIROBI SAFARI',
+  '3-day-masai-mara-luxury-big-5-migration-safari': '3 DAY MAASAI MARA SAFARI',
+  '3-day-samburu-untamed-beauty-rare-wildlife': '3 DAY SAMBURU ADVENTURE',
+  // Reused-image tours: override with their own correct duration/title so
+  // the banner baked into the shared image doesn't show the wrong day count.
+  '2-day-masai-mara-lion-encounters': '2 DAY MAASAI MARA SAFARI',
+  '3-day-midrange-wildlife-safari-samburu': '3 DAY SAMBURU SAFARI',
+  '3-day-amboseli-luxury-elephant-kilimanjaro': '3 DAY AMBOSELI SAFARI',
+  '3-day-midrange-amboseli-big-elephant-safari': '3 DAY AMBOSELI SAFARI'
 };
 
 export const TourRouteMap: React.FC<{ tour: Tour }> = ({ tour }) => {
