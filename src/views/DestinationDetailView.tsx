@@ -69,7 +69,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="flex items-center gap-2">
           <span>{destination.country}</span>
           <ChevronRight className="w-3 h-3 text-[#b4beb7]" />
-          <span className="text-[#161f19] font-medium">{destination.name}</span>
+          <span className="text-white/90 font-medium">{destination.name}</span>
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Featured Routes</span>
-            <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19] mt-0.5">
+            <h3 className="font-serif-luxury text-2xl font-bold text-white mt-0.5">
               Safaris Featuring {destination.name}
             </h3>
           </div>
@@ -209,7 +209,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#1b4332]">Recommended Lodging</span>
-              <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19] mt-0.5">
+              <h3 className="font-serif-luxury text-2xl font-bold text-white mt-0.5">
                 Luxury Lodges & Camps near {destination.name}
               </h3>
             </div>

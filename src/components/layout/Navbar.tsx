@@ -5,7 +5,6 @@ import {
   MapPin,
   ChevronDown,
   Phone,
-  MessageCircle,
   Shield,
   Menu,
   X,
@@ -22,7 +21,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }) => {
-  const { settings, activeCurrency, setActiveCurrency, isKenyanResidentMode, setIsKenyanResidentMode, getWhatsAppUrl } = useData();
+  const { settings, activeCurrency, setActiveCurrency, isKenyanResidentMode, setIsKenyanResidentMode } = useData();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -339,16 +338,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }
 
           {/* Right Action CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={getWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#eef7f2] hover:bg-[#def0e6] text-[#1b4332] border border-[#c3e2cf] text-xs font-bold transition-all shadow-xs"
-            >
-              <MessageCircle className="w-4 h-4 text-[#128c7e]" />
-              <span>WhatsApp Us</span>
-            </a>
-
             <button
               onClick={() => onOpenEnquiryModal()}
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95"
@@ -360,15 +349,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }
 
           {/* Mobile menu toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <a
-              href={getWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-xl bg-[#eef7f2] text-[#1b4332] border border-[#c3e2cf]"
-            >
-              <MessageCircle className="w-5 h-5 text-[#128c7e]" />
-            </a>
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-[#f4f2ec] text-[#1a241e] border border-[#e0dcce]"
@@ -439,16 +419,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }
               >
                 Plan My Safari
               </button>
-
-              <a
-                href={getWhatsAppUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 rounded-xl bg-[#25D366] text-black font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Chat on WhatsApp</span>
-              </a>
             </div>
           </div>
         )}

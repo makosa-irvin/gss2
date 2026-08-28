@@ -146,7 +146,7 @@ export const ToursExplorerView: React.FC<ToursExplorerViewProps> = ({
           <Compass className="w-4 h-4 text-[#9e7120]" />
           <span>Curated Safari Directory</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           Explore East Africa Safaris & Expeditions
         </h1>
         <p className="text-sm text-[#5d6e62] max-w-2xl">
@@ -184,7 +184,7 @@ export const ToursExplorerView: React.FC<ToursExplorerViewProps> = ({
               onClick={resetFilters}
               className="px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
             >
-              Reset
+              Clear
             </button>
           )}
         </div>

@@ -175,7 +175,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <Compass className="w-4 h-4" />
               <span>Handpicked Itineraries</span>
             </div>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19] mt-1">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">
               Africa, Waiting to Be Explored
             </h2>
             <p className="text-sm text-[#5d6e62] mt-1">
@@ -209,7 +209,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Bespoke Travel Profiles</span>
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">
             Find the Journey That Fits You
           </h2>
           <p className="text-sm text-[#5d6e62]">
@@ -252,7 +252,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">East Africa Icons</span>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19] mt-1">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">
               Where Will Africa Take You?
             </h2>
             <p className="text-sm text-[#5d6e62] mt-1">
@@ -344,7 +344,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="inline-flex items-center gap-2 rounded-full bg-[#eef7f2] px-3 py-1 text-xs font-bold text-[#1b4332] border border-[#c3e2cf] mb-2">
               <span>Kenyan Resident & Coastal Offers</span>
             </div>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">
               Escape Without Leaving Kenya
             </h2>
             <p className="text-sm text-[#5d6e62] mt-1">
@@ -380,7 +380,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section id="safari-builder-section" className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Interactive Itinerary Designer</span>
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
+          <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">
             Build Your Safari in 6 Steps
           </h2>
           <p className="text-sm text-[#5d6e62]">
@@ -399,7 +399,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Traveler Stories</span>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19] mt-1">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">
               4.9/5 Trusted by Travelers
             </h2>
             <p className="text-sm text-[#5d6e62] mt-1">
@@ -452,7 +452,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Editorial & Guidance</span>
-            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19] mt-1">
+            <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">
               Travel Inspiration & Safari Guides
             </h2>
             <p className="text-sm text-[#5d6e62] mt-1">

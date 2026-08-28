@@ -87,7 +87,7 @@ export const TourCard: React.FC<TourCardProps> = ({ tour, onSelect, onEnquire })
 
           {/* Travel Styles / Features Tags */}
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {tour.travelStyles.slice(0, 3).map(style => (
+            {tour.travelStyles.filter(style => style !== tour.comfortLevel).slice(0, 3).map(style => (
               <span
                 key={style}
                 className="rounded-md bg-[#f4f2ec] px-2 py-0.5 text-[11px] font-medium text-[#38453d] border border-[#e2ded2]"

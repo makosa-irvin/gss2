@@ -31,7 +31,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => {
           <Compass className="w-4 h-4 text-[#9e7120]" />
           <span>Our Story & Philosophy</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           Crafting Unforgettable African Journeys
         </h1>
         <p className="text-sm sm:text-base text-[#5d6e62] leading-relaxed">
@@ -50,7 +50,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => {
         </div>
 
         <div className="lg:col-span-6 space-y-5 text-sm text-[#4d5c52] leading-relaxed font-normal">
-          <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">
+          <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white">
             "Your Africa. Your Story. Your Safari."
           </h2>
           <p>

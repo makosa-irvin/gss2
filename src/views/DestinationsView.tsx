@@ -27,7 +27,7 @@ export const DestinationsView: React.FC<DestinationsViewProps> = ({ onSelectDest
           <MapPin className="w-4 h-4 text-[#9e7120]" />
           <span>African Destinations</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           Iconic Wilderness & Island Sanctuaries
         </h1>
         <p className="text-sm text-[#5d6e62] leading-relaxed">

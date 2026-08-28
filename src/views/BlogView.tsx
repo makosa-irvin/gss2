@@ -55,7 +55,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
             <span className="text-[#707f74]">{selectedPost.readingTime}</span>
           </div>
 
-          <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19] leading-tight">
+          <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">
             {selectedPost.title}
           </h1>
 
@@ -66,7 +66,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
               className="w-10 h-10 rounded-full object-cover border border-[#b3822a]"
             />
             <div>
-              <span className="font-bold text-[#161f19] block">{selectedPost.author.name}</span>
+              <span className="font-bold text-white block">{selectedPost.author.name}</span>
               <span className="text-[#707f74]">{selectedPost.author.role} · Published {selectedPost.publishedDate}</span>
             </div>
           </div>
@@ -81,7 +81,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
         </div>
 
         <article className="prose prose-neutral max-w-none text-[#303e35] text-base leading-relaxed space-y-6">
-          <p className="text-lg font-medium text-[#161f19] border-l-2 border-[#b3822a] pl-4 italic">
+          <p className="text-lg font-medium text-white border-l-2 border-[#b3822a] pl-4 italic">
             {selectedPost.excerpt}
           </p>
 
@@ -120,7 +120,7 @@ export const BlogView: React.FC<BlogViewProps> = ({ initialSlug, onOpenEnquiryMo
           <BookOpen className="w-4 h-4" />
           <span>Travel Journal & Field Guides</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           East Africa Inspiration & Expert Advice
         </h1>
         <p className="text-sm text-[#5d6e62]">

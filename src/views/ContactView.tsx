@@ -57,7 +57,7 @@ export const ContactView: React.FC = () => {
           <Mail className="w-4 h-4 text-[#9e7120]" />
           <span>Connect with Our Safari Specialists</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           We Are Here to Guide You
         </h1>
         <p className="text-sm text-[#5d6e62]">

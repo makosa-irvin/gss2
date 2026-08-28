@@ -85,7 +85,7 @@ export const HotelDetailView: React.FC<HotelDetailViewProps> = ({
               </div>
             </div>
 
-            <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">
               {hotel.name}
             </h1>
 

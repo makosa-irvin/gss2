@@ -35,7 +35,7 @@ export const HotelsExplorerView: React.FC<HotelsExplorerViewProps> = ({
           <Palmtree className="w-4 h-4 text-[#128c7e]" />
           <span>Kenyan Resident Holidays & Coastal Escapes</span>
         </div>
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19]">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">
           Escape Without Leaving Kenya
         </h1>
         <p className="text-sm text-[#5d6e62] leading-relaxed font-normal">

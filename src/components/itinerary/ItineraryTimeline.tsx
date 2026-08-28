@@ -40,7 +40,7 @@ export const ItineraryTimeline: React.FC<ItineraryTimelineProps> = ({ itinerary 
       <div className="flex items-center justify-between">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-[#9e7120]">Day-by-Day Journey</span>
-          <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19] mt-0.5">
+          <h3 className="font-serif-luxury text-2xl font-bold text-white mt-0.5">
             Your Detailed Itinerary
           </h3>
         </div>

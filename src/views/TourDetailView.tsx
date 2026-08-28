@@ -66,7 +66,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
         <div className="flex items-center gap-2">
           <span>{tour.country}</span>
           <ChevronRight className="w-3 h-3 text-[#b4beb7]" />
-          <span className="text-[#161f19] font-medium truncate max-w-xs">{tour.title}</span>
+          <span className="text-white/90 font-medium truncate max-w-xs">{tour.title}</span>
         </div>
       </div>
 
@@ -89,7 +89,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
           )}
         </div>
 
-        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#161f19] leading-tight">
+        <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">
           {tour.title}
         </h1>
 
@@ -170,7 +170,7 @@ export const TourDetailView: React.FC<TourDetailViewProps> = ({
         <div className="lg:col-span-8 space-y-12">
           {/* Detailed Overview */}
           <div className="space-y-4">
-            <h3 className="font-serif-luxury text-2xl font-bold text-[#161f19]">
+            <h3 className="font-serif-luxury text-2xl font-bold text-white">
               Safari Overview
             </h3>
             {/* A "Featured Wildlife" chip list used to render here from
