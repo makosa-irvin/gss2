@@ -47,15 +47,15 @@ describe('AdminDashboardView - Create New Tour form', () => {
     const user = userEvent.setup();
     renderWithProviders(<AdminDashboardView onNavigateHome={noop} onPreviewTour={noop} />);
 
-    await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
-    await user.click(await screen.findByRole('button', { name: /add new safari tour/i }));
+    await user.click(await screen.findByRole('button', { name: /safaris & tours/i }));
+    await user.click(await screen.findByRole('button', { name: /add safari/i }));
     // findByPlaceholderText (not getBy*) tolerates the form's render
     // lagging a tick behind the click - on a loaded machine (e.g.
     // running alongside a `docker compose build`), a synchronous getBy*
     // right after a click can fire before React has committed the
     // re-render, even though userEvent.click itself awaits act().
     await user.type(await screen.findByPlaceholderText(/5-Day Masai Mara/i), title);
-    await user.click(screen.getByRole('button', { name: /save safari/i }));
+    await user.click(screen.getByRole('button', { name: /create safari/i }));
 
     return user;
   }
@@ -63,7 +63,7 @@ describe('AdminDashboardView - Create New Tour form', () => {
   it('creates a tour and adds it to the tours list without crashing the admin dashboard', async () => {
     await openAddTourFormAndFillTitle('Test 4-Day Amboseli Explorer');
 
-    // The tours tab lists tours by title once created.
+    // The tours list shows tours by title once created.
     expect(await screen.findByText('Test 4-Day Amboseli Explorer')).toBeInTheDocument();
   });
 
@@ -82,10 +82,10 @@ describe('AdminDashboardView - Create New Tour form', () => {
     );
 
     const user = userEvent.setup();
-    await user.click(await screen.findByRole('button', { name: /tours & safaris/i }));
-    await user.click(await screen.findByRole('button', { name: /add new safari tour/i }));
+    await user.click(await screen.findByRole('button', { name: /safaris & tours/i }));
+    await user.click(await screen.findByRole('button', { name: /add safari/i }));
     await user.type(await screen.findByPlaceholderText(/5-Day Masai Mara/i), 'Test Preview Tour');
-    await user.click(screen.getByRole('button', { name: /save safari/i }));
+    await user.click(screen.getByRole('button', { name: /create safari/i }));
 
     // Find the newly created tour's row by its title, then click the
     // "Preview tour page" button within that same row (addTour prepends,
