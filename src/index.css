@@ -37,6 +37,30 @@
   }
 }
 
+/*
+ * Applied to below-the-fold homepage sections. The Lighthouse trace
+ * showed ~7.5s of main-thread "Style & Layout" time - the single
+ * largest category, bigger than script execution - which lines up with
+ * the LCP breakdown's ~7.1s "element render delay": the browser is
+ * busy computing style/layout for the whole page (tours grid, hotels
+ * grid, testimonials, blog, brand-promise section - ~1300 DOM nodes
+ * total) before it can paint anything, even though the hero content
+ * itself is ready almost immediately.
+ *
+ * content-visibility: auto tells the browser to skip style/layout/paint
+ * work for a subtree until it's near the viewport, which is exactly
+ * this situation - a long single-page homepage where most sections
+ * aren't visible on first paint. contain-intrinsic-size gives it a
+ * placeholder height so the page doesn't jump as sections are measured
+ * for real once they scroll into view; it's an approximation, not an
+ * exact match per section, which is an acceptable trade for the
+ * rendering-cost savings here.
+ */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 900px;
+}
+
 /* Custom scrollbars and styling */
 ::-webkit-scrollbar {
   width: 8px;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Hotel } from '../../types';
 import { useData } from '../../context/DataContext';
+import { unsplashCardImage } from '../../lib/imageUrl';
 import { MapPin, Star, Heart, Check, MessageCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface HotelCardProps {
@@ -25,7 +26,10 @@ export const HotelCard: React.FC<HotelCardProps> = ({ hotel, onSelect, onEnquire
       {/* Image Container */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#f4f2ec]">
         <img
-          src={hotel.images[0] || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'}
+          src={unsplashCardImage(
+            hotel.images[0] || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+            800
+          )}
           alt={hotel.name}
           referrerPolicy="no-referrer"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

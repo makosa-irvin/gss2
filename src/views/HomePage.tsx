@@ -2,6 +2,7 @@ import React from 'react';
 import { useData } from '../context/DataContext';
 import { Tour, Destination, Hotel } from '../types';
 import { PageMeta } from '../components/common/PageMeta';
+import { unsplashCardImage } from '../lib/imageUrl';
 import { SafariFinderBar } from '../components/search/SafariFinderBar';
 import { TourCard } from '../components/tours/TourCard';
 import { DestinationCard } from '../components/destinations/DestinationCard';
@@ -135,7 +136,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 2. TRUST SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8">
         <div className="rounded-3xl bg-white border border-[#e8e4da] p-8 sm:p-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center shadow-sm">
           <div className="md:col-span-4 flex flex-col sm:flex-row md:flex-col items-start sm:items-center md:items-start gap-4 border-b md:border-b-0 md:border-r border-[#eeebe2] pb-6 md:pb-0 md:pr-8">
             <div className="flex items-center gap-3">
@@ -167,7 +168,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 3. FEATURED SAFARIS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">
@@ -205,7 +206,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 4. DISCOVER BY TRAVEL STYLE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Bespoke Travel Profiles</span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
@@ -247,7 +248,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 5. DESTINATIONS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">East Africa Icons</span>
@@ -280,7 +281,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 6. WHY TRAVEL WITH GOOD SECRETS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8">
         <div className="rounded-3xl bg-white border border-[#e8e4da] p-8 sm:p-14 space-y-12 shadow-xs">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Our Brand Promise</span>
@@ -337,7 +338,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 7. KENYAN RESIDENT HOLIDAYS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-[#eef7f2] px-3 py-1 text-xs font-bold text-[#1b4332] border border-[#c3e2cf] mb-2">
@@ -376,7 +377,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 8. CUSTOM SAFARI BUILDER */}
-      <section id="safari-builder-section" className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section id="safari-builder-section" className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Interactive Itinerary Designer</span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#161f19]">
@@ -394,7 +395,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 9. TESTIMONIALS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Traveler Stories</span>
@@ -447,7 +448,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 10. TRAVEL MAGAZINE / BLOG */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#9e7120]">Editorial & Guidance</span>
@@ -478,9 +479,10 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div>
                 <div className="aspect-[16/10] overflow-hidden bg-[#faf8f2]">
                   <img
-                    src={post.featuredImage}
+                    src={unsplashCardImage(post.featuredImage, 700)}
                     alt={post.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-5 space-y-2">
@@ -510,12 +512,13 @@ export const HomePage: React.FC<HomePageProps> = ({
       </section>
 
       {/* 11. FINAL BANNER CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8">
+      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8">
         <div className="relative rounded-3xl overflow-hidden border border-[#e8e4da] p-8 sm:p-16 text-center space-y-6 shadow-xl">
           <img
             src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=85"
             alt="Safari Sunset Savannah"
             className="absolute inset-0 w-full h-full object-cover -z-10"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black/70 backdrop-blur-xs -z-10" />
 

@@ -3,13 +3,16 @@
     "id": "hotel-southern-palms",
     "name": "Southern Palms Beach Resort",
     "slug": "southern-palms-beach-resort",
-    "location": "Diani Beach, South Coast, Kenya",
+    "location": "Diani Beach, Kenya",
     "country": "Kenya",
-    "description": "Nestled along the world-renowned white sands of Diani Beach, featuring the largest swimming pool in East Africa, lush coconut groves, and warm Swahili hospitality.",
-    "category": "Beach Resort & Spa",
+    "description": "Southern Palms Beach Resort, nestled on the pristine sands of Diani Beach, is a tropical paradise that combines African-inspired elegance with modern luxury. The resort is ideal for families, senior travelers, couples, and solo adventurers, offering spacious lagoon-style pools, swaying palm gardens, and direct access to soft white sands lapped by the turquoise Indian Ocean. Guests can enjoy water sports, sunset walks on the beach, or spa treatments in a serene environment. It's the perfect base for combining a Kenya safari extension with a peaceful coastal retreat.",
+    "category": "Beach Resort",
     "images": [
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/southern-palms-beach-resort-outside-beach.jpg",
+      "/images/catalog/southern-palms-beach-resort-3.jpg",
+      "/images/catalog/southern-palms-beach-resort-1.jpg",
+      "/images/catalog/southern-palms-beach-resort-2.jpg",
+      "/images/catalog/southern-palms-beach-resort-6.jpg"
     ],
     "priceFromUSD": 208,
     "priceFromKES": 26945,
@@ -17,34 +20,45 @@
     "sharingPriceUSD": 208,
     "seasonalPricing": [
       {
-        "seasonName": "Normal / Low Season",
-        "dates": "Apr 1 - Jun 30",
-        "priceKES": 22000,
-        "priceUSD": 175,
-        "sharingPriceUSD": 175
-      },
-      {
-        "seasonName": "High Season",
-        "dates": "Jul 1 - Oct 31, Jan 5 - Mar 31",
+        "seasonName": "4 Jan - 30 Apr",
+        "dates": "4 Jan - 30 Apr",
         "priceKES": 26945,
-        "priceUSD": 208,
-        "sharingPriceUSD": 208
+        "priceUSD": 314
       },
       {
-        "seasonName": "Festive & Christmas Peak",
-        "dates": "Dec 22 - Jan 4",
-        "priceKES": 36500,
-        "priceUSD": 285,
-        "sharingPriceUSD": 285
+        "seasonName": "1 May - 30 Jun",
+        "dates": "1 May - 30 Jun",
+        "priceKES": 21115,
+        "priceUSD": 245
+      },
+      {
+        "seasonName": "1 Jul - 31 Aug",
+        "dates": "1 Jul - 31 Aug",
+        "priceKES": 26945,
+        "priceUSD": 247
+      },
+      {
+        "seasonName": "1 Sep - 30 Nov",
+        "dates": "1 Sep - 30 Nov",
+        "priceKES": 23890,
+        "priceUSD": 279
       }
     ],
     "facilities": [
-      "2 Massive Interconnected Swimming Pools",
-      "5 World-Class Restaurants & Bars",
-      "Direct Beachfront Access to Diani Beach",
-      "Water Sports & PADI Diving Centre",
-      "Kids Club & Animation Team",
-      "Tennis & Squash Courts"
+      "Lagoon-style swimming pools",
+      "Private white-sand beach access",
+      "Full-service spa & wellness center",
+      "Multiple restaurants & themed bars",
+      "Fitness center & tennis court",
+      "Kids' club with supervised activities",
+      "Watersports & dive center (snorkeling, diving, windsurfing, kayaking)",
+      "Conference & meeting facilities",
+      "Nightly entertainment & live music",
+      "24-hour front desk & concierge",
+      "Laundry & dry cleaning services",
+      "Free Wi-Fi throughout the resort",
+      "Gift shop & boutique",
+      "Eco-friendly initiatives & community engagement"
     ],
     "roomTypes": [
       "Standard Sea Facing Room",
@@ -52,14 +66,22 @@
       "Ocean Front Suite"
     ],
     "inclusions": [
-      "All-Inclusive meal plan (Breakfast, Lunch, Dinner, Selected Drinks)",
-      "Use of swimming pools and beach loungers",
-      "Daily evening entertainment"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Motorized water sports",
-      "Airport transfers",
-      "Spa treatments"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": true,
@@ -67,9 +89,10 @@
     "isKenyanResidentOffer": true,
     "rating": 4.8,
     "seo": {
-      "title": "Southern Palms Beach Resort Diani Rates & Deals | Good Secrets Safaris",
-      "description": "Book Southern Palms Beach Resort Diani from KES 26,945 / $208 per night with all-inclusive resident and tourist packages."
-    }
+      "title": "Southern Palms Beach Resort - Good Secrets Safaris",
+      "description": "Southern Palms Beach Resort, Diani Beach, offers a luxurious beachfront escape with lagoon pools, spa, dining, kids' club, and private beach access."
+    },
+    "published": true
   },
   {
     "id": "hotel-swahili-beach",
@@ -77,11 +100,14 @@
     "slug": "swahili-beach-resort",
     "location": "Diani Beach, Kenya",
     "country": "Kenya",
-    "description": "An architectural masterpiece combining Swahili, Arabian, and Indian influences with an iconic 8-tier cascading swimming pool leading to the Indian Ocean.",
-    "category": "Beach Resort & Spa",
+    "description": "Swahili Beach Resort in Diani Beach blends Afro-Arab architecture, cascading pools, and barefoot luxury to create one of Kenya's most iconic coastal escapes. Ideal for families, senior travelers, couples, and solo beach lovers, the resort offers a serene environment with gently sloping walkways, shaded lounging spaces, and a warm tropical breeze drifting in from the private beach. Guests come for its lagoon-style pools, famous Coco Beach bar, soothing Swahili Spa, and vibrant cultural touches that make every stay feel deeply immersive.",
+    "category": "Beach Resort",
     "images": [
-      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/swahili-beach-2.jpg",
+      "/images/catalog/swahili-beach.jpg",
+      "/images/catalog/swahili-beach-9.jpg",
+      "/images/catalog/swahili-beach-ouside-beach.jpg",
+      "/images/catalog/swahili-beach-3.jpg"
     ],
     "priceFromUSD": 150,
     "priceFromKES": 17500,
@@ -89,29 +115,51 @@
     "sharingPriceUSD": 150,
     "seasonalPricing": [
       {
-        "seasonName": "Low Season",
-        "dates": "Apr - Jun",
-        "priceKES": 15500,
-        "priceUSD": 130
-      },
-      {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Mar, Jul - Oct",
+        "seasonName": "4 Jan - 2 Apr",
+        "dates": "4 Jan - 2 Apr",
         "priceKES": 17500,
         "priceUSD": 150
       },
       {
-        "seasonName": "Peak Festive",
-        "dates": "Dec 20 - Jan 3",
-        "priceKES": 28000,
-        "priceUSD": 230
+        "seasonName": "Easter (3 Apr - 6 Apr)",
+        "dates": "3 Apr - 6 Apr",
+        "priceKES": 30000,
+        "priceUSD": 220
+      },
+      {
+        "seasonName": "7 Apr - 30 Jun",
+        "dates": "7 Apr - 30 Jun",
+        "priceKES": 14500,
+        "priceUSD": 130
+      },
+      {
+        "seasonName": "1 Jul - 22 Dec",
+        "dates": "1 Jul - 22 Dec",
+        "priceKES": 17500,
+        "priceUSD": 150
+      },
+      {
+        "seasonName": "23 Dec - 3 Jan",
+        "dates": "23 Dec - 3 Jan",
+        "priceKES": 29000,
+        "priceUSD": 255
       }
     ],
     "facilities": [
-      "8-Tier Cascading Cascade Pool",
-      "Award-winning Majilis & Spice Route Restaurants",
-      "Full Service Spa & Ayurvedic Centre",
-      "Private Beach Cabanas"
+      "9-tier lagoon-style swimming pools",
+      "Private white-sand beach access",
+      "Fully equipped Swahili Spa & wellness center",
+      "Multiple restaurants & themed dining experiences",
+      "Beach bar & coffee lounge",
+      "Fitness center",
+      "Kids' pool & supervised activities (seasonal)",
+      "Free Wi-Fi throughout the resort",
+      "Conference & meeting facilities",
+      "Gift shop & boutique",
+      "24-hour front desk",
+      "Airport transfers & in-destination excursions (additional cost)",
+      "Wheelchair-accessible rooms & pathways",
+      "On-site water sports desk (snorkeling, diving, dhow trips)"
     ],
     "roomTypes": [
       "Standard Room",
@@ -119,13 +167,22 @@
       "Executive Suite"
     ],
     "inclusions": [
-      "Half Board (Breakfast & Dinner)",
-      "Free Wi-Fi",
-      "Access to 8 swimming pools"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Lunch and alcoholic drinks",
-      "Spa treatments"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": true,
@@ -133,20 +190,24 @@
     "isKenyanResidentOffer": true,
     "rating": 4.9,
     "seo": {
-      "title": "Swahili Beach Resort Diani Packages | Good Secrets Safaris",
-      "description": "Book Swahili Beach Resort in Diani from KSH 17,500 / USD 150."
-    }
+      "title": "Swahili Beach Resort - Good Secrets Safaris",
+      "description": "Swahili Beach Resort Watamu - a luxury beachfront resort offering lagoon-style pools, spa, dining, kid-friendly facilities, accessible rooms & perfect safari-and-beach stays."
+    },
+    "published": true
   },
   {
     "id": "hotel-turtle-bay",
     "name": "Turtle Bay Beach Club",
     "slug": "turtle-bay-beach-club",
-    "location": "Watamu, Kenya",
+    "location": "Watamu Beach, Kenya",
     "country": "Kenya",
-    "description": "Eco-friendly, award-winning all-inclusive beach resort situated right inside Watamu National Marine Park, renowned for turtle conservation and coral reefs.",
-    "category": "Beach Resort & Spa",
+    "description": "Turtle Bay Beach Club, nestled on a shimmering 200-metre stretch of pristine sand in Watamu, is a tropical paradise surrounded by lush gardens and framed by the Watamu Marine National Park. Perfect for families, couples, and senior travelers alike, Turtle Bay blends eco-sensitive design with vibrant water-based fun: from snorkeling over coral reefs to evening entertainment under the stars. With 145 rooms, three restaurants, three bars, watersports, a kids' club, and eco-tourism credentials, it offers a rich coastal escape that resonates with joy, rest, and discovery.",
+    "category": "Beach Club",
     "images": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/turtle-bay-beach-club-0.jpg",
+      "/images/catalog/turtle-bay-beach-club-pool.jpg",
+      "/images/catalog/turtle-bay-beach-club-8.jpg",
+      "/images/catalog/turtle-bay-beach-club-7.jpg"
     ],
     "priceFromUSD": 140,
     "priceFromKES": 17100,
@@ -154,29 +215,51 @@
     "sharingPriceUSD": 140,
     "seasonalPricing": [
       {
-        "seasonName": "Green Season",
-        "dates": "May 1 - Jun 30",
-        "priceKES": 14200,
-        "priceUSD": 115
-      },
-      {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Apr, Jul - Nov",
+        "seasonName": "4 Jan - 30 Apr",
+        "dates": "4 Jan - 30 Apr",
         "priceKES": 17100,
         "priceUSD": 140
       },
       {
-        "seasonName": "Christmas Season",
-        "dates": "Dec 21 - Jan 5",
-        "priceKES": 26500,
-        "priceUSD": 215
+        "seasonName": "Easter (3 - 6 Apr)",
+        "dates": "3 Apr - 6 Apr",
+        "priceKES": 18100,
+        "priceUSD": 155
+      },
+      {
+        "seasonName": "1 May - 20 Jul",
+        "dates": "1 May - 20 Jul",
+        "priceKES": 14600,
+        "priceUSD": 120
+      },
+      {
+        "seasonName": "21 Jul - 19 Dec",
+        "dates": "21 Jul - 19 Dec",
+        "priceKES": 17100,
+        "priceUSD": 140
+      },
+      {
+        "seasonName": "Christmas (20 Dec - 3 Jan)",
+        "dates": "20 Dec - 3 Jan",
+        "priceKES": 29300,
+        "priceUSD": 262
       }
     ],
     "facilities": [
-      "All-Inclusive Beachfront",
-      "Marine Park Snorkeling Boats",
-      "PADI Dive Centre",
-      "Waterpolo & Windsurfing"
+      "Private sandy beach on the edge of Watamu Marine National Park",
+      "Three restaurants (Main Restaurant, Pizza Restaurant, Blue Turtle beach restaurant) + snack bar",
+      "Three bars / lounges",
+      "Multiple swimming pools, including children's pools",
+      "Wellness / Spa center",
+      "Kids' Club (supervised) for children aged 4-12",
+      "Watersport & Dive Center - snorkeling, scuba, paddle boards, windsurfing",
+      "Nightly entertainment - live music, dancing, cultural shows, disco",
+      "Conference / event facilities (capacity ~150)",
+      "Tour / Excursion Desk - Gede Ruins, mangrove forest, dhow cruises, bird-watching",
+      "Tennis court / sport activities (volleyball, table tennis)",
+      "Library / lounge area",
+      "Eco-conservation & Community Office",
+      "24-hour reception / front desk"
     ],
     "roomTypes": [
       "Club Room",
@@ -184,13 +267,22 @@
       "Ocean Front Room"
     ],
     "inclusions": [
-      "All-Inclusive Meals & Selected Local Drinks",
-      "Non-motorized watersports",
-      "Marine conservation tour"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Deep sea fishing",
-      "Spa"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": false,
@@ -198,21 +290,24 @@
     "isKenyanResidentOffer": true,
     "rating": 4.7,
     "seo": {
-      "title": "Turtle Bay Beach Club Watamu Rates | Good Secrets Safaris",
-      "description": "Watamu all-inclusive holidays at Turtle Bay Beach Club from KSH 17,100 / USD 140."
-    }
+      "title": "Turtle Bay Beach Club - Good Secrets Safaris",
+      "description": "Turtle Bay Beach Club Watamu offers a lush, family-friendly retreat right on the beach in the heart of Watamu National Marine Park."
+    },
+    "published": true
   },
   {
     "id": "hotel-hemingways-watamu",
     "name": "Hemingways Watamu",
     "slug": "hemingways-watamu",
-    "location": "Watamu Marine Park, Kenya",
+    "location": "Watamu Beach, Kenya",
     "country": "Kenya",
-    "description": "An iconic 5-star boutique luxury hotel offering premier beachfront ocean suites, Michelin-grade coastal dining, and world-class billfish big game angling.",
-    "category": "Boutique Hotel",
+    "description": "Hemingways Watamu is a legendary luxury beachfront resort set along the powder-soft sands of Watamu Marine National Park, one of Kenya's most pristine and scenic coastlines. This elegant property blends timeless style with modern comfort, offering spacious ocean-view rooms and suites ideal for couples, seniors, families, and solo travellers seeking a peaceful, high-end beach escape. Hemingways Watamu is known for its personalised service, serene ambience, world-class deep-sea fishing, and access to coral gardens perfect for snorkelling.",
+    "category": "Luxury Beach Resort",
     "images": [
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/hemingways-watamu-9.jpg",
+      "/images/catalog/hemingways-watamu-1.jpg",
+      "/images/catalog/hemingways-watamu-2.jpg",
+      "/images/catalog/hemingways-watamu-3.jpg"
     ],
     "priceFromUSD": 195,
     "priceFromKES": 25155,
@@ -220,23 +315,51 @@
     "sharingPriceUSD": 195,
     "seasonalPricing": [
       {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Apr, Jul - Nov",
+        "seasonName": "5 Jan - 28 Feb",
+        "dates": "5 Jan - 28 Feb",
         "priceKES": 25155,
         "priceUSD": 195
       },
       {
-        "seasonName": "Festive Peak",
-        "dates": "Dec 20 - Jan 5",
-        "priceKES": 39000,
-        "priceUSD": 310
+        "seasonName": "1 Mar - 31 May",
+        "dates": "1 Mar - 31 May",
+        "priceKES": 20640,
+        "priceUSD": 160
+      },
+      {
+        "seasonName": "1 Jun - 31 Oct",
+        "dates": "1 Jun - 31 Oct",
+        "priceKES": 25155,
+        "priceUSD": 195
+      },
+      {
+        "seasonName": "1 Nov - 17 Dec",
+        "dates": "1 Nov - 17 Dec",
+        "priceKES": 20640,
+        "priceUSD": 160
+      },
+      {
+        "seasonName": "18 Dec - 4 Jan",
+        "dates": "18 Dec - 4 Jan",
+        "priceKES": 111400,
+        "priceUSD": 865
       }
     ],
     "facilities": [
-      "Direct Watamu Sandbar Beach",
-      "Two Infinity Pools",
-      "Hemingways Spa",
-      "Big Game Fishing Fleet"
+      "Two swimming pools including an adults-only quiet pool",
+      "Luxury spa, wellness treatments & modern fitness gym",
+      "Oceanfront restaurants & fine-dining options",
+      "Deep-sea fishing centre (world-renowned)",
+      "Direct access to Watamu Marine National Park",
+      "Water sports: snorkelling, paddleboarding, kite surfing",
+      "Beautiful white-sand beach with loungers & service",
+      "Senior-friendly facilities and easy-access pathways",
+      "Boutique shop & high-end gift stores",
+      "High-speed Wi-Fi across the property",
+      "24/7 concierge, laundry & butler services (on request)",
+      "Airport transfers (Malindi & Mombasa)",
+      "Yoga deck & wellness activities",
+      "Conference and small corporate meeting spaces"
     ],
     "roomTypes": [
       "Ocean View Room",
@@ -244,13 +367,22 @@
       "2-Bedroom Luxury Suite"
     ],
     "inclusions": [
-      "Bed & Gourmet Breakfast",
-      "Wi-Fi",
-      "Tennis & Gym"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Lunch, Dinner & Drinks",
-      "Deep sea fishing charters"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": true,
@@ -258,20 +390,24 @@
     "isKenyanResidentOffer": true,
     "rating": 5,
     "seo": {
-      "title": "Hemingways Watamu 5-Star Luxury Rates | Good Secrets Safaris",
-      "description": "5-star luxury at Hemingways Watamu from KSH 25,155 / USD 195."
-    }
+      "title": "Hemingways Watamu - Good Secrets Safaris",
+      "description": "Hemingways Watamu is a luxury beachfront resort in Watamu offering ocean-view suites, world-class dining, spa wellness, and deep-sea fishing."
+    },
+    "published": true
   },
   {
     "id": "hotel-voyager-beach-resort",
     "name": "Voyager Beach Resort",
     "slug": "voyager-beach-resort",
-    "location": "Nyali, North Coast, Mombasa, Kenya",
+    "location": "Mombasa, Kenya",
     "country": "Kenya",
-    "description": "A famous ship-themed all-inclusive resort overlooking the pristine waters of Nyali Beach with spectacular nautical aesthetics and family entertainment.",
-    "category": "Beach Resort & Spa",
+    "description": "Voyager Beach Resort is one of Mombasa's most iconic all-inclusive family resorts, perched above Nyali Beach with sweeping views of the Indian Ocean. Designed around a nautical theme, the resort creates a playful, lively atmosphere perfect for families, couples, seniors, and solo travellers seeking a hassle-free coastal escape. Voyager Beach Resort stands out for its excellent entertainment program, spacious sea-view rooms, multiple dining outlets, and warm Kenyan hospitality.",
+    "category": "All-Inclusive Beach Resort",
     "images": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/voyager-beach-resort.jpg",
+      "/images/catalog/voyager-beach-resort-7.jpg",
+      "/images/catalog/voyager-beach-resort-1.jpg",
+      "/images/catalog/voyager-beach-resort-4.jpg"
     ],
     "priceFromUSD": 120,
     "priceFromKES": 15500,
@@ -279,28 +415,57 @@
     "sharingPriceUSD": 120,
     "seasonalPricing": [
       {
-        "seasonName": "Low Season",
-        "dates": "May - Jun",
-        "priceKES": 13500,
-        "priceUSD": 105
-      },
-      {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Apr, Jul - Nov",
+        "seasonName": "3 Jan - 31 Mar",
+        "dates": "3 Jan - 31 Mar",
         "priceKES": 15500,
-        "priceUSD": 120
+        "priceUSD": 175
       },
       {
-        "seasonName": "Peak Season",
-        "dates": "Dec 20 - Jan 3",
-        "priceKES": 24000,
-        "priceUSD": 190
+        "seasonName": "1 Apr - 30 Jun",
+        "dates": "1 Apr - 30 Jun",
+        "priceKES": 11700,
+        "priceUSD": 135
+      },
+      {
+        "seasonName": "Easter (18 - 21 Apr)",
+        "dates": "18 Apr - 21 Apr",
+        "priceKES": 17500,
+        "priceUSD": 200
+      },
+      {
+        "seasonName": "1 Jul - 31 Oct",
+        "dates": "1 Jul - 31 Oct",
+        "priceKES": 16800,
+        "priceUSD": 195
+      },
+      {
+        "seasonName": "1 Nov - 22 Dec",
+        "dates": "1 Nov - 22 Dec",
+        "priceKES": 15500,
+        "priceUSD": 175
+      },
+      {
+        "seasonName": "23 Dec - 1 Jan",
+        "dates": "23 Dec - 1 Jan",
+        "priceKES": 32300,
+        "priceUSD": 375
       }
     ],
     "facilities": [
-      "3 Swimming Pools (including Relaxing Infinity Pool)",
-      "4 Bars & 3 Themed Restaurants",
-      "Adventurers Club for Kids"
+      "Three swimming pools, including a quiet adult pool",
+      "All-inclusive dining across multiple restaurants and bars",
+      "Daily entertainment, acrobatic shows & themed nights",
+      "Kids' Club and supervised children's activities",
+      "Direct access to Nyali Beach",
+      "Water sports centre (snorkelling, diving, boat rides)",
+      "Spa, salon & wellness treatments",
+      "Conference and meeting facilities",
+      "Senior-friendly rooms & accessible pathways",
+      "High-speed Wi-Fi",
+      "Fitness centre",
+      "Airport transfers (on request)",
+      "Gift shop & boutique",
+      "24/7 security and concierge services"
     ],
     "roomTypes": [
       "Garden Cabin",
@@ -308,13 +473,22 @@
       "Deluxe Sea View"
     ],
     "inclusions": [
-      "All-Inclusive Meals & Drinks",
-      "Daily Animation & Sports",
-      "Kids Club"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Spa treatments",
-      "Transfers"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": false,
@@ -322,9 +496,10 @@
     "isKenyanResidentOffer": true,
     "rating": 4.7,
     "seo": {
-      "title": "Voyager Beach Resort Mombasa Deals | Good Secrets Safaris",
-      "description": "Mombasa all-inclusive holiday at Voyager Beach Resort from KSH 15,500 / USD 120."
-    }
+      "title": "Voyager Beach Resort - Good Secrets Safaris",
+      "description": "Voyager Beach Resort Mombasa is a top family-friendly and senior-friendly beach resort offering all-inclusive stays, ocean-view rooms, and pools."
+    },
+    "published": true
   },
   {
     "id": "hotel-baobab-beach-resort",
@@ -332,40 +507,89 @@
     "slug": "baobab-beach-resort-spa",
     "location": "Diani Beach, Kenya",
     "country": "Kenya",
-    "description": "Spanning 80 acres of tropical gardens with ancient baobab trees along Diani Beach, offering 3 unique resort wings (Baobab, Maridadi, and Kole Kole).",
-    "category": "Beach Resort & Spa",
+    "description": "Baobab Beach Resort & Spa is one of Diani's most celebrated all-inclusive beach resorts, set on 80 acres of tropical gardens overlooking the pristine white sands of Diani Beach. Known for its warm hospitality and expansive coastal layout, Baobab Beach Resort & Spa caters beautifully to families, senior travellers, couples, and groups looking for a vibrant beachfront escape. The resort's three unique wings - Baobab, Kole Kole, and Maridadi - offer a wide range of room styles, dining options, and leisure experiences.",
+    "category": "All-Inclusive Beach Resort & Spa",
     "images": [
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/baobab-beach-resort-spa-beach-and-pool.jpg",
+      "/images/catalog/baobab-beach-resort-spa.jpg",
+      "/images/catalog/baobab-beach-resort-spa-6.jpg",
+      "/images/catalog/baobab-beach-resort-spa-5.jpg"
     ],
-    "priceFromUSD": 116,
+    "priceFromUSD": 140,
     "priceFromKES": 11600,
     "soloPriceUSD": 150,
-    "sharingPriceUSD": 116,
+    "sharingPriceUSD": 185,
     "seasonalPricing": [
       {
-        "seasonName": "Off-Peak Season",
-        "dates": "May - Jun",
-        "priceKES": 9800,
-        "priceUSD": 95
+        "seasonName": "3 Jan - 17 Apr",
+        "dates": "3 Jan - 17 Apr",
+        "priceKES": 15000,
+        "priceUSD": 185
       },
       {
-        "seasonName": "Normal Season",
-        "dates": "Jan - Apr, Jul - Oct",
-        "priceKES": 11600,
-        "priceUSD": 116
+        "seasonName": "18 - 21 Apr",
+        "dates": "18 Apr - 21 Apr",
+        "priceKES": 21390,
+        "priceUSD": 194
       },
       {
-        "seasonName": "Festive Season",
-        "dates": "Dec 22 - Jan 3",
-        "priceKES": 21000,
-        "priceUSD": 180
+        "seasonName": "22 - 30 Apr",
+        "dates": "22 Apr - 30 Apr",
+        "priceKES": 15335,
+        "priceUSD": 185
+      },
+      {
+        "seasonName": "1 May - 30 Jun",
+        "dates": "1 May - 30 Jun",
+        "priceKES": 11816,
+        "priceUSD": 140
+      },
+      {
+        "seasonName": "1 Jul - 31 Aug",
+        "dates": "1 Jul - 31 Aug",
+        "priceKES": 18170,
+        "priceUSD": 215
+      },
+      {
+        "seasonName": "1 Sep - 31 Oct",
+        "dates": "1 Sep - 31 Oct",
+        "priceKES": 15335,
+        "priceUSD": 190
+      },
+      {
+        "seasonName": "1 - 30 Nov",
+        "dates": "1 Nov - 30 Nov",
+        "priceKES": 15945,
+        "priceUSD": 200
+      },
+      {
+        "seasonName": "1 - 22 Dec",
+        "dates": "1 Dec - 22 Dec",
+        "priceKES": 18170,
+        "priceUSD": 230
+      },
+      {
+        "seasonName": "23 Dec - 2 Jan",
+        "dates": "23 Dec - 2 Jan",
+        "priceKES": 29445,
+        "priceUSD": 375
       }
     ],
     "facilities": [
-      "3 Large Swimming Pools",
-      "Afya Bora Wellness Spa",
-      "Direct 500m Beachfront",
-      "Amphitheatre"
+      "Three large swimming pools across the resort",
+      "Full-service Spa & Wellness Centre",
+      "All-inclusive dining with multiple restaurants and bars",
+      "Private white-sand beach",
+      "Water sports centre (snorkelling, diving, kite surfing)",
+      "Kids' Club and family activity programs",
+      "Daily entertainment and cultural shows",
+      "Fitness centre & outdoor sports facilities",
+      "Conference and meeting rooms",
+      "Senior-friendly rooms and accessible pathways",
+      "24/7 security and concierge services",
+      "Free high-speed Wi-Fi",
+      "Boutique shops and souvenir outlets",
+      "Airport transfer services (on request)"
     ],
     "roomTypes": [
       "Standard Garden Room",
@@ -373,13 +597,22 @@
       "Deluxe Bungalow"
     ],
     "inclusions": [
-      "All-Inclusive Dining & Drinks",
-      "Free gym and tennis courts",
-      "Nightly live shows"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Afya Bora Spa treatments",
-      "Transfers"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": true,
@@ -387,9 +620,10 @@
     "isKenyanResidentOffer": true,
     "rating": 4.8,
     "seo": {
-      "title": "Baobab Beach Resort Diani Packages | Good Secrets Safaris",
-      "description": "Diani all-inclusive holidays at Baobab Beach Resort from KSH 11,600 / USD 116."
-    }
+      "title": "Baobab Beach Resort & Spa - Good Secrets Safaris",
+      "description": "Baobab Beach Resort & Spa is a premier all-inclusive beach resort in Diani offering family-friendly facilities, senior-friendly rooms, and ocean-view suites."
+    },
+    "published": true
   },
   {
     "id": "hotel-diani-reef",
@@ -397,10 +631,16 @@
     "slug": "diani-reef-beach-resort-spa",
     "location": "Diani Beach, Kenya",
     "country": "Kenya",
-    "description": "A 5-star beach resort set on 34 acres of lush gardens with direct access to Diani's sparkling sands and vibrant coral reefs.",
+    "description": "Diani Reef Beach Resort & Spa is one of Diani's most iconic beachfront escapes, blending modern coastal luxury with warm Kenyan hospitality. Set along the award-winning Diani Beach, the resort is perfect for families, senior travellers, couples, and solo beach lovers seeking a peaceful and scenic coastal retreat. With its private white-sand beach, lush tropical gardens, and panoramic ocean views, Diani Reef Beach Resort & Spa offers a serene beachfront haven ideal for relaxation after a Kenya safari. Guests enjoy world-class amenities, a renowned spa, multiple dining options, and spacious rooms designed for comfort and accessibility.",
     "category": "Beach Resort & Spa",
     "images": [
-      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/diani-reef-beach-resort-spa-hotel.jpg",
+      "/images/catalog/diani-reef-beach-resort-1.jpg",
+      "/images/catalog/diani-reef-beach-resort-spa-1.jpg",
+      "/images/catalog/diani-reef-beach-resort-spa-2.jpg",
+      "/images/catalog/diani-reef-beach-resort-spa-3.jpg",
+      "/images/catalog/diani-reef-beach-resort-spa-4.jpg",
+      "/images/catalog/diani-reef-beach-resort-spa-bathroom.jpg"
     ],
     "priceFromUSD": 184,
     "priceFromKES": 18480,
@@ -408,23 +648,27 @@
     "sharingPriceUSD": 184,
     "seasonalPricing": [
       {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Nov",
+        "seasonName": "6 Jan - 16 Apr",
+        "dates": "6 Jan - 16 Apr",
         "priceKES": 18480,
         "priceUSD": 184
-      },
-      {
-        "seasonName": "Peak Season",
-        "dates": "Dec 20 - Jan 3",
-        "priceKES": 29500,
-        "priceUSD": 250
       }
     ],
     "facilities": [
-      "Maya Health & Wellness Spa",
-      "Freeform Swimming Pool",
-      "Casino & Cigar Lounge",
-      "Water Sports"
+      "Large outdoor swimming pools",
+      "Full-service Spa & Wellness Centre",
+      "Private white-sand beach",
+      "Multiple restaurants & bars",
+      "Kids' Club & family activity programs",
+      "Fitness centre with modern equipment",
+      "Water sports & diving centre",
+      "Conference & event facilities",
+      "24/7 front desk & concierge",
+      "Airport transfers (on request)",
+      "Senior-friendly walkways and accessible rooms",
+      "Free high-speed Wi-Fi",
+      "Gift shop & boutique",
+      "Outdoor entertainment and cultural nights"
     ],
     "roomTypes": [
       "Standard Garden View",
@@ -432,13 +676,22 @@
       "Junior Suite"
     ],
     "inclusions": [
-      "Half Board (Breakfast & Dinner)",
-      "Access to gym & pools",
-      "Wi-Fi"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Lunch & Drinks",
-      "Spa packages"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": true,
@@ -446,20 +699,24 @@
     "isKenyanResidentOffer": true,
     "rating": 4.8,
     "seo": {
-      "title": "Diani Reef Beach Resort & Spa Rates | Good Secrets Safaris",
-      "description": "5-star luxury at Diani Reef Beach Resort from KSH 18,480 / USD 184."
-    }
+      "title": "Diani Reef Beach Resort & Spa - Good Secrets Safaris",
+      "description": "Diani Reef Beach Resort & Spa — a luxury beachfront resort in Diani offering family-friendly facilities, senior-friendly rooms, private beach access, spa, pools, and world-class dining. Perfect for couples, safari add-ons, and beach holidays in Kenya."
+    },
+    "published": true
   },
   {
     "id": "hotel-prideinn-paradise",
     "name": "PrideInn Paradise Beach Resort & Spa",
     "slug": "prideinn-paradise-beach-resort",
-    "location": "Shanzu Beach, Mombasa, Kenya",
+    "location": "Mombasa, Kenya",
     "country": "Kenya",
-    "description": "East Africa's first family resort with a dedicated Aqua Park, private beachfront, and extensive conference and leisure facilities.",
+    "description": "Nestled along the shimmering sands of Shanzu Beach on Kenya's North Coast, PrideInn Paradise Beach Resort & Spa invites you into 17 acres of lush tropical gardens and pristine white beachfront, just 20 km from Mombasa town. With its blend of coastal luxury and vibrant family-friendly energy, this resort is ideal for travellers seeking relaxing seaside comfort, senior-friendly amenities, or fun family escapes - from sunset strolls on the Indian Ocean shore to exhilarating moments in the on-site aqua-park.",
     "category": "Beach Resort & Spa",
     "images": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/prideinn-paradise-beach-resort-spa-mombasa-6.jpg",
+      "/images/catalog/beach-front-hotel-in-mombas.jpg",
+      "/images/catalog/prideinn-paradise-beach-resort-spa-mombasa-2.jpg",
+      "/images/catalog/prideinn-paradise-beach-resort-spa-mombasa-4.jpg"
     ],
     "priceFromUSD": 140,
     "priceFromKES": 15000,
@@ -467,23 +724,43 @@
     "sharingPriceUSD": 140,
     "seasonalPricing": [
       {
-        "seasonName": "Standard Season",
-        "dates": "Jan - Nov",
+        "seasonName": "3 Jan - 31 Mar",
+        "dates": "3 Jan - 31 Mar",
         "priceKES": 15000,
         "priceUSD": 140
       },
       {
-        "seasonName": "Peak Festive Season",
-        "dates": "Dec 20 - Jan 3",
-        "priceKES": 26000,
-        "priceUSD": 210
+        "seasonName": "1 May - 30 Nov",
+        "dates": "1 May - 30 Nov",
+        "priceKES": 18000,
+        "priceUSD": 150
+      },
+      {
+        "seasonName": "Apr, Aug - 19 Dec",
+        "dates": "Apr, Aug - 19 Dec",
+        "priceKES": 19499,
+        "priceUSD": 240
+      },
+      {
+        "seasonName": "20 Dec - 2 Jan",
+        "dates": "20 Dec - 2 Jan",
+        "priceKES": 41000,
+        "priceUSD": 275
       }
     ],
     "facilities": [
-      "Aqua Park with Water Slides",
-      "Olympic Size Pool",
-      "Bamboo Spa",
-      "Private Beach Access"
+      "Private golden-sandy beach on Shanzu coastline with direct access",
+      "Multiple outdoor swimming pools including children's pool and water-slides/aqua-park",
+      "Aqua-Park / Water-Splash zone",
+      "Full-service spa (Bamboo Ocean Spa) and wellness centre",
+      "Fitness centre (Uzima Gym)",
+      "Kids' club (Marinos Kids Club) and supervised children's activities",
+      "Multiple dining venues: buffet/a-la-carte restaurants, pool bar, beach bar, lounge bars",
+      "Conference & event facilities (12 venues, capacity up to ~1,300 delegates)",
+      "Free self-parking onsite; airport transfers and concierge services",
+      "Free Wi-Fi in public and guest areas",
+      "Manicured tropical gardens and serene walking paths",
+      "Laundry & dry-cleaning service"
     ],
     "roomTypes": [
       "Deluxe Garden View",
@@ -491,13 +768,22 @@
       "Family Suite"
     ],
     "inclusions": [
-      "Half Board or All-Inclusive Options",
-      "Aqua Park access for kids",
-      "Wi-Fi"
+      "Accommodation in a Standard room type",
+      "Daily breakfast and dinner (Half Board)",
+      "Complimentary Wi-Fi",
+      "Access to swimming pools and beach area",
+      "Entry to the Water Park",
+      "Use of fitness center",
+      "Housekeeping services",
+      "All applicable taxes and levies"
     ],
     "exclusions": [
-      "Spa treatments",
-      "Transfers"
+      "Lunch and alcoholic beverages (unless on upgraded meal plan)",
+      "Spa and wellness treatments",
+      "Laundry and dry-cleaning services",
+      "Room minibar and room service orders",
+      "Tips and personal expenses",
+      "Optional activities not listed in inclusions"
     ],
     "isFamilyFriendly": true,
     "isHoneymoonFriendly": false,
@@ -505,8 +791,9 @@
     "isKenyanResidentOffer": true,
     "rating": 4.7,
     "seo": {
-      "title": "PrideInn Paradise Beach Resort Shanzu | Good Secrets Safaris",
-      "description": "Mombasa family resort at PrideInn Paradise from KSH 15,000 / USD 140."
-    }
+      "title": "PrideInn Paradise Beach Resort & Spa - Good Secrets Safaris",
+      "description": "PrideInn Paradise Beach Resort & Spa on Shanzu Beach, Mombasa - 17 acres of tropical gardens, aqua-park, spa, and family-friendly comfort."
+    },
+    "published": true
   }
 ]
