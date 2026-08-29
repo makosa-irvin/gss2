@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { DataProvider, useData } from './context/DataContext';
 import { ShortlistProvider } from './context/ShortlistContext';
 import { Tour, Hotel, Destination } from './types';
@@ -16,7 +16,8 @@ const AboutView = lazy(() => import('./views/AboutView').then(m => ({ default: m
 const ContactView = lazy(() => import('./views/ContactView').then(m => ({ default: m.ContactView })));
 const ReviewsView = lazy(() => import('./views/ReviewsView').then(m => ({ default: m.ReviewsView })));
 const ShortlistView = lazy(() => import('./views/ShortlistView').then(m => ({ default: m.ShortlistView })));
-const DirectBookingView = lazy(() => import('./views/DirectBookingView').then(m => ({ default: m.DirectBookingView })));
+const PlanningWithUsView = lazy(() => import('./views/PlanningWithUsView').then(m => ({ default: m.PlanningWithUsView })));
+const SafariGuidesView = lazy(() => import('./views/SafariGuidesView').then(m => ({ default: m.SafariGuidesView })));
 const AdminDashboardView = lazy(() => import('./views/AdminDashboardView').then(m => ({ default: m.AdminDashboardView })));
 const TourDetailRoute = lazy(() => import('./routes/TourDetailRoute').then(m => ({ default: m.TourDetailRoute })));
 const HotelDetailRoute = lazy(() => import('./routes/HotelDetailRoute').then(m => ({ default: m.HotelDetailRoute })));
@@ -38,7 +39,17 @@ function useLegacyNavigate() {
       case 'tours': { const params = new URLSearchParams(); if (payload) for (const key of ['destination','duration','travelStyle','travelerType','country']) if (payload[key]) params.set(key,payload[key]); const qs=params.toString(); return navigate(qs?`/safaris?${qs}`:'/safaris'); }
       case 'destinations': { if (payload?.destinationId) { const dest=destinations.find(d=>d.id===payload.destinationId); if(dest) return navigate(`/destinations/${dest.slug}`); } return navigate('/destinations'); }
       case 'hotels': return navigate(payload?.residentOnly?'/hotels?resident=true':'/hotels');
-      case 'builder': return navigate('/safari-builder'); case 'blog': return navigate(payload?.postSlug?`/blog/${payload.postSlug}`:'/blog'); case 'reviews': return navigate('/reviews'); case 'shortlist': return navigate('/shortlist'); case 'book-direct': return navigate('/book-direct'); case 'about': return navigate('/about'); case 'contact': return navigate('/contact'); case 'admin': return navigate('/admin'); default: return navigate('/');
+      case 'builder': return navigate('/safari-builder');
+      case 'blog': return navigate(payload?.postSlug?`/blog/${payload.postSlug}`:'/blog');
+      case 'guides': return navigate(payload?.slug?`/guides/${payload.slug}`:'/guides');
+      case 'reviews': return navigate('/reviews');
+      case 'shortlist': return navigate('/shortlist');
+      case 'plan-with-us': return navigate('/plan-with-us');
+      case 'book-direct': return navigate('/plan-with-us');
+      case 'about': return navigate('/about');
+      case 'contact': return navigate('/contact');
+      case 'admin': return navigate('/admin');
+      default: return navigate('/');
     }
   };
 }
@@ -57,7 +68,17 @@ const MainAppContent: React.FC = () => {
   if(loadError) return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#0c120e] text-[#f4f2eb] px-4 text-center"><p className="text-sm text-[#f4f2eb]">{loadError}</p><button onClick={()=>window.location.reload()} className="px-5 py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-xs uppercase tracking-wider">Retry</button></div>;
 
   return <div className="min-h-screen flex flex-col bg-[#0c120e] text-[#f4f2eb] selection:bg-[#c49a45] selection:text-black"><Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><main className="flex-1"><Suspense fallback={<RouteFallback/>}><Routes>
-    <Route path="/" element={<HomePage onNavigate={legacyNavigate} onSelectTour={handleSelectTour} onSelectDestination={handleSelectDestination} onSelectHotel={handleSelectHotel} onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safaris" element={<ToursExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safaris/:slug" element={<TourDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/destinations" element={<DestinationsView onSelectDestination={handleSelectDestination}/>}/><Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/hotels" element={<HotelsExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/hotels/:slug" element={<HotelDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safari-builder" element={<BuilderPage onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog/:slug" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/reviews" element={<ReviewsView/>}/><Route path="/shortlist" element={<ShortlistView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/book-direct" element={<DirectBookingView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/><Route path="/admin" element={<AdminRoute><AdminDashboardView onNavigateHome={()=>navigate('/')} onPreviewTour={(tour)=>navigate(`/safaris/${tour.slug}`)}/></AdminRoute>}/><Route path="*" element={<NotFoundView/>}/>
+    <Route path="/" element={<HomePage onNavigate={legacyNavigate} onSelectTour={handleSelectTour} onSelectDestination={handleSelectDestination} onSelectHotel={handleSelectHotel} onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/safaris" element={<ToursExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safaris/:slug" element={<TourDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/destinations" element={<DestinationsView onSelectDestination={handleSelectDestination}/>}/><Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/hotels" element={<HotelsExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/hotels/:slug" element={<HotelDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/safari-builder" element={<BuilderPage onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/blog" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog/:slug" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/guides" element={<SafariGuidesView/>}/><Route path="/guides/:slug" element={<SafariGuidesView/>}/>
+    <Route path="/reviews" element={<ReviewsView/>}/><Route path="/shortlist" element={<ShortlistView onOpenEnquiryModal={openEnquiryModal}/>}/>
+    <Route path="/plan-with-us" element={<PlanningWithUsView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/book-direct" element={<Navigate to="/plan-with-us" replace/>}/>
+    <Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/>
+    <Route path="/admin" element={<AdminRoute><AdminDashboardView onNavigateHome={()=>navigate('/')} onPreviewTour={(tour)=>navigate(`/safaris/${tour.slug}`)}/></AdminRoute>}/><Route path="*" element={<NotFoundView/>}/>
   </Routes></Suspense></main><Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp}/><EnquiryModal isOpen={isEnquiryModalOpen} onClose={()=>setIsEnquiryModalOpen(false)} selectedTour={enquiryModalData.selectedTour} selectedHotel={enquiryModalData.selectedHotel} initialType={enquiryModalData.initialType} initialDestination={enquiryModalData.initialDestination} initialSpecialRequests={enquiryModalData.initialSpecialRequests} contextItems={enquiryModalData.contextItems}/></div>;
 };
 
