@@ -43,7 +43,7 @@ describe('PageMeta', () => {
   });
 
   it('keeps JSON-LD data inside the script element even when content contains a closing script sequence', () => {
-    render(
+    const { container } = render(
       <PageMeta
         title="Structured Data Safety"
         canonicalPath="/safe-metadata"
@@ -51,7 +51,14 @@ describe('PageMeta', () => {
       />
     );
 
-    const script = document.head.querySelector('script[type="application/ld+json"]');
+    // React 19 hoists metadata elements such as title/meta/link into <head>,
+    // while jsdom may leave this non-executable JSON-LD script in the render
+    // container. Query the full rendered document contract rather than
+    // assuming jsdom reproduces browser head-hoisting for every tag type.
+    const script =
+      document.head.querySelector('script[type="application/ld+json"]') ||
+      container.querySelector('script[type="application/ld+json"]');
+
     expect(script).not.toBeNull();
     expect(script?.textContent).not.toContain('</script>');
     expect(script?.textContent).toContain('\\u003c/script>');
