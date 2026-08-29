@@ -1,11 +1,5 @@
 /**
  * Generates public/sitemap.xml from the content exposed by the backend.
- *
- * Production builds should set SITEMAP_API_URL (normally the deployed API
- * origin, e.g. https://api.goodsecretssafaris.com). This keeps the sitemap
- * aligned with the database/CMS instead of the legacy frontend seed file.
- * Local builds without an API remain possible: only static routes are emitted
- * and the script prints a warning rather than publishing stale catalog URLs.
  */
 import { writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -15,10 +9,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.com').replace(/\/$/, '');
 const API_URL = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || '').replace(/\/$/, '');
 
-// /shortlist is intentionally omitted: it is a personal, browser-local page
-// and is marked noindex in the frontend. Public trust/content pages should be
-// crawlable because they support direct-acquisition search journeys.
-const staticRoutes = ['/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/reviews', '/book-direct', '/about', '/contact'];
+// /shortlist is intentionally omitted because it is browser-personalized and noindex.
+// /book-direct is now a compatibility redirect and is therefore also omitted.
+const staticRoutes = [
+  '/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/reviews', '/plan-with-us', '/about', '/contact',
+  '/guides',
+  '/guides/kenya-safari-cost-guide',
+  '/guides/best-time-for-kenya-safari',
+  '/guides/kenya-vs-tanzania-safari',
+  '/guides/first-time-africa-safari-guide',
+  '/guides/safari-over-60-comfort-guide'
+];
 
 type SlugRecord = { slug: string; updatedAt?: string; publishedDate?: string };
 type SitemapEntry = { path: string; lastmod?: string };
@@ -42,14 +43,9 @@ async function dynamicEntries(): Promise<SitemapEntry[]> {
     console.warn('SITEMAP_API_URL/VITE_API_URL is not set; generating static routes only.');
     return [];
   }
-
   const [tours, hotels, destinations, posts] = await Promise.all([
-    fetchCollection('/api/tours'),
-    fetchCollection('/api/hotels'),
-    fetchCollection('/api/destinations'),
-    fetchCollection('/api/blog'),
+    fetchCollection('/api/tours'), fetchCollection('/api/hotels'), fetchCollection('/api/destinations'), fetchCollection('/api/blog')
   ]);
-
   return [
     ...tours.map((item) => ({ path: `/safaris/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
     ...hotels.map((item) => ({ path: `/hotels/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
@@ -59,17 +55,9 @@ async function dynamicEntries(): Promise<SitemapEntry[]> {
 }
 
 const today = new Date().toISOString().slice(0, 10);
-const entries: SitemapEntry[] = [
-  ...staticRoutes.map((path) => ({ path, lastmod: today })),
-  ...(await dynamicEntries()),
-];
-
-const body = entries
-  .map(({ path, lastmod }) => `  <url>\n    <loc>${SITE_URL}${path}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`)
-  .join('\n');
-
+const entries: SitemapEntry[] = [...staticRoutes.map((path) => ({ path, lastmod: today })), ...(await dynamicEntries())];
+const body = entries.map(({ path, lastmod }) => `  <url>\n    <loc>${SITE_URL}${path}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`).join('\n');
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
-
 const outPath = resolve(__dirname, '../public/sitemap.xml');
 writeFileSync(outPath, xml, 'utf-8');
 console.log(`sitemap.xml written with ${entries.length} URLs -> ${outPath}`);
