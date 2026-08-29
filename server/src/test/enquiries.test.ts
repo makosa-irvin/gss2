@@ -7,6 +7,8 @@ import { enquiries } from '../db/schema.js';
 
 const app = createApp();
 const createdIds: string[] = [];
+const SEED_ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@goodsecretssafaris.com';
+const SEED_ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD;
 
 /**
  * These tests are the regression guard for the single most important fix
@@ -89,5 +91,66 @@ describe('Enquiry submission', () => {
 
     const tooManyRequests = responses.filter((r) => r.status === 429);
     expect(tooManyRequests.length).toBeGreaterThan(0);
+  });
+});
+
+describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin enquiry management', () => {
+  let sessionCookie: string;
+  let enquiryId: string;
+
+  it('logs in and creates a test enquiry to manage', async () => {
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ email: SEED_ADMIN_EMAIL, password: SEED_ADMIN_PASSWORD });
+    sessionCookie = loginRes.headers['set-cookie'];
+    expect(loginRes.status).toBe(200);
+
+    const createRes = await request(app).post('/api/enquiries').send({
+      fullName: 'CRM Test Traveler',
+      email: 'crm-test@example.com',
+      phone: '+1 555 000 3333',
+      country: 'United States',
+      adults: 2,
+      children: 0,
+    });
+    enquiryId = createRes.body.id;
+    createdIds.push(enquiryId);
+  });
+
+  it('refuses to update status without an admin session', async () => {
+    const res = await request(app).put(`/api/enquiries/${enquiryId}/status`).send({ status: 'Contacted' });
+    expect(res.status).toBe(401);
+  });
+
+  it('updates status and notes, stamping the corresponding lifecycle timestamp', async () => {
+    const res = await request(app)
+      .put(`/api/enquiries/${enquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Contacted', notes: 'Called and left a voicemail.' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('Contacted');
+    expect(res.body.notes).toBe('Called and left a voicemail.');
+    expect(res.body.contactedAt).toBeTruthy();
+  });
+
+  it('refuses to delete without an admin session', async () => {
+    const res = await request(app).delete(`/api/enquiries/${enquiryId}`);
+    expect(res.status).toBe(401);
+  });
+
+  it('deletes the enquiry, after which it no longer appears in the admin list', async () => {
+    const res = await request(app).delete(`/api/enquiries/${enquiryId}`).set('Cookie', sessionCookie);
+    expect(res.status).toBe(204);
+
+    const listRes = await request(app).get('/api/enquiries').set('Cookie', sessionCookie);
+    expect(listRes.body.find((e: { id: string }) => e.id === enquiryId)).toBeUndefined();
+
+    createdIds.splice(createdIds.indexOf(enquiryId), 1); // already deleted, don't try again in afterAll
+  });
+
+  it('404s deleting an enquiry that does not exist', async () => {
+    const res = await request(app).delete(`/api/enquiries/${enquiryId}`).set('Cookie', sessionCookie);
+    expect(res.status).toBe(404);
   });
 });
