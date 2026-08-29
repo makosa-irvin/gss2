@@ -1,31 +1,66 @@
 import React from 'react';
 import { PageMeta } from '../components/common/PageMeta';
-import { Compass, Heart, ShieldCheck, Users, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Compass, Heart, ShieldCheck, Users, Sparkles, CheckCircle2, ArrowRight, Camera, Car, MessageCircle } from 'lucide-react';
 
 interface AboutViewProps { onOpenEnquiryModal: (payload?: any) => void; }
 
+const planningSteps = [
+  ['01', 'Tell us what matters', 'Share your dates, group, interests, pace and rough budget. A first conversation is enough to get started.'],
+  ['02', 'Shape the route together', 'We refine parks, nights, accommodation and transfers around your priorities rather than forcing you into a fixed package.'],
+  ['03', 'Review before committing', 'You receive the itinerary, inclusions and practical terms before choosing whether to proceed.'],
+  ['04', 'Travel with local support', 'The same East Africa-based team remains available while your trip is underway.']
+];
+
+const teamPlaceholders = [
+  ['Safari planning team', 'Itinerary design, lodge matching and pre-trip coordination.'],
+  ['Driver-guide team', 'Private game drives, wildlife interpretation and day-to-day flexibility.'],
+  ['Guest support team', 'Arrival coordination and local assistance during your journey.']
+];
+
 export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-12 sm:space-y-16">
-    <PageMeta title="About Us" description="Learn about Good Secrets Safaris and our approach to personalized East Africa travel." canonicalPath="/about" />
+  <div className="pb-20">
+    <PageMeta
+      title="About Good Secrets Safaris"
+      description="Meet the East Africa-based team and planning approach behind Good Secrets Safaris: private itineraries, local support, experienced guides and direct trip planning."
+      canonicalPath="/about"
+    />
 
-    <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#142019] to-[#0c120e] p-7 sm:p-12 text-center">
-      <div className="max-w-3xl mx-auto space-y-4"><div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e6bc65]"><Compass className="w-4 h-4" /><span>Why Good Secrets Safaris</span></div><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">A safari designed around the people taking it.</h1><p className="text-base sm:text-lg text-[#c7d2cb] leading-relaxed">We plan private East Africa journeys around your pace, priorities and travel style — with local guidance from the first idea through the final game drive.</p></div>
-    </section>
-
-    <section className="grid grid-cols-1 lg:grid-cols-12 gap-9 items-center">
-      <div className="lg:col-span-6 rounded-3xl overflow-hidden aspect-[4/3] border border-white/15 shadow-md"><img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80" alt="Safari landscape in East Africa" className="w-full h-full object-cover" /></div>
-      <div className="min-w-0 lg:col-span-6 space-y-5 text-base text-[#c7d2cb] leading-relaxed"><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Our approach</span><h2 className="font-serif-luxury text-2xl sm:text-4xl font-bold text-white">Your Africa. Your story. Your safari.</h2><p>Good safari planning starts by understanding what you want from the journey: more time with wildlife, a gentler pace, family-friendly logistics, photography, a celebration, or a few quiet beach days after the bush.</p><p>Instead of treating an itinerary as fixed, we use it as a starting point. Routes, nights, accommodation and experiences can be shaped around your dates and priorities.</p><div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"><div className="rounded-2xl border border-white/15 bg-white/5 p-4"><CheckCircle2 className="w-5 h-5 text-[#e6bc65] mb-2" /><strong className="text-white block">Private safari planning</strong><span className="text-sm">Routes built around your group and pace.</span></div><div className="rounded-2xl border border-white/15 bg-white/5 p-4"><CheckCircle2 className="w-5 h-5 text-[#e6bc65] mb-2" /><strong className="text-white block">Local trip support</strong><span className="text-sm">A team on the ground when you need help.</span></div></div></div>
-    </section>
-
-    <section className="rounded-3xl bg-white border border-[#ded8cb] p-7 sm:p-10 space-y-8 shadow-sm">
-      <div className="text-center max-w-2xl mx-auto"><span className="text-xs font-bold uppercase tracking-widest text-[#76541a]">What guides our planning</span><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19] mt-2">Confidence before you travel</h2></div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <article className="p-6 rounded-2xl bg-[#faf8f2] border border-[#e3ddcf] space-y-3"><ShieldCheck className="w-8 h-8 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19]">Clear planning</h3><p className="text-sm text-[#46544b] leading-relaxed">We explain the route, inclusions and practical details so you can understand what you are considering before committing.</p></article>
-        <article className="p-6 rounded-2xl bg-[#faf8f2] border border-[#e3ddcf] space-y-3"><Heart className="w-8 h-8 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19]">Respectful travel</h3><p className="text-sm text-[#46544b] leading-relaxed">Wildlife, communities and landscapes are not a backdrop. Good trips respect the places and people that make them possible.</p></article>
-        <article className="p-6 rounded-2xl bg-[#faf8f2] border border-[#e3ddcf] space-y-3"><Users className="w-8 h-8 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19]">Personal attention</h3><p className="text-sm text-[#46544b] leading-relaxed">The best itinerary for a honeymoon is different from one for a family or photographer. We plan with those differences in mind.</p></article>
+    <section className="relative min-h-[560px] overflow-hidden border-b border-white/10">
+      <img src="/images/catalog/vehicle-next-to-the-great-migration.jpg" alt="Safari vehicle beside the Great Migration in East Africa" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#07100a]/95 via-[#07100a]/70 to-black/25" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-8 py-16 sm:py-24 min-h-[560px] flex items-end">
+        <div className="max-w-3xl space-y-5">
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#f0ca79]"><Compass className="w-4 h-4" />Local East Africa safari planning</span>
+          <h1 className="font-serif-luxury text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05]">The people planning your safari are here in East Africa.</h1>
+          <p className="text-base sm:text-xl text-white/90 leading-relaxed max-w-2xl">Good Secrets Safaris plans private journeys across Kenya, Tanzania and the coast with a direct relationship between you and the local team coordinating the trip.</p>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2"><button onClick={() => onOpenEnquiryModal()} className="min-h-12 px-7 rounded-xl bg-[#e6bc65] hover:bg-[#f0ca79] text-[#161f19] font-extrabold text-sm shadow-lg">Talk to our safari team</button><a href="/reviews" className="min-h-12 px-7 rounded-xl border border-white/30 bg-black/20 hover:bg-black/35 text-white font-bold text-sm inline-flex items-center justify-center gap-2">Read independent reviews <ArrowRight className="w-4 h-4" /></a></div>
+        </div>
       </div>
     </section>
 
-    <section className="text-center p-8 sm:p-12 rounded-3xl bg-[#142019] border border-white/10 space-y-4"><Sparkles className="w-6 h-6 text-[#e6bc65] mx-auto" /><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white">Ready to turn an idea into a route?</h2><p className="text-sm sm:text-base text-[#c7d2cb] max-w-xl mx-auto">Tell us your dates, interests and rough budget. We can help shape the next step without requiring payment to enquire.</p><button onClick={() => onOpenEnquiryModal()} className="min-h-12 px-7 rounded-xl bg-[#e6bc65] hover:bg-[#f0cb7a] text-[#161f19] font-extrabold text-sm shadow-md">Request my safari quote</button></section>
+    <main className="max-w-7xl mx-auto px-4 sm:px-8 py-14 sm:py-20 space-y-20">
+      <section className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="lg:col-span-5 space-y-5"><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Why direct matters</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">You should know who is responsible for your trip.</h2><p className="text-base text-[#c7d2cb] leading-relaxed">A safari is a major purchase and often a once-in-a-lifetime journey. Our role is to make the planning clear enough that you understand the route, what is included, where you are staying and who to contact before you decide to proceed.</p><p className="text-base text-[#c7d2cb] leading-relaxed">The itineraries on this website are starting points. We can slow them down, add nights, change accommodation, combine countries or build around a family, honeymoon, photography trip or a more relaxed pace.</p></div>
+        <div className="lg:col-span-7 grid grid-cols-2 gap-4"><div className="col-span-2 sm:col-span-1 rounded-3xl overflow-hidden aspect-[4/5] border border-white/10"><img src="/images/catalog/family-safari-game-drive.jpg" alt="Family enjoying a safari game drive" loading="lazy" className="w-full h-full object-cover" /></div><div className="col-span-2 sm:col-span-1 grid gap-4"><div className="rounded-3xl overflow-hidden aspect-[16/10] border border-white/10"><img src="/images/catalog/picnic-lunch-in-the-wild.jpg" alt="Safari picnic lunch in the wild" loading="lazy" className="w-full h-full object-cover" /></div><div className="rounded-3xl overflow-hidden aspect-[16/10] border border-white/10"><img src="/images/catalog/honey-moon-in-samburu.jpg" alt="Couple on a Samburu safari" loading="lazy" className="w-full h-full object-cover" /></div></div></div>
+      </section>
+
+      <section className="rounded-[2rem] bg-[#fffdf8] border border-[#ded8cb] p-7 sm:p-10 lg:p-12 text-[#161f19] shadow-sm">
+        <div className="max-w-3xl mb-10"><span className="text-xs font-extrabold uppercase tracking-widest text-[#76541a]">What happens after you enquire</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold mt-2">A clear planning process, without pressure.</h2><p className="text-base text-[#526158] mt-3 leading-relaxed">You do not need to know every detail before contacting us, and submitting an enquiry does not create a booking or payment obligation.</p></div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">{planningSteps.map(([num,title,desc]) => <article key={num} className="border-t-2 border-[#b3822a] pt-5"><span className="font-serif-luxury text-3xl font-bold text-[#b3822a]">{num}</span><h3 className="font-serif-luxury text-xl font-bold mt-3">{title}</h3><p className="text-sm text-[#526158] mt-2 leading-relaxed">{desc}</p></article>)}</div>
+      </section>
+
+      <section className="space-y-8">
+        <div className="max-w-3xl"><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Meet the team</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-2">Put faces to the people behind your journey.</h2><p className="text-base text-[#c7d2cb] mt-3 leading-relaxed">We did not find clearly labelled team portraits in the current website image library, so these spaces are intentionally left as team-photo placeholders rather than using stock portraits. Replace them with real staff photographs and bios as soon as they are available.</p></div>
+        <div className="grid md:grid-cols-3 gap-6">{teamPlaceholders.map(([title,desc]) => <article key={title} className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"><div className="aspect-[4/3] bg-gradient-to-br from-[#263a2e] to-[#101912] flex flex-col items-center justify-center text-center p-6"><Camera className="w-8 h-8 text-[#e6bc65]" /><strong className="text-white mt-3">Real team photo placeholder</strong><span className="text-xs text-[#aebbb2] mt-1">Replace when approved portraits are available</span></div><div className="p-6"><h3 className="font-serif-luxury text-xl font-bold text-white">{title}</h3><p className="text-sm text-[#c7d2cb] mt-2 leading-relaxed">{desc}</p></div></article>)}</div>
+      </section>
+
+      <section className="grid md:grid-cols-3 gap-5">
+        <article className="rounded-3xl bg-white border border-[#ded8cb] p-7"><Car className="w-7 h-7 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19] mt-4">Private journey design</h3><p className="text-sm text-[#46544b] mt-2 leading-relaxed">Routes and pacing can be adjusted around your group rather than a fixed coach-tour schedule.</p></article>
+        <article className="rounded-3xl bg-white border border-[#ded8cb] p-7"><ShieldCheck className="w-7 h-7 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19] mt-4">Clarity before commitment</h3><p className="text-sm text-[#46544b] mt-2 leading-relaxed">Review itinerary, inclusions and trip terms before choosing whether to proceed. No payment is taken simply to enquire.</p></article>
+        <article className="rounded-3xl bg-white border border-[#ded8cb] p-7"><MessageCircle className="w-7 h-7 text-[#76541a]" /><h3 className="font-serif-luxury text-xl font-bold text-[#161f19] mt-4">Local communication</h3><p className="text-sm text-[#46544b] mt-2 leading-relaxed">Email, phone and WhatsApp give you direct channels to the team before and during your East Africa journey.</p></article>
+      </section>
+
+      <section className="grid lg:grid-cols-12 gap-8 items-center rounded-[2rem] border border-[#5f512f] bg-[#17231b] p-7 sm:p-10"><div className="lg:col-span-8"><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Independent feedback</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-2">Do not take our word for it.</h2><p className="text-base text-[#d7dfda] mt-3 max-w-2xl">Read traveler feedback published independently on SafariBookings and Tripadvisor, then follow the source links to see the original reviews.</p></div><div className="lg:col-span-4 flex flex-col gap-3"><a href="/reviews" className="min-h-12 rounded-xl bg-[#e6bc65] hover:bg-[#f0ca79] text-[#161f19] font-extrabold text-sm inline-flex items-center justify-center gap-2">Read traveler reviews <ArrowRight className="w-4 h-4" /></a><button onClick={() => onOpenEnquiryModal()} className="min-h-12 rounded-xl border border-white/25 bg-white/5 hover:bg-white/10 text-white font-bold text-sm">Start a safari conversation</button></div></section>
+    </main>
   </div>
 );
