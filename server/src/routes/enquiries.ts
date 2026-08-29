@@ -70,3 +70,13 @@ enquiriesRouter.put(
     res.json(updated);
   })
 );
+
+enquiriesRouter.delete(
+  '/:id',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const [deleted] = await db.delete(enquiries).where(eq(enquiries.id, req.params.id)).returning();
+    if (!deleted) return res.status(404).json({ error: 'Enquiry not found.' });
+    res.status(204).end();
+  })
+);
