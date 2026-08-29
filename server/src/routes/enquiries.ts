@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { eq, desc } from 'drizzle-orm';
+import { z } from 'zod';
 import { db } from '../db/client.js';
 import { enquiries } from '../db/schema.js';
+import { enquiryFollowUps } from '../db/crmSchema.js';
 import { asyncHandler, validateBody } from '../middleware/common.js';
 import { requireAdmin } from '../middleware/requireAdmin.js';
 import { enquirySchema, updateEnquiryStatusSchema } from '../lib/validation.js';
@@ -10,8 +12,6 @@ import { sendEnquiryNotifications } from '../lib/email.js';
 
 export const enquiriesRouter = Router();
 
-// Public form submission - the most spam/abuse-prone endpoint in the
-// API, so it gets its own tighter limit on top of the global one.
 const enquiryLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 10,
@@ -20,21 +20,19 @@ const enquiryLimiter = rateLimit({
   message: { error: 'Too many enquiries submitted. Please try again later or contact us on WhatsApp.' },
 });
 
+const followUpSchema = z.object({
+  followUpAt: z.string().datetime().nullable(),
+});
+
 enquiriesRouter.post(
   '/',
   enquiryLimiter,
   validateBody(enquirySchema),
   asyncHandler(async (req, res) => {
     const [created] = await db.insert(enquiries).values(req.body).returning();
-
-    // The enquiry is already safely persisted at this point - email
-    // notification is a best-effort side effect, not something that
-    // should make the customer's submission look like it failed if their
-    // network hiccups or the email provider is briefly down.
     sendEnquiryNotifications(created).catch((err) =>
       console.error(`Unexpected error sending notifications for enquiry ${created.id}:`, err)
     );
-
     res.status(201).json({ id: created.id });
   })
 );
@@ -44,8 +42,12 @@ enquiriesRouter.get(
   '/',
   requireAdmin,
   asyncHandler(async (_req, res) => {
-    const rows = await db.select().from(enquiries).orderBy(desc(enquiries.createdAt));
-    res.json(rows);
+    const rows = await db
+      .select({ enquiry: enquiries, followUpAt: enquiryFollowUps.followUpAt })
+      .from(enquiries)
+      .leftJoin(enquiryFollowUps, eq(enquiries.id, enquiryFollowUps.enquiryId))
+      .orderBy(desc(enquiries.createdAt));
+    res.json(rows.map(({ enquiry, followUpAt }) => ({ ...enquiry, followUpAt })));
   })
 );
 
@@ -67,7 +69,34 @@ enquiriesRouter.put(
       .where(eq(enquiries.id, req.params.id))
       .returning();
     if (!updated) return res.status(404).json({ error: 'Enquiry not found.' });
-    res.json(updated);
+    const [followUp] = await db.select().from(enquiryFollowUps).where(eq(enquiryFollowUps.enquiryId, req.params.id));
+    res.json({ ...updated, followUpAt: followUp?.followUpAt ?? null });
+  })
+);
+
+enquiriesRouter.put(
+  '/:id/follow-up',
+  requireAdmin,
+  validateBody(followUpSchema),
+  asyncHandler(async (req, res) => {
+    const [existing] = await db.select({ id: enquiries.id }).from(enquiries).where(eq(enquiries.id, req.params.id));
+    if (!existing) return res.status(404).json({ error: 'Enquiry not found.' });
+
+    if (req.body.followUpAt === null) {
+      await db.delete(enquiryFollowUps).where(eq(enquiryFollowUps.enquiryId, req.params.id));
+      return res.json({ followUpAt: null });
+    }
+
+    const followUpAt = new Date(req.body.followUpAt);
+    const [saved] = await db
+      .insert(enquiryFollowUps)
+      .values({ enquiryId: req.params.id, followUpAt })
+      .onConflictDoUpdate({
+        target: enquiryFollowUps.enquiryId,
+        set: { followUpAt, updatedAt: new Date() },
+      })
+      .returning();
+    res.json({ followUpAt: saved.followUpAt });
   })
 );
 
