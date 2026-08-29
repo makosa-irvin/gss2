@@ -68,14 +68,14 @@ This smoke job is deliberately not presented as full-system enquiry E2E coverage
 
 Coverage floors are ratchets: establish the measured result, put the required threshold just below it, and only move that threshold upward as meaningful tests improve confidence. Do not lower a floor merely to get a pull request green.
 
-The initial frontend legacy measurement was 43.18% lines, 38.39% statements, 21.71% functions and 37.19% branches. After adding CRM interaction coverage and related component tests, the current measured frontend baseline is:
+The initial frontend legacy measurement was 43.18% lines, 38.39% statements, 21.71% functions and 37.19% branches. CRM interaction/component tests first raised that to 46.77% lines, 41.69% statements, 24.57% functions and 43.04% branches. The DataContext enquiry-contract integration test then raised the current measured frontend baseline to:
 
-- lines: 46.77%
-- statements: 41.69%
-- functions: 24.57%
-- branches: 43.04%
+- lines: 47.76%
+- statements: 42.65%
+- functions: 26.13%
+- branches: 44.76%
 
-Frontend CI floors are therefore 46% lines, 41% statements, 24% functions and 42% branches.
+Frontend CI floors are therefore 47% lines, 42% statements, 26% functions and 44% branches.
 
 The initial backend legacy measurement was 55.52% lines, 52.77% statements, 34.61% functions and 23.44% branches. After enabling deterministic auth, enquiry/CRM lifecycle, admin-tour and draft/publish integration tests, the current measured backend baseline is:
 
@@ -88,7 +88,7 @@ Backend CI floors are therefore 74% lines, 72% statements, 60% functions and 45%
 
 These are regression floors, not final quality targets. Critical business modules should trend materially higher than the repository-wide floor, and new business logic should arrive with tests appropriate to its risk. Do not add low-value assertions merely to improve a percentage.
 
-Near-term coverage priorities are email side-effect boundaries, remaining admin write routes, `DataContext` API mapping, and customer-facing cards/forms with low current coverage. The enquiry and authentication routes are already substantially above the repository-wide backend floor and should remain there.
+Near-term coverage priorities are email side-effect boundaries, remaining admin write routes, further `DataContext` failure/auth-state behavior, and customer-facing cards/forms with low current coverage. The enquiry and authentication routes are already substantially above the repository-wide backend floor and should remain there.
 
 CI publishes frontend and backend coverage summary artifacts on every run.
 
