@@ -88,6 +88,8 @@ jobs:
         run: npm run typecheck
       - name: Migrate disposable test database
         run: npm run db:migrate
+      - name: Seed disposable test database
+        run: npm run seed
       - name: API and integration tests
         run: npm test
       - name: Production build
@@ -136,6 +138,9 @@ jobs:
       - name: Migrate disposable coverage database
         working-directory: server
         run: npm run db:migrate
+      - name: Seed disposable coverage database
+        working-directory: server
+        run: npm run seed
       - name: Backend coverage
         working-directory: server
         run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=60 --coverage.thresholds.functions=60 --coverage.thresholds.statements=60 --coverage.thresholds.branches=50
