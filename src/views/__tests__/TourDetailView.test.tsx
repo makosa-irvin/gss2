@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
 import { makeTour } from '../../test/fixtures';
+import { installMockApi } from '../../test/mockApi';
 import { TourDetailView } from '../TourDetailView';
 
 /**
@@ -15,6 +16,10 @@ import { TourDetailView } from '../TourDetailView';
  */
 describe('TourDetailView', () => {
   const noop = () => {};
+
+  beforeEach(() => {
+    installMockApi();
+  });
 
   it('renders without crashing for a fully-populated tour', () => {
     const tour = makeTour();
@@ -63,7 +68,6 @@ describe('TourDetailView', () => {
 
     expect(screen.queryByText('What Is Included')).not.toBeInTheDocument();
     expect(screen.queryByText('What Is Excluded')).not.toBeInTheDocument();
-    // The page itself must still have rendered its core content.
     expect(screen.getByRole('heading', { name: tour.title, level: 1 })).toBeInTheDocument();
   });
 
