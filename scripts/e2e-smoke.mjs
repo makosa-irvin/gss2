@@ -113,15 +113,29 @@ try {
       if (unnamedControls > 0) failures.push(`${prefix}: ${unnamedControls} form control(s) have no associated accessible label`);
 
       // Public acquisition pages should never silently lose their basic SEO
-      // metadata during a refactor.
+      // metadata during a refactor. Count before reading attributes so a
+      // missing element produces an immediate, useful failure instead of a
+      // Playwright locator timeout that hides which route regressed.
       const title = (await page.title()).trim();
       if (title.length < 10) failures.push(`${prefix}: document title is missing or too short`);
 
-      const description = await page.locator('meta[name="description"]').getAttribute('content');
-      if (!description?.trim()) failures.push(`${prefix}: meta description is missing`);
+      const descriptionLocator = page.locator('meta[name="description"]');
+      const descriptionCount = await descriptionLocator.count();
+      if (descriptionCount !== 1) {
+        failures.push(`${prefix}: expected exactly one meta description, found ${descriptionCount}`);
+      } else {
+        const description = await descriptionLocator.first().getAttribute('content');
+        if (!description?.trim()) failures.push(`${prefix}: meta description is empty`);
+      }
 
-      const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-      if (!canonical?.trim()) failures.push(`${prefix}: canonical URL is missing`);
+      const canonicalLocator = page.locator('link[rel="canonical"]');
+      const canonicalCount = await canonicalLocator.count();
+      if (canonicalCount !== 1) {
+        failures.push(`${prefix}: expected exactly one canonical URL, found ${canonicalCount}`);
+      } else {
+        const canonical = await canonicalLocator.first().getAttribute('href');
+        if (!canonical?.trim()) failures.push(`${prefix}: canonical URL is empty`);
+      }
 
       const language = await page.locator('html').getAttribute('lang');
       if (!language?.trim()) failures.push(`${prefix}: html lang attribute is missing`);
