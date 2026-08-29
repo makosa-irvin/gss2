@@ -20,6 +20,26 @@ for (const file of sourceFiles) {
   }
 }
 
+// A green suite must mean the committed tests actually ran. Vitest/Jest-style
+// .skip/.todo/.only (and xit/xdescribe aliases) can otherwise leave important
+// coverage silently disabled while CI still reports success. Conditional
+// skip/run helpers are also blocked unless the file carries the reviewed
+// quality-allow-test-skip escape hatch.
+const testFiles = tracked.filter((file) =>
+  /(?:^|\/)(?:__tests__\/.*|[^/]+\.(?:test|spec))\.(?:ts|tsx|js|jsx|mjs|cjs)$/.test(file),
+);
+for (const file of testFiles) {
+  const text = readFileSync(file, 'utf8');
+  if (text.includes('quality-allow-test-skip')) continue;
+
+  if (/\b(?:describe|it|test)\.(?:skip|todo|only|skipIf|runIf)\s*\(/.test(text)) {
+    violations.push(`${file}: contains skipped, conditional, todo, or focused tests`);
+  }
+  if (/\b(?:xdescribe|xit|xtest)\s*\(/.test(text)) {
+    violations.push(`${file}: contains disabled xdescribe/xit/xtest tests`);
+  }
+}
+
 const forbiddenTrackedFiles = tracked.filter((file) => {
   if (/\.env\.example$/.test(file)) return false;
   if (/\.env\.(?:example|sample|template)$/.test(file)) return false;
@@ -120,7 +140,7 @@ if (baseRef) {
 if (violations.length) {
   console.error('\nRepository quality checks failed:\n');
   for (const violation of [...new Set(violations)]) console.error(` - ${violation}`);
-  console.error('\nFix these issues before merging. Use an explicit quality-allow-hardcoded comment only for a reviewed UI exception.\n');
+  console.error('\nFix these issues before merging. Use an explicit quality-allow-hardcoded or quality-allow-test-skip marker only for a reviewed exception.\n');
   process.exit(1);
 }
 
