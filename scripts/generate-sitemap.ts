@@ -15,16 +15,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.com').replace(/\/$/, '');
 const API_URL = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || '').replace(/\/$/, '');
 
-const staticRoutes = ['/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/about', '/contact'];
+// /shortlist is intentionally omitted: it is a personal, browser-local page
+// and is marked noindex in the frontend. Public trust/content pages should be
+// crawlable because they support direct-acquisition search journeys.
+const staticRoutes = ['/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/reviews', '/book-direct', '/about', '/contact'];
 
 type SlugRecord = { slug: string; updatedAt?: string; publishedDate?: string };
 type SitemapEntry = { path: string; lastmod?: string };
 
 async function fetchCollection(path: string): Promise<SlugRecord[]> {
   const response = await fetch(`${API_URL}${path}`);
-  if (!response.ok) {
-    throw new Error(`Sitemap API request failed: ${response.status} ${path}`);
-  }
+  if (!response.ok) throw new Error(`Sitemap API request failed: ${response.status} ${path}`);
   const data = await response.json();
   if (!Array.isArray(data)) throw new Error(`Sitemap API returned non-array data for ${path}`);
   return data;
