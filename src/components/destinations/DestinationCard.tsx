@@ -1,6 +1,6 @@
 import React from 'react';
 import { Destination } from '../../types';
-import { destinationImage } from '../../lib/destinationImage';
+import { destinationImage, DESTINATION_IMAGE_FALLBACK } from '../../lib/destinationImage';
 import { ArrowRight, Compass } from 'lucide-react';
 
 interface DestinationCardProps { destination: Destination; onSelect: (dest: Destination) => void; variant?: 'featured' | 'standard' | 'compact'; }
@@ -11,7 +11,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination, o
     <article id={`dest-card-${destination.id}`} className="group relative overflow-hidden rounded-2xl bg-white border border-[#ded8cc] transition-all duration-500 hover:-translate-y-1 hover:border-[#b3822a] hover:shadow-xl focus-within:border-[#b3822a] focus-within:shadow-xl shadow-sm">
       <button type="button" onClick={() => onSelect(destination)} aria-label={`Explore ${destination.name}, ${destination.country}`} className="block w-full text-left rounded-2xl">
         <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-[#17231b]">
-          <img src={image} alt={`${destination.name}, ${destination.country}`} referrerPolicy="no-referrer" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+          <img src={image} alt={`${destination.name}, ${destination.country}`} referrerPolicy="no-referrer" onError={(event) => { const target = event.currentTarget; if (!target.src.endsWith(DESTINATION_IMAGE_FALLBACK)) target.src = DESTINATION_IMAGE_FALLBACK; }} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/10 transition-opacity duration-300" />
           <div className="absolute top-3 left-3"><span className="rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-xs font-bold text-white border border-white/30 uppercase tracking-wider">{destination.country}</span></div>
           <div className="absolute inset-x-0 bottom-0 p-5 flex flex-col justify-end">
