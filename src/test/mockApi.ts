@@ -19,6 +19,8 @@ export interface MockApiOverrides {
   /** Response for GET /api/auth/me - defaults to a 401 (logged-out visitor). */
   me?: { status: number; body: unknown };
   enquiries?: unknown;
+  /** Response for POST /api/enquiries - defaults to a deterministic created id. */
+  enquiryCreate?: { status: number; body: unknown };
   /**
    * If true, POST /api/admin/tours succeeds and echoes back a full Tour
    * object built from the request plus fixture defaults.
@@ -43,6 +45,7 @@ export function installMockApi(overrides: MockApiOverrides = {}) {
     'GET /api/settings': { status: 200, body: overrides.settings ?? initialCompanySettings },
     'GET /api/auth/me': overrides.me ?? { status: 401, body: { error: 'Not authenticated.' } },
     'GET /api/enquiries': { status: 200, body: overrides.enquiries ?? [] },
+    'POST /api/enquiries': overrides.enquiryCreate ?? { status: 201, body: { id: 'enquiry-test-1' } },
     'GET /api/admin/tours': { status: 200, body: tours },
     'GET /api/admin/hotels': { status: 200, body: hotels },
     'GET /api/admin/destinations': { status: 200, body: destinations },
