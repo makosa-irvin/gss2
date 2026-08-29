@@ -1,9 +1,9 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AdminEnquiries } from '../AdminEnquiries';
 import type { Enquiry } from '../../../types';
-import { render, screen, waitFor } from '../../../test/test-utils';
+import { fireEvent, render, screen, waitFor } from '../../../test/test-utils';
 
 const enquiries: Enquiry[] = [
   {
@@ -66,6 +66,10 @@ function renderCrm(overrides?: Partial<React.ComponentProps<typeof AdminEnquirie
 }
 
 describe('AdminEnquiries', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it('shows a clear empty state when no enquiries exist', () => {
     renderCrm({ enquiries: [] });
 
@@ -146,5 +150,33 @@ describe('AdminEnquiries', () => {
     await waitFor(() => expect(onDelete).toHaveBeenCalledWith('enq-new'));
 
     confirm.mockRestore();
+  });
+
+  it('schedules a follow-up through the CRM API and adds it to the lead timeline', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ followUpAt: '2027-01-15T09:30:00.000Z' }),
+    } as Response);
+    vi.stubGlobal('fetch', fetchMock);
+    const user = userEvent.setup();
+    renderCrm();
+
+    await user.click(screen.getByText('Amina Traveler'));
+    const followUpInput = screen.getByLabelText('Next follow-up');
+    const localFollowUp = '2027-01-15T09:30';
+    fireEvent.change(followUpInput, { target: { value: localFollowUp } });
+    await user.click(screen.getByRole('button', { name: 'Schedule' }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:4000/api/enquiries/enq-new/follow-up',
+      expect.objectContaining({
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify({ followUpAt: new Date(localFollowUp).toISOString() }),
+      })
+    );
+    expect(screen.getByText('Follow-up scheduled')).toBeInTheDocument();
   });
 });

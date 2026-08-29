@@ -192,6 +192,75 @@ describe('Enquiry submission and CRM lifecycle', () => {
     expect(res.status).toBe(404);
   });
 
+  it('requires an admin session and validates follow-up timestamps', async () => {
+    const unauthenticated = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/follow-up`)
+      .send({ followUpAt: '2027-01-15T09:30:00.000Z' });
+    expect(unauthenticated.status).toBe(401);
+
+    const invalid = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/follow-up`)
+      .set('Cookie', sessionCookie)
+      .send({ followUpAt: 'next Friday' });
+    expect(invalid.status).toBe(400);
+  });
+
+  it('schedules, reschedules, lists and clears an enquiry follow-up', async () => {
+    const firstFollowUp = '2027-01-15T09:30:00.000Z';
+    const scheduled = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/follow-up`)
+      .set('Cookie', sessionCookie)
+      .send({ followUpAt: firstFollowUp });
+
+    expect(scheduled.status).toBe(200);
+    expect(new Date(scheduled.body.followUpAt).toISOString()).toBe(firstFollowUp);
+
+    const listWithFollowUp = await request(app)
+      .get('/api/enquiries')
+      .set('Cookie', sessionCookie);
+    const listed = listWithFollowUp.body.find(
+      (enquiry: { id: string }) => enquiry.id === managedEnquiryId
+    );
+    expect(new Date(listed.followUpAt).toISOString()).toBe(firstFollowUp);
+
+    const secondFollowUp = '2027-01-20T14:00:00.000Z';
+    const rescheduled = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/follow-up`)
+      .set('Cookie', sessionCookie)
+      .send({ followUpAt: secondFollowUp });
+    expect(new Date(rescheduled.body.followUpAt).toISOString()).toBe(secondFollowUp);
+
+    const statusUpdate = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Contacted', notes: 'Follow-up remains scheduled.' });
+    expect(new Date(statusUpdate.body.followUpAt).toISOString()).toBe(secondFollowUp);
+
+    const cleared = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/follow-up`)
+      .set('Cookie', sessionCookie)
+      .send({ followUpAt: null });
+    expect(cleared.status).toBe(200);
+    expect(cleared.body.followUpAt).toBeNull();
+
+    const listAfterClear = await request(app)
+      .get('/api/enquiries')
+      .set('Cookie', sessionCookie);
+    expect(
+      listAfterClear.body.find((enquiry: { id: string }) => enquiry.id === managedEnquiryId)
+        .followUpAt
+    ).toBeNull();
+  });
+
+  it('404s follow-up changes for an enquiry that does not exist', async () => {
+    const res = await request(app)
+      .put('/api/enquiries/id_does_not_exist/follow-up')
+      .set('Cookie', sessionCookie)
+      .send({ followUpAt: '2027-01-15T09:30:00.000Z' });
+
+    expect(res.status).toBe(404);
+  });
+
   it('refuses to delete without an admin session', async () => {
     const res = await request(app).delete(`/api/enquiries/${managedEnquiryId}`);
     expect(res.status).toBe(401);

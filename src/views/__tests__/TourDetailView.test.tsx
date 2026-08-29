@@ -75,7 +75,7 @@ describe('TourDetailView', () => {
     expect(screen.getByRole('heading', { name: tour.title, level: 1 })).toBeInTheDocument();
   });
 
-  it('calls onOpenEnquiryModal with the tour when "Book This Safari" is clicked', async () => {
+  it('calls onOpenEnquiryModal with the tour when "Request This Safari" is clicked', async () => {
     const tour = makeTour();
     const onOpenEnquiryModal = vi.fn();
     const user = userEvent.setup();
@@ -84,7 +84,7 @@ describe('TourDetailView', () => {
     );
     await settleProviderEffects();
 
-    await user.click(screen.getByRole('button', { name: /book this safari/i }));
+    await user.click(screen.getAllByRole('button', { name: /request this safari/i })[0]);
 
     expect(onOpenEnquiryModal).toHaveBeenCalledWith({ selectedTour: tour });
   });

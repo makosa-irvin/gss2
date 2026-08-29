@@ -24,6 +24,10 @@ export default defineConfig(() => {
       globals: true,
       setupFiles: ['./src/test/setup.ts'],
       css: false,
+      // Several regression suites intentionally render the real provider tree
+      // and complete customer/admin pages. Keep a finite timeout while allowing
+      // those integration-style component tests to finish on constrained CI.
+      testTimeout: 15_000,
       // The bare 'node_modules' exclude below only matches top-level
       // node_modules, not server/node_modules (a sibling package with
       // its own node_modules and its own test files) - without
