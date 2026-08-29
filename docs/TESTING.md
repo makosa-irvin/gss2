@@ -52,35 +52,35 @@ End-to-end browser tests should be reserved for high-value journeys:
 
 Do not duplicate every component assertion in E2E tests. The goal is confidence that the deployed system works across boundaries.
 
-The baseline CI includes a real Chromium browser smoke test for the home page and tours page at desktop and mobile viewports. It verifies successful navigation, substantive rendered content, one page-level `h1`, absence of uncaught page errors, and horizontal viewport overflow. Playwright is installed ephemerally in that CI job so the existing lockfile remains reproducible while this baseline is introduced.
+The baseline CI includes a real Chromium browser smoke test for the home page and tours page at desktop and mobile viewports. It verifies successful navigation, substantive rendered content, one page-level `h1`, absence of uncaught page errors, horizontal viewport overflow, image alt attributes, accessible control names/labels, page title, meta description, canonical URL and document language. Playwright is installed ephemerally in that CI job so the existing lockfile remains reproducible while this baseline is introduced.
 
 This smoke job is deliberately not presented as full-system enquiry E2E coverage. A later phase should commit Playwright as a development dependency and add DB/API-backed browser flows for enquiry submission and admin CRM management once those environments can be provisioned deterministically in CI.
 
 ## Coverage
 
-The first CI runs measured the existing codebase rather than assuming an aspirational number.
+Coverage floors are ratchets: establish the measured result, put the required threshold just below it, and only move that threshold upward as meaningful tests improve confidence. Do not lower a floor merely to get a pull request green.
 
-Frontend measured baseline:
+The initial frontend legacy measurement was 43.18% lines, 38.39% statements, 21.71% functions and 37.19% branches. After adding CRM interaction coverage and related component tests, the current measured frontend baseline is:
 
-- lines: 43.18%
-- statements: 38.39%
-- functions: 21.71%
-- branches: 37.19%
+- lines: 46.77%
+- statements: 41.69%
+- functions: 24.57%
+- branches: 43.04%
 
-Frontend CI floors are therefore 43% lines, 38% statements, 21% functions and 37% branches.
+Frontend CI floors are therefore 46% lines, 41% statements, 24% functions and 42% branches.
 
-Backend measured baseline:
+The initial backend legacy measurement was 55.52% lines, 52.77% statements, 34.61% functions and 23.44% branches. After enabling deterministic auth, enquiry/CRM lifecycle, admin-tour and draft/publish integration tests, the current measured backend baseline is:
 
-- lines: 55.52%
-- statements: 52.77%
-- functions: 34.61%
-- branches: 23.44%
+- lines: 74.62%
+- statements: 72.47%
+- functions: 60.75%
+- branches: 45.80%
 
-Backend CI floors are therefore 55% lines, 52% statements, 34% functions and 23% branches.
+Backend CI floors are therefore 74% lines, 72% statements, 60% functions and 45% branches.
 
-These are regression floors, not quality targets. They intentionally sit just below the measured legacy baseline so a new pull request cannot silently reduce coverage. Raise them in small reviewed steps as meaningful tests are added; do not lower them merely to make CI pass, and do not add low-value assertions merely to improve a percentage.
+These are regression floors, not final quality targets. Critical business modules should trend materially higher than the repository-wide floor, and new business logic should arrive with tests appropriate to its risk. Do not add low-value assertions merely to improve a percentage.
 
-Near-term coverage priorities are the enquiry and CRM workflow, authentication, email side-effect boundaries, admin write routes, `DataContext` API mapping, and customer-facing cards/forms with low current coverage. Critical business modules should trend materially higher than the repository-wide floor.
+Near-term coverage priorities are email side-effect boundaries, remaining admin write routes, `DataContext` API mapping, and customer-facing cards/forms with low current coverage. The enquiry and authentication routes are already substantially above the repository-wide backend floor and should remain there.
 
 CI publishes frontend and backend coverage summary artifacts on every run.
 
