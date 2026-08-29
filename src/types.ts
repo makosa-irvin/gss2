@@ -20,8 +20,8 @@ export type TravelerType = 'Solo' | 'Couples' | 'Families' | 'Seniors' | 'Groups
 
 export interface SeasonalPrice {
   id: string;
-  name: string; // e.g. "Jan - Jun (Green Season)", "Jul - Oct (Migration Peak)", "Nov 1 - Dec 20", "Dec 21 - Jan 3 (Festive)"
-  startDate: string; // MM-DD or description
+  name: string;
+  startDate: string;
   endDate: string;
   soloPrice: number;
   sharingPrice: number;
@@ -36,8 +36,8 @@ export interface ItineraryDay {
   subtitle: string;
   description: string;
   accommodation: string;
-  meals: string; // e.g. "Breakfast, Lunch, Dinner"
-  transport: string; // e.g. "4x4 Land Cruiser with pop-up roof"
+  meals: string;
+  transport: string;
   activities: string[];
   image?: string;
 }
@@ -49,9 +49,9 @@ export interface Tour {
   shortDescription: string;
   fullDescription: string;
   country: Country;
-  destinations: string[]; // destination names or IDs
+  destinations: string[];
   durationDays: number;
-  durationLabel: string; // e.g. "3 Days / 2 Nights"
+  durationLabel: string;
   startingLocation: string;
   endingLocation: string;
   categories: string[];
@@ -61,7 +61,7 @@ export interface Tour {
   featured: boolean;
   popular: boolean;
   recommended: boolean;
-  priceFrom: number; // Base starting price
+  priceFrom: number;
   currency: 'USD' | 'KES';
   soloPrice: number;
   sharingPrice: number;
@@ -77,15 +77,11 @@ export interface Tour {
   exclusions: string[];
   importantInformation: string[];
   childrenPolicy: string;
-  startingDates: string; // e.g. "Daily Departures (Year-Round)"
+  startingDates: string;
   bookingAvailability: 'Available' | 'Limited Seats' | 'On Request';
   isKenyanResidentPackage?: boolean;
   viewsCount?: number;
-  seo: {
-    title: string;
-    description: string;
-    keywords?: string[];
-  };
+  seo: { title: string; description: string; keywords?: string[]; };
   published?: boolean;
   createdAt: string;
   updatedAt: string;
@@ -107,19 +103,9 @@ export interface Destination {
   thingsToDo?: string[];
   whereToStay: string;
   featured: boolean;
-  mapLocation?: {
-    lat: number;
-    lng: number;
-    zoom: number;
-  };
-  faqs: Array<{
-    question: string;
-    answer: string;
-  }>;
-  seo: {
-    title: string;
-    description: string;
-  };
+  mapLocation?: { lat: number; lng: number; zoom: number; };
+  faqs: Array<{ question: string; answer: string; }>;
+  seo: { title: string; description: string; };
   published?: boolean;
 }
 
@@ -136,13 +122,7 @@ export interface Hotel {
   priceFromKES: number;
   soloPriceUSD: number;
   sharingPriceUSD: number;
-  seasonalPricing: Array<{
-    seasonName: string;
-    dates: string;
-    priceKES: number;
-    priceUSD: number;
-    sharingPriceUSD?: number;
-  }>;
+  seasonalPricing: Array<{ seasonName: string; dates: string; priceKES: number; priceUSD: number; sharingPriceUSD?: number; }>;
   facilities: string[];
   roomTypes: string[];
   inclusions: string[];
@@ -153,10 +133,7 @@ export interface Hotel {
   isKenyanResidentOffer: boolean;
   bookingLink?: string;
   rating?: number;
-  seo: {
-    title: string;
-    description: string;
-  };
+  seo: { title: string; description: string; };
   published?: boolean;
 }
 
@@ -168,10 +145,7 @@ export interface Enquiry {
   country: string;
   travelDates: string;
   durationDays?: number;
-  numberOfTravelers: {
-    adults: number;
-    children: number;
-  };
+  numberOfTravelers: { adults: number; children: number; };
   tourId?: string;
   tourTitle?: string;
   hotelId?: string;
@@ -184,6 +158,11 @@ export interface Enquiry {
   hearAboutUs: string;
   status: 'New' | 'Contacted' | 'Quoted' | 'Confirmed' | 'Cancelled';
   createdAt: string;
+  updatedAt?: string;
+  contactedAt?: string | null;
+  quotedAt?: string | null;
+  confirmedAt?: string | null;
+  cancelledAt?: string | null;
   notes?: string;
 }
 
@@ -192,7 +171,7 @@ export interface Testimonial {
   reviewerName: string;
   reviewerCountry: string;
   avatarUrl: string;
-  rating: number; // e.g. 5
+  rating: number;
   tourTaken: string;
   reviewText: string;
   date: string;
@@ -208,11 +187,7 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   featuredImage: string;
-  author: {
-    name: string;
-    role: string;
-    avatar: string;
-  };
+  author: { name: string; role: string; avatar: string; };
   publishedDate: string;
   category: string;
   readingTime: string;
@@ -227,40 +202,16 @@ export interface CompanySettings {
   tagline: string;
   description: string;
   logoUrl: string;
-  contact: {
-    email: string;
-    phone: string;
-    whatsapp: string;
-    address: string;
-    businessHours: string;
-  };
-  social: {
-    instagram: string;
-    facebook: string;
-    tiktok: string;
-    youtube: string;
-    linkedin: string;
-  };
-  currency: {
-    primary: 'USD' | 'KES';
-    exchangeRateUsdToKes: number; // e.g. 130
-  };
-  booking: {
-    defaultEnquiryMessage: string;
-    bookingEmail: string;
-    whatsappNumber: string;
-    whatsappDefaultMessage: string;
-  };
-  seo: {
-    defaultTitle: string;
-    defaultDescription: string;
-    defaultOgImage: string;
-  };
+  contact: { email: string; phone: string; whatsapp: string; address: string; businessHours: string; };
+  social: { instagram: string; facebook: string; tiktok: string; youtube: string; linkedin: string; };
+  currency: { primary: 'USD' | 'KES'; exchangeRateUsdToKes: number; };
+  booking: { defaultEnquiryMessage: string; bookingEmail: string; whatsappNumber: string; whatsappDefaultMessage: string; };
+  seo: { defaultTitle: string; defaultDescription: string; defaultOgImage: string; };
 }
 
 export interface SearchFilterState {
   destination: string;
-  duration: string; // 'all' | '1' | '2' | '3' | '4-5' | '6-7' | '8-10' | '10+'
+  duration: string;
   travelStyle: string;
   travelerType: string;
   comfortLevel: string;

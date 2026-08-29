@@ -1,284 +1,39 @@
 import React, { useMemo, useState } from 'react';
 import { Enquiry } from '../../types';
-import { Search, Mail, Phone, Calendar, Trash2, ChevronDown, ChevronUp, Save, Inbox } from 'lucide-react';
+import { api } from '../../services/api';
+import { Search, Mail, Phone, Calendar, Trash2, ChevronDown, ChevronUp, Save, Inbox, Clock3, CheckCircle2, MessageSquareText, FileText } from 'lucide-react';
 
-interface AdminEnquiriesProps {
-  enquiries: Enquiry[];
-  onUpdateStatus: (id: string, status: Enquiry['status'], notes?: string) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
-  onError: (message: string) => void;
-}
+interface AdminEnquiriesProps { enquiries: Enquiry[]; onUpdateStatus: (id: string, status: Enquiry['status'], notes?: string) => Promise<void>; onDelete: (id: string) => Promise<void>; onError: (message: string) => void; }
+type CrmEnquiry = Enquiry & { followUpAt?: string | null; updatedAt?: string; contactedAt?: string | null; quotedAt?: string | null; confirmedAt?: string | null; cancelledAt?: string | null };
+const STATUS_OPTIONS: { value: Enquiry['status']; label: string }[] = [{value:'New',label:'New / Unread'},{value:'Contacted',label:'Contacted'},{value:'Quoted',label:'Proposal Quoted'},{value:'Confirmed',label:'Booked & Confirmed'},{value:'Cancelled',label:'Cancelled'}];
+const STATUS_STYLE: Record<Enquiry['status'], string> = { New:'bg-amber-100 text-amber-800',Contacted:'bg-sky-100 text-sky-800',Quoted:'bg-violet-100 text-violet-800',Confirmed:'bg-emerald-100 text-emerald-800',Cancelled:'bg-rose-100 text-rose-800' };
+const safeText=(v:unknown,f='Not specified')=>typeof v==='string'&&v.trim()?v:f;
+const safeStatus=(v:unknown):Enquiry['status']=>STATUS_OPTIONS.some(o=>o.value===v)?v as Enquiry['status']:'New';
+const dateValue=(v:unknown)=>{const d=v?new Date(String(v)):null;return d&&!Number.isNaN(d.getTime())?d:null};
+const safeDate=(v:unknown)=>dateValue(v)?.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})||'Date unavailable';
+const safeDateTime=(v:unknown)=>dateValue(v)?.toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})||'Date unavailable';
+const travelers=(e:Enquiry)=>{const t=e.numberOfTravelers as any;return t&&typeof t==='object'?{adults:Number(t.adults)||0,children:Number(t.children)||0}:{adults:Number((e as any).adults)||0,children:Number((e as any).children)||0}};
+const localInputValue=(v?:string|null)=>{const d=dateValue(v);if(!d)return '';const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);return local.toISOString().slice(0,16)};
+const followUpState=(v?:string|null)=>{const d=dateValue(v);if(!d)return null;const now=new Date();const start=new Date(now.getFullYear(),now.getMonth(),now.getDate());const tomorrow=new Date(start);tomorrow.setDate(start.getDate()+1);if(d<now)return {label:'Overdue',className:'bg-rose-100 text-rose-800'};if(d<tomorrow)return {label:'Due today',className:'bg-amber-100 text-amber-800'};return {label:'Upcoming',className:'bg-sky-100 text-sky-800'}};
 
-const STATUS_OPTIONS: { value: Enquiry['status']; label: string }[] = [
-  { value: 'New', label: 'New / Unread' },
-  { value: 'Contacted', label: 'Contacted' },
-  { value: 'Quoted', label: 'Proposal Quoted' },
-  { value: 'Confirmed', label: 'Booked & Confirmed' },
-  { value: 'Cancelled', label: 'Cancelled' }
-];
+const Timeline:React.FC<{enquiry:CrmEnquiry;followUpAt?:string|null}>=({enquiry,followUpAt})=>{const events=[
+ {at:enquiry.createdAt,label:'Enquiry received',icon:Inbox},
+ {at:enquiry.contactedAt,label:'Traveller contacted',icon:MessageSquareText},
+ {at:enquiry.quotedAt,label:'Quote / proposal sent',icon:FileText},
+ {at:enquiry.confirmedAt,label:'Safari confirmed',icon:CheckCircle2},
+ {at:enquiry.cancelledAt,label:'Enquiry cancelled',icon:Clock3},
+ {at:followUpAt,label:'Follow-up scheduled',icon:Calendar},
+].filter(x=>dateValue(x.at)).sort((a,b)=>dateValue(a.at)!.getTime()-dateValue(b.at)!.getTime());return <div><h4 className="text-xs font-bold uppercase tracking-wider text-brand-deep mb-2">Lead activity</h4><ol className="space-y-2">{events.map((event,i)=>{const Icon=event.icon;return <li key={`${event.label}-${i}`} className="flex gap-2.5 text-xs"><span className="mt-0.5 w-6 h-6 rounded-full bg-surface-soft text-brand-deep flex items-center justify-center shrink-0"><Icon className="w-3.5 h-3.5"/></span><span><strong className="block text-ink">{event.label}</strong><span className="text-ink-subtle">{safeDateTime(event.at)}</span></span></li>})}</ol></div>};
 
-const STATUS_STYLE: Record<Enquiry['status'], string> = {
-  New: 'bg-amber-100 text-amber-800',
-  Contacted: 'bg-sky-100 text-sky-800',
-  Quoted: 'bg-violet-100 text-violet-800',
-  Confirmed: 'bg-emerald-100 text-emerald-800',
-  Cancelled: 'bg-rose-100 text-rose-800'
-};
+const EnquiryRow:React.FC<{enquiry:CrmEnquiry;expanded:boolean;onToggle:()=>void;onUpdateStatus:AdminEnquiriesProps['onUpdateStatus'];onDelete:AdminEnquiriesProps['onDelete'];onError:(m:string)=>void;onFollowUpSaved:(id:string,value:string|null)=>void}>=({enquiry,expanded,onToggle,onUpdateStatus,onDelete,onError,onFollowUpSaved})=>{
+ const status=safeStatus(enquiry.status),t=travelers(enquiry);const initialNotes=safeText(enquiry.notes,'');const [notes,setNotes]=useState(initialNotes);const [savedNotes,setSavedNotes]=useState(initialNotes);const [saving,setSaving]=useState(false);const [deleting,setDeleting]=useState(false);const [followUp,setFollowUp]=useState(localInputValue(enquiry.followUpAt));const [savingFollowUp,setSavingFollowUp]=useState(false);const followState=followUpState(enquiry.followUpAt);
+ const saveNotes=async()=>{setSaving(true);try{await onUpdateStatus(enquiry.id,status,notes);setSavedNotes(notes)}catch(err){onError(err instanceof Error?err.message:'Failed to save notes.')}finally{setSaving(false)}};
+ const saveFollowUp=async(value:string|null)=>{setSavingFollowUp(true);try{const iso=value?new Date(value).toISOString():null;await api.put(`/api/enquiries/${enquiry.id}/follow-up`,{followUpAt:iso});setFollowUp(value||'');onFollowUpSaved(enquiry.id,iso)}catch(err){onError(err instanceof Error?err.message:'Failed to update follow-up.')}finally{setSavingFollowUp(false)}};
+ const remove=async()=>{if(!window.confirm(`Delete the enquiry from ${safeText(enquiry.fullName,'this traveller')}? This can't be undone.`))return;setDeleting(true);try{await onDelete(enquiry.id)}catch(err){onError(err instanceof Error?err.message:'Failed to delete enquiry.');setDeleting(false)}};
+ return <div className="rounded-2xl bg-white border border-border shadow-xs overflow-hidden"><button type="button" onClick={onToggle} className="w-full p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 text-left hover:bg-surface-muted/60"><div className="min-w-0 flex-1"><div className="flex items-center gap-2 flex-wrap"><h3 className="font-serif-luxury text-base font-bold text-ink-strong">{safeText(enquiry.fullName,'Unnamed traveller')}</h3><span className="text-xs text-ink-subtle">{safeText(enquiry.country,'Country not provided')}</span>{followState&&<span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${followState.className}`}>{followState.label}</span>}</div><p className="text-xs text-ink-subtle truncate mt-0.5">{safeText(enquiry.tourTitle||enquiry.hotelTitle||enquiry.preferredDestination||enquiry.safariType,'General enquiry')} · {safeDate(enquiry.createdAt)}</p></div><div className="flex items-center gap-2"><span className={`px-2.5 py-1 rounded-full font-bold uppercase text-[10px] ${STATUS_STYLE[status]}`}>{status}</span>{expanded?<ChevronUp className="w-4 h-4"/>:<ChevronDown className="w-4 h-4"/>}</div></button>
+ {expanded&&<div className="px-4 sm:px-5 pb-5 border-t border-border space-y-5"><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-ink-muted pt-4"><div><span className="text-ink-subtle block">Email</span>{enquiry.email?<a href={`mailto:${enquiry.email}`} className="font-semibold break-all">{enquiry.email}</a>:'Not provided'}</div><div><span className="text-ink-subtle block">Phone / WhatsApp</span>{enquiry.phone?<a href={`tel:${enquiry.phone}`} className="font-semibold">{enquiry.phone}</a>:'Not provided'}</div><div><span className="text-ink-subtle block">Travel dates</span><strong>{safeText(enquiry.travelDates,'Flexible')}</strong></div><div><span className="text-ink-subtle block">Travelers</span><strong>{t.adults||t.children?`${t.adults} adults${t.children?`, ${t.children} children`:''}`:'Not specified'}</strong></div><div><span className="text-ink-subtle block">Budget</span><strong>{safeText(enquiry.budget)}</strong></div><div><span className="text-ink-subtle block">Accommodation</span><strong>{safeText(enquiry.accommodationPreference,'Open')}</strong></div><div><span className="text-ink-subtle block">Lead source</span><strong>{safeText(enquiry.hearAboutUs)}</strong></div><div><span className="text-ink-subtle block">Enquiry ID</span><span className="font-mono break-all">{safeText(enquiry.id,'Unavailable')}</span></div></div>
+ {enquiry.specialRequests&&<div className="p-3.5 rounded-xl bg-surface-muted border border-border text-xs whitespace-pre-wrap"><strong className="block mb-1">Trip context & special requests</strong>{enquiry.specialRequests}</div>}
+ <div className="grid lg:grid-cols-[1fr_280px] gap-5"><div className="space-y-4"><div className="p-4 rounded-xl border border-border-strong bg-page"><label htmlFor={`follow-up-${enquiry.id}`} className="text-xs font-bold uppercase tracking-wider text-brand-deep block mb-2">Next follow-up</label><div className="flex flex-col sm:flex-row gap-2"><input id={`follow-up-${enquiry.id}`} type="datetime-local" value={followUp} onChange={e=>setFollowUp(e.target.value)} className="min-h-11 flex-1 px-3 rounded-xl border border-border-strong bg-white text-sm"/><button type="button" disabled={savingFollowUp||!followUp} onClick={()=>saveFollowUp(followUp)} className="min-h-11 px-4 rounded-xl bg-action text-white text-xs font-bold disabled:opacity-40">{savingFollowUp?'Saving…':'Schedule'}</button>{enquiry.followUpAt&&<button type="button" disabled={savingFollowUp} onClick={()=>saveFollowUp(null)} className="min-h-11 px-3 rounded-xl border border-border-strong text-xs font-bold">Clear</button>}</div>{enquiry.followUpAt&&<p className="mt-2 text-xs text-ink-subtle">Currently {safeDateTime(enquiry.followUpAt)}</p>}</div><label><span className="text-xs font-bold uppercase tracking-wider text-brand-deep mb-1.5 block">Internal notes</span><textarea value={notes} onChange={e=>setNotes(e.target.value)} rows={3} placeholder="Internal notes (not visible to the customer)" className="w-full px-3.5 py-2.5 rounded-xl bg-surface-muted border border-border-strong text-sm resize-y"/></label><div className="flex flex-wrap gap-2"><select aria-label="Enquiry status" value={status} onChange={e=>onUpdateStatus(enquiry.id,e.target.value as Enquiry['status'],notes).catch(err=>onError(err instanceof Error?err.message:'Failed to update status.'))} className="min-h-11 px-3 rounded-xl border border-border-strong text-xs font-bold">{STATUS_OPTIONS.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select><button type="button" onClick={saveNotes} disabled={saving||notes===savedNotes} className="min-h-11 px-3.5 rounded-xl bg-action disabled:opacity-40 text-white flex items-center gap-1.5 text-xs font-bold"><Save className="w-3.5 h-3.5"/>{saving?'Saving…':'Save note'}</button><button type="button" onClick={remove} disabled={deleting} aria-label="Delete enquiry" className="min-h-11 min-w-11 flex items-center justify-center rounded-xl bg-rose-50 text-rose-700 border border-rose-200"><Trash2 className="w-4 h-4"/></button></div></div><Timeline enquiry={enquiry} followUpAt={enquiry.followUpAt}/></div></div>}
+ </div>};
 
-const EnquiryRow: React.FC<{
-  enquiry: Enquiry;
-  expanded: boolean;
-  onToggle: () => void;
-  onUpdateStatus: AdminEnquiriesProps['onUpdateStatus'];
-  onDelete: AdminEnquiriesProps['onDelete'];
-  onError: (message: string) => void;
-}> = ({ enquiry, expanded, onToggle, onUpdateStatus, onDelete, onError }) => {
-  const [notesDraft, setNotesDraft] = useState(enquiry.notes || '');
-  const [savingNotes, setSavingNotes] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const notesChanged = notesDraft !== (enquiry.notes || '');
-
-  const saveNotes = async () => {
-    setSavingNotes(true);
-    try {
-      await onUpdateStatus(enquiry.id, enquiry.status, notesDraft);
-    } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to save notes.');
-    } finally {
-      setSavingNotes(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!window.confirm(`Delete the enquiry from ${enquiry.fullName}? This can't be undone.`)) return;
-    setDeleting(true);
-    try {
-      await onDelete(enquiry.id);
-    } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to delete enquiry.');
-      setDeleting(false);
-    }
-  };
-
-  return (
-    <div className="rounded-2xl bg-white border border-[#e8e4da] shadow-xs overflow-hidden">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 text-left hover:bg-[#faf8f2]/60"
-      >
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-serif-luxury text-base font-bold text-[#161f19]">{enquiry.fullName}</h3>
-            <span className="text-xs text-[#707f74]">{enquiry.country}</span>
-          </div>
-          <p className="text-xs text-[#707f74] truncate mt-0.5">
-            {enquiry.tourTitle || enquiry.hotelTitle || enquiry.preferredDestination || enquiry.safariType || 'General enquiry'}
-            {' · '}
-            {new Date(enquiry.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-          </p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <span className={`px-2.5 py-1 rounded-full font-bold uppercase text-[10px] ${STATUS_STYLE[enquiry.status]}`}>
-            {enquiry.status}
-          </span>
-          {expanded ? <ChevronUp className="w-4 h-4 text-[#707f74]" /> : <ChevronDown className="w-4 h-4 text-[#707f74]" />}
-        </div>
-      </button>
-
-      {expanded && (
-        <div className="px-4 sm:px-5 pb-5 pt-1 border-t border-[#eeebe2] space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-[#4d5c52] pt-4">
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5 flex items-center gap-1"><Mail className="w-3 h-3" /> Email</span>
-              <a href={`mailto:${enquiry.email}`} className="font-semibold text-[#161f19] hover:underline break-all">{enquiry.email}</a>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5 flex items-center gap-1"><Phone className="w-3 h-3" /> Phone / WhatsApp</span>
-              <a href={`tel:${enquiry.phone}`} className="font-semibold text-[#161f19] hover:underline">{enquiry.phone}</a>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5 flex items-center gap-1"><Calendar className="w-3 h-3" /> Travel dates</span>
-              <span className="font-semibold text-[#161f19]">{enquiry.travelDates || 'Flexible'}{enquiry.durationDays ? ` (${enquiry.durationDays} days)` : ''}</span>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5">Travelers</span>
-              <span className="font-semibold text-[#161f19]">
-                {enquiry.numberOfTravelers.adults} adults{enquiry.numberOfTravelers.children > 0 ? `, ${enquiry.numberOfTravelers.children} children` : ''}
-              </span>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5">Budget</span>
-              <span className="font-semibold text-[#9e7120]">{enquiry.budget || 'Not specified'}</span>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5">Accommodation preference</span>
-              <span className="font-semibold text-[#161f19]">{enquiry.accommodationPreference || 'Open'}</span>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5">Heard about us via</span>
-              <span className="font-semibold text-[#161f19]">{enquiry.hearAboutUs || 'Not specified'}</span>
-            </div>
-            <div>
-              <span className="text-[#707f74] block font-medium mb-0.5">Enquiry ID</span>
-              <span className="font-mono text-[#a89f8f]">{enquiry.id}</span>
-            </div>
-          </div>
-
-          {enquiry.specialRequests && (
-            <div className="p-3.5 rounded-xl bg-[#faf8f2] border border-[#e8e4da] text-xs text-[#5d6e62]">
-              <strong className="text-[#161f19] block mb-1">Special requests</strong>
-              {enquiry.specialRequests}
-            </div>
-          )}
-
-          <div className="flex flex-col sm:flex-row sm:items-end gap-3 pt-1">
-            <label className="flex-1 min-w-0">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#76541a] mb-1.5 block">Internal notes</span>
-              <textarea
-                value={notesDraft}
-                onChange={(e) => setNotesDraft(e.target.value)}
-                rows={2}
-                placeholder="Not visible to the customer - call notes, quote sent, follow-up date..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none resize-y"
-              />
-            </label>
-            <div className="flex items-center gap-2 shrink-0">
-              <select
-                value={enquiry.status}
-                onChange={(e) =>
-                  onUpdateStatus(enquiry.id, e.target.value as Enquiry['status'], notesDraft).catch((err) =>
-                    onError(err instanceof Error ? err.message : 'Failed to update status.')
-                  )
-                }
-                className="min-h-11 px-3 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-xs font-bold text-[#161f19]"
-              >
-                {STATUS_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={saveNotes}
-                disabled={!notesChanged || savingNotes}
-                className="min-h-11 px-3.5 rounded-xl bg-[#1b4332] hover:bg-[#123524] disabled:opacity-40 text-white flex items-center gap-1.5 text-xs font-bold"
-              >
-                <Save className="w-3.5 h-3.5" /> {savingNotes ? 'Saving…' : 'Save note'}
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={deleting}
-                aria-label="Delete enquiry"
-                className="min-h-11 min-w-11 flex items-center justify-center rounded-xl bg-rose-50 hover:bg-rose-100 disabled:opacity-40 text-rose-700 border border-rose-200"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export const AdminEnquiries: React.FC<AdminEnquiriesProps> = ({ enquiries, onUpdateStatus, onDelete, onError }) => {
-  const [statusFilter, setStatusFilter] = useState<'all' | Enquiry['status']>('all');
-  const [query, setQuery] = useState('');
-  const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    let rows = enquiries.filter((e) => {
-      if (statusFilter !== 'all' && e.status !== statusFilter) return false;
-      if (!q) return true;
-      return (
-        e.fullName.toLowerCase().includes(q) ||
-        e.email.toLowerCase().includes(q) ||
-        e.phone.toLowerCase().includes(q) ||
-        (e.tourTitle || '').toLowerCase().includes(q) ||
-        (e.hotelTitle || '').toLowerCase().includes(q)
-      );
-    });
-    rows = [...rows].sort((a, b) => {
-      const diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      return sort === 'newest' ? -diff : diff;
-    });
-    return rows;
-  }, [enquiries, statusFilter, query, sort]);
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#9e7120]">
-          <Inbox className="w-4 h-4" />
-          <span>Customer relationship management</span>
-        </div>
-        <h1 className="font-serif-luxury text-3xl font-bold text-[#161f19] mt-1">Enquiries</h1>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-3">
-        <label className="relative flex-1">
-          <span className="sr-only">Search enquiries</span>
-          <Search className="w-4 h-4 text-[#707f74] absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by name, email, phone, or tour…"
-            className="w-full min-h-11 pl-10 pr-4 rounded-xl bg-white border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none"
-          />
-        </label>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as 'newest' | 'oldest')}
-          className="min-h-11 px-3.5 rounded-xl bg-white border border-[#ded8cb] text-sm font-semibold text-[#161f19]"
-        >
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-        </select>
-      </div>
-
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        {(['all', ...STATUS_OPTIONS.map((o) => o.value)] as const).map((status) => (
-          <button
-            key={status}
-            type="button"
-            onClick={() => setStatusFilter(status)}
-            className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-              statusFilter === status
-                ? 'bg-[#b3822a] text-white shadow-sm'
-                : 'bg-white text-[#5d6e62] border border-[#e8e4da] hover:text-[#161f19]'
-            }`}
-          >
-            {status === 'all' ? `All (${enquiries.length})` : `${status} (${enquiries.filter((e) => e.status === status).length})`}
-          </button>
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        {filtered.length === 0 ? (
-          <div className="py-16 text-center rounded-2xl bg-white border border-dashed border-[#ded8cb]">
-            <Inbox className="w-8 h-8 text-[#c7bfb1] mx-auto mb-2" />
-            <p className="text-sm text-[#707f74]">
-              {enquiries.length === 0 ? 'No enquiries yet.' : 'No enquiries match your search or filter.'}
-            </p>
-          </div>
-        ) : (
-          filtered.map((enq) => (
-            <EnquiryRow
-              key={enq.id}
-              enquiry={enq}
-              expanded={expandedId === enq.id}
-              onToggle={() => setExpandedId(expandedId === enq.id ? null : enq.id)}
-              onUpdateStatus={onUpdateStatus}
-              onDelete={onDelete}
-              onError={onError}
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
+export const AdminEnquiries:React.FC<AdminEnquiriesProps>=({enquiries,onUpdateStatus,onDelete,onError})=>{const [statusFilter,setStatusFilter]=useState<'all'|Enquiry['status']>('all');const [query,setQuery]=useState('');const [sort,setSort]=useState<'newest'|'oldest'>('newest');const [expandedId,setExpandedId]=useState<string|null>(null);const [followUps,setFollowUps]=useState<Record<string,string|null>>({});const rows=(Array.isArray(enquiries)?enquiries.filter(Boolean):[]).map(e=>({...e,followUpAt:Object.prototype.hasOwnProperty.call(followUps,e.id)?followUps[e.id]:(e as CrmEnquiry).followUpAt})) as CrmEnquiry[];const now=Date.now();const open=e=>!['Confirmed','Cancelled'].includes(safeStatus(e.status));const overdue=rows.filter(e=>open(e)&&dateValue(e.followUpAt)&&dateValue(e.followUpAt)!.getTime()<now).length;const today=rows.filter(e=>{const d=dateValue(e.followUpAt);if(!open(e)||!d)return false;const n=new Date(),end=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1);return d.getTime()>=now&&d<end}).length;const cards=[['New leads',rows.filter(e=>safeStatus(e.status)==='New').length],['Follow-up due',overdue+today],['Quoted',rows.filter(e=>safeStatus(e.status)==='Quoted').length],['Confirmed',rows.filter(e=>safeStatus(e.status)==='Confirmed').length]];const filtered=useMemo(()=>{const q=query.trim().toLowerCase();return [...rows].filter(e=>(statusFilter==='all'||safeStatus(e.status)===statusFilter)&&(!q||[e.fullName,e.email,e.phone,e.tourTitle,e.hotelTitle,e.preferredDestination,e.safariType].some(v=>String(v||'').toLowerCase().includes(q)))).sort((a,b)=>{const at=dateValue(a.createdAt)?.getTime()||0,bt=dateValue(b.createdAt)?.getTime()||0;return sort==='newest'?bt-at:at-bt})},[enquiries,followUps,statusFilter,query,sort]);return <div className="space-y-6"><div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-strong"><Inbox className="w-4 h-4"/>Customer relationship management</div><h1 className="font-serif-luxury text-3xl font-bold text-ink-strong mt-1">Enquiries</h1><p className="mt-1 text-sm text-ink-subtle">Track every lead from first enquiry through follow-up, quote and confirmation.</p></div><div className="grid grid-cols-2 lg:grid-cols-4 gap-3">{cards.map(([label,count])=><div key={String(label)} className="rounded-xl bg-white border border-border p-4"><p className="text-xs uppercase tracking-wider font-bold text-ink-subtle">{label}</p><p className="mt-1 text-2xl font-serif-luxury font-bold text-ink-strong">{count}</p></div>)}</div>{overdue>0&&<div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800"><strong>{overdue} follow-up{overdue===1?' is':'s are'} overdue.</strong> Open the relevant lead to reschedule or clear it.</div>}<div className="flex flex-col sm:flex-row gap-3"><label className="relative flex-1"><span className="sr-only">Search enquiries</span><Search aria-hidden="true" className="w-4 h-4 text-ink-subtle absolute left-3.5 top-1/2 -translate-y-1/2"/><input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search traveller, email, destination, safari…" className="w-full min-h-11 pl-10 pr-4 rounded-xl bg-white border border-border-strong text-sm"/></label><select aria-label="Sort enquiries" value={sort} onChange={e=>setSort(e.target.value as any)} className="min-h-11 px-3.5 rounded-xl bg-white border border-border-strong text-sm font-semibold"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div><div className="flex gap-2 overflow-x-auto pb-1">{(['all',...STATUS_OPTIONS.map(o=>o.value)] as const).map(s=><button key={s} type="button" onClick={()=>setStatusFilter(s)} className={`shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase ${statusFilter===s?'bg-brand text-white':'bg-white text-ink-muted border border-border'}`}>{s==='all'?`All (${rows.length})`:`${s} (${rows.filter(e=>safeStatus(e.status)===s).length})`}</button>)}</div><div className="space-y-3">{filtered.length===0?<div className="py-16 text-center rounded-2xl bg-white border border-dashed border-border-strong"><Inbox className="w-8 h-8 text-ink-subtle mx-auto mb-2"/><p className="text-sm text-ink-subtle">{rows.length===0?'No enquiries yet.':'No enquiries match this view.'}</p></div>:filtered.map(e=><EnquiryRow key={e.id||`${e.email}-${e.createdAt}`} enquiry={e} expanded={expandedId===e.id} onToggle={()=>setExpandedId(expandedId===e.id?null:e.id)} onUpdateStatus={onUpdateStatus} onDelete={onDelete} onError={onError} onFollowUpSaved={(id,value)=>setFollowUps(p=>({...p,[id]:value}))}/>)}</div></div>};

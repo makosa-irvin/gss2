@@ -25,7 +25,9 @@ describe('DestinationDetailView', () => {
       />
     );
     await settleProviderEffects();
-    expect(screen.getByRole('heading', { name: destination.name })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: `${destination.name} safari guide`, level: 1 })
+    ).toBeInTheDocument();
   });
 
   it('renders the destination subtitle', async () => {
@@ -73,6 +75,8 @@ describe('DestinationDetailView', () => {
     );
     await settleProviderEffects();
     expect(screen.queryByText('Wildlife & highlights')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: destination.name })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: `${destination.name} safari guide`, level: 1 })
+    ).toBeInTheDocument();
   });
 });

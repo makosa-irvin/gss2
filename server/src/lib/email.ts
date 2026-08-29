@@ -9,19 +9,13 @@ const FROM = env.ENQUIRY_FROM_EMAIL;
 const NOTIFY_TO = env.ENQUIRY_NOTIFY_EMAIL;
 
 /**
- * Sends the business a notification email for a new enquiry, and a
- * confirmation email to the customer who submitted it. This is the fix
- * for the single biggest gap in the old app: enquiries used to only be
- * written to the submitting visitor's own browser localStorage, so the
- * business never actually received a single lead.
+ * Sends two best-effort messages after an enquiry is persisted:
+ * 1. an internal lead notification to every address in ENQUIRY_NOTIFY_EMAIL;
+ * 2. an acknowledgement to the traveller.
  *
- * Deliberately does NOT throw if email sending fails or isn't configured
- * - the enquiry is already safely saved in the database by the time this
- * is called (see routes/enquiries.ts), so a flaky email provider should
- * never cause the customer's submission to appear to fail. Failures are
- * logged loudly instead, since a silently-failing notification is exactly
- * the kind of bug that's easy to miss until a customer complains no one
- * replied to them.
+ * ENQUIRY_NOTIFY_EMAIL accepts a comma-separated list, e.g.
+ * info@goodsecretssafaris.com,admin@goodsecretssafaris.com.
+ * Email delivery never determines whether an enquiry is considered saved.
  */
 export async function sendEnquiryNotifications(enquiry: Enquiry): Promise<void> {
   if (!resend || !NOTIFY_TO) {
@@ -41,26 +35,32 @@ export async function sendEnquiryNotifications(enquiry: Enquiry): Promise<void> 
     return;
   }
 
-  const subjectSuffix = enquiry.tourTitle || enquiry.hotelTitle || enquiry.preferredDestination || 'General Enquiry';
+  const recipients = NOTIFY_TO.split(',').map((value) => value.trim()).filter(Boolean);
+  const subjectSuffix = enquiry.tourTitle || enquiry.hotelTitle || enquiry.preferredDestination || enquiry.safariType || 'General Enquiry';
 
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: NOTIFY_TO.split(',').map((s) => s.trim()),
-      replyTo: enquiry.email,
-      subject: `New Enquiry: ${enquiry.fullName} - ${subjectSuffix}`,
-      html: renderStaffNotificationHtml(enquiry),
-    });
-  } catch (err) {
-    console.error(`[email] Failed to send staff notification for enquiry ${enquiry.id}:`, err);
+  if (recipients.length > 0) {
+    try {
+      await resend.emails.send({
+        from: FROM,
+        to: recipients,
+        replyTo: enquiry.email,
+        subject: `New safari enquiry: ${enquiry.fullName} — ${subjectSuffix}`,
+        html: renderStaffNotificationHtml(enquiry),
+        text: renderStaffNotificationText(enquiry),
+      });
+    } catch (err) {
+      console.error(`[email] Failed to send staff notification for enquiry ${enquiry.id}:`, err);
+    }
   }
 
   try {
     await resend.emails.send({
       from: FROM,
       to: enquiry.email,
-      subject: "We've received your enquiry - Good Secrets Safaris",
+      replyTo: recipients[0] || undefined,
+      subject: `We received your safari enquiry — ${enquiry.id}`,
       html: renderCustomerConfirmationHtml(enquiry),
+      text: renderCustomerConfirmationText(enquiry),
     });
   } catch (err) {
     console.error(`[email] Failed to send customer confirmation for enquiry ${enquiry.id}:`, err);
@@ -68,52 +68,44 @@ export async function sendEnquiryNotifications(enquiry: Enquiry): Promise<void> 
 }
 
 function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function tripSummary(e: Enquiry): string {
+  return e.tourTitle || e.hotelTitle || e.preferredDestination || e.safariType || 'Tailor-made safari enquiry';
 }
 
 function renderStaffNotificationHtml(e: Enquiry): string {
   const row = (label: string, value: string | number | null | undefined) =>
-    value ? `<tr><td style="padding:4px 12px 4px 0;color:#5d6e62;font-size:13px;">${label}</td><td style="padding:4px 0;font-size:13px;"><strong>${escapeHtml(String(value))}</strong></td></tr>` : '';
+    value !== null && value !== undefined && String(value).trim()
+      ? `<tr><td style="padding:5px 14px 5px 0;color:#5d6e62;font-size:13px;vertical-align:top;">${label}</td><td style="padding:5px 0;font-size:13px;color:#161f19;"><strong>${escapeHtml(String(value))}</strong></td></tr>`
+      : '';
 
-  return `
-    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-      <h2 style="color:#161f19;">New Enquiry Received</h2>
-      <table>
-        ${row('Name', e.fullName)}
-        ${row('Email', e.email)}
-        ${row('Phone', e.phone)}
-        ${row('Country', e.country)}
-        ${row('Tour', e.tourTitle)}
-        ${row('Hotel', e.hotelTitle)}
-        ${row('Preferred destination', e.preferredDestination)}
-        ${row('Safari type', e.safariType)}
-        ${row('Travel dates', e.travelDates)}
-        ${row('Duration (days)', e.durationDays)}
-        ${row('Travelers', `${e.adults} adults, ${e.children} children`)}
-        ${row('Budget', e.budget)}
-        ${row('Accommodation preference', e.accommodationPreference)}
-        ${row('Heard about us via', e.hearAboutUs)}
-      </table>
-      <p style="color:#5d6e62;font-size:13px;"><strong>Special requests:</strong><br/>${escapeHtml(e.specialRequests || 'None')}</p>
-      <p style="color:#9e7120;font-size:12px;">Enquiry ID: ${e.id} - received ${e.createdAt.toISOString()}</p>
-    </div>
-  `;
+  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#161f19;">
+    <div style="border-bottom:3px solid #9e7120;padding-bottom:14px;margin-bottom:20px;"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9e7120;font-weight:700;">Good Secrets Safaris CRM</div><h2 style="margin:6px 0 0;">New safari enquiry</h2></div>
+    <table style="border-collapse:collapse;width:100%;">
+      ${row('Reference', e.id)}${row('Traveller', e.fullName)}${row('Email', e.email)}${row('Phone / WhatsApp', e.phone)}${row('Country', e.country)}${row('Trip', tripSummary(e))}${row('Tour', e.tourTitle)}${row('Stay', e.hotelTitle)}${row('Preferred destination', e.preferredDestination)}${row('Travel dates', e.travelDates)}${row('Duration', e.durationDays ? `${e.durationDays} days` : '')}${row('Travellers', `${e.adults} adults${e.children ? `, ${e.children} children` : ''}`)}${row('Budget', e.budget)}${row('Accommodation', e.accommodationPreference)}${row('Lead source', e.hearAboutUs)}
+    </table>
+    ${e.specialRequests ? `<div style="margin-top:20px;padding:14px;background:#f7f4ec;border-radius:10px;"><strong>Trip context & special requests</strong><div style="margin-top:7px;white-space:pre-wrap;color:#4d5c52;font-size:13px;line-height:1.55;">${escapeHtml(e.specialRequests)}</div></div>` : ''}
+    <p style="margin-top:20px;font-size:12px;color:#6b776f;">Open the CRM to update the lead stage and record follow-up notes.</p>
+  </div>`;
+}
+
+function renderStaffNotificationText(e: Enquiry): string {
+  return [`New safari enquiry`, `Reference: ${e.id}`, `Traveller: ${e.fullName}`, `Email: ${e.email}`, `Phone: ${e.phone}`, `Trip: ${tripSummary(e)}`, `Travel dates: ${e.travelDates || 'Flexible'}`, `Travellers: ${e.adults} adults${e.children ? `, ${e.children} children` : ''}`, `Budget: ${e.budget || 'Not specified'}`, e.specialRequests ? `Trip context / requests: ${e.specialRequests}` : '', '', 'Open the Good Secrets Safaris CRM to manage this lead.'].filter(Boolean).join('\n');
 }
 
 function renderCustomerConfirmationHtml(e: Enquiry): string {
-  return `
-    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-      <h2 style="color:#161f19;">Thank you, ${escapeHtml(e.fullName)}!</h2>
-      <p style="color:#4d5c52;font-size:14px;line-height:1.6;">
-        We've received your enquiry${e.tourTitle ? ` about <strong>${escapeHtml(e.tourTitle)}</strong>` : ''}${e.hotelTitle ? ` regarding <strong>${escapeHtml(e.hotelTitle)}</strong>` : ''}
-        and one of our safari specialists will get back to you shortly, usually within 24 hours.
-      </p>
-      <p style="color:#4d5c52;font-size:14px;">If your travel dates are approaching soon, feel free to reach us directly on WhatsApp for a faster response.</p>
-      <p style="color:#9e7120;font-size:12px;">Reference: ${e.id}</p>
-    </div>
-  `;
+  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#161f19;">
+    <div style="border-bottom:3px solid #9e7120;padding-bottom:14px;margin-bottom:20px;"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9e7120;font-weight:700;">Good Secrets Safaris</div><h2 style="margin:6px 0 0;">We received your enquiry</h2></div>
+    <p style="font-size:15px;line-height:1.65;">Hi ${escapeHtml(e.fullName)},</p>
+    <p style="font-size:15px;line-height:1.65;color:#4d5c52;">Thank you for getting in touch. Your safari enquiry has reached our team and we will review the details you shared before following up with you.</p>
+    <div style="margin:22px 0;padding:16px;background:#f7f4ec;border-radius:10px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9e7120;font-weight:700;">Your enquiry</div><strong style="display:block;margin-top:6px;">${escapeHtml(tripSummary(e))}</strong>${e.travelDates ? `<div style="margin-top:7px;color:#5d6e62;font-size:13px;">Travel dates: ${escapeHtml(e.travelDates)}</div>` : ''}<div style="margin-top:7px;color:#5d6e62;font-size:13px;">Reference: ${escapeHtml(e.id)}</div></div>
+    <p style="font-size:14px;line-height:1.65;color:#4d5c52;">You can reply directly to this email if you need to add anything to your enquiry.</p>
+    <p style="font-size:14px;line-height:1.65;">Good Secrets Safaris<br/><span style="color:#6b776f;">East Africa safari planning</span></p>
+  </div>`;
+}
+
+function renderCustomerConfirmationText(e: Enquiry): string {
+  return `Hi ${e.fullName},\n\nThank you for getting in touch. We have received your safari enquiry and our team will review the details you shared before following up.\n\nTrip: ${tripSummary(e)}\n${e.travelDates ? `Travel dates: ${e.travelDates}\n` : ''}Reference: ${e.id}\n\nYou can reply directly to this email if you need to add anything.\n\nGood Secrets Safaris\nEast Africa safari planning`;
 }
