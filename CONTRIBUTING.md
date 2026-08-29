@@ -4,14 +4,20 @@
 
 Create short-lived branches from `deployment/staging` unless the work explicitly targets another integration branch.
 
-Use these prefixes:
+Use a lowercase `<type>/<short-description>` branch name. The pull-request policy workflow enforces the recognized prefixes:
 
-- `feature/` for new product functionality
-- `fix/` for bug fixes
+- `feature/` or `feat/` for new product functionality
+- `fix/` or `hotfix/` for bug fixes
 - `design/` for visual/system design changes
+- `improve/` for focused improvements to existing behavior
+- `refactor/` for structural code changes without intended behavior changes
 - `test/` for test-only work
 - `docs/` for documentation
+- `ci/` for CI/workflow changes
+- `perf/` for performance changes
 - `chore/` for tooling, dependencies and maintenance
+
+Examples: `feature/enquiry-follow-up`, `fix/admin-enquiry-crash`, `chore/dependency-updates`.
 
 Do not commit directly to protected integration or production branches once branch protection is enabled.
 
@@ -67,6 +73,8 @@ For UI changes, verify mobile and desktop layouts, keyboard operation, focus sta
 ## Backend standards
 
 Validate all external input at the API boundary. Keep credentials server-side. Public endpoints must not expose admin-only state. Database schema changes require migrations; do not modify staging or production schemas manually.
+
+Runtime environment access must go through the validated configuration boundary in `server/src/config/env.ts`; do not introduce scattered `process.env` reads in feature code.
 
 Side effects such as email should not cause a persisted customer enquiry to appear failed when the side effect alone fails.
 
