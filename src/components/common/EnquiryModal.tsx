@@ -4,9 +4,9 @@ import { Tour, Hotel } from '../../types';
 import { ApiError } from '../../services/api';
 import { X, Send, CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
 
-interface EnquiryModalProps { isOpen: boolean; onClose: () => void; selectedTour?: Tour | null; selectedHotel?: Hotel | null; initialType?: string; }
+interface EnquiryModalProps { isOpen: boolean; onClose: () => void; selectedTour?: Tour | null; selectedHotel?: Hotel | null; initialType?: string; initialSpecialRequests?: string; }
 
-export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, selectedTour, selectedHotel, initialType }) => {
+export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, selectedTour, selectedHotel, initialType, initialSpecialRequests }) => {
   const { addEnquiry, getWhatsAppUrl } = useData();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [fullName, setFullName] = useState(''); const [email, setEmail] = useState(''); const [phone, setPhone] = useState(''); const [country, setCountry] = useState(''); const [travelDates, setTravelDates] = useState(''); const [adults, setAdults] = useState(2); const [children, setChildren] = useState(0); const [budget, setBudget] = useState('Not sure yet'); const [accommodationPreference, setAccommodationPreference] = useState('Open to recommendations'); const [specialRequests, setSpecialRequests] = useState('');
@@ -22,6 +22,10 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
     return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', onKeyDown); };
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (isOpen && initialSpecialRequests) setSpecialRequests(initialSpecialRequests);
+  }, [isOpen, initialSpecialRequests]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +40,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
   const handleClose = () => { setIsSubmitted(false); setSubmitError(''); onClose(); };
   const inputClass = 'w-full min-h-11 px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#d7d1c4] text-sm text-[#161f19] focus:border-[#8a611d] focus:outline-none';
   const labelClass = 'text-sm font-semibold text-[#303e35] block mb-1.5';
-  const title = selectedTour?.title || selectedHotel?.name || 'Tell us about your ideal trip';
+  const title = selectedTour?.title || selectedHotel?.name || initialType || 'Tell us about your ideal trip';
 
   return (
     <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm overflow-y-auto" onMouseDown={e => { if (e.target === e.currentTarget) handleClose(); }}>
@@ -69,7 +73,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
               <button type="submit" disabled={isSubmitting} className="min-h-12 inline-flex items-center justify-center gap-2 px-7 rounded-xl bg-[#8a611d] hover:bg-[#704d15] disabled:opacity-60 text-white font-extrabold text-sm shadow-md"><span>{isSubmitting ? 'Sending…' : 'Request my quote'}</span><Send className="w-4 h-4" /></button>
             </div>
           </form>
-        </div> : <div className="text-center py-10 space-y-4"><div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15"><CheckCircle2 className="w-8 h-8" /></div><h2 id="enquiry-title" className="font-serif-luxury text-3xl font-bold text-[#161f19]">Thanks — we received your enquiry.</h2><p id="enquiry-description" className="text-sm text-[#46544b] max-w-md mx-auto leading-relaxed">Our team will review the details for <strong>{selectedTour?.title || selectedHotel?.name || 'your trip'}</strong> and follow up with next steps.</p><button onClick={handleClose} className="min-h-11 px-6 rounded-xl bg-[#8a611d] text-white font-bold text-sm hover:bg-[#704d15]">Close</button></div>}
+        </div> : <div className="text-center py-10 space-y-4"><div className="w-16 h-16 rounded-full bg-[#1b4332] text-white flex items-center justify-center mx-auto ring-8 ring-[#1b4332]/15"><CheckCircle2 className="w-8 h-8" /></div><h2 id="enquiry-title" className="font-serif-luxury text-3xl font-bold text-[#161f19]">Thanks — we received your enquiry.</h2><p id="enquiry-description" className="text-sm text-[#46544b] max-w-md mx-auto leading-relaxed">Our team will review the details for <strong>{selectedTour?.title || selectedHotel?.name || initialType || 'your trip'}</strong> and follow up with next steps.</p><button onClick={handleClose} className="min-h-11 px-6 rounded-xl bg-[#8a611d] text-white font-bold text-sm hover:bg-[#704d15]">Close</button></div>}
       </div>
     </div>
   );
