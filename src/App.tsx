@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { DataProvider, useData } from './context/DataContext';
+import { ShortlistProvider } from './context/ShortlistContext';
 import { Tour, Hotel, Destination } from './types';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -14,6 +15,7 @@ const DestinationsView = lazy(() => import('./views/DestinationsView').then(m =>
 const AboutView = lazy(() => import('./views/AboutView').then(m => ({ default: m.AboutView })));
 const ContactView = lazy(() => import('./views/ContactView').then(m => ({ default: m.ContactView })));
 const ReviewsView = lazy(() => import('./views/ReviewsView').then(m => ({ default: m.ReviewsView })));
+const ShortlistView = lazy(() => import('./views/ShortlistView').then(m => ({ default: m.ShortlistView })));
 const AdminDashboardView = lazy(() => import('./views/AdminDashboardView').then(m => ({ default: m.AdminDashboardView })));
 const TourDetailRoute = lazy(() => import('./routes/TourDetailRoute').then(m => ({ default: m.TourDetailRoute })));
 const HotelDetailRoute = lazy(() => import('./routes/HotelDetailRoute').then(m => ({ default: m.HotelDetailRoute })));
@@ -39,6 +41,7 @@ function useLegacyNavigate() {
       case 'builder': return navigate('/safari-builder');
       case 'blog': return navigate(payload?.postSlug?`/blog/${payload.postSlug}`:'/blog');
       case 'reviews': return navigate('/reviews');
+      case 'shortlist': return navigate('/shortlist');
       case 'about': return navigate('/about');
       case 'contact': return navigate('/contact');
       case 'admin': return navigate('/admin');
@@ -52,11 +55,18 @@ const BuilderPage: React.FC<{ onOpenEnquiryModal: (payload?: any) => void }> = (
   return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8"><PageMeta title="Custom Safari Builder" description="Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate." canonicalPath="/safari-builder"/><div className="text-center max-w-3xl mx-auto space-y-3"><span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">Tailor-Made Journey Engine</span><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">Custom Safari Builder</h1><p className="text-sm text-[#a3b2a7]">Answer 6 quick questions to discover your ideal route, pricing estimate, and receive a bespoke itinerary proposal from our lead safari naturalists.</p></div><SafariBuilderWizard onSelectTour={(tour:Tour)=>navigate(`/safaris/${tour.slug}`)} onCompleteEnquiry={onOpenEnquiryModal}/></div>;
 };
 
+interface EnquiryModalData {
+  selectedTour?: Tour | null;
+  selectedHotel?: Hotel | null;
+  initialType?: string;
+  initialSpecialRequests?: string;
+}
+
 const MainAppContent: React.FC = () => {
   const legacyNavigate=useLegacyNavigate(); const navigate=useNavigate(); const location=useLocation(); const { tours,isLoading,loadError }=useData();
   const [isEnquiryModalOpen,setIsEnquiryModalOpen]=useState(false);
-  const [enquiryModalData,setEnquiryModalData]=useState<{selectedTour?:Tour|null;selectedHotel?:Hotel|null;initialType?:string;}>({});
-  const openEnquiryModal=(data?:{selectedTour?:Tour|null;selectedHotel?:Hotel|null;initialType?:string;})=>{setEnquiryModalData(data||{});setIsEnquiryModalOpen(true);};
+  const [enquiryModalData,setEnquiryModalData]=useState<EnquiryModalData>({});
+  const openEnquiryModal=(data?:EnquiryModalData)=>{setEnquiryModalData(data||{});setIsEnquiryModalOpen(true);};
   const handleSelectTour=(tour:Tour)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/safaris/${tour.slug}`);};
   const handleSelectDestination=(destination:Destination)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/destinations/${destination.slug}`);};
   const handleSelectHotel=(hotel:Hotel)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/hotels/${hotel.slug}`);};
@@ -72,11 +82,11 @@ const MainAppContent: React.FC = () => {
       <Route path="/destinations" element={<DestinationsView onSelectDestination={handleSelectDestination}/>}/><Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
       <Route path="/hotels" element={<HotelsExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/hotels/:slug" element={<HotelDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
       <Route path="/safari-builder" element={<BuilderPage onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog/:slug" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
-      <Route path="/reviews" element={<ReviewsView/>}/><Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/>
+      <Route path="/reviews" element={<ReviewsView/>}/><Route path="/shortlist" element={<ShortlistView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/>
       <Route path="/admin" element={<AdminRoute><AdminDashboardView onNavigateHome={()=>navigate('/')} onPreviewTour={(tour)=>navigate(`/safaris/${tour.slug}`)}/></AdminRoute>}/><Route path="*" element={<NotFoundView/>}/>
     </Routes></Suspense></main>
-    <Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp}/><EnquiryModal isOpen={isEnquiryModalOpen} onClose={()=>setIsEnquiryModalOpen(false)} selectedTour={enquiryModalData.selectedTour} selectedHotel={enquiryModalData.selectedHotel} initialType={enquiryModalData.initialType}/>
+    <Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp}/><EnquiryModal isOpen={isEnquiryModalOpen} onClose={()=>setIsEnquiryModalOpen(false)} selectedTour={enquiryModalData.selectedTour} selectedHotel={enquiryModalData.selectedHotel} initialType={enquiryModalData.initialType} initialSpecialRequests={enquiryModalData.initialSpecialRequests}/>
   </div>;
 };
 
-export default function App(){return <BrowserRouter><DataProvider><MainAppContent/></DataProvider></BrowserRouter>;}
+export default function App(){return <BrowserRouter><DataProvider><ShortlistProvider><MainAppContent/></ShortlistProvider></DataProvider></BrowserRouter>;}
