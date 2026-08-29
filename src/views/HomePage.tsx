@@ -8,8 +8,9 @@ import { TourCard } from '../components/tours/TourCard';
 import { DestinationCard } from '../components/destinations/DestinationCard';
 import { HotelCard } from '../components/hotels/HotelCard';
 import { SafariBuilderWizard } from '../components/builder/SafariBuilderWizard';
+import { VerifiedReviewsSection } from '../components/reviews/VerifiedReviewsSection';
 import {
-  Sparkles, Star, ShieldCheck, Award, Heart, Compass, CheckCircle2, ArrowRight,
+  Sparkles, ShieldCheck, Award, Heart, Compass, CheckCircle2, ArrowRight,
   MessageCircle, Users, Binoculars, Flame, Palmtree, Plane
 } from 'lucide-react';
 
@@ -22,7 +23,7 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectTour, onSelectDestination, onSelectHotel, onOpenEnquiryModal }) => {
-  const { tours, destinations, hotels, testimonials, blogPosts, settings, setIsKenyanResidentMode, getWhatsAppUrl } = useData();
+  const { tours, destinations, hotels, blogPosts, settings, setIsKenyanResidentMode, getWhatsAppUrl } = useData();
   const featuredTours = tours.filter(t => t.featured || t.popular);
   const travelStylesList = [
     { title: 'Big 5 Safaris', icon: Binoculars, desc: "See Africa's most iconic wildlife with private guides who know where and when to look.", tag: 'Big 5' },
@@ -75,15 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectTour, on
         <div className="relative z-10 w-full mt-10"><SafariFinderBar onSearch={(filters) => onNavigate('tours', filters)} /></div>
       </section>
 
-      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8">
-        <div className="rounded-3xl bg-white border border-[#ded8cb] p-7 sm:p-9 grid grid-cols-1 md:grid-cols-12 gap-7 items-center shadow-md">
-          <div className="md:col-span-4 flex flex-col gap-3 border-b md:border-b-0 md:border-r border-[#e6e1d7] pb-6 md:pb-0 md:pr-8">
-            <div className="flex items-center gap-3"><div className="text-4xl font-extrabold font-serif-luxury text-[#161f19]">4.9/5</div><div><div className="flex text-[#b77905]" aria-label="5 star rating">{[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}</div><span className="text-sm text-[#4d5c52] mt-1 block font-medium">10+ verified traveler reviews</span></div></div>
-            <div className="inline-flex items-center gap-2 rounded-lg bg-[#eef7f2] px-3 py-2 border border-[#b6d8c3] text-sm font-semibold text-[#1b4332]"><ShieldCheck className="w-4 h-4 text-[#0c756b]" /><span>Local support before and during your trip</span></div>
-          </div>
-          <div className="md:col-span-8 space-y-2"><h2 className="font-serif-luxury text-2xl font-bold text-[#161f19]">Travel with confidence from first enquiry to final game drive</h2><p className="text-sm sm:text-base text-[#4d5c52] leading-relaxed">Private customized Land Cruisers, experienced driver-guides, 24/7 safari support and complimentary AMREF Flying Doctors emergency evacuation cover are built into the Good Secrets experience.</p></div>
-        </div>
-      </section>
+      <VerifiedReviewsSection />
 
       <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4"><div><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e6bc65]"><Compass className="w-4 h-4" /><span>Handpicked itineraries</span></div><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">Start with a safari idea. Make it yours.</h2><p className="text-base text-[#c7d2cb] mt-2 max-w-2xl">Browse proven routes, then adjust the dates, pace, accommodation and experiences around you.</p></div><button onClick={() => onNavigate('tours')} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#e6bc65] hover:text-white self-start md:self-auto"><span>View All {tours.length} Safaris</span><ArrowRight className="w-4 h-4" /></button></div>
@@ -102,8 +95,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectTour, on
       <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8"><div className="flex flex-col md:flex-row md:items-end justify-between gap-4"><div><div className="inline-flex items-center gap-2 rounded-full bg-[#eef7f2] px-3 py-1.5 text-xs font-bold text-[#1b4332] border border-[#b6d8c3] mb-2">Kenyan resident offers</div><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">Beach escapes closer to home</h2><p className="text-base text-[#c7d2cb] mt-2">Diani, Watamu and Mombasa resort stays with dedicated KES resident pricing.</p></div><button onClick={() => { setIsKenyanResidentMode(true); onNavigate('hotels'); }} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#e6bc65] hover:text-white"><span>View {hotels.length} Beach Resorts</span><ArrowRight className="w-4 h-4" /></button></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">{hotels.slice(0, 4).map(hotel => <HotelCard key={hotel.id} hotel={hotel} onSelect={onSelectHotel} onEnquire={onOpenEnquiryModal} />)}</div></section>
 
       <section id="safari-builder-section" className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8"><div className="text-center max-w-2xl mx-auto space-y-2"><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Not sure where to start?</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white">Build your safari preferences</h2><p className="text-base text-[#c7d2cb]">Tell us where you want to go, who is traveling and what matters most. We’ll use it to narrow down the right safari ideas.</p></div><SafariBuilderWizard onSelectTour={onSelectTour} onCompleteEnquiry={onOpenEnquiryModal} /></section>
-
-      <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8"><div><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Traveler stories</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">What guests say after the safari</h2><p className="text-base text-[#c7d2cb] mt-2">Independent feedback from travelers who explored East Africa with Good Secrets.</p></div><div className="grid grid-cols-1 md:grid-cols-2 gap-6">{testimonials.map(test => <article key={test.id} className="p-6 sm:p-8 rounded-2xl bg-white border border-[#ded8cb] flex flex-col justify-between space-y-4 shadow-sm"><div className="space-y-3"><div className="flex items-center justify-between"><div className="flex text-[#b77905]" aria-label={`${test.rating ?? 5} star review`}>{[...Array(Math.round(test.rating ?? 5))].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}</div><span className="text-sm text-[#536158] font-medium">{test.platform}</span></div><p className="text-base text-[#3f4e44] italic leading-relaxed">“{test.reviewText}”</p></div><div className="flex items-center gap-3 pt-4 border-t border-[#e6e1d7]"><img src={test.avatarUrl} alt="" className="w-10 h-10 rounded-full object-cover border border-[#b3822a]" /><div><h3 className="text-sm font-bold text-[#161f19]">{test.reviewerName}</h3><span className="text-sm text-[#536158]">{test.reviewerCountry} · {test.tourTaken}</span></div></div></article>)}</div></section>
 
       <section className="cv-auto max-w-7xl mx-auto px-4 sm:px-8 space-y-8"><div className="flex flex-col md:flex-row md:items-end justify-between gap-4"><div><span className="text-xs font-bold uppercase tracking-widest text-[#e6bc65]">Plan with confidence</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-1">Safari guides & travel inspiration</h2><p className="text-base text-[#c7d2cb] mt-2">Seasonal advice, destination guides and practical tips for planning East Africa.</p></div><button onClick={() => onNavigate('blog')} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#e6bc65] hover:text-white"><span>Read All Articles</span><ArrowRight className="w-4 h-4" /></button></div><div className="grid grid-cols-1 md:grid-cols-3 gap-6">{blogPosts.slice(0, 3).map(post => <button type="button" key={post.id} onClick={() => onNavigate('blog', { postSlug: post.slug })} className="group text-left rounded-2xl bg-white border border-[#ded8cb] overflow-hidden hover:border-[#8a611d] transition-all flex flex-col shadow-sm"><span className="aspect-[16/10] overflow-hidden bg-[#faf8f2]"><img src={unsplashCardImage(post.featuredImage, 700)} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy" /></span><span className="p-5 space-y-2 block"><span className="flex items-center gap-2 text-xs text-[#765217] font-bold"><span>{post.category}</span><span aria-hidden="true">·</span><span className="text-[#536158]">{post.readingTime}</span></span><span className="font-serif-luxury text-lg font-bold text-[#161f19] group-hover:text-[#765217] block">{post.title}</span><span className="text-sm text-[#4d5c52] line-clamp-2 leading-relaxed block">{post.excerpt}</span></span></button>)}</div></section>
 
