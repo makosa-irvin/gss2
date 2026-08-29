@@ -24,7 +24,7 @@ export const ShortlistView: React.FC<ShortlistViewProps> = ({ onOpenEnquiryModal
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-10">
-      <PageMeta title="My Safari Shortlist" description="Keep your favourite Good Secrets Safaris itineraries and stays together while you plan your East Africa trip." canonicalPath="/shortlist" />
+      <PageMeta title="My Safari Shortlist" description="Keep your favourite Good Secrets Safaris itineraries and stays together while you plan your East Africa trip." canonicalPath="/shortlist" noIndex />
 
       <header className="max-w-3xl space-y-4">
         <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#e6bc65]"><Heart className="w-4 h-4 fill-current" />Saved trips</span>
