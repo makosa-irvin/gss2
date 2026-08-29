@@ -127,12 +127,12 @@ jobs:
         run: npm ci
       - name: Install coverage provider without changing lockfile
         run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
-      # Ratcheted after the CRM/component additions raised the measured
-      # frontend suite to 41.69 statements / 43.04 branches / 24.57
-      # functions / 46.77 lines. Floors sit just below the measured result
-      # so future changes cannot quietly give the gains back.
+      # The DataContext enquiry-contract test raised the measured frontend
+      # suite to 42.65 statements / 44.76 branches / 26.13 functions /
+      # 47.76 lines. Floors sit just below that measured result so the
+      # additional confidence cannot silently regress.
       - name: Frontend coverage
-        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=46 --coverage.thresholds.functions=24 --coverage.thresholds.statements=41 --coverage.thresholds.branches=42
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=47 --coverage.thresholds.functions=26 --coverage.thresholds.statements=42 --coverage.thresholds.branches=44
       - name: Install backend dependencies
         working-directory: server
         run: npm ci
