@@ -58,13 +58,13 @@ describe('Auth', () => {
     expect(enquiriesRes.status).toBe(401);
   });
 
-  it('rejects a tampered admin session cookie', async () => {
+  it('rejects a tampered admin session cookie with a clear re-login message', async () => {
     const res = await request(app)
       .get('/api/auth/me')
       .set('Cookie', `${ADMIN_COOKIE_NAME}=not-a-valid-jwt`);
 
     expect(res.status).toBe(401);
-    expect(res.body.error).toBe('Not authenticated.');
+    expect(res.body.error).toBe('Session expired or invalid. Please log in again.');
   });
 
   it('logs in, sets an httpOnly session cookie, restores /me, and logs out', async () => {
