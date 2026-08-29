@@ -29,3 +29,23 @@ jobs:
             echo "  chore!: remove deprecated endpoint"
             exit 1
           fi
+
+  branch-name:
+    name: Branch naming policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Validate head branch
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          pattern='^(feature|feat|fix|hotfix|chore|docs|refactor|test|ci|design|perf|improve)/[a-z0-9][a-z0-9._/-]*$'
+          if [[ ! "$HEAD_BRANCH" =~ $pattern ]]; then
+            echo "Branch name must use a recognized type prefix and lowercase slug."
+            echo "Examples:"
+            echo "  feature/enquiry-follow-up"
+            echo "  fix/admin-enquiry-crash"
+            echo "  chore/dependency-updates"
+            exit 1
+          fi
