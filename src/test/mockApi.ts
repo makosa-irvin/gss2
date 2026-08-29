@@ -32,6 +32,7 @@ export function installMockApi(overrides: MockApiOverrides = {}) {
   const destinations = overrides.destinations ?? [makeDestination()];
   const blog = overrides.blog ?? [makeBlogPost()];
   const testimonials = overrides.testimonials ?? [makeTestimonial()];
+  let createdTourSequence = 0;
 
   const routes: Record<string, { status: number; body: unknown }> = {
     'GET /api/tours': { status: 200, body: tours },
@@ -57,10 +58,11 @@ export function installMockApi(overrides: MockApiOverrides = {}) {
 
     if (key === 'POST /api/admin/tours' && overrides.allowAdminTourCreate) {
       const body = init?.body ? JSON.parse(init.body as string) : {};
+      createdTourSequence += 1;
       return {
         ok: true,
         status: 201,
-        json: async () => makeTour(body),
+        json: async () => makeTour({ ...body, id: body.id || `created-tour-${createdTourSequence}` }),
       } as Response;
     }
 
