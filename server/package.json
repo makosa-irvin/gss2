@@ -2,7 +2,7 @@
   "name": "good-secrets-safaris-server",
   "private": true,
   "version": "1.0.0",
-  "description": "Backend API for Good Secrets Safaris - Express + Prisma + PostgreSQL.",
+  "description": "Backend API for Good Secrets Safaris - Express + Drizzle + PostgreSQL.",
   "type": "module",
   "overrides": {
     "esbuild": "0.28.2"
@@ -11,9 +11,12 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "test": "vitest run",
+    "test:integration": "vitest run src/test",
     "test:watch": "vitest",
+    "verify": "npm run typecheck && npm test && npm run build",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
     "db:migrate:prod": "node dist/db/migrate.js",
