@@ -1,5 +1,5 @@
 import React, { type ReactElement } from 'react';
-import { render, type RenderOptions } from '@testing-library/react';
+import { act, render, type RenderOptions } from '@testing-library/react';
 import { DataProvider } from '../context/DataContext';
 import { ShortlistProvider } from '../context/ShortlistContext';
 
@@ -22,6 +22,18 @@ export function renderWithProviders(
   options?: Omit<RenderOptions, 'wrapper'>
 ) {
   return render(ui, { wrapper: AppTestProviders, ...options });
+}
+
+/**
+ * DataProvider starts asynchronous catalog/auth reads in effects. Tests that
+ * render the real provider should await this helper before asserting or
+ * unmounting so those state updates are observed inside React's act boundary
+ * rather than leaking warning noise into CI.
+ */
+export async function settleProviderEffects() {
+  await act(async () => {
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  });
 }
 
 export * from '@testing-library/react';
