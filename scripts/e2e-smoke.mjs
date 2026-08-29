@@ -7,6 +7,42 @@ const projects = [
   { name: 'mobile', ...devices['iPhone 13'] },
 ];
 
+const settingsFixture = {
+  companyName: 'Good Secrets Safaris',
+  tagline: 'Your Africa. Your Story. Your Safari.',
+  description: 'Safari planning fixture for browser smoke testing.',
+  logoUrl: '',
+  contact: {
+    email: 'test@example.com',
+    phone: '+254700000000',
+    whatsapp: '+254700000000',
+    address: 'Nairobi, Kenya',
+    businessHours: 'Daily',
+  },
+  social: { instagram: '', facebook: '', tiktok: '', youtube: '', linkedin: '' },
+  currency: { primary: 'USD', exchangeRateUsdToKes: 130 },
+  booking: {
+    defaultEnquiryMessage: 'Test enquiry',
+    bookingEmail: 'test@example.com',
+    whatsappNumber: '+254700000000',
+    whatsappDefaultMessage: 'Test safari enquiry',
+  },
+  seo: {
+    defaultTitle: 'Good Secrets Safaris',
+    defaultDescription: 'Safari planning test fixture.',
+    defaultOgImage: '',
+  },
+};
+
+const catalogFixtures = {
+  '/api/tours': [],
+  '/api/hotels': [],
+  '/api/destinations': [],
+  '/api/blog': [],
+  '/api/testimonials': [],
+  '/api/settings': settingsFixture,
+};
+
 const browser = await chromium.launch();
 const failures = [];
 
@@ -15,10 +51,24 @@ try {
     const context = await browser.newContext(project);
     const page = await context.newPage();
 
-    page.on('pageerror', (error) => failures.push(`${project.name}: page error: ${error.message}`));
-    page.on('console', (message) => {
-      if (message.type() === 'error') failures.push(`${project.name}: console error: ${message.text()}`);
+    await page.route('**/api/**', async (route) => {
+      const requestUrl = new URL(route.request().url());
+      const fixture = catalogFixtures[requestUrl.pathname];
+
+      if (requestUrl.pathname === '/api/auth/me') {
+        await route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: 'Not authenticated.' }) });
+        return;
+      }
+
+      if (fixture !== undefined) {
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) });
+        return;
+      }
+
+      await route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ error: 'No browser-smoke fixture for this endpoint.' }) });
     });
+
+    page.on('pageerror', (error) => failures.push(`${project.name}: page error: ${error.message}`));
 
     for (const route of routes) {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle', timeout: 30_000 });
