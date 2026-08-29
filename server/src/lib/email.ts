@@ -30,11 +30,11 @@ export async function sendEnquiryNotifications(enquiry: Enquiry): Promise<void> 
         `enquiry ${enquiry.id} was saved to the database but no notification email was sent. ` +
         'Set both in server/.env before relying on this in production.'
     );
-    console.info('[email] Enquiry details:', {
+    // Keep diagnostics useful without putting customer contact details or
+    // free-text requests into CI/production logs. The enquiry ID is enough
+    // to retrieve the full record through the authenticated admin workflow.
+    console.info('[email] Enquiry notification context:', {
       id: enquiry.id,
-      name: enquiry.fullName,
-      email: enquiry.email,
-      phone: enquiry.phone,
       tourTitle: enquiry.tourTitle,
       hotelTitle: enquiry.hotelTitle,
     });
