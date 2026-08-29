@@ -58,18 +58,31 @@ This smoke job is deliberately not presented as full-system enquiry E2E coverage
 
 ## Coverage
 
-CI enforces initial global minimums:
+The first CI runs measured the existing codebase rather than assuming an aspirational number.
 
-- lines: 60%
-- statements: 60%
-- functions: 60%
-- branches: 50%
+Frontend measured baseline:
 
-The initial thresholds are a starting quality gate for the existing codebase. If the first CI run demonstrates the current legacy baseline is lower, set the initial threshold just below the measured baseline and raise it in small reviewed steps. Do not weaken coverage merely to make a feature PR pass, and do not add low-value assertions merely to improve a percentage.
+- lines: 43.18%
+- statements: 38.39%
+- functions: 21.71%
+- branches: 37.19%
 
-Critical business modules should trend toward materially higher coverage than the global threshold.
+Frontend CI floors are therefore 43% lines, 38% statements, 21% functions and 37% branches.
 
-CI publishes coverage summary artifacts on every run.
+Backend measured baseline:
+
+- lines: 55.52%
+- statements: 52.77%
+- functions: 34.61%
+- branches: 23.44%
+
+Backend CI floors are therefore 55% lines, 52% statements, 34% functions and 23% branches.
+
+These are regression floors, not quality targets. They intentionally sit just below the measured legacy baseline so a new pull request cannot silently reduce coverage. Raise them in small reviewed steps as meaningful tests are added; do not lower them merely to make CI pass, and do not add low-value assertions merely to improve a percentage.
+
+Near-term coverage priorities are the enquiry and CRM workflow, authentication, email side-effect boundaries, admin write routes, `DataContext` API mapping, and customer-facing cards/forms with low current coverage. Critical business modules should trend materially higher than the repository-wide floor.
+
+CI publishes frontend and backend coverage summary artifacts on every run.
 
 ## Regression tests
 
