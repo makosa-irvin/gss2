@@ -28,6 +28,12 @@ Important areas include forms, filters, modal focus behavior, CRM controls, shor
 
 A test must reflect the current product contract. Do not weaken or rewrite an assertion merely to make CI pass. When a failure appears, first determine whether the application regressed or the test describes obsolete behavior. Fix production code for real regressions; update the test only when the current contract proves the assertion is stale.
 
+## Test execution integrity
+
+A green workflow must mean the committed tests actually ran. Repository quality checks reject committed `.skip`, `.todo`, `.only`, `skipIf`, `runIf`, `xit`, `xtest` and `xdescribe` usage in test files so important coverage cannot silently disappear while CI remains green.
+
+If a test genuinely cannot run in a particular environment, prefer making the environment deterministic. A temporary conditional skip requires an explicit `quality-allow-test-skip` marker in that test file and should be treated as a reviewed exception with a clear reason and follow-up plan. Focused `.only` tests should never be merged.
+
 ## API and integration tests
 
 Backend tests use Vitest + Supertest. Cover authentication boundaries, request validation, status codes, response shapes and important persistence behavior.
