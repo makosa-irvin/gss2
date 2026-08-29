@@ -15,7 +15,7 @@ for (const file of sourceFiles) {
     violations.push(`${file}: contains unresolved merge-conflict markers`);
   }
 
-  if (/\s+$/m.test(text)) {
+  if (/[ \t]+$/m.test(text)) {
     violations.push(`${file}: contains trailing whitespace`);
   }
 }
@@ -42,7 +42,7 @@ if (baseRef) {
   try {
     const diff = execFileSync(
       'git',
-      ['diff', `origin/${baseRef}...HEAD`, '--unified=0', '--', 'src/**/*.ts', 'src/**/*.tsx'],
+      ['diff', `origin/${baseRef}...HEAD`, '--unified=0', '--', 'src'],
       { encoding: 'utf8' },
     );
 
@@ -70,7 +70,7 @@ if (baseRef) {
         violations.push(`${currentFile}: new arbitrary hex color should use an existing semantic design token/class`);
       }
     }
-  } catch (error) {
+  } catch {
     violations.push(`Could not compare UI additions against origin/${baseRef}; ensure checkout has base-branch history`);
   }
 }
