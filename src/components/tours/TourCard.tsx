@@ -1,8 +1,9 @@
 import React from 'react';
 import { Tour } from '../../types';
 import { useData } from '../../context/DataContext';
+import { useShortlist } from '../../context/ShortlistContext';
 import { unsplashCardImage } from '../../lib/imageUrl';
-import { ArrowRight, Clock, MapPin, Sparkles } from 'lucide-react';
+import { ArrowRight, Clock, Heart, MapPin, Sparkles } from 'lucide-react';
 
 interface TourCardProps {
   tour: Tour;
@@ -12,6 +13,8 @@ interface TourCardProps {
 
 export const TourCard: React.FC<TourCardProps> = ({ tour, onSelect }) => {
   const { formatPrice, isKenyanResidentMode } = useData();
+  const { isTourSaved, toggleTour } = useShortlist();
+  const isSaved = isTourSaved(tour.slug);
   const formattedPrice = formatPrice(tour.priceFrom, {
     specificKES: tour.residentPriceKES,
     isResident: isKenyanResidentMode
@@ -34,6 +37,16 @@ export const TourCard: React.FC<TourCardProps> = ({ tour, onSelect }) => {
           {tour.popular ? 'Popular Choice' : 'Featured Safari'}
         </span>
       )}
+
+      <button
+        type="button"
+        onClick={() => toggleTour(tour.slug)}
+        aria-pressed={isSaved}
+        aria-label={isSaved ? `Remove ${tour.title} from shortlist` : `Save ${tour.title} to shortlist`}
+        className={`absolute right-4 top-4 z-30 min-w-11 min-h-11 rounded-full border flex items-center justify-center shadow-md backdrop-blur-md transition-colors ${isSaved ? 'bg-[#fffdf8] text-[#8a611d] border-white' : 'bg-black/45 text-white border-white/35 hover:bg-black/65'}`}
+      >
+        <Heart className={`h-5 w-5 ${isSaved ? 'fill-current' : ''}`} aria-hidden="true" />
+      </button>
 
       <button type="button" onClick={() => onSelect(tour)} aria-label={`View ${tour.title}`} className="absolute inset-0 z-10 rounded-2xl" />
 
