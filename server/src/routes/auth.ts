@@ -6,30 +6,17 @@ import { signAdminToken, verifyPassword, ADMIN_COOKIE_NAME } from '../lib/auth.j
 import { loginSchema } from '../lib/validation.js';
 import { asyncHandler, validateBody } from '../middleware/common.js';
 import { requireAdmin } from '../middleware/requireAdmin.js';
+import { env } from '../config/env.js';
 
 export const authRouter = Router();
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-// Cookie options shared between setting and clearing the session cookie.
-// sameSite: 'lax' is the right default for a same-site (or subdomain)
-// deployment; if the frontend and API end up on genuinely different
-// top-level domains, this needs to become 'none' + secure: true, which
-// requires HTTPS on both sides.
-const configuredSameSite = process.env.ADMIN_COOKIE_SAME_SITE?.toLowerCase();
-const sameSite = configuredSameSite === 'none' ? 'none' : configuredSameSite === 'strict' ? 'strict' : 'lax';
-
-if (isProduction && sameSite === 'none' && process.env.ADMIN_COOKIE_SECURE === 'false') {
-  throw new Error('ADMIN_COOKIE_SAME_SITE=none requires secure cookies in production.');
-}
-
 const cookieOptions = {
   httpOnly: true,
-  secure: isProduction || process.env.ADMIN_COOKIE_SECURE === 'true',
-  sameSite: sameSite as 'lax' | 'strict' | 'none',
+  secure: env.NODE_ENV === 'production' || env.ADMIN_COOKIE_SECURE === 'true',
+  sameSite: env.ADMIN_COOKIE_SAME_SITE,
   maxAge: 12 * 60 * 60 * 1000, // 12h, should match JWT_EXPIRES_IN
   path: '/',
-};
+} as const;
 
 authRouter.post(
   '/login',
