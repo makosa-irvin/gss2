@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "description": "Backend API for Good Secrets Safaris - Express + Drizzle + PostgreSQL.",
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "packageManager": "npm@10.9.8",
   "overrides": {
     "esbuild": "0.28.2"
   },
