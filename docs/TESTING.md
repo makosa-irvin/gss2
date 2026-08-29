@@ -26,6 +26,8 @@ Use Testing Library with Vitest/jsdom. Test user-observable behavior rather than
 
 Important areas include forms, filters, modal focus behavior, CRM controls, shortlist selection and failure/empty/loading states.
 
+A test must reflect the current product contract. Do not weaken or rewrite an assertion merely to make CI pass. When a failure appears, first determine whether the application regressed or the test describes obsolete behavior. Fix production code for real regressions; update the test only when the current contract proves the assertion is stale.
+
 ## API and integration tests
 
 Backend tests use Vitest + Supertest. Cover authentication boundaries, request validation, status codes, response shapes and important persistence behavior.
@@ -39,7 +41,7 @@ High-priority flows include:
 - content publishing/admin writes
 - public reads returning only published content
 
-Tests should use synthetic data and isolated test state.
+Tests should use synthetic data and isolated test state. CI provisions a disposable PostgreSQL database, applies migrations and deterministic seed data before running the API/integration suite. Tests must not depend on staging or production data.
 
 ## End-to-end tests
 
@@ -52,7 +54,7 @@ End-to-end browser tests should be reserved for high-value journeys:
 
 Do not duplicate every component assertion in E2E tests. The goal is confidence that the deployed system works across boundaries.
 
-The baseline CI includes a real Chromium browser smoke test for the home page and tours page at desktop and mobile viewports. It verifies successful navigation, substantive rendered content, one page-level `h1`, absence of uncaught page errors, horizontal viewport overflow, image alt attributes, accessible control names/labels, page title, meta description, canonical URL and document language. Playwright is installed ephemerally in that CI job so the existing lockfile remains reproducible while this baseline is introduced.
+The baseline CI includes a real Chromium browser smoke test for the home page and the current public safari explorer route (`/safaris`) at desktop and mobile viewports. It verifies successful navigation, substantive rendered content, one page-level `h1`, absence of uncaught page errors, horizontal viewport overflow, image alt attributes, accessible control names/labels, page title, meta description, canonical URL and document language. Playwright is installed ephemerally in that CI job so the existing lockfile remains reproducible while this baseline is introduced. The ephemeral browser-test workspace is also audited at high severity before Chromium is run.
 
 This smoke job is deliberately not presented as full-system enquiry E2E coverage. A later phase should commit Playwright as a development dependency and add DB/API-backed browser flows for enquiry submission and admin CRM management once those environments can be provisioned deterministically in CI.
 
@@ -87,6 +89,8 @@ CI publishes frontend and backend coverage summary artifacts on every run.
 ## Regression tests
 
 When fixing a reproducible bug, add a test that would have failed before the fix whenever practical. This is particularly important for enquiry submission, authentication, database mappings and admin CRM state transitions.
+
+Historical failed workflow runs remain attached to their original commits in GitHub. Merge readiness is determined from the checks on the current PR head/merge candidate, not by making old failed runs disappear.
 
 ## Commands
 
