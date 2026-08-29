@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "description": "Good Secrets Safaris - Kenya, Tanzania & Zanzibar safari and travel platform.",
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "packageManager": "npm@10.9.8",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "tsc --noEmit && tsx scripts/generate-sitemap.ts && vite build",
