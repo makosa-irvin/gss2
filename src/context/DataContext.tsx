@@ -69,6 +69,7 @@ interface DataContextType {
   // Enquiries
   addEnquiry: (enquiry: Omit<Enquiry, 'id' | 'createdAt' | 'status'>) => Promise<{ id: string }>;
   updateEnquiryStatus: (id: string, status: Enquiry['status'], notes?: string) => Promise<void>;
+  deleteEnquiry: (id: string) => Promise<void>;
 
   // Settings (admin-authenticated on the backend)
   updateSettings: (newSettings: Partial<CompanySettings>) => Promise<void>;
@@ -407,6 +408,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setEnquiries(prev => prev.map(e => (e.id === id ? saved : e)));
   };
 
+  const deleteEnquiry = async (id: string) => {
+    await api.delete(`/api/enquiries/${id}`);
+    setEnquiries(prev => prev.filter(e => e.id !== id));
+  };
+
   // SETTINGS
   const updateSettings = async (newSettings: Partial<CompanySettings>) => {
     const saved = await api.put<CompanySettings>('/api/settings', newSettings);
@@ -487,6 +493,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteTestimonial,
         addEnquiry,
         updateEnquiryStatus,
+        deleteEnquiry,
         updateSettings,
         formatPrice,
         getWhatsAppUrl

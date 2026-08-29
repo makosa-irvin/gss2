@@ -26,7 +26,7 @@ export const HotelDetailView: React.FC<HotelDetailViewProps> = ({ hotel, onBack,
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 space-y-6">
+        <div className="min-w-0 lg:col-span-8 space-y-6">
           <div className="p-7 sm:p-8 rounded-3xl bg-white border border-[#ded8cb] space-y-5 shadow-sm">
             <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">What the stay is like</h2>
             <p className="text-base text-[#46544b] leading-relaxed">{hotel.description}</p>

@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
     <footer id="main-footer" className="bg-[#f9f8f4] border-t border-[#ded8cb] text-[#46544b] pt-14 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-9 pb-10 border-b border-[#ddd7c9]">
-          <div className="lg:col-span-5 space-y-5">
+          <div className="min-w-0 lg:col-span-5 space-y-5">
             <button type="button" onClick={() => onNavigate('home')} aria-label="Good Secrets Safaris home" className="flex items-center gap-3 text-left rounded-xl">
               <div className="w-11 h-11 rounded-xl bg-[#8a611d] p-0.5 shadow-md flex items-center justify-center"><div className="w-full h-full bg-[#161f19] rounded-[10px] flex items-center justify-center"><Compass className="w-5 h-5 text-[#f4f2eb]" aria-hidden="true" /></div></div>
               <div><span className="font-display-accent text-xl font-bold tracking-wider text-[#161f19] block">GOOD SECRETS SAFARIS</span><span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#76541a] block">KENYA · TANZANIA · ZANZIBAR</span></div>
