@@ -127,13 +127,12 @@ jobs:
         run: npm ci
       - name: Install coverage provider without changing lockfile
         run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
-      # These thresholds intentionally start just below the measured legacy
-      # baseline (38.39 statements / 37.19 branches / 21.71 functions /
-      # 43.18 lines). They prevent regression immediately without pretending
-      # the existing application already has 60% coverage. Raise them as
-      # critical workflows gain tests; never lower them to make CI green.
+      # Ratcheted after the CRM/component additions raised the measured
+      # frontend suite to 41.69 statements / 43.04 branches / 24.57
+      # functions / 46.77 lines. Floors sit just below the measured result
+      # so future changes cannot quietly give the gains back.
       - name: Frontend coverage
-        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=43 --coverage.thresholds.functions=21 --coverage.thresholds.statements=38 --coverage.thresholds.branches=37
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=46 --coverage.thresholds.functions=24 --coverage.thresholds.statements=41 --coverage.thresholds.branches=42
       - name: Install backend dependencies
         working-directory: server
         run: npm ci
@@ -146,13 +145,12 @@ jobs:
       - name: Seed disposable coverage database
         working-directory: server
         run: npm run seed
-      # Backend measured legacy baseline is 52.77 statements / 23.44
-      # branches / 34.61 functions / 55.52 lines. Start just below it so
-      # regression is blocked immediately, then ratchet upward as API,
-      # authentication and CRM tests expand.
+      # Auth, enquiry/CRM and admin-content integration coverage raised the
+      # measured backend suite to 72.47 statements / 45.80 branches / 60.75
+      # functions / 74.62 lines. These floors preserve that improvement.
       - name: Backend coverage
         working-directory: server
-        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=55 --coverage.thresholds.functions=34 --coverage.thresholds.statements=52 --coverage.thresholds.branches=23
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=74 --coverage.thresholds.functions=60 --coverage.thresholds.statements=72 --coverage.thresholds.branches=45
       - name: Upload coverage summaries
         if: always()
         uses: actions/upload-artifact@v4
