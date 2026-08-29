@@ -17,9 +17,17 @@
   --color-brand: #b3822a;
   --color-brand-strong: #9e7120;
   --color-brand-soft: #e6bc65;
+  --color-brand-deep: #76541a;
+  --color-brand-hover: #704d15;
   --color-action: #1b4332;
   --color-action-strong: #123524;
+  --color-action-soft: #eef7f2;
+  --color-action-border: #b9d8c5;
   --color-shell: #0c120e;
+  --color-on-shell: #f4f2eb;
+  --color-on-shell-muted: #c7d2cb;
+  --color-on-shell-subtle: #aebbb2;
+  --color-surface-soft: #f4f1e8;
   --color-border: #e8e4da;
   --color-border-strong: #ded8cb;
   --color-success: #166534;

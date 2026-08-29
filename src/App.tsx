@@ -28,7 +28,7 @@ const BlogRoute = lazy(() => import('./routes/BlogRoute').then(m => ({ default: 
 const AdminRoute = lazy(() => import('./routes/AdminRoute').then(m => ({ default: m.AdminRoute })));
 const NotFoundView = lazy(() => import('./routes/NotFoundView').then(m => ({ default: m.NotFoundView })));
 
-const RouteFallback = () => <div className="min-h-[50vh] flex items-center justify-center"><p className="text-sm text-[#a3b2a7]">Loading…</p></div>;
+const RouteFallback = () => <div className="min-h-[50vh] flex items-center justify-center"><p className="text-sm text-on-shell-subtle">Loading…</p></div>;
 
 function useLegacyNavigate() {
   const navigate = useNavigate(); const { destinations } = useData();
@@ -54,7 +54,7 @@ function useLegacyNavigate() {
   };
 }
 
-const BuilderPage: React.FC<{ onOpenEnquiryModal: (payload?: any) => void }> = ({ onOpenEnquiryModal }) => { const navigate=useNavigate(); return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8"><PageMeta title="Custom Safari Builder" description="Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate." canonicalPath="/safari-builder"/><div className="text-center max-w-3xl mx-auto space-y-3"><span className="text-xs font-bold uppercase tracking-widest text-[#c49a45]">Tailor-Made Journey Engine</span><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-[#f4f2eb]">Custom Safari Builder</h1><p className="text-sm text-[#a3b2a7]">Answer 6 quick questions to narrow down a route and receive a bespoke itinerary proposal from the safari team.</p></div><SafariBuilderWizard onSelectTour={(tour:Tour)=>navigate(`/safaris/${tour.slug}`)} onCompleteEnquiry={onOpenEnquiryModal}/></div>; };
+const BuilderPage: React.FC<{ onOpenEnquiryModal: (payload?: any) => void }> = ({ onOpenEnquiryModal }) => { const navigate=useNavigate(); return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8"><PageMeta title="Custom Safari Builder" description="Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate." canonicalPath="/safari-builder"/><div className="text-center max-w-3xl mx-auto space-y-3"><span className="text-xs font-bold uppercase tracking-widest text-brand">Tailor-Made Journey Engine</span><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-on-shell">Custom Safari Builder</h1><p className="text-sm text-on-shell-subtle">Answer 6 quick questions to narrow down a route and receive a bespoke itinerary proposal from the safari team.</p></div><SafariBuilderWizard onSelectTour={(tour:Tour)=>navigate(`/safaris/${tour.slug}`)} onCompleteEnquiry={onOpenEnquiryModal}/></div>; };
 
 interface EnquiryModalData { selectedTour?: Tour | null; selectedHotel?: Hotel | null; initialType?: string; initialDestination?: string; initialSpecialRequests?: string; contextItems?: string[]; }
 
@@ -64,10 +64,10 @@ const MainAppContent: React.FC = () => {
   const openEnquiryModal=(data?:EnquiryModalData)=>{setEnquiryModalData(data||{});setIsEnquiryModalOpen(true);};
   const handleSelectTour=(tour:Tour)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/safaris/${tour.slug}`);}; const handleSelectDestination=(destination:Destination)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/destinations/${destination.slug}`);}; const handleSelectHotel=(hotel:Hotel)=>{window.scrollTo({top:0,behavior:'smooth'});navigate(`/hotels/${hotel.slug}`);};
   const currentTourTitleForWhatsApp=location.pathname.startsWith('/safaris/')?tours.find(t=>t.slug===location.pathname.split('/')[2])?.title:undefined;
-  if(isLoading) return <div className="min-h-screen flex items-center justify-center bg-[#0c120e] text-[#f4f2eb]"><p className="text-sm text-[#a3b2a7]">Loading Good Secrets Safaris...</p></div>;
-  if(loadError) return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[#0c120e] text-[#f4f2eb] px-4 text-center"><p className="text-sm text-[#f4f2eb]">{loadError}</p><button onClick={()=>window.location.reload()} className="px-5 py-2.5 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] text-white font-bold text-xs uppercase tracking-wider">Retry</button></div>;
+  if(isLoading) return <div className="min-h-screen flex items-center justify-center bg-shell text-on-shell"><p className="text-sm text-on-shell-subtle">Loading Good Secrets Safaris...</p></div>;
+  if(loadError) return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-shell text-on-shell px-4 text-center"><p className="text-sm text-on-shell">{loadError}</p><button onClick={()=>window.location.reload()} className="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-strong text-white font-bold text-xs uppercase tracking-wider">Retry</button></div>;
 
-  return <div className="min-h-screen flex flex-col bg-[#0c120e] text-[#f4f2eb] selection:bg-[#c49a45] selection:text-black"><Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><main className="flex-1"><Suspense fallback={<RouteFallback/>}><Routes>
+  return <div className="min-h-screen flex flex-col bg-shell text-on-shell selection:bg-brand selection:text-black"><Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><main className="flex-1"><Suspense fallback={<RouteFallback/>}><Routes>
     <Route path="/" element={<HomePage onNavigate={legacyNavigate} onSelectTour={handleSelectTour} onSelectDestination={handleSelectDestination} onSelectHotel={handleSelectHotel} onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/safaris" element={<ToursExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safaris/:slug" element={<TourDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/destinations" element={<DestinationsView onSelectDestination={handleSelectDestination}/>}/><Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
