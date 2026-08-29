@@ -13,14 +13,17 @@ Enable a GitHub ruleset or branch protection rule with:
 - require linear history where it does not conflict with the chosen merge strategy
 - include administrators only after confirming the rules cannot lock out the repository owner
 
-Required checks should be added only after this baseline CI has run successfully at least once so GitHub knows the exact check names. Expected checks are:
+Required checks should be added only after this baseline CI has run successfully at least once so GitHub knows the exact check names. The checks introduced by this baseline are:
 
 - `Repository quality`
 - `Frontend / typecheck, tests, build`
 - `Backend / typecheck, API tests, build`
 - `Coverage thresholds`
-- `Dependency review`
-- CodeQL analysis
+- `Browser smoke / Chromium`
+- `Dependency audit`
+- CodeQL JavaScript/TypeScript analysis (select the exact check name shown by the successful CodeQL run)
+
+Do not select transient deployment-preview statuses as required engineering checks unless the deployment itself is intentionally part of the merge policy.
 
 For a solo-maintainer repository, do not require multiple external approvals. CI and conversation resolution should be mandatory. When a second regular maintainer joins, require one approving review and CODEOWNERS review for sensitive areas.
 
