@@ -1,7 +1,7 @@
 import { chromium, devices } from 'playwright';
 
 const baseUrl = process.env.E2E_BASE_URL || 'http://127.0.0.1:4173';
-const routes = ['/', '/tours'];
+const routes = ['/', '/safaris'];
 const projects = [
   { name: 'desktop', viewport: { width: 1440, height: 900 } },
   { name: 'mobile', ...devices['iPhone 13'] },
