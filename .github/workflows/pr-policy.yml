@@ -1,0 +1,31 @@
+name: Pull Request Policy
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    branches: [deployment/staging, main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  title:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Validate title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        shell: bash
+        run: |
+          pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?!?: .+'
+          if [[ ! "$PR_TITLE" =~ $pattern ]]; then
+            echo "Pull request title must follow Conventional Commits."
+            echo "Examples:"
+            echo "  feat: add safari enquiry follow-up"
+            echo "  fix(api): validate traveller count"
+            echo "  chore!: remove deprecated endpoint"
+            exit 1
+          fi
