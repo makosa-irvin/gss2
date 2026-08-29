@@ -174,8 +174,14 @@ jobs:
       - run: npm ci
       - name: Build frontend
         run: npm run build
+      # Keep the ephemeral browser runner current. 1.55.0 was old enough
+      # that npm reported a high-severity advisory after installing it in
+      # the CI workspace even though the committed dependency graph was
+      # clean. This version is the current stable Playwright release.
       - name: Install Playwright runner without changing lockfile
-        run: npm install --no-save --package-lock=false playwright@1.55.0
+        run: npm install --no-save --package-lock=false playwright@1.62.1
+      - name: Audit browser-test workspace
+        run: npm audit --audit-level=high
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Start production preview
