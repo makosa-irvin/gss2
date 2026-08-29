@@ -1,18 +1,34 @@
-name: Dependency Review
+name: Dependency Security
 
 on:
   pull_request:
+    branches: [deployment/staging, main]
+  push:
     branches: [deployment/staging, main]
 
 permissions:
   contents: read
 
 jobs:
-  dependency-review:
-    name: Dependency review
+  dependency-audit:
+    name: Dependency audit
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/setup-node@v4
         with:
-          fail-on-severity: high
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+      - name: Audit frontend production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Audit backend production dependencies
+        working-directory: server
+        run: npm audit --omit=dev --audit-level=high
+
+      # GitHub's dependency-review-action is a stronger PR-diff gate, but
+      # it requires the repository Dependency Graph setting to be enabled.
+      # Once enabled in Settings > Security, replace/add that action here.
