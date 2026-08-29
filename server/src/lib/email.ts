@@ -1,13 +1,12 @@
 import { Resend } from 'resend';
 import type { enquiries } from '../db/schema.js';
+import { env } from '../config/env.js';
 
 type Enquiry = typeof enquiries.$inferSelect;
 
-const apiKey = process.env.RESEND_API_KEY;
-const resend = apiKey ? new Resend(apiKey) : null;
-
-const FROM = process.env.ENQUIRY_FROM_EMAIL || 'Good Secrets Safaris <onboarding@resend.dev>';
-const NOTIFY_TO = process.env.ENQUIRY_NOTIFY_EMAIL;
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
+const FROM = env.ENQUIRY_FROM_EMAIL;
+const NOTIFY_TO = env.ENQUIRY_NOTIFY_EMAIL;
 
 /**
  * Sends the business a notification email for a new enquiry, and a
