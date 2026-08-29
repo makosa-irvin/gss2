@@ -35,8 +35,9 @@ for (const file of privateKeyFiles) {
   violations.push(`${file}: private key/certificate material must not be committed`);
 }
 
-// Prevent new scattered UI hardcoding without making legacy cleanup a prerequisite.
-// In pull requests GitHub supplies GITHUB_BASE_REF; we inspect only added lines.
+// Prevent new scattered production-UI hardcoding without making legacy
+// cleanup a prerequisite. Tests/fixtures legitimately contain example
+// URLs, contact values and visual literals, so they are excluded.
 const baseRef = process.env.GITHUB_BASE_REF;
 if (baseRef) {
   try {
@@ -54,6 +55,7 @@ if (baseRef) {
       }
       if (!line.startsWith('+') || line.startsWith('+++')) continue;
       if (!/^(?:src\/components|src\/views|src\/admin)\//.test(currentFile)) continue;
+      if (/(?:^|\/)__tests__\//.test(currentFile) || /\.test\.[^.]+$/.test(currentFile)) continue;
       if (line.includes('quality-allow-hardcoded')) continue;
 
       const added = line.slice(1);
