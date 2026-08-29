@@ -88,6 +88,30 @@ if (baseRef) {
         violations.push(`${currentFile}: new arbitrary hex color should use an existing semantic design token/class`);
       }
     }
+
+    // Runtime configuration has a single validated boundary. New production
+    // code should consume server/src/config/env.ts rather than spreading
+    // unvalidated process.env reads throughout routes/services/middleware.
+    const serverDiff = execFileSync(
+      'git',
+      ['diff', `origin/${baseRef}...HEAD`, '--unified=0', '--', 'server/src'],
+      { encoding: 'utf8' },
+    );
+
+    currentFile = '';
+    for (const line of serverDiff.split(/\r?\n/)) {
+      if (line.startsWith('+++ b/')) {
+        currentFile = line.slice(6);
+        continue;
+      }
+      if (!line.startsWith('+') || line.startsWith('+++')) continue;
+      if (!line.includes('process.env')) continue;
+      if (currentFile === 'server/src/config/env.ts') continue;
+      if (/^server\/src\/db\/(?:seed|migrate)\.ts$/.test(currentFile)) continue;
+      if (/^server\/src\/test\//.test(currentFile) || /\.test\.ts$/.test(currentFile)) continue;
+
+      violations.push(`${currentFile}: new runtime process.env access must go through server/src/config/env.ts`);
+    }
   } catch {
     violations.push(`Could not compare changes against origin/${baseRef}; ensure checkout has base-branch history`);
   }
