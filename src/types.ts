@@ -1,6 +1,6 @@
 export type Country = 'Kenya' | 'Tanzania' | 'Zanzibar' | 'Kenya + Tanzania' | 'Safari + Beach';
 
-export type TravelStyle = 
+export type TravelStyle =
   | 'Big 5'
   | 'Great Migration'
   | 'Family'

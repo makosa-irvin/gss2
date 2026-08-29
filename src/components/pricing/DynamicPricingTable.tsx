@@ -107,7 +107,7 @@ export const DynamicPricingTable: React.FC<DynamicPricingTableProps> = ({ tour, 
       <div className="mt-6 pt-4 border-t border-[#eeebe2] flex items-start gap-2 text-xs text-[#6e7d72]">
         <Info className="w-4 h-4 text-[#9e7120] shrink-0 mt-0.5" />
         <p>
-          Prices are per person in {activeCurrency} and exclude international flights unless otherwise stated. 
+          Prices are per person in {activeCurrency} and exclude international flights unless otherwise stated.
           Custom group discounts (4+ guests) and family interconnecting room rates are calculated automatically upon enquiry.
         </p>
       </div>

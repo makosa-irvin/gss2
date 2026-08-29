@@ -1,0 +1,200 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - deployment/staging
+      - main
+  push:
+    branches:
+      - deployment/staging
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository-quality:
+    name: Repository quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run quality:check
+
+  frontend:
+    name: Frontend / typecheck, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit and component tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+
+  backend:
+    name: Backend / typecheck, API tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/gss_test
+      JWT_SECRET: ci-only-test-secret-never-use-in-production
+      NODE_ENV: test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gss_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d gss_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Migrate disposable test database
+        run: npm run db:migrate
+      - name: Seed disposable test database
+        run: npm run seed
+      - name: API and integration tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+
+  coverage:
+    name: Coverage thresholds
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/gss_coverage
+      JWT_SECRET: ci-only-test-secret-never-use-in-production
+      NODE_ENV: test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gss_coverage
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d gss_coverage"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Install coverage provider without changing lockfile
+        run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
+      # The DataContext enquiry-contract test raised the measured frontend
+      # suite to 42.65 statements / 44.76 branches / 26.13 functions /
+      # 47.76 lines. Floors sit just below that measured result so the
+      # additional confidence cannot silently regress.
+      - name: Frontend coverage
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=47 --coverage.thresholds.functions=26 --coverage.thresholds.statements=42 --coverage.thresholds.branches=44
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm ci
+      - name: Install backend coverage provider without changing lockfile
+        working-directory: server
+        run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
+      - name: Migrate disposable coverage database
+        working-directory: server
+        run: npm run db:migrate
+      - name: Seed disposable coverage database
+        working-directory: server
+        run: npm run seed
+      # Auth, enquiry/CRM and admin-content integration coverage raised the
+      # measured backend suite to 85.39 statements / 65.64 branches / 75.94
+      # functions / 86.10 lines. These floors preserve that improvement.
+      - name: Backend coverage
+        working-directory: server
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=86 --coverage.thresholds.functions=75 --coverage.thresholds.statements=85 --coverage.thresholds.branches=65
+      - name: Upload coverage summaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-summaries
+          path: |
+            coverage/coverage-summary.json
+            server/coverage/coverage-summary.json
+          if-no-files-found: warn
+
+  browser-smoke:
+    name: Browser smoke / Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build frontend
+        run: npm run build
+      # Keep the ephemeral browser runner current. 1.55.0 was old enough
+      # that npm reported a high-severity advisory after installing it in
+      # the CI workspace even though the committed dependency graph was
+      # clean. This version is the current stable Playwright release.
+      - name: Install Playwright runner without changing lockfile
+        run: npm install --no-save --package-lock=false playwright@1.62.1
+      - name: Audit browser-test workspace
+        run: npm audit --audit-level=high
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start production preview
+        run: npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/gss-preview.log 2>&1 &
+      - name: Wait for preview
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/gss-preview.log
+          exit 1
+      - name: Run browser smoke checks
+        run: node scripts/e2e-smoke.mjs

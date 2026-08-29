@@ -1,13 +1,21 @@
 import '@testing-library/jest-dom/vitest';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
+import { installMockApi } from './mockApi';
 
-// Ensure each test starts from a clean DOM and clean localStorage, since
-// DataProvider persists tours/hotels/destinations/etc. to localStorage and
-// falls back to the seed data in src/data/initialData.ts when nothing is
-// stored. Without this, state from one test (e.g. a resident-mode toggle)
-// could leak into the next.
+// Component tests should never reach a developer machine, staging service or
+// the public internet. Install a deterministic public-visitor API boundary by
+// default; tests that need an authenticated admin or a special response can
+// call installMockApi(...) themselves and replace this stub for that test.
+beforeEach(() => {
+  installMockApi();
+});
+
+// Ensure each test starts from a clean DOM, browser storage and network stub.
+// DataProvider persists user preferences in localStorage, so leaving either
+// storage or a custom fetch mock behind can make later tests order-dependent.
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
+  vi.unstubAllGlobals();
 });

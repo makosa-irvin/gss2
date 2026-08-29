@@ -1,44 +1,47 @@
-import { describe, it, expect, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { eq } from 'drizzle-orm';
 import { createApp } from '../app.js';
 import { db, pool } from '../db/client.js';
-import { destinations } from '../db/schema.js';
+import { adminUsers, destinations } from '../db/schema.js';
+import { hashPassword } from '../lib/auth.js';
 
 const app = createApp();
-
-const SEED_ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@goodsecretssafaris.com';
-const SEED_ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD;
+const TEST_ADMIN_EMAIL = 'ci-content-admin@example.com';
+const TEST_ADMIN_PASSWORD = 'Test-only-password-42!';
 
 /**
- * Regression tests for the draft/publish feature added on
- * phase/seo-migration. None of the new admin content routes
- * (destinations/blog/testimonials) or the `published` filtering on
- * public reads had any test coverage before this file - which is very
- * likely why a real bug shipped undetected: the two hand-written
- * migrations that add the `published`/lifecycle columns were never
- * registered in migrations/meta/_journal.json, so `npm run db:migrate`
- * silently did nothing for them and every admin content write failed
- * with a Postgres 42703 (undefined_column) error. Fixed by adding the
- * missing journal entries; this suite exists so that kind of gap
- * doesn't ship silently again.
+ * Regression tests for draft/publish visibility. These run against a synthetic
+ * administrator so CI exercises the real authenticated content-writing path
+ * without depending on a shared seed password or contributor secrets.
  */
-describe.runIf(!!SEED_ADMIN_PASSWORD)('Draft/publish content filtering', () => {
+describe('Draft/publish content filtering', () => {
   const createdIds: string[] = [];
+  let sessionCookie: string;
+
+  beforeAll(async () => {
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
+    await db.insert(adminUsers).values({
+      email: TEST_ADMIN_EMAIL,
+      passwordHash: await hashPassword(TEST_ADMIN_PASSWORD),
+      name: 'CI Content Administrator',
+    });
+
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ email: TEST_ADMIN_EMAIL, password: TEST_ADMIN_PASSWORD });
+
+    expect(loginRes.status).toBe(200);
+    sessionCookie = loginRes.headers['set-cookie'];
+  });
 
   afterAll(async () => {
     for (const id of createdIds) {
       await db.delete(destinations).where(eq(destinations.id, id));
     }
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
     await pool.end();
   });
-
-  async function loginAsAdmin() {
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({ email: SEED_ADMIN_EMAIL, password: SEED_ADMIN_PASSWORD });
-    return res.headers['set-cookie'];
-  }
 
   const draftPayload = {
     name: 'Regression Test Draft Destination',
@@ -46,10 +49,7 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Draft/publish content filtering', () => {
     country: 'Kenya',
     subtitle: 'Test subtitle',
     description: 'Test description',
-    heroImage: '', // drafts are allowed to be missing imagery - this is
-    // exactly the field whose validation (heroImage: z.string().min(1))
-    // previously rejected every draft created through the admin UI's
-    // quick-create form, which always sends an empty string here.
+    heroImage: '',
     gallery: [],
     bestTimeToVisit: 'Year-round',
     wildlife: [],
@@ -63,62 +63,88 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Draft/publish content filtering', () => {
     published: false,
   };
 
-  it('accepts a draft with an empty heroImage (admin quick-create UI always sends one)', async () => {
-    const cookie = await loginAsAdmin();
+  it('requires authentication for admin destination writes', async () => {
+    const res = await request(app).post('/api/admin/destinations').send(draftPayload);
+    expect(res.status).toBe(401);
+  });
+
+  it('accepts a draft with an empty heroImage', async () => {
     const res = await request(app)
       .post('/api/admin/destinations')
-      .set('Cookie', cookie)
+      .set('Cookie', sessionCookie)
       .send(draftPayload);
 
     expect(res.status).toBe(201);
+    expect(res.body.published).toBe(false);
     createdIds.push(res.body.id);
   });
 
-  it('excludes an unpublished destination from the public list and single-item endpoints', async () => {
-    const cookie = await loginAsAdmin();
+  it('excludes an unpublished destination from public list and detail endpoints', async () => {
     const createRes = await request(app)
       .post('/api/admin/destinations')
-      .set('Cookie', cookie)
+      .set('Cookie', sessionCookie)
       .send({ ...draftPayload, slug: 'regression-test-draft-2', name: 'Regression Test Draft 2' });
+    expect(createRes.status).toBe(201);
     createdIds.push(createRes.body.id);
 
     const listRes = await request(app).get('/api/destinations');
+    expect(listRes.status).toBe(200);
     expect(listRes.body.some((d: { id: string }) => d.id === createRes.body.id)).toBe(false);
 
     const singleRes = await request(app).get('/api/destinations/regression-test-draft-2');
     expect(singleRes.status).toBe(404);
   });
 
-  it('includes the same unpublished destination in the admin list (admins see drafts)', async () => {
-    const cookie = await loginAsAdmin();
+  it('includes unpublished destinations in the authenticated admin list', async () => {
     const createRes = await request(app)
       .post('/api/admin/destinations')
-      .set('Cookie', cookie)
+      .set('Cookie', sessionCookie)
       .send({ ...draftPayload, slug: 'regression-test-draft-3', name: 'Regression Test Draft 3' });
+    expect(createRes.status).toBe(201);
     createdIds.push(createRes.body.id);
 
-    const adminListRes = await request(app).get('/api/admin/destinations').set('Cookie', cookie);
+    const adminListRes = await request(app)
+      .get('/api/admin/destinations')
+      .set('Cookie', sessionCookie);
+
+    expect(adminListRes.status).toBe(200);
     expect(adminListRes.body.some((d: { id: string }) => d.id === createRes.body.id)).toBe(true);
   });
 
-  it('publishing a draft makes it visible on the public endpoint', async () => {
-    const cookie = await loginAsAdmin();
+  it('publishing a draft makes it visible publicly', async () => {
     const createRes = await request(app)
       .post('/api/admin/destinations')
-      .set('Cookie', cookie)
+      .set('Cookie', sessionCookie)
       .send({ ...draftPayload, slug: 'regression-test-draft-4', name: 'Regression Test Draft 4' });
+    expect(createRes.status).toBe(201);
     createdIds.push(createRes.body.id);
 
     let publicRes = await request(app).get('/api/destinations/regression-test-draft-4');
     expect(publicRes.status).toBe(404);
 
-    await request(app)
+    const publishRes = await request(app)
       .put(`/api/admin/destinations/${createRes.body.id}`)
-      .set('Cookie', cookie)
+      .set('Cookie', sessionCookie)
       .send({ published: true });
+
+    expect(publishRes.status).toBe(200);
+    expect(publishRes.body.published).toBe(true);
 
     publicRes = await request(app).get('/api/destinations/regression-test-draft-4');
     expect(publicRes.status).toBe(200);
     expect(publicRes.body.name).toBe('Regression Test Draft 4');
+  });
+
+  it('returns 404 when updating or deleting a missing destination', async () => {
+    const updateRes = await request(app)
+      .put('/api/admin/destinations/id_does_not_exist')
+      .set('Cookie', sessionCookie)
+      .send({ published: true });
+    expect(updateRes.status).toBe(404);
+
+    const deleteRes = await request(app)
+      .delete('/api/admin/destinations/id_does_not_exist')
+      .set('Cookie', sessionCookie);
+    expect(deleteRes.status).toBe(404);
   });
 });
