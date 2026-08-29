@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -20,11 +19,7 @@ import { adminBlogRouter } from './routes/adminBlog.js';
 import { adminTestimonialsRouter } from './routes/adminTestimonials.js';
 import { errorHandler } from './middleware/common.js';
 import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
-
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
+import { allowedOrigins } from './config/env.js';
 
 export function createApp() {
   const app = express();

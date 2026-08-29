@@ -1,8 +1,8 @@
 import { createApp } from './app.js';
+import { env } from './config/env.js';
 
-const port = Number(process.env.PORT) || 4000;
 const app = createApp();
 
-app.listen(port, () => {
-  console.log(`Good Secrets Safaris API listening on http://localhost:${port}`);
+app.listen(env.PORT, () => {
+  console.log(`Good Secrets Safaris API listening on port ${env.PORT}`);
 });

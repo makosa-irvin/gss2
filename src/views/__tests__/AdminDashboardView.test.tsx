@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithProviders } from '../../test/test-utils';
+import { renderWithProviders, settleProviderEffects } from '../../test/test-utils';
 import { installMockApi } from '../../test/mockApi';
 import { AdminDashboardView } from '../AdminDashboardView';
 import { TourDetailView } from '../TourDetailView';
@@ -46,6 +46,7 @@ describe('AdminDashboardView - Create New Tour form', () => {
 
     const user = userEvent.setup();
     renderWithProviders(<AdminDashboardView onNavigateHome={noop} onPreviewTour={noop} />);
+    await settleProviderEffects();
 
     await user.click(await screen.findByRole('button', { name: /safaris & tours/i }));
     await user.click(await screen.findByRole('button', { name: /add safari/i }));
@@ -80,6 +81,7 @@ describe('AdminDashboardView - Create New Tour form', () => {
         }}
       />
     );
+    await settleProviderEffects();
 
     const user = userEvent.setup();
     await user.click(await screen.findByRole('button', { name: /safaris & tours/i }));
@@ -101,15 +103,10 @@ describe('AdminDashboardView - Create New Tour form', () => {
     // This is the actual regression check: render the tour this form
     // produced through TourDetailView, the page that used to throw
     // "Cannot read properties of undefined (reading 'map')".
-    let threw = false;
-    try {
-      renderWithProviders(
-        <TourDetailView tour={capturedTour as Tour} onBack={noop} onOpenEnquiryModal={noop} />
-      );
-    } catch {
-      threw = true;
-    }
-    expect(threw).toBe(false);
+    renderWithProviders(
+      <TourDetailView tour={capturedTour as Tour} onBack={noop} onOpenEnquiryModal={noop} />
+    );
+    await settleProviderEffects();
 
     expect(
       screen.getByRole('heading', { name: 'Test Preview Tour', level: 1 })

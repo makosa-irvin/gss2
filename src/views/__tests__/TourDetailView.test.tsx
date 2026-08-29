@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithProviders } from '../../test/test-utils';
+import { renderWithProviders, settleProviderEffects } from '../../test/test-utils';
 import { makeTour } from '../../test/fixtures';
+import { installMockApi } from '../../test/mockApi';
 import { TourDetailView } from '../TourDetailView';
 
 /**
@@ -16,15 +17,20 @@ import { TourDetailView } from '../TourDetailView';
 describe('TourDetailView', () => {
   const noop = () => {};
 
-  it('renders without crashing for a fully-populated tour', () => {
+  beforeEach(() => {
+    installMockApi();
+  });
+
+  it('renders without crashing for a fully-populated tour', async () => {
     const tour = makeTour();
     renderWithProviders(
       <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={noop} />
     );
+    await settleProviderEffects();
     expect(screen.getByRole('heading', { name: tour.title, level: 1 })).toBeInTheDocument();
   });
 
-  it('renders included services and activities together under "What Is Included"', () => {
+  it('renders included services and activities together under "What Is Included"', async () => {
     const tour = makeTour({
       includedServices: ['Park entrance fees', 'Airport transfers'],
       includedActivities: ['Game drives'],
@@ -32,6 +38,7 @@ describe('TourDetailView', () => {
     renderWithProviders(
       <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={noop} />
     );
+    await settleProviderEffects();
 
     expect(screen.getByText('What Is Included')).toBeInTheDocument();
     expect(screen.getByText('Park entrance fees')).toBeInTheDocument();
@@ -39,18 +46,19 @@ describe('TourDetailView', () => {
     expect(screen.getByText('Game drives')).toBeInTheDocument();
   });
 
-  it('renders exclusions under "What Is Excluded"', () => {
+  it('renders exclusions under "What Is Excluded"', async () => {
     const tour = makeTour({ exclusions: ['International flights', 'Travel insurance'] });
     renderWithProviders(
       <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={noop} />
     );
+    await settleProviderEffects();
 
     expect(screen.getByText('What Is Excluded')).toBeInTheDocument();
     expect(screen.getByText('International flights')).toBeInTheDocument();
     expect(screen.getByText('Travel insurance')).toBeInTheDocument();
   });
 
-  it('does not crash and hides the section entirely when included/excluded data is empty', () => {
+  it('does not crash and hides the section entirely when included/excluded data is empty', async () => {
     const tour = makeTour({
       includedServices: [],
       includedActivities: [],
@@ -60,10 +68,10 @@ describe('TourDetailView', () => {
     renderWithProviders(
       <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={noop} />
     );
+    await settleProviderEffects();
 
     expect(screen.queryByText('What Is Included')).not.toBeInTheDocument();
     expect(screen.queryByText('What Is Excluded')).not.toBeInTheDocument();
-    // The page itself must still have rendered its core content.
     expect(screen.getByRole('heading', { name: tour.title, level: 1 })).toBeInTheDocument();
   });
 
@@ -74,6 +82,7 @@ describe('TourDetailView', () => {
     renderWithProviders(
       <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={onOpenEnquiryModal} />
     );
+    await settleProviderEffects();
 
     await user.click(screen.getByRole('button', { name: /book this safari/i }));
 

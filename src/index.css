@@ -2,6 +2,32 @@
 @plugin "@tailwindcss/typography";
 
 /*
+ * Shared semantic tokens for new UI. Legacy arbitrary color utilities are
+ * migrated incrementally; new components should prefer these names so the
+ * visual language can evolve centrally without page-by-page rewrites.
+ */
+@theme {
+  --color-page: #fcfbf9;
+  --color-surface: #ffffff;
+  --color-surface-muted: #faf8f2;
+  --color-ink: #1a241e;
+  --color-ink-strong: #161f19;
+  --color-ink-muted: #5d6e62;
+  --color-ink-subtle: #707f74;
+  --color-brand: #b3822a;
+  --color-brand-strong: #9e7120;
+  --color-brand-soft: #e6bc65;
+  --color-action: #1b4332;
+  --color-action-strong: #123524;
+  --color-shell: #0c120e;
+  --color-border: #e8e4da;
+  --color-border-strong: #ded8cb;
+  --color-success: #166534;
+  --color-warning: #92400e;
+  --color-danger: #be123c;
+}
+
+/*
  * Self-hosted fonts (via @fontsource-variable), replacing the Google
  * Fonts <link> in index.html. That external stylesheet was
  * render-blocking (Lighthouse: ~410ms) and, worse, meant the actual
@@ -24,8 +50,8 @@
        declarations above (not the plain 'Plus Jakarta Sans' name used
        by the old Google Fonts static-weight files). */
     font-family: 'Plus Jakarta Sans Variable', sans-serif;
-    background-color: #fcfbf9;
-    color: #1a241e;
+    background-color: var(--color-page);
+    color: var(--color-ink);
   }
 
   h1, h2, h3, .font-serif-luxury {
@@ -42,7 +68,7 @@
    * visible on both the site's cream cards and its dark green shell.
    */
   :where(a, button, input, select, textarea, summary, [role='button'], [tabindex]):focus-visible {
-    outline: 3px solid #e6bc65;
+    outline: 3px solid var(--color-brand-soft);
     outline-offset: 3px;
     box-shadow: 0 0 0 5px rgba(12, 18, 14, 0.9);
   }
@@ -65,7 +91,7 @@ section:has(h2.text-white) > div:first-child .text-\[\#5d6e62\] {
 }
 
 section:has(h2.text-white) > div:first-child .text-\[\#9e7120\] {
-  color: #e6bc65;
+  color: var(--color-brand-soft);
 }
 
 /*
@@ -108,7 +134,7 @@ section:has(h2.text-white) > div:first-child .text-\[\#9e7120\] {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b3822a;
+  background: var(--color-brand);
 }
 
 @keyframes floatSlow {

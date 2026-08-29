@@ -1,27 +1,68 @@
-import { describe, it, expect, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { eq } from 'drizzle-orm';
 import { createApp } from '../app.js';
 import { db, pool } from '../db/client.js';
-import { enquiries } from '../db/schema.js';
+import { adminUsers, enquiries } from '../db/schema.js';
+import { hashPassword } from '../lib/auth.js';
 
 const app = createApp();
 const createdIds: string[] = [];
-const SEED_ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@goodsecretssafaris.com';
-const SEED_ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD;
+const TEST_ADMIN_EMAIL = 'ci-crm-admin@example.com';
+const TEST_ADMIN_PASSWORD = 'Test-only-password-42!';
 
 /**
- * These tests are the regression guard for the single most important fix
- * in this backend: previously, submitted enquiries only ever reached the
- * submitting visitor's own browser localStorage - never the business.
- * Asserting the row actually lands in the database (not just that the
- * HTTP response looks right) is the point.
+ * These tests are the regression guard for the most important backend journey:
+ * a traveller submits an enquiry, it is persisted, and an authenticated staff
+ * member can safely progress it through the CRM lifecycle.
  */
-describe('Enquiry submission', () => {
+describe('Enquiry submission and CRM lifecycle', () => {
+  let sessionCookie: string;
+  let managedEnquiryId: string;
+
+  beforeAll(async () => {
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
+    await db.insert(adminUsers).values({
+      email: TEST_ADMIN_EMAIL,
+      passwordHash: await hashPassword(TEST_ADMIN_PASSWORD),
+      name: 'CI CRM Administrator',
+    });
+
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ email: TEST_ADMIN_EMAIL, password: TEST_ADMIN_PASSWORD });
+
+    expect(loginRes.status).toBe(200);
+    sessionCookie = loginRes.headers['set-cookie'];
+
+    const [managed] = await db
+      .insert(enquiries)
+      .values({
+        fullName: 'CRM Test Traveler',
+        email: 'crm-test@example.com',
+        phone: '+1 555 000 3333',
+        country: 'United States',
+        travelDates: 'October 2027',
+        adults: 2,
+        children: 0,
+        preferredDestination: 'Maasai Mara',
+        safariType: 'Private safari',
+        budget: 'USD 5,000–7,500',
+        accommodationPreference: 'Luxury lodge',
+        specialRequests: 'Synthetic CRM lifecycle test enquiry.',
+        hearAboutUs: 'Automated test',
+      })
+      .returning();
+
+    managedEnquiryId = managed.id;
+    createdIds.push(managedEnquiryId);
+  });
+
   afterAll(async () => {
     for (const id of createdIds) {
       await db.delete(enquiries).where(eq(enquiries.id, id));
     }
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
     await pool.end();
   });
 
@@ -39,7 +80,7 @@ describe('Enquiry submission', () => {
     expect(res.body.details.fieldErrors.email).toBeDefined();
   });
 
-  it('accepts a valid enquiry, persists it to the database, and is not visible without admin auth', async () => {
+  it('accepts a valid enquiry, persists it to the database, and keeps it private', async () => {
     const payload = {
       fullName: 'Automated Test Traveler',
       email: 'automated-test@example.com',
@@ -57,22 +98,124 @@ describe('Enquiry submission', () => {
     expect(res.body.id).toBeDefined();
     createdIds.push(res.body.id);
 
-    // The real assertion: query the database directly, independent of
-    // the HTTP layer, to prove the row actually exists and is correct -
-    // not just that the API claimed success.
     const [row] = await db.select().from(enquiries).where(eq(enquiries.id, res.body.id));
     expect(row).toBeDefined();
     expect(row.fullName).toBe(payload.fullName);
     expect(row.email).toBe(payload.email);
     expect(row.status).toBe('New');
+    expect(row.children).toBe(1);
 
-    // And it must not be readable without admin auth - enquiries contain
-    // customer PII (name, email, phone, travel plans).
     const unauthedList = await request(app).get('/api/enquiries');
     expect(unauthedList.status).toBe(401);
   });
 
-  it('rate-limits excessive enquiry submissions from the same client', async () => {
+  it('lets an authenticated admin list enquiries', async () => {
+    const res = await request(app).get('/api/enquiries').set('Cookie', sessionCookie);
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.some((enquiry: { id: string }) => enquiry.id === managedEnquiryId)).toBe(true);
+  });
+
+  it('refuses to update status without an admin session', async () => {
+    const res = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .send({ status: 'Contacted' });
+
+    expect(res.status).toBe(401);
+  });
+
+  it('rejects invalid CRM statuses before touching the database', async () => {
+    const res = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Won' });
+
+    expect(res.status).toBe(400);
+
+    const [row] = await db.select().from(enquiries).where(eq(enquiries.id, managedEnquiryId));
+    expect(row.status).toBe('New');
+  });
+
+  it('progresses Contacted, Quoted and Confirmed with lifecycle timestamps', async () => {
+    const contacted = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Contacted', notes: 'Called and left a voicemail.' });
+
+    expect(contacted.status).toBe(200);
+    expect(contacted.body.status).toBe('Contacted');
+    expect(contacted.body.notes).toBe('Called and left a voicemail.');
+    expect(contacted.body.contactedAt).toBeTruthy();
+
+    const quoted = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Quoted', notes: 'Proposal sent.' });
+
+    expect(quoted.status).toBe(200);
+    expect(quoted.body.status).toBe('Quoted');
+    expect(quoted.body.contactedAt).toBeTruthy();
+    expect(quoted.body.quotedAt).toBeTruthy();
+
+    const confirmed = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Confirmed', notes: 'Traveller accepted the proposal.' });
+
+    expect(confirmed.status).toBe(200);
+    expect(confirmed.body.status).toBe('Confirmed');
+    expect(confirmed.body.confirmedAt).toBeTruthy();
+    expect(new Date(confirmed.body.updatedAt).getTime()).toBeGreaterThanOrEqual(
+      new Date(confirmed.body.createdAt).getTime()
+    );
+  });
+
+  it('stamps cancellation independently when a lead is cancelled', async () => {
+    const res = await request(app)
+      .put(`/api/enquiries/${managedEnquiryId}/status`)
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Cancelled', notes: 'Traveller postponed indefinitely.' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('Cancelled');
+    expect(res.body.cancelledAt).toBeTruthy();
+    expect(res.body.confirmedAt).toBeTruthy();
+  });
+
+  it('404s status updates for an enquiry that does not exist', async () => {
+    const res = await request(app)
+      .put('/api/enquiries/id_does_not_exist/status')
+      .set('Cookie', sessionCookie)
+      .send({ status: 'Contacted' });
+
+    expect(res.status).toBe(404);
+  });
+
+  it('refuses to delete without an admin session', async () => {
+    const res = await request(app).delete(`/api/enquiries/${managedEnquiryId}`);
+    expect(res.status).toBe(401);
+  });
+
+  it('deletes the managed enquiry and then returns 404 on a second delete', async () => {
+    const res = await request(app)
+      .delete(`/api/enquiries/${managedEnquiryId}`)
+      .set('Cookie', sessionCookie);
+    expect(res.status).toBe(204);
+
+    const listRes = await request(app).get('/api/enquiries').set('Cookie', sessionCookie);
+    expect(listRes.body.find((e: { id: string }) => e.id === managedEnquiryId)).toBeUndefined();
+
+    const createdIndex = createdIds.indexOf(managedEnquiryId);
+    if (createdIndex >= 0) createdIds.splice(createdIndex, 1);
+
+    const secondDelete = await request(app)
+      .delete(`/api/enquiries/${managedEnquiryId}`)
+      .set('Cookie', sessionCookie);
+    expect(secondDelete.status).toBe(404);
+  });
+
+  it('rate-limits excessive public enquiry submissions from the same client', async () => {
     const basePayload = {
       fullName: 'Rate Limit Test',
       email: 'ratelimit-test@example.com',
@@ -89,68 +232,7 @@ describe('Enquiry submission', () => {
       if (res.status === 201) createdIds.push(res.body.id);
     }
 
-    const tooManyRequests = responses.filter((r) => r.status === 429);
+    const tooManyRequests = responses.filter((response) => response.status === 429);
     expect(tooManyRequests.length).toBeGreaterThan(0);
-  });
-});
-
-describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin enquiry management', () => {
-  let sessionCookie: string;
-  let enquiryId: string;
-
-  it('logs in and creates a test enquiry to manage', async () => {
-    const loginRes = await request(app)
-      .post('/api/auth/login')
-      .send({ email: SEED_ADMIN_EMAIL, password: SEED_ADMIN_PASSWORD });
-    sessionCookie = loginRes.headers['set-cookie'];
-    expect(loginRes.status).toBe(200);
-
-    const createRes = await request(app).post('/api/enquiries').send({
-      fullName: 'CRM Test Traveler',
-      email: 'crm-test@example.com',
-      phone: '+1 555 000 3333',
-      country: 'United States',
-      adults: 2,
-      children: 0,
-    });
-    enquiryId = createRes.body.id;
-    createdIds.push(enquiryId);
-  });
-
-  it('refuses to update status without an admin session', async () => {
-    const res = await request(app).put(`/api/enquiries/${enquiryId}/status`).send({ status: 'Contacted' });
-    expect(res.status).toBe(401);
-  });
-
-  it('updates status and notes, stamping the corresponding lifecycle timestamp', async () => {
-    const res = await request(app)
-      .put(`/api/enquiries/${enquiryId}/status`)
-      .set('Cookie', sessionCookie)
-      .send({ status: 'Contacted', notes: 'Called and left a voicemail.' });
-
-    expect(res.status).toBe(200);
-    expect(res.body.status).toBe('Contacted');
-    expect(res.body.notes).toBe('Called and left a voicemail.');
-    expect(res.body.contactedAt).toBeTruthy();
-  });
-
-  it('refuses to delete without an admin session', async () => {
-    const res = await request(app).delete(`/api/enquiries/${enquiryId}`);
-    expect(res.status).toBe(401);
-  });
-
-  it('deletes the enquiry, after which it no longer appears in the admin list', async () => {
-    const res = await request(app).delete(`/api/enquiries/${enquiryId}`).set('Cookie', sessionCookie);
-    expect(res.status).toBe(204);
-
-    const listRes = await request(app).get('/api/enquiries').set('Cookie', sessionCookie);
-    expect(listRes.body.find((e: { id: string }) => e.id === enquiryId)).toBeUndefined();
-
-    createdIds.splice(createdIds.indexOf(enquiryId), 1); // already deleted, don't try again in afterAll
-  });
-
-  it('404s deleting an enquiry that does not exist', async () => {
-    const res = await request(app).delete(`/api/enquiries/${enquiryId}`).set('Cookie', sessionCookie);
-    expect(res.status).toBe(404);
   });
 });

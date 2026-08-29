@@ -1,11 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
+import { allowedOrigins, env } from '../config/env.js';
 
-const allowedOrigins = new Set(
-  (process.env.CORS_ORIGINS || 'http://localhost:3000')
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean)
-);
+const trustedOrigins = new Set(allowedOrigins);
 
 /**
  * Extra CSRF protection for cookie-authenticated state-changing requests.
@@ -19,13 +15,13 @@ export function requireTrustedOrigin(req: Request, res: Response, next: NextFunc
   if (!origin) {
     // Non-browser clients and same-origin legacy requests can omit Origin.
     // In production we fail closed; local/test tooling remains convenient.
-    if (process.env.NODE_ENV === 'production') {
+    if (env.NODE_ENV === 'production') {
       return res.status(403).json({ error: 'Missing request origin.' });
     }
     return next();
   }
 
-  if (!allowedOrigins.has(origin)) {
+  if (!trustedOrigins.has(origin)) {
     return res.status(403).json({ error: 'Request origin is not allowed.' });
   }
 

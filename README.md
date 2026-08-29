@@ -1,7 +1,7 @@
 # Good Secrets Safaris
 
 Kenya, Tanzania & Zanzibar safari and travel platform. React + TypeScript
-frontend backed by a  real PostgreSQL + Express API (see `server/`),
+frontend backed by a real PostgreSQL + Express API (see `server/`),
 intended to replace the current WordPress/Elementor live site.
 
 ## Stack
@@ -13,15 +13,17 @@ intended to replace the current WordPress/Elementor live site.
 - Vitest + React Testing Library (frontend) / Vitest + Supertest
   (backend) for tests, both run against real dependencies rather than
   mocks wherever practical
+- GitHub Actions for repository quality, type checks, tests, coverage,
+  production builds, Chromium browser smoke checks and security analysis
 
 ## Getting started
 
 You need both the API and the frontend running. See `server/README.md`
-first to get the backend up (Docker Compose is the fastest path  - it
+first to get the backend up (Docker Compose is the fastest path - it
 includes Postgres). Then:
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local   # VITE_API_URL should point at your running backend
 npm run dev                  # http://localhost:3000
 ```
@@ -33,10 +35,32 @@ npm run dev                  # http://localhost:3000
 | `npm run dev` | Start the dev server |
 | `npm run build` | Type-check, regenerate `public/sitemap.xml`, then build to `dist/` |
 | `npm run preview` | Serve the production build locally (has correct SPA fallback, unlike a plain static file server) |
-| `npm run lint` | Type-check only (`tsc --noEmit`) |
-| `npm test` | Run the test suite once |
+| `npm run typecheck` | Run TypeScript validation without emitting files |
+| `npm run lint` | Current compatibility alias for the TypeScript quality gate |
+| `npm run quality:check` | Check repository hygiene, secrets-risk files, merge markers and new scattered UI hardcoding |
+| `npm test` | Run the frontend unit/component suite once |
 | `npm run test:watch` | Run tests in watch mode |
+| `npm run verify` | Run repository quality, typecheck, tests and production build |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` on its own |
+
+## Engineering workflow
+
+The repository is designed around short-lived feature/fix/chore branches and reviewed pull requests into `deployment/staging`. CI is intended to be the merge gate rather than relying on one developer's local environment.
+
+Start with these documents:
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) - branch, commit and pull-request rules
+- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) - local development and migration workflow
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - frontend/backend/database boundaries
+- [`docs/TESTING.md`](docs/TESTING.md) - test pyramid, regression policy and coverage
+- [`docs/ENGINEERING_STANDARDS.md`](docs/ENGINEERING_STANDARDS.md) - coding and API/database standards
+- [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) - UI consistency and semantic design-token rules
+- [`docs/BRANCH_PROTECTION.md`](docs/BRANCH_PROTECTION.md) - staging/production branch governance
+- [`SECURITY.md`](SECURITY.md) - secrets and vulnerability-reporting policy
+
+For normal development, run `npm run verify` at the root and again in `server/` before opening a pull request. GitHub Actions repeats the checks in a clean environment and adds coverage, dependency review, CodeQL and real Chromium smoke checks.
+
+New shared contact details, external URLs, phone/WhatsApp values and arbitrary UI hex colors should not be scattered through page components. The repository quality check blocks those patterns on newly added UI lines so legacy code can be migrated incrementally instead of requiring a disruptive all-at-once rewrite.
 
 ## Environment variables
 
@@ -154,23 +178,12 @@ that was actually tested (against a real database, not mocked).
 
 ## Testing
 
-Frontend: 24 tests across 6 files (Vitest + React Testing Library),
-covering the crash-fix history of this codebase plus the API integration
-(mocked via `src/test/mockApi.ts`, since these are component-level
-tests - the API itself has its own test suite against a real database,
-see `server/README.md`). Fixture factories in `src/test/fixtures.ts` are
-typed against the real `Tour`/`Hotel`/`Destination`/`Testimonial`
-interfaces, so a future field rename fails the test build instead of
-silently compiling.
+Frontend tests use Vitest + React Testing Library and cover critical
+components/views using typed fixtures and API mocks at the component
+boundary. Backend tests use Vitest + Supertest and exercise API behavior
+against the backend test setup.
 
-Backend: 24 tests against a real PostgreSQL database - see
-`server/README.md`.
-
-The full stack (frontend + backend + Postgres, all running together)
-has also been manually verified end-to-end with a real browser: loading
-real catalog data, submitting an enquiry through the actual UI and
-confirming the row lands in the database, admin login/session-
-persistence-across-refresh/logout, and creating a tour through the real
-admin UI and confirming it's immediately visible to a separate,
-logged-out browser session.
-
+The required CI suite adds production builds, coverage thresholds,
+repository-quality checks, dependency review, CodeQL analysis and a
+Chromium browser smoke pass across mobile and desktop. See
+`docs/TESTING.md` for the current pyramid and what belongs at each level.

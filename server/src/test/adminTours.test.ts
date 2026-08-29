@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { eq } from 'drizzle-orm';
 import { createApp } from '../app.js';
 import { db, pool } from '../db/client.js';
-import { tours } from '../db/schema.js';
+import { adminUsers, tours } from '../db/schema.js';
+import { hashPassword } from '../lib/auth.js';
 
 const app = createApp();
-
-const SEED_ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@goodsecretssafaris.com';
-const SEED_ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD;
+const TEST_ADMIN_EMAIL = 'ci-tour-admin@example.com';
+const TEST_ADMIN_PASSWORD = 'Test-only-password-42!';
 
 const validTourPayload = {
   title: 'Automated Test Tour',
@@ -33,14 +33,25 @@ const validTourPayload = {
   seo: { title: 'Automated Test Tour', description: 'Test' },
 };
 
-describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
+describe('Admin tour management', () => {
   let sessionCookie: string;
   let createdTourId: string;
 
   beforeAll(async () => {
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
+    await db.delete(tours).where(eq(tours.slug, validTourPayload.slug));
+
+    await db.insert(adminUsers).values({
+      email: TEST_ADMIN_EMAIL,
+      passwordHash: await hashPassword(TEST_ADMIN_PASSWORD),
+      name: 'CI Tour Administrator',
+    });
+
     const loginRes = await request(app)
       .post('/api/auth/login')
-      .send({ email: SEED_ADMIN_EMAIL, password: SEED_ADMIN_PASSWORD });
+      .send({ email: TEST_ADMIN_EMAIL, password: TEST_ADMIN_PASSWORD });
+
+    expect(loginRes.status).toBe(200);
     sessionCookie = loginRes.headers['set-cookie'];
   });
 
@@ -48,6 +59,7 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
     if (createdTourId) {
       await db.delete(tours).where(eq(tours.id, createdTourId));
     }
+    await db.delete(adminUsers).where(eq(adminUsers.email, TEST_ADMIN_EMAIL));
     await pool.end();
   });
 
@@ -74,9 +86,6 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
     expect(createRes.body.slug).toBe(validTourPayload.slug);
     createdTourId = createRes.body.id;
 
-    // This is the exact gap the whole backend exists to fix: prove an
-    // admin-created record is visible through the *public*, unauthenticated
-    // endpoint - i.e. to every visitor, not just the admin's own browser.
     const publicRes = await request(app).get(`/api/tours/${validTourPayload.slug}`);
     expect(publicRes.status).toBe(200);
     expect(publicRes.body.title).toBe(validTourPayload.title);
@@ -90,7 +99,7 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
     expect(res.status).toBe(409);
   });
 
-  it('updates the tour', async () => {
+  it('updates the tour and exposes the update publicly', async () => {
     const res = await request(app)
       .put(`/api/admin/tours/${createdTourId}`)
       .set('Cookie', sessionCookie)
@@ -103,6 +112,15 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
     expect(publicRes.body.title).toBe('Automated Test Tour (Updated)');
   });
 
+  it('404s updates for a missing tour', async () => {
+    const res = await request(app)
+      .put('/api/admin/tours/id_does_not_exist')
+      .set('Cookie', sessionCookie)
+      .send({ title: 'Missing tour' });
+
+    expect(res.status).toBe(404);
+  });
+
   it('deletes the tour, after which it 404s on the public endpoint', async () => {
     const res = await request(app)
       .delete(`/api/admin/tours/${createdTourId}`)
@@ -112,6 +130,11 @@ describe.runIf(!!SEED_ADMIN_PASSWORD)('Admin tour management', () => {
     const publicRes = await request(app).get(`/api/tours/${validTourPayload.slug}`);
     expect(publicRes.status).toBe(404);
 
-    createdTourId = ''; // already deleted, don't try again in afterAll
+    const secondDelete = await request(app)
+      .delete(`/api/admin/tours/${createdTourId}`)
+      .set('Cookie', sessionCookie);
+    expect(secondDelete.status).toBe(404);
+
+    createdTourId = '';
   });
 });

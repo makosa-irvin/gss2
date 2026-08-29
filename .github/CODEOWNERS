@@ -1,0 +1,13 @@
+# Default owner. Add additional maintainers as the team grows.
+* @makosa-irvin
+
+# Backend and database changes deserve explicit backend review.
+/server/ @makosa-irvin
+
+# CI and repository governance.
+/.github/ @makosa-irvin
+
+# Deployment/configuration files.
+/vercel.json @makosa-irvin
+/.env.example @makosa-irvin
+/server/.env.example @makosa-irvin
