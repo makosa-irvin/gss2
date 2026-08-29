@@ -52,7 +52,9 @@ End-to-end browser tests should be reserved for high-value journeys:
 
 Do not duplicate every component assertion in E2E tests. The goal is confidence that the deployed system works across boundaries.
 
-Playwright should be introduced once its dependency is committed to both `package.json` and the lockfile. Until then, CI's required baseline is unit/component + API/integration + production builds; do not label HTTP smoke checks as browser E2E coverage.
+The baseline CI includes a real Chromium browser smoke test for the home page and tours page at desktop and mobile viewports. It verifies successful navigation, substantive rendered content, one page-level `h1`, absence of uncaught page errors, and horizontal viewport overflow. Playwright is installed ephemerally in that CI job so the existing lockfile remains reproducible while this baseline is introduced.
+
+This smoke job is deliberately not presented as full-system enquiry E2E coverage. A later phase should commit Playwright as a development dependency and add DB/API-backed browser flows for enquiry submission and admin CRM management once those environments can be provisioned deterministically in CI.
 
 ## Coverage
 
@@ -63,7 +65,7 @@ CI enforces initial global minimums:
 - functions: 60%
 - branches: 50%
 
-The initial thresholds are deliberately achievable for an existing codebase. Raise them in small steps as uncovered legacy code receives useful tests. Do not add low-value assertions merely to improve a percentage.
+The initial thresholds are a starting quality gate for the existing codebase. If the first CI run demonstrates the current legacy baseline is lower, set the initial threshold just below the measured baseline and raise it in small reviewed steps. Do not weaken coverage merely to make a feature PR pass, and do not add low-value assertions merely to improve a percentage.
 
 Critical business modules should trend toward materially higher coverage than the global threshold.
 
