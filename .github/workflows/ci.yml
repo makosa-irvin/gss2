@@ -146,11 +146,11 @@ jobs:
         working-directory: server
         run: npm run seed
       # Auth, enquiry/CRM and admin-content integration coverage raised the
-      # measured backend suite to 72.47 statements / 45.80 branches / 60.75
-      # functions / 74.62 lines. These floors preserve that improvement.
+      # measured backend suite to 78.93 statements / 55.72 branches / 68.35
+      # functions / 80.66 lines. These floors preserve that improvement.
       - name: Backend coverage
         working-directory: server
-        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=74 --coverage.thresholds.functions=60 --coverage.thresholds.statements=72 --coverage.thresholds.branches=45
+        run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=80 --coverage.thresholds.functions=68 --coverage.thresholds.statements=78 --coverage.thresholds.branches=55
       - name: Upload coverage summaries
         if: always()
         uses: actions/upload-artifact@v4

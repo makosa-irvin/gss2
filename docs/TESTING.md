@@ -77,14 +77,14 @@ The initial frontend legacy measurement was 43.18% lines, 38.39% statements, 21.
 
 Frontend CI floors are therefore 47% lines, 42% statements, 26% functions and 44% branches.
 
-The initial backend legacy measurement was 55.52% lines, 52.77% statements, 34.61% functions and 23.44% branches. After enabling deterministic auth, enquiry/CRM lifecycle, admin-tour and draft/publish integration tests, the current measured backend baseline is:
+The initial backend legacy measurement was 55.52% lines, 52.77% statements, 34.61% functions and 23.44% branches. After enabling deterministic auth, enquiry/CRM lifecycle, admin-tour, destination and hotel draft/publish integration tests, the current measured backend baseline is:
 
-- lines: 74.62%
-- statements: 72.47%
-- functions: 60.75%
-- branches: 45.80%
+- lines: 80.66%
+- statements: 78.93%
+- functions: 68.35%
+- branches: 55.72%
 
-Backend CI floors are therefore 74% lines, 72% statements, 60% functions and 45% branches.
+Backend CI floors are therefore 80% lines, 78% statements, 68% functions and 55% branches.
 
 These are regression floors, not final quality targets. Critical business modules should trend materially higher than the repository-wide floor, and new business logic should arrive with tests appropriate to its risk. Do not add low-value assertions merely to improve a percentage.
 
