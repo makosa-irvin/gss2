@@ -35,12 +35,28 @@ for (const file of privateKeyFiles) {
   violations.push(`${file}: private key/certificate material must not be committed`);
 }
 
-// Prevent new scattered production-UI hardcoding without making legacy
-// cleanup a prerequisite. Tests/fixtures legitimately contain example
-// URLs, contact values and visual literals, so they are excluded.
+// PR-only policy checks can compare against the integration branch without
+// penalizing legacy code that predates this engineering baseline.
 const baseRef = process.env.GITHUB_BASE_REF;
 if (baseRef) {
   try {
+    const changedFiles = execFileSync(
+      'git',
+      ['diff', '--name-only', `origin/${baseRef}...HEAD`],
+      { encoding: 'utf8' },
+    )
+      .split(/\r?\n/)
+      .filter(Boolean);
+
+    // Drizzle schema changes must travel with reviewable SQL. This prevents
+    // deploying code that expects a database shape nobody has migrated.
+    if (
+      changedFiles.includes('server/src/db/schema.ts') &&
+      !changedFiles.some((file) => /^server\/src\/db\/migrations\/\d+.*\.sql$/.test(file))
+    ) {
+      violations.push('server/src/db/schema.ts changed without a versioned SQL migration');
+    }
+
     const diff = execFileSync(
       'git',
       ['diff', `origin/${baseRef}...HEAD`, '--unified=0', '--', 'src'],
@@ -73,14 +89,14 @@ if (baseRef) {
       }
     }
   } catch {
-    violations.push(`Could not compare UI additions against origin/${baseRef}; ensure checkout has base-branch history`);
+    violations.push(`Could not compare changes against origin/${baseRef}; ensure checkout has base-branch history`);
   }
 }
 
 if (violations.length) {
   console.error('\nRepository quality checks failed:\n');
   for (const violation of [...new Set(violations)]) console.error(` - ${violation}`);
-  console.error('\nFix these issues before merging. Use an explicit quality-allow-hardcoded comment only for a reviewed exception.\n');
+  console.error('\nFix these issues before merging. Use an explicit quality-allow-hardcoded comment only for a reviewed UI exception.\n');
   process.exit(1);
 }
 
