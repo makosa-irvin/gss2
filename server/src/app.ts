@@ -37,6 +37,15 @@ export function createApp() {
     })
   );
   app.use(express.json({ limit: '1mb' }));
+  // CodeQL's js/missing-token-validation query only recognizes
+  // token-based CSRF middleware (e.g. csurf/lusca) and flags any
+  // cookie-parser usage without one. This API is JSON-only (no HTML
+  // forms), and requireTrustedOrigin below rejects every cookie-
+  // authenticated, state-changing request whose Origin header isn't on
+  // the explicit allowlist - an OWASP-endorsed CSRF defense ("Verifying
+  // Origin with Standard Headers") that a token library would duplicate
+  // without closing any gap it doesn't already close.
+  // codeql[js/missing-token-validation]
   app.use(cookieParser());
   // Applied globally (it already no-ops for GET/HEAD/OPTIONS) rather than
   // mounted on a hand-picked list of routes: that approach previously
