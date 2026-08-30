@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   LayoutDashboard,
+  BarChart3,
   Inbox,
   Compass,
   Palmtree,
@@ -16,6 +17,7 @@ import {
 
 export type AdminSection =
   | 'overview'
+  | 'growth'
   | 'enquiries'
   | 'tours'
   | 'hotels'
@@ -57,6 +59,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
   const crmItems: NavItem[] = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'growth', label: 'Growth', icon: BarChart3 },
     { id: 'enquiries', label: 'Enquiries', icon: Inbox, count: counts.enquiries, badge: counts.newEnquiries }
   ];
 
@@ -122,7 +125,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       <nav className="flex-1 overflow-y-auto p-4 space-y-6">
         <div className="space-y-1">
           <span className="text-[10px] font-bold uppercase tracking-widest text-[#a89f8f] px-3.5 block mb-1.5">
-            CRM
+            CRM & Growth
           </span>
           {crmItems.map(navButton)}
         </div>
@@ -168,12 +171,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-[#f7f5ee] lg:flex">
-      {/* Desktop sidebar */}
       <aside className="hidden lg:block w-64 shrink-0 border-r border-[#e8e4da] bg-white sticky top-0 h-screen">
         {sidebarContent}
       </aside>
 
-      {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between gap-3 px-4 py-3 bg-white border-b border-[#e8e4da]">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[#8a611d] p-0.5">
@@ -193,7 +194,6 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         </button>
       </div>
 
-      {/* Mobile drawer */}
       {mobileNavOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/50" onClick={() => setMobileNavOpen(false)} aria-hidden="true" />
