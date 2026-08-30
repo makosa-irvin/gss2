@@ -6,12 +6,12 @@
     "country": "Kenya",
     "subtitle": "The Crown Jewel of African Wildlife and the Great Migration",
     "description": "World-renowned for exceptional populations of lions, leopards, cheetahs, and the dramatic annual Great Wildebeest Migration across the crocodile-infested Mara River.",
-    "heroImage": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/maasai-mara-lion-pride.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/maasai-mara-maasai-guides.jpg",
+      "/images/catalog/destinations/maasai-mara-balloon-safari.jpg",
+      "/images/catalog/destinations/maasai-mara-maasai-warriors.jpg",
+      "/images/catalog/destinations/maasai-mara-elephant.jpg"
     ],
     "bestTimeToVisit": "July to October for the Great Wildebeest Migration; Year-round for Big Cat sightings and predator action.",
     "wildlife": [
@@ -61,11 +61,12 @@
     "country": "Kenya",
     "subtitle": "Land of Giants with Majestic Mount Kilimanjaro Backdrops",
     "description": "Famous for being the best place in Africa to get up close to free-ranging elephant herds with snow-capped Mount Kilimanjaro towering in the background.",
-    "heroImage": "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/amboseli-elephants-kilimanjaro.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/amboseli-giraffes.jpg",
+      "/images/catalog/destinations/amboseli-game-drive-elephants.jpg",
+      "/images/catalog/destinations/amboseli-walking-safari.jpg",
+      "/images/catalog/destinations/amboseli-sundowner.jpg"
     ],
     "bestTimeToVisit": "June to October and January to February for clear Kilimanjaro views and peak dry-season wildlife gatherings.",
     "wildlife": [
@@ -110,10 +111,12 @@
     "country": "Kenya",
     "subtitle": "Untamed Northern Wilderness & The Samburu Special Five",
     "description": "A rugged, dramatic arid paradise bisected by the palm-fringed Ewaso Nyiro River, home to unique wildlife species found nowhere else in southern Kenya.",
-    "heroImage": "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/samburu-culture-portrait.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/samburu-warriors.jpg",
+      "/images/catalog/destinations/samburu-wild-dogs.jpg",
+      "/images/catalog/destinations/samburu-fly-in-safari.jpg",
+      "/images/catalog/destinations/samburu-tented-camp-pool.jpg"
     ],
     "bestTimeToVisit": "June to October and December to March for supreme game viewing around the life-giving Ewaso Nyiro River.",
     "wildlife": [
@@ -158,10 +161,12 @@
     "country": "Tanzania",
     "subtitle": "Endless Plains & the Epic Drama of Nature",
     "description": "Tanzania's oldest and most iconic national park, encompassing 14,763 square kilometers of untamed savanna hosting over two million herbivores and apex predators.",
-    "heroImage": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/serengeti-calving-season.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/serengeti-leopard.jpg",
+      "/images/catalog/destinations/serengeti-lions.jpg",
+      "/images/catalog/destinations/serengeti-wildebeest-calving.jpg",
+      "/images/catalog/destinations/serengeti-safari-drive.jpg"
     ],
     "bestTimeToVisit": "December to March for calving in Ndutu; July to October for Mara River crossings in Northern Serengeti.",
     "wildlife": [
@@ -201,9 +206,12 @@
     "country": "Tanzania",
     "subtitle": "Africa's Eden & Intact Volcanic Caldera",
     "description": "A UNESCO World Heritage site and natural wonder. The 600-meter deep unbroken caldera acts as a natural enclosure for 25,000 large animals, including dense lion prides and rare black rhinos.",
-    "heroImage": "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/ngorongoro-lion.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/ngorongoro-rhino.jpg",
+      "/images/catalog/destinations/ngorongoro-zebras.jpg",
+      "/images/catalog/destinations/ngorongoro-maasai-village.jpg",
+      "/images/catalog/destinations/ngorongoro-crater-view.jpg"
     ],
     "bestTimeToVisit": "Year-round due to the permanent water and resident wildlife population inside the crater floor.",
     "wildlife": [
@@ -241,10 +249,12 @@
     "country": "Zanzibar",
     "subtitle": "Turquoise Waters, Spice Isles & Ancient Swahili Culture",
     "description": "An exotic Indian Ocean paradise featuring pristine powder-white sands, kaleidoscopic coral reefs, fragrant spice plantations, and the UNESCO labyrinth of Stone Town.",
-    "heroImage": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/zanzibar-beach-resort.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/zanzibar-beach-stroll.jpg",
+      "/images/catalog/destinations/zanzibar-kayaking.jpg",
+      "/images/catalog/destinations/zanzibar-scuba-diving.jpg",
+      "/images/catalog/destinations/zanzibar-beach-dinner.jpg"
     ],
     "bestTimeToVisit": "June to October and December to February for sunny skies and tranquil crystal-clear waters.",
     "wildlife": [
@@ -279,9 +289,12 @@
     "country": "Kenya",
     "subtitle": "Africa's Leading Beach Destination on the Kenyan Coast",
     "description": "Voted Africa's leading beach destination multiple times, Diani charms with 17 kilometers of silky white sand, gentle turquoise waters, and lush coastal forests.",
-    "heroImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/diani-beach-ocean-view.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/diani-beach-boat-ride.jpg",
+      "/images/catalog/destinations/diani-beach-kayaking.jpg",
+      "/images/catalog/destinations/diani-beach-kitesurfing.jpg",
+      "/images/catalog/destinations/diani-beach-snorkelling.jpg"
     ],
     "bestTimeToVisit": "November to March and July to October for blissful beach conditions and watersports.",
     "wildlife": [
@@ -312,9 +325,11 @@
     "country": "Kenya",
     "subtitle": "Marine Reserves, Mangrove Creeks & Hemingways Elegance",
     "description": "A tranquil coastal jewel renowned for the Watamu Marine National Park, crystalline sandbars, deep-sea fishing heritage, and the mysterious Gede Ruins.",
-    "heroImage": "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/watamu-aerial-sunset.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/watamu-beachfront.jpg",
+      "/images/catalog/destinations/watamu-resort-pool.jpg",
+      "/images/catalog/destinations/watamu-ocean-view.jpg"
     ],
     "bestTimeToVisit": "August to April for scuba diving, billfish angling, and sunbathing on sandbars.",
     "wildlife": [
@@ -345,9 +360,12 @@
     "country": "Kenya",
     "subtitle": "Great Rift Valley Lakes, Rhinos & Walking Safaris",
     "description": "An easy and captivating journey from Nairobi into the Great Rift Valley, combining Lake Nakuru's thriving sanctuary for endangered rhinos with Lake Naivasha's serene boat safaris and walking amongst giraffes on Crescent Island.",
-    "heroImage": "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/lake-nakuru-flamingos.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/lake-nakuru-rhinos.jpg",
+      "/images/catalog/destinations/lake-naivasha-hippos.jpg",
+      "/images/catalog/destinations/lake-naivasha-horse-riding.jpg",
+      "/images/catalog/destinations/lake-naivasha-crescent-island.jpg"
     ],
     "bestTimeToVisit": "Year-round destination with exceptional birdlife and reliable rhino encounters.",
     "wildlife": [
@@ -380,9 +398,12 @@
     "country": "Kenya",
     "subtitle": "The Safari Capital of the World",
     "description": "The only metropolis on earth bordering a full national park where wild lions and rhinos roam against skyscrapers.",
-    "heroImage": "https://images.unsplash.com/photo-1581852017103-68ac6550407b?auto=format&fit=crop&w=1600&q=85",
+    "heroImage": "/images/catalog/destinations/nairobi-zebras-skyline.jpg",
     "gallery": [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/destinations/nairobi-gazelles-skyline.jpg",
+      "/images/catalog/destinations/nairobi-national-park-zebra.jpg",
+      "/images/catalog/destinations/nairobi-skyline.jpg",
+      "/images/catalog/destinations/nairobi-city-view.jpg"
     ],
     "bestTimeToVisit": "Year-round for cultural stops, elephant orphan visits, and half-day wildlife drives.",
     "wildlife": [

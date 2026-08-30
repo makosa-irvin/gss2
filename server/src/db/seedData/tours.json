@@ -565,9 +565,9 @@
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/tour-mara-great-migration.jpg",
+      "/images/catalog/tour-mara-river-crossing.jpg",
+      "/images/catalog/tour-mara-luxury-tent.jpg"
     ],
     "itinerary": [
       {
@@ -1762,9 +1762,9 @@
       }
     ],
     "images": [
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+      "/images/catalog/tour-zanzibar-safari-buffalo.jpg",
+      "/images/catalog/tour-zanzibar-kitesurfing.jpg",
+      "/images/catalog/tour-zanzibar-eco-tour.jpg"
     ],
     "itinerary": [
       {
