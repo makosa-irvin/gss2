@@ -26,6 +26,7 @@
     "db:migrate:prod": "node dist/db/migrate.js",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx src/db/seed.ts",
+    "update:content-images": "tsx src/db/updateContentImages.ts",
     "seed:prod": "node dist/db/seed.js"
   },
   "dependencies": {
