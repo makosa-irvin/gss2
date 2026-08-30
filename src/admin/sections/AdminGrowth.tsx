@@ -30,13 +30,13 @@ const pct = (value: number) => `${Math.round(value * 100)}%`;
 const change = (current: number, previous: number) => previous === 0 ? (current > 0 ? 1 : 0) : (current - previous) / previous;
 
 const MetricCard: React.FC<{ label: string; value: string | number; delta?: number; helper?: string; icon: React.ComponentType<{ className?: string }> }> = ({ label, value, delta, helper, icon: Icon }) => (
-  <div className="rounded-2xl border border-[#e5dfd2] bg-white p-5 shadow-sm">
+  <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
     <div className="flex items-start justify-between gap-3">
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-[#8c8272]">{label}</p>
-        <p className="mt-2 text-3xl font-bold text-[#172019]">{value}</p>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-ink-subtle">{label}</p>
+        <p className="mt-2 text-3xl font-bold text-ink-strong">{value}</p>
       </div>
-      <div className="rounded-xl bg-[#f4f1e8] p-2.5 text-[#8a611d]"><Icon className="h-5 w-5" /></div>
+      <div className="rounded-xl bg-surface-soft p-2.5 text-brand-deep"><Icon className="h-5 w-5" /></div>
     </div>
     {delta !== undefined && (
       <div className={`mt-3 flex items-center gap-1 text-xs font-semibold ${delta >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
@@ -44,25 +44,25 @@ const MetricCard: React.FC<{ label: string; value: string | number; delta?: numb
         {Math.abs(Math.round(delta * 100))}% vs previous period
       </div>
     )}
-    {helper && <p className="mt-2 text-xs leading-relaxed text-[#7a7469]">{helper}</p>}
+    {helper && <p className="mt-2 text-xs leading-relaxed text-ink-subtle">{helper}</p>}
   </div>
 );
 
 const RankedList: React.FC<{ title: string; items: MetricListItem[]; empty: string }> = ({ title, items, empty }) => {
   const max = Math.max(...items.map((item) => item.value), 1);
   return (
-    <div className="rounded-2xl border border-[#e5dfd2] bg-white p-5 shadow-sm">
-      <h3 className="font-serif-luxury text-xl font-bold text-[#172019]">{title}</h3>
+    <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <h3 className="font-serif-luxury text-xl font-bold text-ink-strong">{title}</h3>
       <div className="mt-5 space-y-4">
-        {items.length === 0 && <p className="text-sm text-[#7a7469]">{empty}</p>}
+        {items.length === 0 && <p className="text-sm text-ink-subtle">{empty}</p>}
         {items.map((item) => (
           <div key={item.label}>
             <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
-              <span className="truncate font-semibold text-[#37443b]" title={item.label}>{item.label}</span>
-              <span className="font-bold text-[#172019]">{item.value}</span>
+              <span className="truncate font-semibold text-ink-muted" title={item.label}>{item.label}</span>
+              <span className="font-bold text-ink-strong">{item.value}</span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-[#f1eee6]">
-              <div className="h-full rounded-full bg-[#9e7120]" style={{ width: `${Math.max(4, (item.value / max) * 100)}%` }} />
+            <div className="h-2 overflow-hidden rounded-full bg-surface-soft">
+              <div className="h-full rounded-full bg-brand-strong" style={{ width: `${Math.max(4, (item.value / max) * 100)}%` }} />
             </div>
           </div>
         ))}
@@ -136,19 +136,19 @@ export const AdminGrowth: React.FC<Props> = ({ enquiries }) => {
     <div className="space-y-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#9e7120]">Growth intelligence</p>
-          <h1 className="mt-1 font-serif-luxury text-3xl font-bold text-[#172019]">Website growth</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6f756f]">Follow acquisition, enquiry quality and CRM progression. Visitor metrics include only travellers who allowed analytics; enquiry totals include every submitted enquiry.</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-strong">Growth intelligence</p>
+          <h1 className="mt-1 font-serif-luxury text-3xl font-bold text-ink-strong">Website growth</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">Follow acquisition, enquiry quality and CRM progression. Visitor metrics include only travellers who allowed analytics; enquiry totals include every submitted enquiry.</p>
         </div>
-        <div className="inline-flex rounded-xl border border-[#ddd7ca] bg-white p-1 shadow-sm">
+        <div className="inline-flex rounded-xl border border-border-strong bg-surface p-1 shadow-sm">
           {[7, 30, 90].map((value) => (
-            <button key={value} type="button" onClick={() => setDays(value)} className={`rounded-lg px-3 py-2 text-xs font-bold ${days === value ? 'bg-[#1b4332] text-white' : 'text-[#667068] hover:bg-[#f4f1e8]'}`}>{value} days</button>
+            <button key={value} type="button" onClick={() => setDays(value)} className={`rounded-lg px-3 py-2 text-xs font-bold ${days === value ? 'bg-action text-white' : 'text-ink-muted hover:bg-surface-soft'}`}>{value} days</button>
           ))}
         </div>
       </div>
 
       {error && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{error}</div>}
-      {loading && !data && <div className="rounded-xl border border-[#e5dfd2] bg-white p-5 text-sm text-[#6f756f]">Loading growth metrics…</div>}
+      {loading && !data && <div className="rounded-xl border border-border bg-surface p-5 text-sm text-ink-muted">Loading growth metrics…</div>}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard label="Consented visitors" value={visitors} delta={data ? change(data.current.visitors, data.previous.visitors) : undefined} helper="Anonymous browser sessions with analytics permission." icon={Users} />
@@ -164,13 +164,13 @@ export const AdminGrowth: React.FC<Props> = ({ enquiries }) => {
         <MetricCard label="Confirmed" value={crm.confirmed} helper="Confirmed CRM enquiries in this period." icon={FileCheck2} />
       </div>
 
-      <div className="rounded-2xl border border-[#e5dfd2] bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h2 className="font-serif-luxury text-xl font-bold text-[#172019]">CRM funnel</h2>
-            <p className="mt-1 text-xs text-[#7a7469]">Based on the current status of enquiries created in the selected period.</p>
+            <h2 className="font-serif-luxury text-xl font-bold text-ink-strong">CRM funnel</h2>
+            <p className="mt-1 text-xs text-ink-subtle">Based on the current status of enquiries created in the selected period.</p>
           </div>
-          <span className="text-xs font-bold text-[#9e7120]">{days}-day cohort</span>
+          <span className="text-xs font-bold text-brand-strong">{days}-day cohort</span>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-4">
           {[
@@ -179,10 +179,10 @@ export const AdminGrowth: React.FC<Props> = ({ enquiries }) => {
             ['Quoted+', crm.quoted],
             ['Confirmed', crm.confirmed],
           ].map(([label, value]) => (
-            <div key={String(label)} className="rounded-xl bg-[#f7f5ee] p-4">
-              <p className="text-xs font-semibold text-[#7a7469]">{label}</p>
-              <p className="mt-1 text-2xl font-bold text-[#172019]">{value}</p>
-              <p className="mt-1 text-[11px] text-[#8c8272]">{crm.current.length ? pct(Number(value) / crm.current.length) : '0%'} of enquiries</p>
+            <div key={String(label)} className="rounded-xl bg-page p-4">
+              <p className="text-xs font-semibold text-ink-subtle">{label}</p>
+              <p className="mt-1 text-2xl font-bold text-ink-strong">{value}</p>
+              <p className="mt-1 text-[11px] text-ink-subtle">{crm.current.length ? pct(Number(value) / crm.current.length) : '0%'} of enquiries</p>
             </div>
           ))}
         </div>
