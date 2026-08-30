@@ -12,6 +12,7 @@ import { blogRouter } from './routes/blog.js';
 import { testimonialsRouter } from './routes/testimonials.js';
 import { settingsRouter } from './routes/settings.js';
 import { enquiriesRouter } from './routes/enquiries.js';
+import { analyticsRouter } from './routes/analytics.js';
 import { adminToursRouter } from './routes/adminTours.js';
 import { adminHotelsRouter } from './routes/adminHotels.js';
 import { adminDestinationsRouter } from './routes/adminDestinations.js';
@@ -85,6 +86,7 @@ export function createApp() {
   app.use('/api/testimonials', testimonialsRouter);
   app.use('/api/settings', settingsRouter);
   app.use('/api/enquiries', enquiriesRouter);
+  app.use('/api/analytics', analyticsRouter);
   app.use('/api/admin/tours', adminToursRouter);
   app.use('/api/admin/hotels', adminHotelsRouter);
   app.use('/api/admin/destinations', adminDestinationsRouter);
