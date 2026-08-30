@@ -67,6 +67,9 @@ enquiriesRouter.get(
       .orderBy(desc(enquiries.createdAt));
     res.json(rows.map(({ enquiry, followUpAt, attribution }) => ({
       ...enquiry,
+      hearAboutUs: attribution
+        ? `${attribution.source} / ${attribution.medium}${attribution.campaign ? ` · ${attribution.campaign}` : ''}`
+        : enquiry.hearAboutUs,
       followUpAt,
       marketingAttribution: attribution ? {
         source: attribution.source,
