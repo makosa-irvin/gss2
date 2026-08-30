@@ -50,8 +50,8 @@ export const LegalView: React.FC = () => {
   const page = sections[location.pathname as keyof typeof sections] || sections['/terms'];
   return (
     <div className="pb-20">
-      <PageMeta title={`${page.title} | Good Secrets Safaris`} description={page.description} canonicalPath={location.pathname} />
-      <header className="border-b border-white/10 bg-shell px-4 py-14 sm:px-8 sm:py-18">
+      <PageMeta title={page.title} description={page.description} canonicalPath={location.pathname} />
+      <header className="border-b border-white/10 bg-shell px-4 py-14 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-4xl"><span className="text-xs font-extrabold uppercase tracking-[0.2em] text-brand-soft">Good Secrets Safaris</span><h1 className="mt-2 font-serif-luxury text-4xl font-bold text-white sm:text-6xl">{page.title}</h1><p className="mt-4 max-w-3xl text-base leading-relaxed text-on-shell-muted">{page.description}</p><p className="mt-3 text-xs text-on-shell-subtle">Last updated {UPDATED}</p></div>
       </header>
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-8 sm:py-14">
