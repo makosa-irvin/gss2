@@ -14,8 +14,8 @@ const settingsFixture = {
   logoUrl: '',
   contact: {
     email: 'test@example.com',
-    phone: '+254700000000',
-    whatsapp: '+254700000000',
+    phone: '+254729000410',
+    whatsapp: '+254729000410',
     address: 'Nairobi, Kenya',
     businessHours: 'Daily',
   },
@@ -24,7 +24,7 @@ const settingsFixture = {
   booking: {
     defaultEnquiryMessage: 'Test enquiry',
     bookingEmail: 'test@example.com',
-    whatsappNumber: '+254700000000',
+    whatsappNumber: '+254729000410',
     whatsappDefaultMessage: 'Test safari enquiry',
   },
   seo: {

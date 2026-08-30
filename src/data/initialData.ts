@@ -7,8 +7,8 @@ export const initialCompanySettings: CompanySettings = {
   logoUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80",
   contact: {
     email: "info@goodsecretssafaris.com",
-    phone: "+254 700 000 000",
-    whatsapp: "+254700000000",
+    phone: "+254 729 000 410",
+    whatsapp: "+254729000410",
     address: "Westlands Commercial Centre, Nairobi, Kenya",
     businessHours: "Monday - Sunday: 7:00 AM - 9:00 PM EAT (24/7 Safari Support)"
   },
@@ -26,7 +26,7 @@ export const initialCompanySettings: CompanySettings = {
   booking: {
     defaultEnquiryMessage: "Hello Good Secrets Safaris, I would like to enquire about planning a customized safari trip.",
     bookingEmail: "safaris@goodsecretssafaris.com",
-    whatsappNumber: "+254700000000",
+    whatsappNumber: "+254729000410",
     whatsappDefaultMessage: "Hello Good Secrets Safaris, I'd like to enquire about a safari."
   },
   seo: {

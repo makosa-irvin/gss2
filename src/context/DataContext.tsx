@@ -440,7 +440,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // WHATSAPP URL GENERATOR
   const getWhatsAppUrl = (options?: { tourTitle?: string; hotelTitle?: string; customMessage?: string }) => {
-    const cleanNumber = (settings.booking.whatsappNumber || '+254700000000').replace(/[^0-9]/g, '');
+    const cleanNumber = (settings.booking.whatsappNumber || '+254729000410').replace(/[^0-9]/g, '');
     let text = options?.customMessage;
 
     if (!text) {
