@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
+import { TourDecisionSummary } from '../components/tours/TourDecisionSummary';
 import { TourDetailView } from '../views/TourDetailView';
 import { NotFoundView } from './NotFoundView';
 
@@ -23,14 +24,17 @@ export const TourDetailRoute: React.FC<TourDetailRouteProps> = ({ onOpenEnquiryM
   if (!tour) return <NotFoundView />;
 
   return (
-    <TourDetailView
-      tour={tour}
-      onBack={() => navigate('/safaris')}
-      onOpenEnquiryModal={onOpenEnquiryModal}
-      onSelectDestination={(destName) => {
-        const dest = destinations.find(d => d.name === destName);
-        if (dest) navigate(`/destinations/${dest.slug}`);
-      }}
-    />
+    <>
+      <TourDecisionSummary tour={tour} />
+      <TourDetailView
+        tour={tour}
+        onBack={() => navigate('/safaris')}
+        onOpenEnquiryModal={onOpenEnquiryModal}
+        onSelectDestination={(destName) => {
+          const dest = destinations.find(d => d.name === destName);
+          if (dest) navigate(`/destinations/${dest.slug}`);
+        }}
+      />
+    </>
   );
 };
