@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Tour, Hotel } from '../../types';
 import { ApiError } from '../../services/api';
+import { getMarketingAttribution, trackEvent } from '../../lib/analytics';
 import { X, Send, CheckCircle2, MessageCircle, ShieldCheck, MapPin, Sparkles } from 'lucide-react';
 
 interface EnquiryModalProps {
@@ -81,7 +82,12 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
     setFullName(remembered.fullName || ''); setEmail(remembered.email || ''); setPhone(remembered.phone || ''); setCountry(remembered.country || '');
     setAdults(remembered.adults || 2); setChildren(remembered.children ?? 0); setBudget(remembered.budget || 'Not sure yet'); setAccommodationPreference(remembered.accommodationPreference || 'Open to recommendations');
     setTravelDates(''); setSpecialRequests(initialSpecialRequests || ''); setSubmitError(''); setIsSubmitted(false);
-  }, [isOpen, initialSpecialRequests, selectedTour?.id, selectedHotel?.id, initialType, initialDestination]);
+    trackEvent('enquiry_opened', {
+      enquiry_context: selectedTour ? 'tour' : selectedHotel ? 'hotel' : initialDestination ? 'destination' : contextItems.length ? 'shortlist' : 'general',
+      tour_slug: selectedTour?.slug,
+      hotel_slug: selectedHotel?.slug,
+    });
+  }, [isOpen, initialSpecialRequests, selectedTour?.id, selectedHotel?.id, initialType, initialDestination, contextItems.length]);
 
   if (!isOpen) return null;
 
@@ -91,15 +97,24 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
       const contextualNotes = enquiryItems.length > 1 && !initialSpecialRequests
         ? `Please compare these saved options:\n${enquiryItems.map(item => `• ${item}`).join('\n')}${specialRequests ? `\n\nTraveller notes:\n${specialRequests}` : ''}`
         : specialRequests;
+      const attribution = getMarketingAttribution();
       await addEnquiry({
         fullName, email, phone, country: country || 'Not specified', travelDates: travelDates || 'Flexible', durationDays: selectedTour?.durationDays || 5,
         numberOfTravelers: { adults: Number(adults), children: Number(children) }, tourId: selectedTour?.id, tourTitle: selectedTour?.title,
         hotelId: selectedHotel?.id, hotelTitle: selectedHotel?.name,
         preferredDestination: selectedTour?.destinations.join(', ') || selectedHotel?.location || initialDestination || 'Open to recommendations',
         safariType: selectedTour?.title || selectedHotel?.name || initialType || (initialDestination ? `Safari to ${initialDestination}` : 'Custom Safari'),
-        budget, accommodationPreference, specialRequests: contextualNotes, hearAboutUs: 'Website enquiry'
+        budget, accommodationPreference, specialRequests: contextualNotes, hearAboutUs: 'Website enquiry', marketingAttribution: attribution
       });
       try { window.sessionStorage.setItem(TRAVELLER_SESSION_KEY, JSON.stringify({ fullName, email, phone, country, adults, children, budget, accommodationPreference } satisfies RememberedTraveller)); } catch { /* Session prefill is optional. */ }
+      trackEvent('enquiry_submitted', {
+        enquiry_context: selectedTour ? 'tour' : selectedHotel ? 'hotel' : initialDestination ? 'destination' : contextItems.length ? 'shortlist' : 'general',
+        tour_slug: selectedTour?.slug,
+        hotel_slug: selectedHotel?.slug,
+        budget,
+        adults: Number(adults),
+        children: Number(children),
+      });
       setIsSubmitted(true);
     } catch (err) { setSubmitError(err instanceof ApiError ? err.message : 'Something went wrong sending your enquiry. Please try again or reach us on WhatsApp.'); }
     finally { setIsSubmitting(false); }
@@ -129,7 +144,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({ isOpen, onClose, sel
             <div><label htmlFor="enquiry-notes" className={labelClass}>Anything else we should know? <span className="font-normal text-ink-subtle">(optional)</span></label><textarea id="enquiry-notes" rows={3} value={specialRequests} onChange={e => setSpecialRequests(e.target.value)} placeholder="Celebration, accessibility, dietary needs, wildlife priorities, preferred pace..." className={`${inputClass} min-h-24`} /></div>
             {submitError && <p role="alert" className="text-sm text-rose-800 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2.5">{submitError}</p>}
             <div className="rounded-xl bg-surface-soft border border-border-strong p-3 flex gap-2 text-xs text-ink-muted"><ShieldCheck className="w-4 h-4 text-brand-deep shrink-0 mt-0.5" /><span>Submitting is an enquiry only. No payment is taken and no booking is confirmed. Contact details are remembered only for this browser session after a successful enquiry.</span></div>
-            <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pb-1"><a href={getWhatsAppUrl({ tourTitle: selectedTour?.title, hotelTitle: selectedHotel?.name })} target="_blank" rel="noopener noreferrer" className="min-h-12 inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-action-soft hover:bg-action-soft text-action text-sm font-bold border border-action-border"><MessageCircle className="w-4 h-4" />Ask on WhatsApp</a><button type="submit" disabled={isSubmitting} className="min-h-12 inline-flex items-center justify-center gap-2 px-7 rounded-xl bg-brand-strong hover:bg-brand-hover disabled:opacity-60 disabled:cursor-wait text-white font-extrabold text-sm shadow-md"><span>{isSubmitting ? 'Sending…' : 'Request my safari quote'}</span><Send className="w-4 h-4" /></button></div>
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pb-1"><a href={getWhatsAppUrl({ tourTitle: selectedTour?.title, hotelTitle: selectedHotel?.name })} onClick={() => trackEvent('whatsapp_clicked', { context: 'enquiry_modal', tour_slug: selectedTour?.slug, hotel_slug: selectedHotel?.slug })} target="_blank" rel="noopener noreferrer" className="min-h-12 inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-action-soft hover:bg-action-soft text-action text-sm font-bold border border-action-border"><MessageCircle className="w-4 h-4" />Ask on WhatsApp</a><button type="submit" disabled={isSubmitting} className="min-h-12 inline-flex items-center justify-center gap-2 px-7 rounded-xl bg-brand-strong hover:bg-brand-hover disabled:opacity-60 disabled:cursor-wait text-white font-extrabold text-sm shadow-md"><span>{isSubmitting ? 'Sending…' : 'Request my safari quote'}</span><Send className="w-4 h-4" /></button></div>
           </form>
         </div> : <div className="clear-both text-center py-10 space-y-4"><div className="w-16 h-16 rounded-full bg-action text-white flex items-center justify-center mx-auto ring-8 ring-action/15"><CheckCircle2 className="w-8 h-8" /></div><h2 id="enquiry-title" className="font-serif-luxury text-3xl font-bold text-ink-strong">Thanks — we received your enquiry.</h2><p id="enquiry-description" className="text-sm text-ink-muted max-w-md mx-auto leading-relaxed">Your safari context and traveller details were sent together, so you will not need to repeat the same information in a follow-up enquiry during this browser session.</p><div className="flex justify-center"><button onClick={handleClose} className="min-h-11 px-6 rounded-xl bg-brand-strong text-white font-bold text-sm hover:bg-brand-hover inline-flex items-center gap-2"><Sparkles className="w-4 h-4" />Continue planning</button></div></div>}
       </div>

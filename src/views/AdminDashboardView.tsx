@@ -3,6 +3,7 @@ import { useData } from '../context/DataContext';
 import { Tour } from '../types';
 import { AdminLayout, AdminSection } from '../admin/AdminLayout';
 import { AdminOverview } from '../admin/sections/AdminOverview';
+import { AdminGrowth } from '../admin/sections/AdminGrowth';
 import { AdminEnquiries } from '../admin/sections/AdminEnquiries';
 import { AdminTours } from '../admin/sections/AdminTours';
 import { AdminHotels } from '../admin/sections/AdminHotels';
@@ -55,6 +56,8 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onNaviga
             onGoToTours={() => setActiveSection('tours')}
           />
         );
+      case 'growth':
+        return <AdminGrowth enquiries={enquiries} />;
       case 'enquiries':
         return (
           <AdminEnquiries

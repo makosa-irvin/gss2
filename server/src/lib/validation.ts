@@ -5,6 +5,17 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+const marketingAttributionSchema = z.object({
+  source: z.string().trim().min(1).max(200),
+  medium: z.string().trim().min(1).max(100),
+  campaign: z.string().trim().max(300).optional().nullable(),
+  term: z.string().trim().max(300).optional().nullable(),
+  content: z.string().trim().max(300).optional().nullable(),
+  referrer: z.string().trim().max(2000).optional().nullable(),
+  landingPage: z.string().trim().min(1).max(2000),
+  firstTouchAt: z.string().datetime(),
+});
+
 export const enquirySchema = z.object({
   fullName: z.string().trim().min(1).max(200),
   email: z.string().trim().email().max(200),
@@ -24,6 +35,7 @@ export const enquirySchema = z.object({
   accommodationPreference: z.string().trim().max(200).default(''),
   specialRequests: z.string().trim().max(2000).default(''),
   hearAboutUs: z.string().trim().max(200).default(''),
+  marketingAttribution: marketingAttributionSchema.optional().nullable(),
 });
 
 export const updateEnquiryStatusSchema = z.object({
@@ -230,10 +242,7 @@ export const settingsUpdateSchema = z.object({
     })
     .optional(),
   currency: z
-    .object({
-      primary: z.enum(['USD', 'KES']),
-      exchangeRateUsdToKes: z.number().positive(),
-    })
+    .object({ primary: z.enum(['USD', 'KES']), exchangeRateUsdToKes: z.number().positive() })
     .optional(),
   booking: z
     .object({

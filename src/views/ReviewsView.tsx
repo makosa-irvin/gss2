@@ -18,21 +18,21 @@ export const ReviewsView: React.FC = () => (
     <main className="mx-auto max-w-7xl px-4 py-12 sm:px-8 space-y-12">
       <section className="grid gap-5 md:grid-cols-2" aria-label="Independent review platforms">
         <a href={SAFARI_BOOKINGS_URL} target="_blank" rel="noopener noreferrer" className="group rounded-3xl border border-border-strong bg-white p-7 text-ink-strong shadow-sm transition hover:border-brand-strong">
-          <div className="flex items-start justify-between gap-4"><div><p className="text-sm font-extrabold uppercase tracking-wider text-ink-muted">SafariBookings</p><div className="mt-2 flex items-end gap-3"><strong className="font-serif-luxury text-4xl">5.0/5</strong><span className="pb-1 text-sm text-ink-muted">23 reviews</span></div></div><ExternalLink className="h-5 w-5 text-brand-deep" /></div>
+          <div className="flex items-start justify-between gap-4"><div><p className="text-sm font-extrabold uppercase tracking-wider text-ink-muted">SafariBookings</p><div className="mt-2 flex items-end gap-3"><strong className="font-serif-luxury text-4xl">5.0/5</strong><span className="pb-1 text-sm text-ink-muted">Independent profile</span></div></div><ExternalLink className="h-5 w-5 text-brand-deep" /></div>
           <div className="mt-3 flex text-amber-600" aria-label="5 out of 5 stars">{[0,1,2,3,4].map(i => <Star key={i} className="h-5 w-5 fill-current" />)}</div>
           <p className="mt-5 text-sm leading-relaxed text-ink-muted">SafariBookings moderates operator reviews independently. Open the profile to see the complete current review list and rating breakdown.</p>
           <span className="mt-5 inline-flex font-bold text-brand-deep">Read all on SafariBookings →</span>
         </a>
 
         <a href={TRIPADVISOR_URL} target="_blank" rel="noopener noreferrer" className="group rounded-3xl border border-border-strong bg-white p-7 text-ink-strong shadow-sm transition hover:border-brand-strong">
-          <div className="flex items-start justify-between gap-4"><div><p className="text-sm font-extrabold uppercase tracking-wider text-ink-muted">Tripadvisor</p><div className="mt-2 flex items-end gap-3"><strong className="font-serif-luxury text-4xl">4.9/5</strong><span className="pb-1 text-sm text-ink-muted">15 reviews</span></div></div><ExternalLink className="h-5 w-5 text-brand-deep" /></div>
+          <div className="flex items-start justify-between gap-4"><div><p className="text-sm font-extrabold uppercase tracking-wider text-ink-muted">Tripadvisor</p><div className="mt-2 flex items-end gap-3"><strong className="font-serif-luxury text-4xl">4.9/5</strong><span className="pb-1 text-sm text-ink-muted">Independent profile</span></div></div><ExternalLink className="h-5 w-5 text-brand-deep" /></div>
           <div className="mt-3 flex text-amber-600" aria-label="4.9 out of 5 stars">{[0,1,2,3,4].map(i => <Star key={i} className="h-5 w-5 fill-current" />)}</div>
           <p className="mt-5 text-sm leading-relaxed text-ink-muted">Tripadvisor publishes traveler feedback and performs review checks. Open our listing for the complete live collection.</p>
           <span className="mt-5 inline-flex font-bold text-brand-deep">Read all on Tripadvisor →</span>
         </a>
       </section>
 
-      <div className="flex items-start gap-3 rounded-2xl border border-action bg-shell p-5 text-sm text-on-shell-muted"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand-soft" /><p><strong className="text-white">Why we link to the originals:</strong> ratings and review counts change as travelers publish new feedback. The external profiles are the source of truth. Ratings above were checked 29 August 2026.</p></div>
+      <div className="flex items-start gap-3 rounded-2xl border border-action bg-shell p-5 text-sm text-on-shell-muted"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand-soft" /><p><strong className="text-white">Why we link to the originals:</strong> ratings and review counts change as travelers publish new feedback. The external profiles are always the source of truth for the latest rating, review count and complete review text.</p></div>
 
       <section className="space-y-7">
         <div><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Recent feedback</span><h2 className="mt-1 font-serif-luxury text-3xl font-bold text-white sm:text-4xl">What travelers highlight</h2><p className="mt-2 max-w-3xl text-on-shell-muted">Short excerpts are shown here for context. Select any review to continue to the independent platform for the full text.</p></div>
