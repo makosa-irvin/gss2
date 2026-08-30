@@ -4,40 +4,11 @@
 import { writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { STATIC_SITEMAP_ROUTES } from './sitemap-routes';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.com').replace(/\/$/, '');
 const API_URL = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || '').replace(/\/$/, '');
-
-// /shortlist is intentionally omitted because it is browser-personalized and noindex.
-// /book-direct is a compatibility redirect and is therefore also omitted.
-const staticRoutes = [
-  '/',
-  '/safaris',
-  '/destinations',
-  '/hotels',
-  '/safari-builder',
-  '/blog',
-  '/reviews',
-  '/plan-with-us',
-  '/about',
-  '/contact',
-  '/guides',
-  '/guides/kenya-safari-cost-guide',
-  '/guides/kenya-safari-from-usa',
-  '/guides/7-day-kenya-safari',
-  '/guides/best-time-for-kenya-safari',
-  '/guides/great-migration-safari-timing',
-  '/guides/kenya-vs-tanzania-safari',
-  '/guides/kenya-safari-zanzibar',
-  '/guides/kenya-honeymoon-safari',
-  '/guides/kenya-family-safari',
-  '/guides/first-time-africa-safari-guide',
-  '/guides/safari-over-60-comfort-guide',
-  '/privacy',
-  '/terms',
-  '/booking-conditions',
-];
 
 type SlugRecord = { slug: string; updatedAt?: string; publishedDate?: string };
 type SitemapEntry = { path: string; lastmod?: string };
@@ -76,7 +47,10 @@ async function dynamicEntries(): Promise<SitemapEntry[]> {
 }
 
 const today = new Date().toISOString().slice(0, 10);
-const entries: SitemapEntry[] = [...staticRoutes.map((path) => ({ path, lastmod: today })), ...(await dynamicEntries())];
+const entries: SitemapEntry[] = [
+  ...STATIC_SITEMAP_ROUTES.map((path) => ({ path, lastmod: today })),
+  ...(await dynamicEntries()),
+];
 const body = entries.map(({ path, lastmod }) => `  <url>\n    <loc>${SITE_URL}${path}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </url>`).join('\n');
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 const outPath = resolve(__dirname, '../public/sitemap.xml');
