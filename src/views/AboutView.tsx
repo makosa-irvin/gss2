@@ -26,7 +26,7 @@ const namedTeam = [
   },
   {
     name: 'Solomon',
-    role: 'Senior Safari Guide',
+    role: 'Director',
     bio: "Solomon leads game drives across the Mara, Amboseli and beyond, drawing on 10+ years guiding in Kenya's national parks. Travelers consistently point out that he goes beyond driving - sharing local knowledge and looking out for the group throughout the trip.",
     photo: null as string | null
   }
@@ -67,7 +67,14 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => (
 
       <section className="space-y-8">
         <div className="max-w-3xl"><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Meet the team</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-2">Put faces to the people behind your journey.</h2><p className="text-base text-on-shell-muted mt-3 leading-relaxed">The bios below are drawn from what travelers have said about working with each of them. A portrait is still pending for one team member.</p></div>
-      <div className="rounded-3xl overflow-hidden aspect-[21/9] border border-white/10 max-w-3xl"><img src="/images/catalog/team-at-nairobi-national-park.jpg" alt="The Good Secrets Safaris team at the Nairobi National Park main gate" loading="lazy" className="w-full h-full object-cover object-top" /></div>
+      <div className="rounded-3xl overflow-hidden aspect-[21/9] border border-white/10 max-w-3xl">
+        <img
+          src="/images/catalog/team-at-nairobi-national-park.jpg"
+          alt="The Good Secrets Safaris team at the Nairobi National Park main gate"
+          loading="lazy"
+          className="w-full h-full object-cover object-[center_45%]"
+        />
+      </div>
       <div className="grid sm:grid-cols-2 gap-6 max-w-3xl">{namedTeam.map(({name,role,bio,photo}) => <article key={name} className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"><div className="aspect-[4/3] bg-gradient-to-br from-action to-shell flex flex-col items-center justify-center text-center p-6 overflow-hidden">{photo ? <img src={photo} alt={`${name}, ${role}`} loading="lazy" className="w-full h-full object-cover" /> : <><Camera className="w-8 h-8 text-brand-soft" /><strong className="text-white mt-3">Photo coming soon</strong><span className="text-xs text-on-shell-subtle mt-1">Placeholder pending an approved portrait</span></>}</div><div className="p-6"><h3 className="font-serif-luxury text-xl font-bold text-white">{name}</h3><span className="text-xs font-bold uppercase tracking-wider text-brand-soft">{role}</span><p className="text-sm text-on-shell-muted mt-3 leading-relaxed">{bio}</p></div></article>)}</div>
       <p className="text-sm text-on-shell-subtle max-w-3xl">Guests also frequently thank guides including {otherGuidesMentioned.join(', ')} by name in their reviews - the wider team behind every trip, not just the two above.</p>
       </section>
