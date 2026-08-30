@@ -10,15 +10,33 @@ const SITE_URL = (process.env.VITE_SITE_URL || 'https://www.goodsecretssafaris.c
 const API_URL = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || '').replace(/\/$/, '');
 
 // /shortlist is intentionally omitted because it is browser-personalized and noindex.
-// /book-direct is now a compatibility redirect and is therefore also omitted.
+// /book-direct is a compatibility redirect and is therefore also omitted.
 const staticRoutes = [
-  '/', '/safaris', '/destinations', '/hotels', '/safari-builder', '/blog', '/reviews', '/plan-with-us', '/about', '/contact',
+  '/',
+  '/safaris',
+  '/destinations',
+  '/hotels',
+  '/safari-builder',
+  '/blog',
+  '/reviews',
+  '/plan-with-us',
+  '/about',
+  '/contact',
   '/guides',
   '/guides/kenya-safari-cost-guide',
+  '/guides/kenya-safari-from-usa',
+  '/guides/7-day-kenya-safari',
   '/guides/best-time-for-kenya-safari',
+  '/guides/great-migration-safari-timing',
   '/guides/kenya-vs-tanzania-safari',
+  '/guides/kenya-safari-zanzibar',
+  '/guides/kenya-honeymoon-safari',
+  '/guides/kenya-family-safari',
   '/guides/first-time-africa-safari-guide',
-  '/guides/safari-over-60-comfort-guide'
+  '/guides/safari-over-60-comfort-guide',
+  '/privacy',
+  '/terms',
+  '/booking-conditions',
 ];
 
 type SlugRecord = { slug: string; updatedAt?: string; publishedDate?: string };
@@ -44,7 +62,10 @@ async function dynamicEntries(): Promise<SitemapEntry[]> {
     return [];
   }
   const [tours, hotels, destinations, posts] = await Promise.all([
-    fetchCollection('/api/tours'), fetchCollection('/api/hotels'), fetchCollection('/api/destinations'), fetchCollection('/api/blog')
+    fetchCollection('/api/tours'),
+    fetchCollection('/api/hotels'),
+    fetchCollection('/api/destinations'),
+    fetchCollection('/api/blog'),
   ]);
   return [
     ...tours.map((item) => ({ path: `/safaris/${item.slug}`, lastmod: isoDate(item.updatedAt) })),
