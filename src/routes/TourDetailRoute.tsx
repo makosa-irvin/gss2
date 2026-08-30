@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
+import { RelatedPlanningGuides } from '../components/common/RelatedPlanningGuides';
+import { getTourGuideRecommendations } from '../lib/guideRecommendations';
 import { TourDetailView } from '../views/TourDetailView';
 import { NotFoundView } from './NotFoundView';
 
@@ -22,15 +24,22 @@ export const TourDetailRoute: React.FC<TourDetailRouteProps> = ({ onOpenEnquiryM
   const tour = tours.find(t => t.slug === slug);
   if (!tour) return <NotFoundView />;
 
+  const planningGuides = getTourGuideRecommendations(tour);
+
   return (
-    <TourDetailView
-      tour={tour}
-      onBack={() => navigate('/safaris')}
-      onOpenEnquiryModal={onOpenEnquiryModal}
-      onSelectDestination={(destName) => {
-        const dest = destinations.find(d => d.name === destName);
-        if (dest) navigate(`/destinations/${dest.slug}`);
-      }}
-    />
+    <>
+      <TourDetailView
+        tour={tour}
+        onBack={() => navigate('/safaris')}
+        onOpenEnquiryModal={onOpenEnquiryModal}
+        onSelectDestination={(destName) => {
+          const dest = destinations.find(d => d.name === destName);
+          if (dest) navigate(`/destinations/${dest.slug}`);
+        }}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 pb-16">
+        <RelatedPlanningGuides guides={planningGuides} eyebrow="Research this safari" title="Questions worth answering before you book" />
+      </div>
+    </>
   );
 };
