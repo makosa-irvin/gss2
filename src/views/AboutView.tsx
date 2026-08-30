@@ -11,11 +11,25 @@ const planningSteps = [
   ['04', 'Travel with local support', 'The same East Africa-based team remains available while your trip is underway.']
 ];
 
-const teamPlaceholders = [
-  ['Safari planning team', 'Itinerary design, lodge matching and pre-trip coordination.'],
-  ['Driver-guide team', 'Private game drives, wildlife interpretation and day-to-day flexibility.'],
-  ['Guest support team', 'Arrival coordination and local assistance during your journey.']
+// Bios below are drafted from what Good Secrets Safaris' own published
+// reviews say about each person's role (SafariBookings/Tripadvisor, and
+// the "+10 years" guiding claim from goodsecretssafaris.com's own site
+// copy) - not invented. Grey/the team should read and confirm these
+// before they're treated as final, and swap the placeholder graphic for
+// a real portrait once photos are approved.
+const namedTeam = [
+  {
+    name: 'Elsy',
+    role: 'Safari Planner, Nairobi office',
+    bio: "Elsy leads itinerary planning - matching lodges, routing and pace to what each traveler is after, and staying in touch by WhatsApp and email from first enquiry through departure. She's the name travelers mention most often for fast, clear, personal communication."
+  },
+  {
+    name: 'Solomon',
+    role: 'Senior Safari Guide',
+    bio: "Solomon leads game drives across the Mara, Amboseli and beyond, drawing on 10+ years guiding in Kenya's national parks. Travelers consistently point out that he goes beyond driving - sharing local knowledge and looking out for the group throughout the trip."
+  }
 ];
+const otherGuidesMentioned = ['Fred', 'Kennedy', 'Evans', 'Jeff', 'James', 'Christopher'];
 
 export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => (
   <div className="pb-20">
@@ -50,8 +64,9 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenEnquiryModal }) => (
       </section>
 
       <section className="space-y-8">
-        <div className="max-w-3xl"><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Meet the team</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-2">Put faces to the people behind your journey.</h2><p className="text-base text-on-shell-muted mt-3 leading-relaxed">We did not find clearly labelled team portraits in the current website image library, so these spaces are intentionally left as team-photo placeholders rather than using stock portraits. Replace them with real staff photographs and bios as soon as they are available.</p></div>
-      <div className="grid md:grid-cols-3 gap-6">{teamPlaceholders.map(([title,desc]) => <article key={title} className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"><div className="aspect-[4/3] bg-gradient-to-br from-action to-shell flex flex-col items-center justify-center text-center p-6"><Camera className="w-8 h-8 text-brand-soft" /><strong className="text-white mt-3">Real team photo placeholder</strong><span className="text-xs text-on-shell-subtle mt-1">Replace when approved portraits are available</span></div><div className="p-6"><h3 className="font-serif-luxury text-xl font-bold text-white">{title}</h3><p className="text-sm text-on-shell-muted mt-2 leading-relaxed">{desc}</p></div></article>)}</div>
+        <div className="max-w-3xl"><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Meet the team</span><h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white mt-2">Put faces to the people behind your journey.</h2><p className="text-base text-on-shell-muted mt-3 leading-relaxed">Real portraits are on the way - these are placeholders until approved photos are ready. The bios below are drawn from what travelers have said about working with each of them.</p></div>
+      <div className="grid sm:grid-cols-2 gap-6 max-w-3xl">{namedTeam.map(({name,role,bio}) => <article key={name} className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"><div className="aspect-[4/3] bg-gradient-to-br from-action to-shell flex flex-col items-center justify-center text-center p-6"><Camera className="w-8 h-8 text-brand-soft" /><strong className="text-white mt-3">Photo coming soon</strong><span className="text-xs text-on-shell-subtle mt-1">Placeholder pending an approved portrait</span></div><div className="p-6"><h3 className="font-serif-luxury text-xl font-bold text-white">{name}</h3><span className="text-xs font-bold uppercase tracking-wider text-brand-soft">{role}</span><p className="text-sm text-on-shell-muted mt-3 leading-relaxed">{bio}</p></div></article>)}</div>
+      <p className="text-sm text-on-shell-subtle max-w-3xl">Guests also frequently thank guides including {otherGuidesMentioned.join(', ')} by name in their reviews - the wider team behind every trip, not just the two above.</p>
       </section>
 
       <section className="grid md:grid-cols-3 gap-5">

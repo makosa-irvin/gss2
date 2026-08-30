@@ -1,8 +1,21 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
-import { Compass, MapPin, Phone, Mail, ShieldCheck, Instagram, Facebook, Youtube, Linkedin, Sparkles, Star, ArrowRight } from 'lucide-react';
+import { Compass, MapPin, Phone, Mail, ShieldCheck, Instagram, Facebook, Youtube, Linkedin, Sparkles, Star, ArrowRight, BadgeCheck, HeartPulse } from 'lucide-react';
 
 interface FooterProps { onNavigate: (view: string, payload?: any) => void; onOpenEnquiryModal: (payload?: any) => void; }
+
+// TRA and AMREF Flying Doctors are both referenced on goodsecretssafaris.com's
+// own site (TRA licence badge; "AMREF Flying Doctors emergency cover" under
+// "Your Safety and Comfort Come First") and TRA licensing is independently
+// corroborated by traveler reviews ("Good Secrets Safaris is a licensed
+// (TRA)... Kenyan operator" - Tripadvisor, Nov 2025). Rendered as text+icon
+// badges rather than the source site's logo images, since those PNG/JPG
+// files aren't available in this repo yet - swap in the real badge
+// artwork once it's uploaded.
+const trustBadges = [
+  { Icon: BadgeCheck, label: "Licensed by Kenya's Tourism Regulatory Authority (TRA)" },
+  { Icon: HeartPulse, label: 'AMREF Flying Doctors emergency medical cover' }
+];
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }) => {
   const { settings, destinations } = useData();
@@ -13,6 +26,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenEnquiryModal }
       <nav className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-8" aria-label="Footer navigation"><div><h2 className="text-xs font-extrabold uppercase tracking-wider text-ink-strong mb-2">Safari styles</h2><ul>{['Big 5','Great Migration','Family','Honeymoon','Luxury','Safari & Beach'].map(style=><li key={style}><button onClick={()=>onNavigate('tours',{travelStyle:style})} className={linkClass}>{style}</button></li>)}</ul></div><div><h2 className="text-xs font-extrabold uppercase tracking-wider text-ink-strong mb-2">Destinations</h2><ul>{destinations.slice(0,6).map(d=><li key={d.id}><button onClick={()=>onNavigate('destinations',{destinationId:d.id})} className={linkClass}>{d.name}</button></li>)}</ul></div><div><h2 className="text-xs font-extrabold uppercase tracking-wider text-ink-strong mb-2">Plan with confidence</h2><ul><li><button onClick={()=>onNavigate('plan-with-us')} className={linkClass}>How we plan your safari</button></li><li><button onClick={()=>onNavigate('reviews')} className={linkClass}>Traveler reviews</button></li><li><button onClick={()=>onNavigate('about')} className={linkClass}>Meet Good Secrets</button></li><li><button onClick={()=>onNavigate('builder')} className={linkClass}>Safari builder</button></li><li><button onClick={()=>onNavigate('guides')} className={linkClass}>Safari planning guides</button></li><li><button onClick={()=>onNavigate('blog')} className={linkClass}>Travel magazine</button></li><li><button onClick={()=>onNavigate('contact')} className={linkClass}>Contact</button></li></ul></div></nav>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-ink-muted"><a href={`mailto:${settings.contact.email}`} className="min-h-11 flex items-center gap-2 rounded-xl hover:text-brand-hover"><Mail className="w-4 h-4 text-brand-deep"/><span className="break-all">{settings.contact.email}</span></a><a href={`tel:${settings.contact.phone}`} className="min-h-11 flex items-center gap-2 rounded-xl hover:text-brand-hover"><Phone className="w-4 h-4 text-brand-deep"/>{settings.contact.phone}</a><div className="min-h-11 flex items-center gap-2"><MapPin className="w-4 h-4 text-brand-deep shrink-0"/>{settings.contact.address}</div></div>
+    <div className="flex flex-wrap gap-3">{trustBadges.map(({Icon,label}) => <div key={label} className="min-h-11 inline-flex items-center gap-2 rounded-xl border border-border-strong bg-white px-3.5 text-xs font-bold text-ink-strong"><Icon className="w-4 h-4 text-brand-deep shrink-0"/><span>{label}</span></div>)}</div>
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-ink-muted border-t border-border-strong pt-6"><div className="flex items-start gap-2"><ShieldCheck className="w-4 h-4 text-brand-deep shrink-0"/><span>Submitting an enquiry does not confirm a booking or take payment. Trip, payment and cancellation terms are provided before you choose to proceed.</span></div><div className="sm:text-right">© {new Date().getFullYear()} Good Secrets Safaris. All rights reserved.</div></div>
   </div></footer>;
 };
