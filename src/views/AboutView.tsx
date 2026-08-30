@@ -28,7 +28,7 @@ const namedTeam = [
     name: 'Solomon',
     role: 'Director',
     bio: "Solomon leads game drives across the Mara, Amboseli and beyond, drawing on 10+ years guiding in Kenya's national parks. Travelers consistently point out that he goes beyond driving - sharing local knowledge and looking out for the group throughout the trip.",
-    photo: null as string | null
+    photo: '/images/catalog/solomon-director.jpg'
   }
 ];
 const otherGuidesMentioned = ['Fred', 'Kennedy', 'Evans', 'Jeff', 'James', 'Christopher'];
