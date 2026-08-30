@@ -1,3 +1,5 @@
+import { api } from '../services/api';
+
 export interface MarketingAttribution {
   source: string;
   medium: string;
@@ -14,6 +16,7 @@ type AnalyticsParams = Record<string, AnalyticsValue>;
 
 const ATTRIBUTION_KEY = 'gss-marketing-attribution-v1';
 const CONSENT_KEY = 'gss-analytics-consent-v1';
+const SESSION_ID_KEY = 'gss-analytics-session-v1';
 let analyticsInitialized = false;
 
 declare global {
@@ -38,6 +41,16 @@ function safeSessionSet(key: string, value: unknown) {
   } catch {
     // Attribution improves reporting but must never block trip planning.
   }
+}
+
+function getAnalyticsSessionId() {
+  const existing = safeSessionGet<string>(SESSION_ID_KEY);
+  if (existing) return existing;
+  const id = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  safeSessionSet(SESSION_ID_KEY, id);
+  return id;
 }
 
 function inferSource(referrer: string) {
@@ -94,13 +107,41 @@ export function getAnalyticsConsent(): 'granted' | 'denied' | null {
   }
 }
 
+function persistFirstPartyEvent(name: string, params: AnalyticsParams, attribution: MarketingAttribution | null) {
+  if (getAnalyticsConsent() !== 'granted') return;
+  const metadata = Object.fromEntries(
+    Object.entries(params)
+      .filter(([key, value]) => !['page_path', 'source', 'medium', 'campaign'].includes(key) && value !== undefined)
+      .map(([key, value]) => [key, value as string | number | boolean])
+  );
+
+  void api.post('/api/analytics/events', {
+    sessionId: getAnalyticsSessionId(),
+    eventName: name,
+    pagePath: typeof params.page_path === 'string' ? params.page_path : `${window.location.pathname}${window.location.search}`,
+    source: attribution?.source || 'direct',
+    medium: attribution?.medium || '(none)',
+    campaign: attribution?.campaign,
+    metadata,
+  }).catch(() => {
+    // Analytics must never interfere with trip planning or form submission.
+  });
+}
+
 export function setAnalyticsConsent(consent: 'granted' | 'denied') {
   try {
     window.localStorage.setItem(CONSENT_KEY, consent);
   } catch {
     // Consent state can still be respected for the current interaction.
   }
-  if (consent === 'granted') initializeAnalytics();
+  if (consent === 'granted') {
+    initializeAnalytics();
+    const attribution = getMarketingAttribution();
+    persistFirstPartyEvent('page_view', {
+      page_path: `${window.location.pathname}${window.location.search}`,
+      page_title: document.title,
+    }, attribution);
+  }
 }
 
 export function initializeAnalytics() {
@@ -127,6 +168,7 @@ export function trackEvent(name: string, params: AnalyticsParams = {}) {
   const detail = { ...params, source: attribution?.source, medium: attribution?.medium, campaign: attribution?.campaign };
   window.dispatchEvent(new CustomEvent('gss:analytics', { detail: { name, params: detail } }));
   if (getAnalyticsConsent() === 'granted') {
+    persistFirstPartyEvent(name, params, attribution);
     initializeAnalytics();
     window.gtag?.('event', name, detail);
   }
