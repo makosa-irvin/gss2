@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
+import { RelatedPlanningGuides } from '../components/common/RelatedPlanningGuides';
+import { getDestinationGuideRecommendations } from '../lib/guideRecommendations';
 import { DestinationDetailView } from '../views/DestinationDetailView';
 import { NotFoundView } from './NotFoundView';
 
@@ -15,13 +17,20 @@ export const DestinationDetailRoute: React.FC<DestinationDetailRouteProps> = ({ 
   const destination = destinations.find(d => d.slug === slug);
   if (!destination) return <NotFoundView />;
 
+  const planningGuides = getDestinationGuideRecommendations(destination);
+
   return (
-    <DestinationDetailView
-      destination={destination}
-      onBack={() => navigate('/destinations')}
-      onSelectTour={(tour) => navigate(`/safaris/${tour.slug}`)}
-      onSelectHotel={(hotel) => navigate(`/hotels/${hotel.slug}`)}
-      onOpenEnquiryModal={onOpenEnquiryModal}
-    />
+    <>
+      <DestinationDetailView
+        destination={destination}
+        onBack={() => navigate('/destinations')}
+        onSelectTour={(tour) => navigate(`/safaris/${tour.slug}`)}
+        onSelectHotel={(hotel) => navigate(`/hotels/${hotel.slug}`)}
+        onOpenEnquiryModal={onOpenEnquiryModal}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 pb-16">
+        <RelatedPlanningGuides guides={planningGuides} eyebrow="Research this destination" title="Plan the wider safari, not just the park" />
+      </div>
+    </>
   );
 };
