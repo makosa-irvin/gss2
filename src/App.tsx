@@ -8,6 +8,8 @@ import { Footer } from './components/layout/Footer';
 import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { EnquiryModal } from './components/common/EnquiryModal';
 import { PageMeta } from './components/common/PageMeta';
+import { AnalyticsTracker } from './components/common/AnalyticsTracker';
+import { AnalyticsConsentBanner } from './components/common/AnalyticsConsentBanner';
 import { HomePage } from './views/HomePage';
 import { SafariBuilderWizard } from './components/builder/SafariBuilderWizard';
 
@@ -18,6 +20,7 @@ const ReviewsView = lazy(() => import('./views/ReviewsView').then(m => ({ defaul
 const ShortlistView = lazy(() => import('./views/ShortlistView').then(m => ({ default: m.ShortlistView })));
 const PlanningWithUsView = lazy(() => import('./views/PlanningWithUsView').then(m => ({ default: m.PlanningWithUsView })));
 const SafariGuidesView = lazy(() => import('./views/SafariGuidesView').then(m => ({ default: m.SafariGuidesView })));
+const LegalView = lazy(() => import('./views/LegalView').then(m => ({ default: m.LegalView })));
 const AdminDashboardView = lazy(() => import('./views/AdminDashboardView').then(m => ({ default: m.AdminDashboardView })));
 const TourDetailRoute = lazy(() => import('./routes/TourDetailRoute').then(m => ({ default: m.TourDetailRoute })));
 const HotelDetailRoute = lazy(() => import('./routes/HotelDetailRoute').then(m => ({ default: m.HotelDetailRoute })));
@@ -67,7 +70,7 @@ const MainAppContent: React.FC = () => {
   if(isLoading) return <div className="min-h-screen flex items-center justify-center bg-shell text-on-shell"><p className="text-sm text-on-shell-subtle">Loading Good Secrets Safaris...</p></div>;
   if(loadError) return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-shell text-on-shell px-4 text-center"><p className="text-sm text-on-shell">{loadError}</p><button onClick={()=>window.location.reload()} className="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-strong text-white font-bold text-xs uppercase tracking-wider">Retry</button></div>;
 
-  return <div className="min-h-screen flex flex-col bg-shell text-on-shell selection:bg-brand selection:text-black"><Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><main className="flex-1"><Suspense fallback={<RouteFallback/>}><Routes>
+  return <div className="min-h-screen flex flex-col bg-shell text-on-shell selection:bg-brand selection:text-black"><AnalyticsTracker/><Navbar onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><main className="flex-1"><Suspense fallback={<RouteFallback/>}><Routes>
     <Route path="/" element={<HomePage onNavigate={legacyNavigate} onSelectTour={handleSelectTour} onSelectDestination={handleSelectDestination} onSelectHotel={handleSelectHotel} onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/safaris" element={<ToursExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/safaris/:slug" element={<TourDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/destinations" element={<DestinationsView onSelectDestination={handleSelectDestination}/>}/><Route path="/destinations/:slug" element={<DestinationDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
@@ -78,8 +81,9 @@ const MainAppContent: React.FC = () => {
     <Route path="/reviews" element={<ReviewsView/>}/><Route path="/shortlist" element={<ShortlistView onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/plan-with-us" element={<PlanningWithUsView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/book-direct" element={<Navigate to="/plan-with-us" replace/>}/>
     <Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/>
+    <Route path="/privacy" element={<LegalView/>}/><Route path="/terms" element={<LegalView/>}/><Route path="/booking-conditions" element={<LegalView/>}/>
     <Route path="/admin" element={<AdminRoute><AdminDashboardView onNavigateHome={()=>navigate('/')} onPreviewTour={(tour)=>navigate(`/safaris/${tour.slug}`)}/></AdminRoute>}/><Route path="*" element={<NotFoundView/>}/>
-  </Routes></Suspense></main><Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp}/><EnquiryModal isOpen={isEnquiryModalOpen} onClose={()=>setIsEnquiryModalOpen(false)} selectedTour={enquiryModalData.selectedTour} selectedHotel={enquiryModalData.selectedHotel} initialType={enquiryModalData.initialType} initialDestination={enquiryModalData.initialDestination} initialSpecialRequests={enquiryModalData.initialSpecialRequests} contextItems={enquiryModalData.contextItems}/></div>;
+  </Routes></Suspense></main><Footer onNavigate={legacyNavigate} onOpenEnquiryModal={openEnquiryModal}/><FloatingWhatsApp currentTourTitle={currentTourTitleForWhatsApp}/><EnquiryModal isOpen={isEnquiryModalOpen} onClose={()=>setIsEnquiryModalOpen(false)} selectedTour={enquiryModalData.selectedTour} selectedHotel={enquiryModalData.selectedHotel} initialType={enquiryModalData.initialType} initialDestination={enquiryModalData.initialDestination} initialSpecialRequests={enquiryModalData.initialSpecialRequests} contextItems={enquiryModalData.contextItems}/><AnalyticsConsentBanner/></div>;
 };
 
 export default function App(){return <BrowserRouter><DataProvider><ShortlistProvider><MainAppContent/></ShortlistProvider></DataProvider></BrowserRouter>;}
