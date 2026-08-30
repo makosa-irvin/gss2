@@ -137,6 +137,17 @@ export interface Hotel {
   published?: boolean;
 }
 
+export interface MarketingAttribution {
+  source: string;
+  medium: string;
+  campaign?: string | null;
+  term?: string | null;
+  content?: string | null;
+  referrer?: string | null;
+  landingPage: string;
+  firstTouchAt: string;
+}
+
 export interface Enquiry {
   id: string;
   fullName: string;
@@ -156,6 +167,7 @@ export interface Enquiry {
   accommodationPreference: string;
   specialRequests: string;
   hearAboutUs: string;
+  marketingAttribution?: MarketingAttribution | null;
   status: 'New' | 'Contacted' | 'Quoted' | 'Confirmed' | 'Cancelled';
   createdAt: string;
   updatedAt?: string;
