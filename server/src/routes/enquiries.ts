@@ -4,7 +4,7 @@ import { eq, desc } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '../db/client.js';
 import { enquiries } from '../db/schema.js';
-import { enquiryFollowUps } from '../db/crmSchema.js';
+import { enquiryAttribution, enquiryFollowUps } from '../db/crmSchema.js';
 import { asyncHandler, validateBody } from '../middleware/common.js';
 import { requireAdmin } from '../middleware/requireAdmin.js';
 import { enquirySchema, updateEnquiryStatusSchema } from '../lib/validation.js';
@@ -29,7 +29,24 @@ enquiriesRouter.post(
   enquiryLimiter,
   validateBody(enquirySchema),
   asyncHandler(async (req, res) => {
-    const [created] = await db.insert(enquiries).values(req.body).returning();
+    const { marketingAttribution, ...enquiryValues } = req.body;
+    const created = await db.transaction(async (tx) => {
+      const [row] = await tx.insert(enquiries).values(enquiryValues).returning();
+      if (marketingAttribution) {
+        await tx.insert(enquiryAttribution).values({
+          enquiryId: row.id,
+          source: marketingAttribution.source,
+          medium: marketingAttribution.medium,
+          campaign: marketingAttribution.campaign ?? null,
+          term: marketingAttribution.term ?? null,
+          content: marketingAttribution.content ?? null,
+          referrer: marketingAttribution.referrer ?? null,
+          landingPage: marketingAttribution.landingPage,
+          firstTouchAt: new Date(marketingAttribution.firstTouchAt),
+        });
+      }
+      return row;
+    });
     sendEnquiryNotifications(created).catch((err) =>
       console.error(`Unexpected error sending notifications for enquiry ${created.id}:`, err)
     );
@@ -43,11 +60,25 @@ enquiriesRouter.get(
   requireAdmin,
   asyncHandler(async (_req, res) => {
     const rows = await db
-      .select({ enquiry: enquiries, followUpAt: enquiryFollowUps.followUpAt })
+      .select({ enquiry: enquiries, followUpAt: enquiryFollowUps.followUpAt, attribution: enquiryAttribution })
       .from(enquiries)
       .leftJoin(enquiryFollowUps, eq(enquiries.id, enquiryFollowUps.enquiryId))
+      .leftJoin(enquiryAttribution, eq(enquiries.id, enquiryAttribution.enquiryId))
       .orderBy(desc(enquiries.createdAt));
-    res.json(rows.map(({ enquiry, followUpAt }) => ({ ...enquiry, followUpAt })));
+    res.json(rows.map(({ enquiry, followUpAt, attribution }) => ({
+      ...enquiry,
+      followUpAt,
+      marketingAttribution: attribution ? {
+        source: attribution.source,
+        medium: attribution.medium,
+        campaign: attribution.campaign,
+        term: attribution.term,
+        content: attribution.content,
+        referrer: attribution.referrer,
+        landingPage: attribution.landingPage,
+        firstTouchAt: attribution.firstTouchAt.toISOString(),
+      } : null,
+    })));
   })
 );
 
