@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { useShortlist } from '../../context/ShortlistContext';
-import { Compass, ChevronDown, Phone, Menu, X, Sparkles, Check, Heart, ShieldCheck } from 'lucide-react';
+import { ChevronDown, Phone, Menu, X, Sparkles, Check, Heart, ShieldCheck } from 'lucide-react';
 
 interface NavbarProps { onNavigate: (view: string, payload?: any) => void; onOpenEnquiryModal: (payload?: any) => void; }
 
@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenEnquiryModal }
 
       <nav aria-label="Main navigation" className={`w-full transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl border-b border-border shadow-md py-2.5' : 'bg-white/95 backdrop-blur-md border-b border-border py-3.5'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between gap-4">
-          <button type="button" onClick={() => onNavigate('home')} aria-label="Good Secrets Safaris home" className="flex items-center gap-3 select-none group rounded-xl text-left shrink-0"><span className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand to-brand-deep p-0.5 shadow-md flex items-center justify-center"><span className="w-full h-full bg-ink-strong rounded-[10px] flex items-center justify-center group-hover:bg-action transition-colors"><Compass className="w-5 h-5 text-on-shell" /></span></span><span><span className="font-display-accent text-lg sm:text-xl font-bold tracking-wider text-ink-strong block leading-none">GOOD SECRETS</span><span className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-brand-deep block mt-0.5">SAFARIS · EAST AFRICA</span></span></button>
+          <button type="button" onClick={() => onNavigate('home')} aria-label="Good Secrets Safaris home" className="flex items-center select-none group rounded-xl text-left shrink-0"><img src="/images/brand/logo.png" alt="Good Secrets Safaris" className="h-11 sm:h-14 w-auto object-contain" /></button>
 
           <div className="hidden lg:flex items-center gap-0.5">
             <div className="relative" onMouseEnter={() => setActiveDropdown('explore')} onMouseLeave={() => setActiveDropdown(null)}><button type="button" onClick={() => toggleDropdown('explore')} aria-expanded={activeDropdown === 'explore'} className={dropdownButtonClass}><span>Destinations</span><ChevronDown className="w-3.5 h-3.5 opacity-60" /></button>{activeDropdown === 'explore' && <div className="absolute top-full left-0 w-64 rounded-2xl bg-white border border-border-strong shadow-2xl p-2.5 z-50">{[{ label: 'Kenya Safaris & Coast', value: 'Kenya' },{ label: 'Tanzania Wilderness', value: 'Tanzania' },{ label: 'Zanzibar Spice Archipelago', value: 'Zanzibar' },{ label: 'Kenya + Tanzania Combined', value: 'Kenya + Tanzania' },{ label: 'Safari & Beach Combo', value: 'Safari + Beach' }].map(item => <button key={item.value} onClick={() => goFromMenu('tours', { country: item.value })} className={dropdownItemClass}>{item.label}</button>)}<div className="pt-1.5 mt-1.5 border-t border-border"><button onClick={() => goFromMenu('destinations')} className="w-full text-left px-3 py-2.5 text-sm font-bold text-brand-deep hover:bg-surface-soft rounded-xl block">View All Destinations →</button></div></div>}</div>
