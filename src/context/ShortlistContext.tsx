@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { trackEvent } from '../lib/analytics';
 
 interface ShortlistState {
   tours: string[];
@@ -53,15 +54,20 @@ export const ShortlistProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     savedCount: shortlist.tours.length + shortlist.hotels.length,
     isTourSaved: slug => shortlist.tours.includes(slug),
     isHotelSaved: slug => shortlist.hotels.includes(slug),
-    toggleTour: slug => setShortlist(current => ({
-      ...current,
-      tours: current.tours.includes(slug) ? current.tours.filter(item => item !== slug) : [...current.tours, slug]
-    })),
-    toggleHotel: slug => setShortlist(current => ({
-      ...current,
-      hotels: current.hotels.includes(slug) ? current.hotels.filter(item => item !== slug) : [...current.hotels, slug]
-    })),
-    clearShortlist: () => setShortlist(EMPTY_STATE)
+    toggleTour: slug => setShortlist(current => {
+      const removing = current.tours.includes(slug);
+      trackEvent(removing ? 'shortlist_removed' : 'shortlist_added', { item_type: 'tour', item_slug: slug });
+      return { ...current, tours: removing ? current.tours.filter(item => item !== slug) : [...current.tours, slug] };
+    }),
+    toggleHotel: slug => setShortlist(current => {
+      const removing = current.hotels.includes(slug);
+      trackEvent(removing ? 'shortlist_removed' : 'shortlist_added', { item_type: 'hotel', item_slug: slug });
+      return { ...current, hotels: removing ? current.hotels.filter(item => item !== slug) : [...current.hotels, slug] };
+    }),
+    clearShortlist: () => {
+      trackEvent('shortlist_cleared', { item_count: shortlist.tours.length + shortlist.hotels.length });
+      setShortlist(EMPTY_STATE);
+    }
   }), [shortlist]);
 
   return <ShortlistContext.Provider value={value}>{children}</ShortlistContext.Provider>;
