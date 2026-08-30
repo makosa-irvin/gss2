@@ -49,7 +49,7 @@ describe('TourDetailView', () => {
     expect(screen.getByRole('heading', { name: /is this safari right for you/i })).toBeInTheDocument();
     expect(screen.getByText('Couples, Honeymooners')).toBeInTheDocument();
     expect(screen.getByText('Big 5, Luxury')).toBeInTheDocument();
-    expect(screen.getByText('7 Days / 6 Nights')).toBeInTheDocument();
+    expect(screen.getAllByText('7 Days / 6 Nights').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('Amboseli National Park → Maasai Mara National Reserve')).toBeInTheDocument();
     expect(screen.getByText('Nairobi, Kenya → Nairobi, Kenya')).toBeInTheDocument();
   });
