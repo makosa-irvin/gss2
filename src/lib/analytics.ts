@@ -43,12 +43,22 @@ function safeSessionSet(key: string, value: unknown) {
   }
 }
 
-function getAnalyticsSessionId() {
+function getAnalyticsSessionId(): string | null {
   const existing = safeSessionGet<string>(SESSION_ID_KEY);
   if (existing) return existing;
-  const id = typeof crypto !== 'undefined' && 'randomUUID' in crypto
-    ? crypto.randomUUID()
-    : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  let id: string;
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    id = crypto.randomUUID();
+  } else if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    id = `session-${Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')}`;
+  } else {
+    // Analytics is optional. If secure randomness is unavailable, skip
+    // persistence rather than creating a predictable visitor identifier.
+    return null;
+  }
+
   safeSessionSet(SESSION_ID_KEY, id);
   return id;
 }
@@ -109,6 +119,9 @@ export function getAnalyticsConsent(): 'granted' | 'denied' | null {
 
 function persistFirstPartyEvent(name: string, params: AnalyticsParams, attribution: MarketingAttribution | null) {
   if (getAnalyticsConsent() !== 'granted') return;
+  const sessionId = getAnalyticsSessionId();
+  if (!sessionId) return;
+
   const metadata = Object.fromEntries(
     Object.entries(params)
       .filter(([key, value]) => !['page_path', 'source', 'medium', 'campaign'].includes(key) && value !== undefined)
@@ -116,7 +129,7 @@ function persistFirstPartyEvent(name: string, params: AnalyticsParams, attributi
   );
 
   void api.post('/api/analytics/events', {
-    sessionId: getAnalyticsSessionId(),
+    sessionId,
     eventName: name,
     pagePath: typeof params.page_path === 'string' ? params.page_path : `${window.location.pathname}${window.location.search}`,
     source: attribution?.source || 'direct',
