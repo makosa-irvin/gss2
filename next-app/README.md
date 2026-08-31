@@ -1,35 +1,57 @@
-# Good Secrets Safaris Next.js migration app
+# Good Secrets Safaris Next.js frontend
 
-This directory is the parallel App Router application used to migrate the public Good Secrets Safaris frontend from Vite/React CSR to a hybrid Next.js architecture.
+This is the canonical Good Secrets Safaris frontend. It replaces the former Vite/React SPA at deployment time while preserving the existing Express API and PostgreSQL database in `/server`.
 
-## Why it is parallel
+## Rendering model
 
-The existing root Vite application remains the deployed application while migration work is in progress. This avoids switching rendering architecture before route, design, analytics, enquiry, and SEO parity are verified.
+- **SSG:** legal pages, planning guides, About, Contact, and evergreen planning content.
+- **ISR (15 minutes by default):** homepage, safari catalog, destinations, hotels, reviews, and blog content backed by the existing Express API.
+- **Client Components inside server-rendered pages:** enquiry modal, analytics consent/tracking, safari builder, and shortlist.
+- **Authenticated CSR:** `/admin` CRM and catalog administration.
 
-## Rendering targets
+Public acquisition routes therefore return useful HTML, metadata, canonical URLs, and structured data before client hydration.
 
-- SSG: legal pages, guides, evergreen editorial content, About, Contact.
-- SSG/ISR: safari, destination, hotel, and review pages backed by the existing Express API.
-- CSR inside a server-rendered shell: shortlist, safari builder, enquiry interactions.
-- CSR/authenticated: admin and CRM.
-- SSR only where request-time data genuinely requires it.
+## Backend integration
 
-## Current migrated slice
+Server Components read the existing API using `API_URL` (preferred) or the legacy `VITE_API_URL` fallback. Browser mutations and authenticated requests use `/api/backend/*`, a same-origin Next route proxy that forwards to the existing Express service and preserves admin cookies.
 
-- `/privacy`
-- `/terms`
-- `/booking-conditions`
+Tour detail pages are derived from the public tour list instead of requesting `/api/tours/:slug` during generation so ISR/build traffic does not increment the backend tour view counter.
 
-These pages are Server Components and use Next.js native metadata. The migration preview is intentionally `noindex` and its generated robots file blocks crawlers until the Next application becomes the canonical deployment.
+## Assets
 
-## Local verification
+The repository root `/public` directory remains the single source of truth for photography and brand assets. `npm run assets` copies it into `next-app/public` before development and production builds.
+
+## Local development
 
 ```bash
 cd next-app
 npm install
-npm run typecheck
-npm run build
-npm run dev
+API_URL=http://localhost:4000 NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run dev
 ```
 
-Next.js is pinned to the current Active LTS security release for this branch. Do not change the repository root `npm run build` to Next.js until the migration checklist is complete.
+The Express backend continues to run separately, normally on port 4000.
+
+## Verification
+
+```bash
+cd next-app
+npm run typecheck
+npm run build
+```
+
+GitHub Actions also runs these checks for changes to `next-app/**`.
+
+## Deployment
+
+The repository `vercel.json` now builds this directory as the Next.js frontend and removes the former SPA catch-all rewrite. Legacy WordPress and `/book-direct` redirects live in `next.config.ts`.
+
+Required deployment configuration:
+
+- `API_URL` — server-only Express/Railway origin, without a trailing `/api`.
+- `NEXT_PUBLIC_SITE_URL` — canonical public site origin.
+
+For migration compatibility, `VITE_API_URL` and `VITE_SITE_URL` remain accepted as fallbacks, so the existing staging environment can transition without an immediate variable rename.
+
+## Legacy Vite source
+
+The root Vite application remains in the repository temporarily as migration history and a rollback reference, but Vercel no longer builds it. It can be removed in a separate cleanup after the Next deployment has been verified on staging.
