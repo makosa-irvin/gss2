@@ -164,17 +164,41 @@ export const SafariGuidesView: React.FC = () => {
   const { slug } = useParams();
   const guide = slug ? guides.find(item => item.slug === slug) : undefined;
 
-  if (slug && guide) return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-8">
-      <PageMeta title={guide.title} description={guide.description} image={guide.image} canonicalPath={`/guides/${guide.slug}`} type="article" structuredData={{ '@context':SCHEMA_CONTEXT,'@type':'Article',headline:guide.title,description:guide.description,image:absoluteSiteUrl(guide.image),author:{'@type':'Organization',name:'Good Secrets Safaris'},publisher:{'@type':'Organization',name:'Good Secrets Safaris'},mainEntityOfPage:absoluteSiteUrl(`/guides/${guide.slug}`) }} />
-      <Link to="/guides" className="min-h-11 inline-flex items-center gap-2 text-sm font-bold text-brand-soft hover:text-white"><ArrowLeft className="w-4 h-4" />All safari planning guides</Link>
-      <header className="space-y-5"><span className="text-xs font-extrabold uppercase tracking-widest text-brand-soft">Safari planning guide</span><h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">{guide.title}</h1><p className="text-lg text-on-shell-muted leading-relaxed max-w-3xl">{guide.intro}</p></header>
-      <div className="rounded-[2rem] overflow-hidden aspect-[16/8] border border-white/10"><img src={guide.image} alt="" className="w-full h-full object-cover" /></div>
-      <article className="rounded-3xl bg-white border border-border-strong p-7 sm:p-10 text-ink space-y-9">{guide.sections.map(section => <section key={section.heading}><h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">{section.heading}</h2><p className="mt-3 text-base leading-relaxed">{section.body}</p></section>)}<div className="rounded-2xl bg-surface-soft border border-border-strong p-5"><strong className="text-ink-strong">Use this as planning guidance, not a fixed rule.</strong><p className="text-sm mt-1">Seasonal conditions, park rules, fees, flight schedules and availability change. A dated itinerary should confirm the details that matter for your trip.</p></div></article>
-      {guide.related && <nav aria-label="Related safari planning" className="grid sm:grid-cols-2 gap-3">{guide.related.map(item => <Link key={item.to} to={item.to} className="min-h-14 rounded-2xl border border-white/10 bg-white/5 px-5 inline-flex items-center justify-between gap-3 text-sm font-bold text-white hover:border-brand-strong hover:bg-white/[0.07]">{item.label}<ArrowRight className="w-4 h-4 text-brand-soft" /></Link>)}</nav>}
-      <section className="rounded-3xl bg-shell border border-white/10 p-7 sm:p-9"><h2 className="font-serif-luxury text-3xl font-bold text-white">Ready to turn the research into a route?</h2><p className="text-sm text-on-shell-muted mt-2">Use the safari builder or compare itinerary ideas, then send the options you like in one quote basket.</p><div className="mt-5 flex flex-wrap gap-3"><Link to="/safari-builder" className="min-h-12 px-6 rounded-xl bg-brand-soft text-ink-strong font-extrabold text-sm inline-flex items-center">Build my safari</Link><Link to="/safaris" className="min-h-12 px-6 rounded-xl border border-white/20 text-white font-bold text-sm inline-flex items-center">Explore safari ideas</Link></div></section>
-    </div>
-  );
+  if (slug && guide) {
+    const guideUrl = absoluteSiteUrl(`/guides/${guide.slug}`);
+    const structuredData = [
+      {
+        '@context': SCHEMA_CONTEXT,
+        '@type': 'Article',
+        headline: guide.title,
+        description: guide.description,
+        image: absoluteSiteUrl(guide.image),
+        author: { '@type': 'Organization', name: 'Good Secrets Safaris' },
+        publisher: { '@type': 'Organization', name: 'Good Secrets Safaris' },
+        mainEntityOfPage: guideUrl,
+      },
+      {
+        '@context': SCHEMA_CONTEXT,
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Safari Planning Guides', item: absoluteSiteUrl('/guides') },
+          { '@type': 'ListItem', position: 2, name: guide.title, item: guideUrl },
+        ],
+      },
+    ];
+
+    return (
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-8">
+        <PageMeta title={guide.title} description={guide.description} image={guide.image} canonicalPath={`/guides/${guide.slug}`} type="article" structuredData={structuredData} />
+        <Link to="/guides" className="min-h-11 inline-flex items-center gap-2 text-sm font-bold text-brand-soft hover:text-white"><ArrowLeft className="w-4 h-4" />All safari planning guides</Link>
+        <header className="space-y-5"><span className="text-xs font-extrabold uppercase tracking-widest text-brand-soft">Safari planning guide</span><h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">{guide.title}</h1><p className="text-lg text-on-shell-muted leading-relaxed max-w-3xl">{guide.intro}</p></header>
+        <div className="rounded-[2rem] overflow-hidden aspect-[16/8] border border-white/10"><img src={guide.image} alt="" className="w-full h-full object-cover" /></div>
+        <article className="rounded-3xl bg-white border border-border-strong p-7 sm:p-10 text-ink space-y-9">{guide.sections.map(section => <section key={section.heading}><h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">{section.heading}</h2><p className="mt-3 text-base leading-relaxed">{section.body}</p></section>)}<div className="rounded-2xl bg-surface-soft border border-border-strong p-5"><strong className="text-ink-strong">Use this as planning guidance, not a fixed rule.</strong><p className="text-sm mt-1">Seasonal conditions, park rules, fees, flight schedules and availability change. A dated itinerary should confirm the details that matter for your trip.</p></div></article>
+        {guide.related && <nav aria-label="Related safari planning" className="grid sm:grid-cols-2 gap-3">{guide.related.map(item => <Link key={item.to} to={item.to} className="min-h-14 rounded-2xl border border-white/10 bg-white/5 px-5 inline-flex items-center justify-between gap-3 text-sm font-bold text-white hover:border-brand-strong hover:bg-white/[0.07]">{item.label}<ArrowRight className="w-4 h-4 text-brand-soft" /></Link>)}</nav>}
+        <section className="rounded-3xl bg-shell border border-white/10 p-7 sm:p-9"><h2 className="font-serif-luxury text-3xl font-bold text-white">Ready to turn the research into a route?</h2><p className="text-sm text-on-shell-muted mt-2">Use the safari builder or compare itinerary ideas, then send the options you like in one quote basket.</p><div className="mt-5 flex flex-wrap gap-3"><Link to="/safari-builder" className="min-h-12 px-6 rounded-xl bg-brand-soft text-ink-strong font-extrabold text-sm inline-flex items-center">Build my safari</Link><Link to="/safaris" className="min-h-12 px-6 rounded-xl border border-white/20 text-white font-bold text-sm inline-flex items-center">Explore safari ideas</Link></div></section>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-10">
