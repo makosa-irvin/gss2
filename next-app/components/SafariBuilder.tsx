@@ -61,7 +61,7 @@ export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
       .then(data => { if (!cancelled && Array.isArray(data)) setCatalogTours(data); })
       .catch(() => undefined);
     return () => { cancelled = true; };
-  }, [tours]);
+  }, [tours.length]);
 
   const matchingTours = catalogTours.filter(tour => {
     const matchesDest = destinations.some(destination => tour.country.toLowerCase().includes(destination.toLowerCase()) || tour.destinations.some(tourDestination => tourDestination.toLowerCase().includes(destination.toLowerCase())));
