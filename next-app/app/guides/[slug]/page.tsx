@@ -2,43 +2,11 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { guideBySlug, guides } from '../../../lib/guides';
 import { siteUrl } from '../../../lib/site';
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return guides.map((guide) => ({ slug: guide.slug }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const guide = guideBySlug(slug);
-  if (!guide) return {};
-  return {
-    title: guide.title,
-    description: guide.description,
-    alternates: { canonical: `/guides/${guide.slug}` },
-    openGraph: { title: guide.title, description: guide.description, type: 'article', url: `/guides/${guide.slug}`, images: [guide.image] },
-  };
-}
-
-export default async function GuideDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const guide = guideBySlug(slug);
-  if (!guide) notFound();
-  const url = siteUrl(`/guides/${guide.slug}`);
-  const structuredData = [
-    { '@context': 'https://schema.org', '@type': 'Article', headline: guide.title, description: guide.description, image: siteUrl(guide.image), author: { '@type': 'Organization', name: 'Good Secrets Safaris' }, publisher: { '@type': 'Organization', name: 'Good Secrets Safaris' }, mainEntityOfPage: url },
-    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
-      { '@type': 'ListItem', position: 2, name: 'Safari Planning Guides', item: siteUrl('/guides') },
-      { '@type': 'ListItem', position: 3, name: guide.title, item: url },
-    ] },
-  ];
-  return <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-    <header className="page-hero"><div className="container guide-article"><Link className="text-link" href="/guides">← All safari planning guides</Link><p className="eyebrow">Safari buyer guide</p><h1>{guide.title}</h1><p>{guide.description}</p></div></header>
-    <article className="section"><div className="container guide-article"><div className="hero-image"><Image src={guide.image} alt="" fill priority sizes="(max-width: 900px) 100vw, 860px" /></div><div className="prose-card"><p className="lede">{guide.intro}</p>{guide.sections.map((section) => <section key={section.heading}><h2>{section.heading}</h2><p>{section.body}</p></section>)}<section><h2>Confirm the details for your dates</h2><p>Seasonal conditions, park rules, fees, flight schedules and availability change. A dated itinerary should confirm the details that matter for your trip.</p></section></div><nav className="related-links" aria-label="Related safari planning">{guide.related.map((item) => <Link key={item.to} href={item.to}>{item.label} →</Link>)}</nav></div></article>
-  </>;
-}
+export const dynamicParams=false;
+export function generateStaticParams(){return guides.map(guide=>({slug:guide.slug}));}
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const{slug}=await params;const guide=guideBySlug(slug);if(!guide)return{};return{title:guide.title,description:guide.description,alternates:{canonical:`/guides/${guide.slug}`},openGraph:{title:guide.title,description:guide.description,type:'article',url:`/guides/${guide.slug}`,images:[guide.image]}};}
+export default async function GuideDetailPage({params}:{params:Promise<{slug:string}>}){const{slug}=await params;const guide=guideBySlug(slug);if(!guide)notFound();const url=siteUrl(`/guides/${guide.slug}`);const structuredData=[{'@context':'https://schema.org','@type':'Article',headline:guide.title,description:guide.description,image:siteUrl(guide.image),author:{'@type':'Organization',name:'Good Secrets Safaris'},publisher:{'@type':'Organization',name:'Good Secrets Safaris'},mainEntityOfPage:url},{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:siteUrl('/')},{'@type':'ListItem',position:2,name:'Safari Planning Guides',item:siteUrl('/guides')},{'@type':'ListItem',position:3,name:guide.title,item:url}]}];return <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-8"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData)}}/><Link href="/guides" className="min-h-11 inline-flex items-center gap-2 text-sm font-bold text-brand-soft hover:text-white"><ArrowLeft className="w-4 h-4"/>All safari planning guides</Link><header className="space-y-5"><span className="text-xs font-extrabold uppercase tracking-widest text-brand-soft">Safari planning guide</span><h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">{guide.title}</h1><p className="text-lg text-on-shell-muted leading-relaxed max-w-3xl">{guide.intro}</p></header><div className="rounded-[2rem] overflow-hidden aspect-[16/8] border border-white/10 relative"><Image src={guide.image} alt="" fill priority className="object-cover" sizes="(max-width:900px) 100vw, 860px"/></div><article className="rounded-3xl bg-white border border-border-strong p-7 sm:p-10 text-ink space-y-9">{guide.sections.map(section=><section key={section.heading}><h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">{section.heading}</h2><p className="mt-3 text-base leading-relaxed text-ink-muted">{section.body}</p></section>)}<div className="rounded-2xl bg-surface-soft border border-border-strong p-5"><strong className="text-ink-strong">Use this as planning guidance, not a fixed rule.</strong><p className="text-sm mt-1 text-ink-muted">Seasonal conditions, park rules, fees, flight schedules and availability change. A dated itinerary should confirm the details that matter for your trip.</p></div></article>{guide.related?.length?<nav aria-label="Related safari planning" className="grid sm:grid-cols-2 gap-3">{guide.related.map(item=><Link key={item.to} href={item.to} className="min-h-14 rounded-2xl border border-white/10 bg-white/5 px-5 inline-flex items-center justify-between gap-3 text-sm font-bold text-white hover:border-brand-strong hover:bg-white/[0.07]">{item.label}<ArrowRight className="w-4 h-4 text-brand-soft"/></Link>)}</nav>:null}<section className="rounded-3xl bg-shell border border-white/10 p-7 sm:p-9"><h2 className="font-serif-luxury text-3xl font-bold text-white">Ready to turn the research into a route?</h2><p className="text-sm text-on-shell-muted mt-2">Use the safari builder or compare itinerary ideas, then send the options you like in one shortlist.</p><div className="mt-5 flex flex-wrap gap-3"><Link href="/safari-builder" className="min-h-12 px-6 rounded-xl bg-brand-soft text-ink-strong font-extrabold text-sm inline-flex items-center">Build my safari</Link><Link href="/safaris" className="min-h-12 px-6 rounded-xl border border-white/20 text-white font-bold text-sm inline-flex items-center">Explore safari ideas</Link></div></section></div>}
