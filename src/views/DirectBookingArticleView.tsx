@@ -1,0 +1,127 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, CheckCircle2, Compass, ShieldCheck } from 'lucide-react';
+import { PageMeta } from '../components/common/PageMeta';
+import { absoluteSiteUrl, SCHEMA_CONTEXT } from '../lib/site';
+
+const ARTICLE_PATH = '/guides/booking-safari-direct-local-operator';
+
+interface DirectBookingArticleViewProps {
+  onOpenEnquiryModal: (payload?: any) => void;
+}
+
+const buyerChecklist = [
+  'Read independent reviews on third-party platforms.',
+  'Confirm that the company contact details you are using are genuine.',
+  'Review the exact itinerary, accommodation and transport arrangements.',
+  'Understand what the quoted price includes and excludes.',
+  'Read the payment schedule and cancellation terms before sending money.',
+  'Ask who to contact if plans change while you are in East Africa.',
+  'Check passport, visa, insurance and health requirements using official sources.',
+  'Keep copies of your confirmed itinerary, receipts and emergency contacts.',
+];
+
+export const DirectBookingArticleView: React.FC<DirectBookingArticleViewProps> = ({ onOpenEnquiryModal }) => {
+  const articleUrl = absoluteSiteUrl(ARTICLE_PATH);
+  const structuredData = [
+    {
+      '@context': SCHEMA_CONTEXT,
+      '@type': 'Article',
+      headline: 'Booking a Safari Directly with a Local Operator: What to Know',
+      description: 'A practical guide to booking a safari directly with a local operator, including marketplace trade-offs, questions to ask, and what to verify before paying.',
+      image: absoluteSiteUrl('/images/catalog/picnic-lunch-in-the-wild.jpg'),
+      author: { '@type': 'Organization', name: 'Good Secrets Safaris' },
+      publisher: { '@type': 'Organization', name: 'Good Secrets Safaris' },
+      mainEntityOfPage: articleUrl,
+    },
+    {
+      '@context': SCHEMA_CONTEXT,
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Safari Planning Guides', item: absoluteSiteUrl('/guides') },
+        { '@type': 'ListItem', position: 2, name: 'Booking a Safari Directly with a Local Operator', item: articleUrl },
+      ],
+    },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-8">
+      <PageMeta
+        title="Booking a Safari Directly with a Local Operator: What to Know"
+        description="A practical guide to booking a safari directly with a local operator, including marketplace trade-offs, questions to ask, and what to verify before paying."
+        image="/images/catalog/picnic-lunch-in-the-wild.jpg"
+        canonicalPath={ARTICLE_PATH}
+        type="article"
+        structuredData={structuredData}
+      />
+
+      <Link to="/guides" className="min-h-11 inline-flex items-center gap-2 text-sm font-bold text-brand-soft hover:text-white">
+        <ArrowLeft className="w-4 h-4" />All safari planning guides
+      </Link>
+
+      <header className="space-y-5">
+        <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-brand-soft"><Compass className="w-4 h-4" />Safari buyer guide</span>
+        <h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">Booking a Safari Directly with a Local Operator: What to Know</h1>
+        <p className="text-lg text-on-shell-muted leading-relaxed max-w-3xl">Booking direct should feel more personal — not more risky. The key question is not simply price; it is whether you understand who is responsible for your trip, what is included and what happens after you enquire.</p>
+      </header>
+
+      <div className="rounded-[2rem] overflow-hidden aspect-[16/8] border border-white/10">
+        <img src="/images/catalog/picnic-lunch-in-the-wild.jpg" alt="Safari travelers having a picnic lunch in East Africa" className="w-full h-full object-cover" />
+      </div>
+
+      <article className="rounded-3xl bg-white border border-border-strong p-7 sm:p-10 text-ink space-y-10">
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Use marketplaces to research. Use direct conversation to personalize.</h2>
+          <p className="mt-3 text-base leading-relaxed">Independent marketplaces and review platforms can be useful for discovering operators and checking traveler feedback. Once you are ready to shape a private trip, speaking directly with the local operator can make it easier to discuss dates, route, pace, accommodation and trade-offs. This is about the planning relationship, not a claim that direct is always cheaper or better.</p>
+        </section>
+
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Understand who is actually planning your safari.</h2>
+          <p className="mt-3 text-base leading-relaxed">Ask whether the person answering your questions is the operator building the itinerary, an overseas advisor or a marketplace intermediary. Direct planning can reduce how many layers a question passes through, but whichever channel you use, you should know who is responsible for your route and who you will contact while traveling.</p>
+        </section>
+
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Compare the proposal, not only the headline price.</h2>
+          <p className="mt-3 text-base leading-relaxed">Check the exact accommodation, room category, transport, park or conservancy fees, internal flights, transfers, meals, activities and exclusions. Safari prices can move with season, group size, lodge choice and route, so an online “from” price is most useful as a planning guide rather than a final quote.</p>
+        </section>
+
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Before you pay anyone, verify the basics.</h2>
+          <p className="mt-3 text-base leading-relaxed">A safari is a high-value purchase. The same buyer checks are sensible whether you book locally, through a marketplace or with an overseas travel company.</p>
+          <ul className="mt-5 grid sm:grid-cols-2 gap-3">
+            {buyerChecklist.map(item => <li key={item} className="flex gap-3 rounded-xl border border-border-strong bg-surface-muted p-4 text-sm leading-relaxed"><ShieldCheck className="w-5 h-5 text-brand-deep shrink-0 mt-0.5" aria-hidden="true" /><span>{item}</span></li>)}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Private and group safaris solve different problems.</h2>
+          <p className="mt-3 text-base leading-relaxed">A private safari gives your group more control over pace, game-drive timing and daily decisions. A group tour can be a good fit when fixed schedules and shared costs matter more. Neither format is automatically better; the useful question is which trade-off matches how you want to travel.</p>
+        </section>
+
+        <section>
+          <h2 className="font-serif-luxury text-3xl font-bold text-ink-strong">Ask the uncomfortable questions.</h2>
+          <p className="mt-3 text-base leading-relaxed">A useful planner should be willing to explain long transfer days, lodge-location trade-offs, park fees, what is private versus shared, what happens if availability changes and when a booking becomes binding. Clarity before payment matters more than sales pressure.</p>
+        </section>
+
+        <div className="rounded-2xl bg-surface-soft border border-border-strong p-5">
+          <strong className="text-ink-strong">Independent verification still matters.</strong>
+          <p className="text-sm mt-1 leading-relaxed">Good Secrets Safaris does not treat direct booking as a reason to ignore independent review platforms. Use third-party feedback to verify traveler experiences, then use the planning conversation to decide whether the operator and itinerary are right for you.</p>
+        </div>
+      </article>
+
+      <nav aria-label="Related safari planning" className="grid sm:grid-cols-2 gap-3">
+        <Link to="/reviews" className="min-h-14 rounded-2xl border border-white/10 bg-white/5 px-5 inline-flex items-center justify-between gap-3 text-sm font-bold text-white hover:border-brand-strong hover:bg-white/[0.07]">Read independent traveler reviews<ArrowRight className="w-4 h-4 text-brand-soft" /></Link>
+        <Link to="/plan-with-us" className="min-h-14 rounded-2xl border border-white/10 bg-white/5 px-5 inline-flex items-center justify-between gap-3 text-sm font-bold text-white hover:border-brand-strong hover:bg-white/[0.07]">See how we plan private safaris<ArrowRight className="w-4 h-4 text-brand-soft" /></Link>
+      </nav>
+
+      <section className="rounded-3xl bg-shell border border-white/10 p-7 sm:p-9">
+        <h2 className="font-serif-luxury text-3xl font-bold text-white">Start with a conversation, not a checkout.</h2>
+        <p className="text-sm text-on-shell-muted mt-2 max-w-2xl leading-relaxed">Tell us your dates, group size and the kind of trip you have in mind. We can suggest a route and explain the trade-offs before you decide whether Good Secrets is the right fit.</p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button type="button" onClick={() => onOpenEnquiryModal({ initialType: 'Direct safari planning' })} className="min-h-12 px-6 rounded-xl bg-brand-soft text-ink-strong font-extrabold text-sm inline-flex items-center">Request a safari plan</button>
+          <Link to="/safaris" className="min-h-12 px-6 rounded-xl border border-white/20 text-white font-bold text-sm inline-flex items-center">Browse safari ideas</Link>
+        </div>
+      </section>
+    </div>
+  );
+};
