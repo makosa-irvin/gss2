@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 type EnquiryContextValue = {
   openEnquiry: (context?: { type?: string; destination?: string; tourTitle?: string; hotelTitle?: string }) => void;
@@ -17,39 +17,39 @@ export function useEnquiry() {
 
 function AnalyticsTracker({ consent }: { consent: boolean }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   useEffect(() => {
     if (!consent || !pathname) return;
     const key = 'gss-next-session-v1';
     let sessionId = sessionStorage.getItem(key);
-    if (!sessionId && globalThis.crypto?.randomUUID) {
+    if (!sessionId) {
       sessionId = crypto.randomUUID();
       sessionStorage.setItem(key, sessionId);
     }
-    if (!sessionId) return;
     const params = new URLSearchParams(window.location.search);
     const source = params.get('utm_source') || (document.referrer.includes('google.') ? 'google' : document.referrer ? 'referral' : 'direct');
     const medium = params.get('utm_medium') || (source === 'google' ? 'organic' : source === 'direct' ? '(none)' : 'referral');
+    const query = params.toString();
     fetch('/api/backend/api/analytics/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         sessionId,
         eventName: 'page_view',
-        pagePath: `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ''}`,
+        pagePath: `${pathname}${query ? `?${query}` : ''}`,
         source,
         medium,
         campaign: params.get('utm_campaign'),
         metadata: {},
       }),
     }).catch(() => undefined);
-  }, [consent, pathname, searchParams]);
+  }, [consent, pathname]);
   return null;
 }
 
 function EnquiryModal({ context, onClose }: { context: Record<string, string> | null; onClose: () => void }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   if (!context) return null;
+  const enquiryContext = context;
 
   async function submit(formData: FormData) {
     setStatus('sending');
@@ -61,10 +61,10 @@ function EnquiryModal({ context, onClose }: { context: Record<string, string> | 
       travelDates: formData.get('travelDates') || '',
       adults: Number(formData.get('adults') || 2),
       children: Number(formData.get('children') || 0),
-      tourTitle: context.tourTitle || undefined,
-      hotelTitle: context.hotelTitle || undefined,
-      preferredDestination: context.destination || '',
-      safariType: context.type || 'Tailor-made safari',
+      tourTitle: enquiryContext.tourTitle || undefined,
+      hotelTitle: enquiryContext.hotelTitle || undefined,
+      preferredDestination: enquiryContext.destination || '',
+      safariType: enquiryContext.type || 'Tailor-made safari',
       budget: formData.get('budget') || 'Not sure yet',
       accommodationPreference: formData.get('accommodationPreference') || 'Open to recommendations',
       specialRequests: formData.get('specialRequests') || '',
