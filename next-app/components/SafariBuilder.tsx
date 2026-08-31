@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, Send, ShieldCheck, Sparkles } from 'lucide-react';
 import type { Tour } from '../lib/types';
 
@@ -36,6 +36,7 @@ const experienceChoices = ['Big 5 Tracking', 'Wildebeest Migration', 'Elephants 
 const budgetChoices = ['Not sure yet', 'Under $1,500', '$1,500 – $3,500', '$3,500 – $7,000', '$7,000+'];
 
 export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
+  const [catalogTours, setCatalogTours] = useState<Tour[]>(tours);
   const [step, setStep] = useState(1);
   const [destinations, setDestinations] = useState<string[]>(['Kenya']);
   const [duration, setDuration] = useState('4-7');
@@ -52,7 +53,17 @@ export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const matchingTours = tours.filter(tour => {
+  useEffect(() => {
+    if (tours.length) { setCatalogTours(tours); return; }
+    let cancelled = false;
+    fetch('/api/backend/api/tours')
+      .then(response => response.ok ? response.json() : [])
+      .then(data => { if (!cancelled && Array.isArray(data)) setCatalogTours(data); })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [tours]);
+
+  const matchingTours = catalogTours.filter(tour => {
     const matchesDest = destinations.some(destination => tour.country.toLowerCase().includes(destination.toLowerCase()) || tour.destinations.some(tourDestination => tourDestination.toLowerCase().includes(destination.toLowerCase())));
     const matchesStyle = experiences.some(experience => tour.travelStyles.some(style => style.toLowerCase().includes(experience.toLowerCase())) || tour.title.toLowerCase().includes(experience.toLowerCase()));
     return matchesDest || matchesStyle;
