@@ -1,4 +1,5 @@
 export type SeoFields = { title?: string; description?: string; keywords?: string[] };
+export interface SeasonalPrice { id:string; name:string; startDate:string; endDate:string; soloPrice:number; sharingPrice:number; residentPriceKES?:number; currency:'USD'|'KES'; notes?:string }
 
 export interface Tour {
   id: string; title: string; slug: string; shortDescription: string; fullDescription: string;
@@ -6,6 +7,7 @@ export interface Tour {
   startingLocation: string; endingLocation: string; categories: string[]; travelStyles: string[];
   comfortLevel: string; travelerTypes: string[]; featured: boolean; popular: boolean; recommended: boolean;
   priceFrom: number; currency: 'USD' | 'KES'; soloPrice?: number; sharingPrice?: number; residentPriceKES?: number;
+  seasonalPricing?: SeasonalPrice[];
   images: string[]; itinerary: Array<{ day: number; title: string; subtitle?: string; description: string; accommodation?: string; meals?: string; transport?: string; activities?: string[]; image?: string }>;
   accommodationSummary?: string; mealsSummary?: string; includedActivities?: string[]; includedServices?: string[];
   exclusions?: string[]; importantInformation?: string[]; childrenPolicy?: string; startingDates?: string;
@@ -42,6 +44,7 @@ export interface CompanySettings {
   companyName: string; tagline: string; description: string; logoUrl?: string;
   contact: { email: string; phone: string; whatsapp: string; address: string; businessHours?: string };
   social?: Record<string, string>;
+  currency?: { exchangeRateUsdToKes?: number };
   booking?: { bookingEmail?: string; whatsappNumber?: string; whatsappDefaultMessage?: string };
   seo?: { defaultTitle?: string; defaultDescription?: string; defaultOgImage?: string };
 }
