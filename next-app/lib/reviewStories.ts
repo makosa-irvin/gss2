@@ -14,3 +14,5 @@ export const featuredReviews:ReviewStory[]=[
 {platform:'Tripadvisor',reviewer:'Hua Z',title:'The best experience we ever had in Kenya',date:'6 Feb 2025',rating:5,excerpt:'Very professional and open to communication.',destinations:['Maasai Mara','Amboseli']}
 ];
 export const sourceUrl=(platform:ReviewStory['platform'])=>platform==='SafariBookings'?SAFARI_BOOKINGS_URL:TRIPADVISOR_URL;
+const normalize=(value:string)=>value.toLowerCase().replace(/[’']/g,"'").replace('masai','maasai').trim();
+export function getRouteReviewStories(tourDestinations:string[]=[],limit=3){return featuredReviews.filter(review=>review.destinations.some(reviewPlace=>tourDestinations.some(tourPlace=>{const a=normalize(tourPlace);const b=normalize(reviewPlace);return a.includes(b)||b.includes(a)||a.split(' ').some(part=>part.length>4&&b.includes(part));}))).slice(0,limit)}
