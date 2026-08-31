@@ -1,39 +1,33 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import './globals.css';
+import { ClientProviders } from '../components/ClientProviders';
+import { SiteHeader } from '../components/SiteHeader';
+import { SiteFooter } from '../components/SiteFooter';
+import { DEFAULT_SITE_URL, SITE_NAME } from '../lib/site';
 
-const SITE_URL = 'https://www.goodsecretssafaris.com';
+const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || DEFAULT_SITE_URL);
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: 'Good Secrets Safaris',
-    template: '%s | Good Secrets Safaris',
-  },
+  metadataBase,
+  title: { default: 'Good Secrets Safaris | Kenya, Tanzania & Zanzibar Safaris', template: `%s | ${SITE_NAME}` },
   description: 'Private Kenya, Tanzania and Zanzibar safaris planned around your dates, interests and travel style.',
-  robots: {
-    index: false,
-    follow: false,
-  },
+  applicationName: SITE_NAME,
+  openGraph: { siteName: SITE_NAME, type: 'website', images: ['/images/catalog/mara-savannah.jpg'] },
+  twitter: { card: 'summary_large_image' },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
-        <div className="shell">
-          <header className="site-header">
-            <div className="site-header__inner">
-              <Link href="/" className="brand">Good Secrets Safaris · Next migration</Link>
-              <nav className="nav" aria-label="Migration preview navigation">
-                <Link href="/privacy">Privacy</Link>
-                <Link href="/terms">Terms</Link>
-                <Link href="/booking-conditions">Booking conditions</Link>
-              </nav>
-            </div>
-          </header>
-          {children}
-        </div>
+        <ClientProviders>
+          <div className="site-frame">
+            <SiteHeader />
+            <main className="main-content">{children}</main>
+            <SiteFooter />
+          </div>
+          <a className="floating-whatsapp" href="https://wa.me/254729000410" aria-label="Chat with Good Secrets Safaris on WhatsApp" target="_blank" rel="noreferrer">WA</a>
+        </ClientProviders>
       </body>
     </html>
   );
