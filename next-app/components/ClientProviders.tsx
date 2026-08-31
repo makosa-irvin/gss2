@@ -29,6 +29,7 @@ function AnalyticsTracker({ consent }: { consent: boolean }) {
     const source = params.get('utm_source') || (document.referrer.includes('google.') ? 'google' : document.referrer ? 'referral' : 'direct');
     const medium = params.get('utm_medium') || (source === 'google' ? 'organic' : source === 'direct' ? '(none)' : 'referral');
     const query = params.toString();
+    const campaign = params.get('utm_campaign') || undefined;
     fetch('/api/backend/api/analytics/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -38,7 +39,7 @@ function AnalyticsTracker({ consent }: { consent: boolean }) {
         pagePath: `${pathname}${query ? `?${query}` : ''}`,
         source,
         medium,
-        campaign: params.get('utm_campaign'),
+        ...(campaign ? { campaign } : {}),
         metadata: {},
       }),
     }).catch(() => undefined);
