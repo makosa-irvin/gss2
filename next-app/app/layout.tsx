@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ClientProviders } from '../components/ClientProviders';
+import { FloatingWhatsApp } from '../components/FloatingWhatsApp';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { DEFAULT_SITE_URL, SITE_NAME } from '../lib/site';
@@ -17,18 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en">
-      <body>
-        <ClientProviders>
-          <div className="site-frame">
-            <SiteHeader />
-            <main className="main-content">{children}</main>
-            <SiteFooter />
-          </div>
-          <a className="floating-whatsapp" href="https://wa.me/254729000410" aria-label="Chat with Good Secrets Safaris on WhatsApp" target="_blank" rel="noreferrer">WA</a>
-        </ClientProviders>
-      </body>
-    </html>
-  );
+  return <html lang="en"><body><ClientProviders><div className="site-frame"><SiteHeader/><main className="main-content">{children}</main><SiteFooter/></div><FloatingWhatsApp/></ClientProviders></body></html>;
 }
