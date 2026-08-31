@@ -15,6 +15,7 @@ describe('STATIC_SITEMAP_ROUTES', () => {
       '/guides/kenya-family-safari',
       '/guides/first-time-africa-safari-guide',
       '/guides/safari-over-60-comfort-guide',
+      '/guides/booking-safari-direct-local-operator',
     ]));
   });
 
