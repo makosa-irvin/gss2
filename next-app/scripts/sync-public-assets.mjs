@@ -1,0 +1,13 @@
+import { cp, mkdir, rm } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const appRoot = path.resolve(here, '..');
+const source = path.resolve(appRoot, '..', 'public');
+const target = path.resolve(appRoot, 'public');
+
+await rm(target, { recursive: true, force: true });
+await mkdir(target, { recursive: true });
+await cp(source, target, { recursive: true });
+console.log(`Synced public assets from ${source} to ${target}`);
