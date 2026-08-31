@@ -20,6 +20,7 @@ const ReviewsView = lazy(() => import('./views/ReviewsView').then(m => ({ defaul
 const ShortlistView = lazy(() => import('./views/ShortlistView').then(m => ({ default: m.ShortlistView })));
 const PlanningWithUsView = lazy(() => import('./views/PlanningWithUsView').then(m => ({ default: m.PlanningWithUsView })));
 const SafariGuidesView = lazy(() => import('./views/SafariGuidesView').then(m => ({ default: m.SafariGuidesView })));
+const DirectBookingArticleView = lazy(() => import('./views/DirectBookingArticleView').then(m => ({ default: m.DirectBookingArticleView })));
 const LegalView = lazy(() => import('./views/LegalView').then(m => ({ default: m.LegalView })));
 const AdminDashboardView = lazy(() => import('./views/AdminDashboardView').then(m => ({ default: m.AdminDashboardView })));
 const TourDetailRoute = lazy(() => import('./routes/TourDetailRoute').then(m => ({ default: m.TourDetailRoute })));
@@ -48,7 +49,7 @@ function useLegacyNavigate() {
       case 'reviews': return navigate('/reviews');
       case 'shortlist': return navigate('/shortlist');
       case 'plan-with-us': return navigate('/plan-with-us');
-      case 'book-direct': return navigate('/plan-with-us');
+      case 'book-direct': return navigate('/guides/booking-safari-direct-local-operator');
       case 'about': return navigate('/about');
       case 'contact': return navigate('/contact');
       case 'admin': return navigate('/admin');
@@ -77,9 +78,9 @@ const MainAppContent: React.FC = () => {
     <Route path="/hotels" element={<HotelsExplorerRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/hotels/:slug" element={<HotelDetailRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/safari-builder" element={<BuilderPage onOpenEnquiryModal={openEnquiryModal}/>}/>
     <Route path="/blog" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/blog/:slug" element={<BlogRoute onOpenEnquiryModal={openEnquiryModal}/>}/>
-    <Route path="/guides" element={<SafariGuidesView/>}/><Route path="/guides/:slug" element={<SafariGuidesView/>}/>
+    <Route path="/guides" element={<SafariGuidesView/>}/><Route path="/guides/booking-safari-direct-local-operator" element={<DirectBookingArticleView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/guides/:slug" element={<SafariGuidesView/>}/>
     <Route path="/reviews" element={<ReviewsView/>}/><Route path="/shortlist" element={<ShortlistView onOpenEnquiryModal={openEnquiryModal}/>}/>
-    <Route path="/plan-with-us" element={<PlanningWithUsView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/book-direct" element={<Navigate to="/plan-with-us" replace/>}/>
+    <Route path="/plan-with-us" element={<PlanningWithUsView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/book-direct" element={<Navigate to="/guides/booking-safari-direct-local-operator" replace/>}/>
     <Route path="/about" element={<AboutView onOpenEnquiryModal={openEnquiryModal}/>}/><Route path="/contact" element={<ContactView/>}/>
     <Route path="/privacy" element={<LegalView/>}/><Route path="/terms" element={<LegalView/>}/><Route path="/booking-conditions" element={<LegalView/>}/>
     <Route path="/admin" element={<AdminRoute><AdminDashboardView onNavigateHome={()=>navigate('/')} onPreviewTour={(tour)=>navigate(`/safaris/${tour.slug}`)}/></AdminRoute>}/><Route path="*" element={<NotFoundView/>}/>
