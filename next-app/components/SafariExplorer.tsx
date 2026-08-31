@@ -1,18 +1,143 @@
 'use client';
 
-import { useMemo,useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CheckCircle2, Compass, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { TourCard } from './CatalogCards';
 import { EnquiryButton } from './EnquiryButton';
 import type { Tour } from '../lib/types';
 
-export function SafariExplorer({tours,initial}:{tours:Tour[];initial:{country?:string;destination?:string;duration?:string;travelStyle?:string;travelerType?:string}}){
- const[search,setSearch]=useState('');const[country,setCountry]=useState(initial.country||'all');const[duration,setDuration]=useState(initial.duration||'all');const[style,setStyle]=useState(initial.travelStyle||'all');const[comfort,setComfort]=useState('all');const[maxPrice,setMaxPrice]=useState(15000);const[open,setOpen]=useState(false);
- const filtered=useMemo(()=>tours.filter(t=>{const q=search.trim().toLowerCase();if(q&&![t.title,t.shortDescription,t.fullDescription,...(t.destinations||[])].join(' ').toLowerCase().includes(q))return false;if(country!=='all'&&!t.country.toLowerCase().includes(country.toLowerCase()))return false;if(style!=='all'&&!t.travelStyles?.some(s=>s.toLowerCase()===style.toLowerCase())&&!t.title.toLowerCase().includes(style.toLowerCase()))return false;if(comfort!=='all'&&t.comfortLevel!==comfort)return false;if(duration!=='all'){const d=t.durationDays;if(duration==='1'&&d!==1)return false;if(duration==='2'&&d!==2)return false;if(duration==='3'&&d!==3)return false;if(duration==='4-5'&&(d<4||d>5))return false;if(duration==='6-7'&&(d<6||d>7))return false;if(duration==='8-10'&&(d<8||d>10))return false;if(duration==='10+'&&d<10)return false}return Number(t.priceFrom||0)<=maxPrice}),[tours,search,country,duration,style,comfort,maxPrice]);
- const reset=()=>{setSearch('');setCountry('all');setDuration('all');setStyle('all');setComfort('all');setMaxPrice(15000)};const active=Boolean(search||country!=='all'||duration!=='all'||style!=='all'||comfort!=='all'||maxPrice<15000);
- const select='w-full min-h-11 px-3 py-2 rounded-xl bg-surface-muted border border-border-strong text-sm text-ink-strong focus:border-brand-deep focus:outline-none';const label='text-xs font-extrabold uppercase tracking-wider text-brand-deep block mb-1.5';
- return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8"><section className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#142019] to-shell p-6 sm:p-9 shadow-xl"><div className="max-w-3xl space-y-4"><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-soft"><Compass className="w-4 h-4"/>Private East Africa Safaris</div><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">Find a safari idea, then make it yours.</h1><p className="text-base text-on-shell-muted leading-relaxed">Browse our starting itineraries across Kenya and Tanzania. Dates, pacing, accommodation and route can be tailored around your trip.</p><div className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-on-shell"><span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-brand-soft"/>Private 4x4</span><span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-brand-soft"/>Flexible dates</span><span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-brand-soft"/>Tailor-made route</span></div></div></section>
- <div className="p-4 sm:p-5 rounded-2xl bg-white border border-border-strong shadow-sm space-y-4 text-ink"><div className="flex flex-col md:flex-row items-stretch gap-3"><label className="relative flex-1"><span className="sr-only">Search safaris</span><Search className="w-4 h-4 text-ink-muted absolute left-3.5 top-1/2 -translate-y-1/2"/><input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search Maasai Mara, Serengeti, migration..." className="w-full min-h-12 pl-10 pr-4 rounded-xl bg-surface-muted border border-border-strong text-sm text-ink-strong placeholder:text-ink-subtle focus:border-brand-deep focus:outline-none"/></label><button onClick={()=>setOpen(v=>!v)} className="min-h-12 inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-surface-soft hover:bg-border text-sm font-bold text-ink-strong border border-border-strong"><SlidersHorizontal className="w-4 h-4 text-brand-deep"/>{open?'Hide filters':'More filters'}{active&&<span className="w-2 h-2 rounded-full bg-brand-deep"/>}</button>{active&&<button onClick={reset} className="min-h-12 px-4 rounded-xl text-sm font-bold text-danger hover:bg-rose-50">Clear all</button>}</div>{open&&<div className="pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"><div><label className={label}>Country / Region</label><select value={country} onChange={e=>setCountry(e.target.value)} className={select}><option value="all">All regions</option><option>Kenya</option><option>Tanzania</option><option>Zanzibar</option><option>Kenya + Tanzania</option><option>Safari + Beach</option></select></div><div><label className={label}>Trip length</label><select value={duration} onChange={e=>setDuration(e.target.value)} className={select}><option value="all">Any duration</option><option value="1">1 day</option><option value="2">2 days</option><option value="3">3 days</option><option value="4-5">4–5 days</option><option value="6-7">6–7 days</option><option value="8-10">8–10 days</option><option value="10+">10+ days</option></select></div><div><label className={label}>Travel style</label><select value={style} onChange={e=>setStyle(e.target.value)} className={select}><option value="all">All styles</option>{['Big 5','Great Migration','Family','Honeymoon','Senior Friendly','Luxury','Midrange','Budget','Safari & Beach','Fly-In'].map(v=><option key={v}>{v}</option>)}</select></div><div><label className={label}>Maximum guide price · ${maxPrice.toLocaleString()}</label><input type="range" min={250} max={15000} step={250} value={maxPrice} onChange={e=>setMaxPrice(Number(e.target.value))} className="w-full min-h-11 accent-brand-deep"/></div></div>}</div>
- <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/15 pb-4"><div className="text-sm text-on-shell-muted"><span className="font-bold text-white">{filtered.length}</span> safari {filtered.length===1?'idea':'ideas'} found</div><EnquiryButton label="Can’t decide? Ask a safari expert" className="inline-flex min-h-11 items-center justify-center gap-2 px-4 rounded-xl border border-brand text-brand-soft hover:bg-brand hover:text-white text-sm font-bold"/></div>
- {filtered.length?<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{filtered.map(t=><TourCard key={t.id} tour={t}/>)}</div>:<div className="rounded-3xl bg-white border border-border-strong p-8 sm:p-12 text-center space-y-4 text-ink"><Compass className="w-12 h-12 text-brand-deep mx-auto"/><h2 className="font-serif-luxury text-2xl font-bold text-ink-strong">No exact match — that’s okay.</h2><p className="text-sm text-ink-muted max-w-lg mx-auto">Our listed safaris are starting points, not fixed packages. Clear the filters or tell us what you want and we can shape a route around you.</p><button onClick={reset} className="min-h-11 px-5 rounded-xl bg-surface-soft text-ink text-sm font-semibold">Reset filters</button></div>}</div>
+const CURRENCY_KEY = 'gss_currency_v1';
+const RESIDENT_KEY = 'gss_resident_mode_v1';
+
+function usePricingPrefs() {
+  const [currency, setCurrency] = useState<'USD' | 'KES'>('USD');
+  const [resident, setResident] = useState(false);
+  useEffect(() => {
+    const load = () => {
+      setCurrency(localStorage.getItem(CURRENCY_KEY) === 'KES' ? 'KES' : 'USD');
+      setResident(localStorage.getItem(RESIDENT_KEY) === 'true');
+    };
+    load();
+    window.addEventListener('gss-pricing-preference-changed', load);
+    return () => window.removeEventListener('gss-pricing-preference-changed', load);
+  }, []);
+  return { currency, resident };
+}
+
+function formatGuidePrice(usd: number, currency: 'USD' | 'KES') {
+  return currency === 'KES' ? `KSH ${Math.round(usd * 130).toLocaleString()}` : `$${usd.toLocaleString()}`;
+}
+
+export function SafariExplorer({ tours, initial }: { tours: Tour[]; initial: { country?: string; destination?: string; duration?: string; travelStyle?: string; travelerType?: string } }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(initial.country || 'all');
+  const [selectedDestination, setSelectedDestination] = useState(initial.destination || 'all');
+  const [selectedDuration, setSelectedDuration] = useState(initial.duration || 'all');
+  const [selectedTravelStyle, setSelectedTravelStyle] = useState(initial.travelStyle || 'all');
+  const [selectedTravelerType, setSelectedTravelerType] = useState(initial.travelerType || 'all');
+  const [selectedComfort, setSelectedComfort] = useState('all');
+  const [maxPrice, setMaxPrice] = useState(15000);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const { currency } = usePricingPrefs();
+
+  const filteredTours = useMemo(() => tours.filter(tour => {
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matches = tour.title.toLowerCase().includes(q)
+        || tour.shortDescription.toLowerCase().includes(q)
+        || tour.fullDescription.toLowerCase().includes(q)
+        || tour.destinations.some(destination => destination.toLowerCase().includes(q));
+      if (!matches) return false;
+    }
+    if (selectedCountry !== 'all' && tour.country !== selectedCountry && !tour.country.toLowerCase().includes(selectedCountry.toLowerCase())) return false;
+    if (selectedDestination !== 'all' && !tour.destinations.some(destination => destination.toLowerCase().includes(selectedDestination.toLowerCase())) && !tour.country.toLowerCase().includes(selectedDestination.toLowerCase())) return false;
+    if (selectedDuration !== 'all') {
+      const days = tour.durationDays;
+      if (selectedDuration === '1' && days !== 1) return false;
+      if (selectedDuration === '2' && days !== 2) return false;
+      if (selectedDuration === '3' && days !== 3) return false;
+      if (selectedDuration === '4-5' && (days < 4 || days > 5)) return false;
+      if (selectedDuration === '6-7' && (days < 6 || days > 7)) return false;
+      if (selectedDuration === '8-10' && (days < 8 || days > 10)) return false;
+      if (selectedDuration === '10+' && days < 10) return false;
+    }
+    if (selectedTravelStyle !== 'all' && !tour.travelStyles.some(style => style.toLowerCase() === selectedTravelStyle.toLowerCase()) && !tour.title.toLowerCase().includes(selectedTravelStyle.toLowerCase())) return false;
+    if (selectedTravelerType !== 'all' && tour.travelerTypes && !tour.travelerTypes.some(type => type.toLowerCase().includes(selectedTravelerType.toLowerCase()))) return false;
+    if (selectedComfort !== 'all' && tour.comfortLevel !== selectedComfort) return false;
+    return tour.priceFrom <= maxPrice;
+  }), [tours, searchQuery, selectedCountry, selectedDestination, selectedDuration, selectedTravelStyle, selectedTravelerType, selectedComfort, maxPrice]);
+
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSelectedCountry('all');
+    setSelectedDestination('all');
+    setSelectedDuration('all');
+    setSelectedTravelStyle('all');
+    setSelectedTravelerType('all');
+    setSelectedComfort('all');
+    setMaxPrice(15000);
+  };
+
+  const hasFilters = Boolean(searchQuery || selectedCountry !== 'all' || selectedDestination !== 'all' || selectedDuration !== 'all' || selectedTravelStyle !== 'all' || selectedTravelerType !== 'all' || selectedComfort !== 'all' || maxPrice < 15000);
+  const selectClass = 'w-full min-h-11 px-3 py-2 rounded-xl bg-[#faf8f2] border border-[#d7d1c4] text-sm text-[#161f19] focus:border-[#8a611d] focus:outline-none';
+  const labelClass = 'text-xs font-extrabold uppercase tracking-wider text-[#76541a] block mb-1.5';
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8">
+      <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#142019] to-[#0c120e] p-6 sm:p-9 shadow-xl">
+        <div className="max-w-3xl space-y-4">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e6bc65]"><Compass className="w-4 h-4" /><span>Private East Africa Safaris</span></div>
+          <h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">Find a safari idea, then make it yours.</h1>
+          <p className="text-base text-[#c7d2cb] leading-relaxed">Browse our starting itineraries across Kenya and Tanzania. Dates, pacing, accommodation and route can be tailored around your trip.</p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-[#e8eee9]">
+            <span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-[#e6bc65]" />Private 4x4</span>
+            <span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-[#e6bc65]" />Flexible dates</span>
+            <span className="inline-flex gap-1.5 items-center"><CheckCircle2 className="w-4 h-4 text-[#e6bc65]" />Tailor-made route</span>
+          </div>
+        </div>
+      </section>
+
+      <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#ded8cb] shadow-sm space-y-4">
+        <div className="flex flex-col md:flex-row items-stretch gap-3">
+          <label className="relative flex-1">
+            <span className="sr-only">Search safaris</span>
+            <Search className="w-4 h-4 text-[#536158] absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
+            <input type="search" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="Search Maasai Mara, Serengeti, migration..." className="w-full min-h-12 pl-10 pr-4 rounded-xl bg-[#faf8f2] border border-[#d7d1c4] text-sm text-[#161f19] placeholder-[#66766b] focus:border-[#8a611d] focus:outline-none" />
+          </label>
+          <button type="button" onClick={() => setFilterOpen(!filterOpen)} aria-expanded={filterOpen} className="min-h-12 inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-[#f4f1e8] hover:bg-[#eae5d8] text-sm font-bold text-[#161f19] border border-[#d7d1c4]">
+            <SlidersHorizontal className="w-4 h-4 text-[#76541a]" /><span>{filterOpen ? 'Hide filters' : 'More filters'}</span>{hasFilters && <span className="w-2 h-2 rounded-full bg-[#8a611d]" aria-label="Filters active" />}
+          </button>
+          {hasFilters && <button type="button" onClick={resetFilters} className="min-h-12 px-4 rounded-xl text-sm font-bold text-[#9f1239] hover:bg-rose-50">Clear all</button>}
+        </div>
+
+        {filterOpen && (
+          <div className="pt-4 border-t border-[#ece7dc] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-in fade-in duration-200">
+            <div><label htmlFor="tour-country" className={labelClass}>Country / Region</label><select id="tour-country" value={selectedCountry} onChange={event => setSelectedCountry(event.target.value)} className={selectClass}><option value="all">All regions</option><option value="Kenya">Kenya</option><option value="Tanzania">Tanzania</option><option value="Zanzibar">Zanzibar</option><option value="Kenya + Tanzania">Kenya + Tanzania</option><option value="Safari + Beach">Safari + Beach</option></select></div>
+            <div><label htmlFor="tour-duration" className={labelClass}>Trip length</label><select id="tour-duration" value={selectedDuration} onChange={event => setSelectedDuration(event.target.value)} className={selectClass}><option value="all">Any duration</option><option value="1">1 day</option><option value="2">2 days</option><option value="3">3 days</option><option value="4-5">4–5 days</option><option value="6-7">6–7 days</option><option value="8-10">8–10 days</option><option value="10+">10+ days</option></select></div>
+            <div><label htmlFor="tour-style" className={labelClass}>Travel style</label><select id="tour-style" value={selectedTravelStyle} onChange={event => setSelectedTravelStyle(event.target.value)} className={selectClass}><option value="all">All styles</option><option value="Big 5">Big 5</option><option value="Great Migration">Great Migration</option><option value="Family">Family</option><option value="Honeymoon">Honeymoon</option><option value="Senior Friendly">Senior friendly</option><option value="Luxury">Luxury</option><option value="Midrange">Midrange</option><option value="Budget">Value</option><option value="Safari & Beach">Safari & Beach</option><option value="Fly-In">Fly-in</option></select></div>
+            <div><div className="flex items-center justify-between mb-1.5"><label htmlFor="tour-budget" className="text-xs font-extrabold uppercase tracking-wider text-[#76541a]">Maximum guide price</label><span className="text-xs font-bold text-[#161f19]">{formatGuidePrice(maxPrice, currency)}</span></div><input id="tour-budget" type="range" min={250} max={15000} step={250} value={maxPrice} onChange={event => setMaxPrice(Number(event.target.value))} className="w-full min-h-11 accent-[#8a611d] cursor-pointer" /><p className="text-xs text-[#536158]">Use this as a guide; final pricing depends on dates and accommodation.</p></div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/15 pb-4">
+        <div className="text-sm text-[#c7d2cb]" aria-live="polite"><span className="font-bold text-white">{filteredTours.length}</span> safari {filteredTours.length === 1 ? 'idea' : 'ideas'} found</div>
+        <EnquiryButton label="Can’t decide? Ask a safari expert" className="inline-flex min-h-11 items-center justify-center gap-2 px-4 rounded-xl border border-[#8a611d] text-[#e6bc65] hover:bg-[#8a611d] hover:text-white text-sm font-bold transition-colors" />
+      </div>
+
+      {filteredTours.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{filteredTours.map(tour => <TourCard key={tour.id} tour={tour} />)}</div>
+      ) : (
+        <div className="rounded-3xl bg-white border border-[#ded8cb] p-8 sm:p-12 text-center space-y-4 shadow-sm">
+          <Compass className="w-12 h-12 text-[#76541a] mx-auto" />
+          <h2 className="font-serif-luxury text-2xl font-bold text-[#161f19]">No exact match — that’s okay.</h2>
+          <p className="text-sm text-[#46544b] max-w-lg mx-auto leading-relaxed">Our listed safaris are starting points, not fixed packages. Clear the filters or tell us what you want and we can shape a route around you.</p>
+          <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+            <button onClick={resetFilters} className="min-h-11 px-5 rounded-xl bg-[#f4f1e8] text-[#303e35] text-sm font-semibold hover:bg-[#eae5d8]">Reset filters</button>
+            <EnquiryButton label="Request a custom safari" className="min-h-11 px-5 rounded-xl bg-[#8a611d] text-white text-sm font-bold hover:bg-[#704d15]" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
