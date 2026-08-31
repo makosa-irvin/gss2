@@ -30,6 +30,30 @@ describe('TourDetailView', () => {
     expect(screen.getByRole('heading', { name: tour.title, level: 1 })).toBeInTheDocument();
   });
 
+  it('surfaces factual decision-support fields from the tour catalog', async () => {
+    const tour = makeTour({
+      travelerTypes: ['Couples', 'Honeymooners'],
+      travelStyles: ['Big 5', 'Luxury'],
+      comfortLevel: 'Luxury',
+      durationLabel: '7 Days / 6 Nights',
+      destinations: ['Amboseli National Park', 'Maasai Mara National Reserve'],
+      startingLocation: 'Nairobi, Kenya',
+      endingLocation: 'Nairobi, Kenya',
+    });
+
+    renderWithProviders(
+      <TourDetailView tour={tour} onBack={noop} onOpenEnquiryModal={noop} />
+    );
+    await settleProviderEffects();
+
+    expect(screen.getByRole('heading', { name: /is this safari right for you/i })).toBeInTheDocument();
+    expect(screen.getByText('Couples, Honeymooners')).toBeInTheDocument();
+    expect(screen.getByText('Big 5, Luxury')).toBeInTheDocument();
+    expect(screen.getAllByText('7 Days / 6 Nights').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText('Amboseli National Park → Maasai Mara National Reserve')).toBeInTheDocument();
+    expect(screen.getByText('Nairobi, Kenya → Nairobi, Kenya')).toBeInTheDocument();
+  });
+
   it('renders included services and activities together under "What Is Included"', async () => {
     const tour = makeTour({
       includedServices: ['Park entrance fees', 'Airport transfers'],

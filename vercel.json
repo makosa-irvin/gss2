@@ -1,5 +1,7 @@
 {
   "redirects": [
+    { "source": "/book-direct", "destination": "/guides/booking-safari-direct-local-operator", "permanent": true },
+    { "source": "/book-direct/", "destination": "/guides/booking-safari-direct-local-operator", "permanent": true },
     { "source": "/about-2", "destination": "/about", "permanent": true },
     { "source": "/about-2/", "destination": "/about", "permanent": true },
     { "source": "/contact-2", "destination": "/contact", "permanent": true },

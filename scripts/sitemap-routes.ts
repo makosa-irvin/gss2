@@ -1,0 +1,31 @@
+// Public, canonical routes that should be discoverable even when the catalog API
+// is unavailable during the build. Personalized, redirected, and admin routes
+// intentionally do not belong here.
+export const STATIC_SITEMAP_ROUTES = [
+  '/',
+  '/safaris',
+  '/destinations',
+  '/hotels',
+  '/safari-builder',
+  '/blog',
+  '/reviews',
+  '/plan-with-us',
+  '/about',
+  '/contact',
+  '/guides',
+  '/guides/kenya-safari-cost-guide',
+  '/guides/kenya-safari-from-usa',
+  '/guides/7-day-kenya-safari',
+  '/guides/best-time-for-kenya-safari',
+  '/guides/great-migration-safari-timing',
+  '/guides/kenya-vs-tanzania-safari',
+  '/guides/kenya-safari-zanzibar',
+  '/guides/kenya-honeymoon-safari',
+  '/guides/kenya-family-safari',
+  '/guides/first-time-africa-safari-guide',
+  '/guides/safari-over-60-comfort-guide',
+  '/guides/booking-safari-direct-local-operator',
+  '/privacy',
+  '/terms',
+  '/booking-conditions',
+] as const;
