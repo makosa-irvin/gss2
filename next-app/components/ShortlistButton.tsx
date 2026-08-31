@@ -1,20 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Heart } from 'lucide-react';
+import { useEffect,useState } from 'react';
 
-type SavedSafari = { id: string; title: string; slug: string; image?: string; priceFrom?: number; durationLabel?: string; country?: string };
-const KEY = 'gss-shortlist-v1';
-
-export function readShortlist(): SavedSafari[] { try { return JSON.parse(localStorage.getItem(KEY) || '[]') as SavedSafari[]; } catch { return []; } }
-export function writeShortlist(items: SavedSafari[]) { localStorage.setItem(KEY, JSON.stringify(items)); window.dispatchEvent(new Event('gss-shortlist-changed')); }
-
-export function ShortlistButton({ safari }: { safari: SavedSafari }) {
-  const [saved, setSaved] = useState(false);
-  useEffect(() => { setSaved(readShortlist().some((item) => item.id === safari.id)); }, [safari.id]);
-  function toggle() {
-    const current = readShortlist();
-    const next = current.some((item) => item.id === safari.id) ? current.filter((item) => item.id !== safari.id) : [...current, safari];
-    writeShortlist(next); setSaved(!saved);
-  }
-  return <button type="button" className="button secondary" onClick={toggle}>{saved ? 'Saved to shortlist ✓' : 'Save to shortlist'}</button>;
-}
+export type SavedItem={id:string;kind:'safari'|'hotel';title:string;slug:string;image?:string;priceFrom?:number;priceFromKES?:number;durationLabel?:string;country?:string;location?:string};
+const KEY='gss-shortlist-v1';
+export function readShortlist():SavedItem[]{try{const raw=JSON.parse(localStorage.getItem(KEY)||'[]') as Array<Partial<SavedItem>>;return raw.map(item=>({...item,kind:item.kind||'safari'} as SavedItem)).filter(item=>item.id&&item.slug&&item.title)}catch{return[]}}
+export function writeShortlist(items:SavedItem[]){localStorage.setItem(KEY,JSON.stringify(items));window.dispatchEvent(new Event('gss-shortlist-changed'))}
+function SaveButton({item,compact=false}:{item:SavedItem;compact?:boolean}){const[saved,setSaved]=useState(false);useEffect(()=>setSaved(readShortlist().some(x=>x.kind===item.kind&&x.id===item.id)),[item.id,item.kind]);function toggle(e:React.MouseEvent){e.preventDefault();e.stopPropagation();const current=readShortlist();const exists=current.some(x=>x.kind===item.kind&&x.id===item.id);writeShortlist(exists?current.filter(x=>!(x.kind===item.kind&&x.id===item.id)):[...current,item]);setSaved(!exists)}return <button type="button" onClick={toggle} aria-pressed={saved} aria-label={`${saved?'Remove':'Save'} ${item.title}`} className={compact?`min-w-11 min-h-11 rounded-full bg-white/95 text-brand-strong flex items-center justify-center shadow-md border border-border ${saved?'ring-2 ring-brand-soft':''}`:`min-h-11 inline-flex items-center justify-center gap-2 rounded-full px-4 text-sm font-bold border transition-colors ${saved?'bg-page text-brand-strong border-white':'bg-black/45 text-white border-white/20 hover:bg-black/60'}`}><Heart className={`w-4 h-4 ${saved?'fill-current':''}`}/>{compact?null:(saved?'Saved':'Save')}</button>}
+export function ShortlistButton({safari,compact=false}:{safari:Omit<SavedItem,'kind'>;compact?:boolean}){return <SaveButton compact={compact} item={{...safari,kind:'safari'}}/>}
+export function HotelShortlistButton({hotel,compact=false}:{hotel:Omit<SavedItem,'kind'>;compact?:boolean}){return <SaveButton compact={compact} item={{...hotel,kind:'hotel'}}/>}
