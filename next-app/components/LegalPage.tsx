@@ -18,19 +18,27 @@ export function legalMetadata(path: string, page: LegalPageContent): Metadata {
 
 export function LegalPage({ page }: { page: LegalPageContent }) {
   return (
-    <main className="page">
-      <span className="eyebrow">Good Secrets Safaris</span>
-      <h1>{page.title}</h1>
-      <p className="lede">{page.description}</p>
-      <p className="meta">Last updated {LEGAL_UPDATED}</p>
-      <div className="card">
-        {page.blocks.map(([heading, body]) => (
-          <section className="section" key={heading}>
-            <h2>{heading}</h2>
-            <p>{body}</p>
-          </section>
-        ))}
-      </div>
-    </main>
+    <>
+      <header className="page-hero">
+        <div className="container">
+          <p className="eyebrow">Good Secrets Safaris</p>
+          <h1>{page.title}</h1>
+          <p>{page.description}</p>
+          <p style={{ fontSize: '.8rem' }}>Last updated {LEGAL_UPDATED}</p>
+        </div>
+      </header>
+      <section className="section">
+        <div className="container" style={{ maxWidth: 900 }}>
+          <div className="prose-card">
+            {page.blocks.map(([heading, body]) => (
+              <section key={heading}>
+                <h2>{heading}</h2>
+                <p>{body}</p>
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
