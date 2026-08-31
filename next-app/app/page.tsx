@@ -1,24 +1,20 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
+import { DestinationCard, ReviewCard, TourCard } from '../components/CatalogCards';
+import { EnquiryButton } from '../components/EnquiryButton';
+import { getDestinations, getTestimonials, getTours } from '../lib/api';
+import { guides } from '../lib/guides';
 
-export const metadata: Metadata = {
-  title: 'Next.js Migration Preview',
-  description: 'Internal preview shell for the Good Secrets Safaris hybrid rendering migration.',
-  alternates: { canonical: '/' },
-};
+export const revalidate=900;
+export const metadata:Metadata={title:'Private Kenya, Tanzania & Zanzibar Safaris',description:'Plan a private Kenya, Tanzania or Zanzibar safari with a Nairobi-based team. Explore itinerary ideas, destinations, reviews and practical planning guides.',alternates:{canonical:'/'},openGraph:{title:'Good Secrets Safaris | Your safari. Our home.',description:'Private Kenya, Tanzania and Zanzibar safaris planned around your dates, interests and travel style.',url:'/',images:['/images/catalog/mara-savannah.jpg']}};
 
-export default function HomePage() {
-  return (
-    <main className="page">
-      <span className="eyebrow">Migration foundation</span>
-      <h1>Good Secrets Safaris on Next.js</h1>
-      <p className="lede">This parallel application lets us migrate public routes to server-rendered and statically generated HTML without changing the current Vite deployment until route parity is proven.</p>
-      <div className="preview-note"><strong>Current slice:</strong> legal pages are migrated as static Server Components with native Next.js metadata. Interactive and data-backed routes remain on the existing React/Vite application until later migration phases.</div>
-      <div className="links">
-        <Link href="/privacy">Privacy Policy</Link>
-        <Link href="/terms">Website Terms</Link>
-        <Link href="/booking-conditions">Booking Conditions</Link>
-      </div>
-    </main>
-  );
-}
+export default async function HomePage(){const[tours,destinations,reviews]=await Promise.all([getTours(),getDestinations(),getTestimonials()]);const featuredTours=(tours.filter((tour)=>tour.featured||tour.recommended||tour.popular).length?tours.filter((tour)=>tour.featured||tour.recommended||tour.popular):tours).slice(0,3);const featuredDestinations=(destinations.filter((item)=>item.featured).length?destinations.filter((item)=>item.featured):destinations).slice(0,3);return <>
+  <section className="hero"><div className="hero-media"><Image src="/images/catalog/mara-savannah.jpg" alt="Safari landscape in East Africa" fill priority sizes="100vw"/></div><div className="hero-overlay"/><div className="hero-content"><p className="eyebrow">Private safaris · Kenya · Tanzania · Zanzibar</p><h1>Your safari. Our home.</h1><p>Tell us what matters to you. We will shape a private East Africa journey around your dates, pace, comfort and wildlife priorities.</p><div className="hero-actions"><EnquiryButton label="Build my safari"/><Link className="button secondary" href="/safaris">Explore safari ideas</Link></div><div className="hero-proof"><span>Nairobi-based planning team</span><span>Independent traveler reviews</span><span>Tailor-made routes</span><span>No payment at enquiry</span></div></div></section>
+  <section className="section"><div className="container"><div className="section-header"><div><p className="eyebrow">Start with a shape, not a package</p><h2>Safari ideas worth adapting</h2><p>Use published itineraries to compare route, duration and comfort. Then adjust the trip around your own group.</p></div><Link className="text-link" href="/safaris">Explore all safaris →</Link></div>{featuredTours.length?<div className="grid-3">{featuredTours.map((tour)=><TourCard key={tour.id} tour={tour}/>)}</div>:<div className="empty-state">Safari ideas are being refreshed from the catalog.</div>}</div></section>
+  <section className="section dark-section"><div className="container"><div className="section-header"><div><p className="eyebrow">Personal planning</p><h2>A high-value trip deserves a human conversation.</h2><p>We use digital tools to make research easy, but the route itself should be discussed. Transfer time, lodge location, season and group priorities rarely fit neatly into a checkout flow.</p></div><EnquiryButton label="Talk to a safari planner"/></div><div className="grid-3"><article className="prose-card"><p className="eyebrow">1 · Explore</p><h3>See what is possible</h3><p>Browse destinations and safari ideas to identify the wildlife, landscapes and pace you want.</p></article><article className="prose-card"><p className="eyebrow">2 · Shape</p><h3>Build around your group</h3><p>Share dates, traveler count, comfort preferences and the experiences that matter most.</p></article><article className="prose-card"><p className="eyebrow">3 · Refine</p><h3>Compare real trade-offs</h3><p>Adjust driving, flights, lodge choices and nights before you decide whether the proposal is right.</p></article></div></div></section>
+  <section className="section"><div className="container"><div className="section-header"><div><p className="eyebrow">Where the route comes alive</p><h2>Explore East Africa by destination</h2><p>Each stop should earn its place in the itinerary.</p></div><Link className="text-link" href="/destinations">All destinations →</Link></div>{featuredDestinations.length?<div className="grid-3">{featuredDestinations.map((destination)=><DestinationCard key={destination.id} destination={destination}/>)}</div>:null}</div></section>
+  <section className="section compact"><div className="container"><div className="section-header"><div><p className="eyebrow">Research before you enquire</p><h2>Practical safari planning guides</h2><p>Understand cost, timing, routing and buyer checks before comparing individual quotes.</p></div><Link className="text-link" href="/guides">All guides →</Link></div><div className="grid-3">{guides.slice(0,3).map((guide)=><article className="prose-card" key={guide.slug}><p className="eyebrow">Planning guide</p><h3><Link href={`/guides/${guide.slug}`}>{guide.title}</Link></h3><p>{guide.description}</p><Link className="text-link" href={`/guides/${guide.slug}`}>Read guide →</Link></article>)}</div></div></section>
+  {reviews.length?<section className="section"><div className="container"><div className="section-header"><div><p className="eyebrow">Traveler evidence</p><h2>Use independent feedback alongside the proposal.</h2><p>Reviews help verify the operator. The final itinerary still needs to fit you.</p></div><Link className="text-link" href="/reviews">All reviews →</Link></div><div className="grid-3">{reviews.slice(0,3).map((review)=><ReviewCard key={review.id} review={review}/>)}</div></div></section>:null}
+  <section className="section dark-section"><div className="container grid-2"><div><p className="eyebrow">Ready when you are</p><h2>Bring us your dates, not a finished itinerary.</h2><p className="lede">We can help turn a rough safari idea into a route that works on the ground.</p><div className="hero-actions"><EnquiryButton label="Request a safari plan"/><Link className="button secondary" href="/safari-builder">Try the safari builder</Link></div></div><div className="prose-card"><h3>Useful things to tell us</h3><ul className="list-clean"><li>Approximate travel dates</li><li>Adults and children traveling</li><li>Wildlife or destinations you care about</li><li>Comfort and budget range</li><li>Safari only or safari + beach</li></ul></div></div></section>
+</>}
