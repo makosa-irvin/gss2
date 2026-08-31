@@ -5,7 +5,9 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, Calendar, CheckCircle2, ChevronRight, Compass, MessageCircle, ShieldCheck } from 'lucide-react';
 import { HotelCard, TourCard } from '../../../components/CatalogCards';
 import { EnquiryButton } from '../../../components/EnquiryButton';
+import { RelatedPlanningGuides } from '../../../components/RelatedPlanningGuides';
 import { getDestinationBySlug, getDestinations, getHotels, getTours } from '../../../lib/api';
+import { getDestinationGuideRecommendations } from '../../../lib/guideRecommendations';
 import { siteUrl } from '../../../lib/site';
 
 export const revalidate = 900;
@@ -27,6 +29,7 @@ export default async function DestinationDetailPage({ params }: { params: Promis
   const matchingTours = tours.filter(tour => tour.destinations?.some(place => place.toLowerCase().includes(lower) || lower.includes(place.toLowerCase())) || tour.title.toLowerCase().includes(lower));
   const matchingHotels = hotels.filter(hotel => hotel.location.toLowerCase().includes(lower) || lower.includes(hotel.location.toLowerCase()) || hotel.country.toLowerCase() === destination.country.toLowerCase()).slice(0, 4);
   const image = destination.heroImage || '/images/catalog/mara-savannah.jpg';
+  const planningGuides = getDestinationGuideRecommendations(destination);
   const url = siteUrl(`/destinations/${destination.slug}`);
   const schema = [
     { '@context': 'https://schema.org', '@type': 'TouristDestination', name: destination.name, description: destination.description, image: siteUrl(image), url, address: { '@type': 'PostalAddress', addressCountry: destination.country } },
@@ -44,5 +47,6 @@ export default async function DestinationDetailPage({ params }: { params: Promis
     <section className="space-y-6 pt-2"><div><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Safari ideas</span><h2 className="font-serif-luxury text-2xl sm:text-4xl font-bold text-white mt-1">Journeys featuring {destination.name}</h2><p className="text-sm text-on-shell-muted mt-1">Use these as starting points — each can be adjusted to your dates and interests.</p></div>{matchingTours.length ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{matchingTours.map(tour => <TourCard key={tour.id} tour={tour} />)}</div> : <div className="p-7 rounded-2xl bg-white border border-border-strong text-center text-ink"><p className="text-sm text-ink-muted">We can create a custom itinerary including {destination.name}.</p><EnquiryButton label="Request a custom route" destination={destination.name} className="mt-4 min-h-11 px-5 rounded-xl bg-brand-strong hover:bg-brand-hover text-white text-sm font-bold" /></div>}</section>
     {matchingHotels.length ? <section className="space-y-6 pt-2"><div><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Places to stay</span><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white mt-1">Stays to compare around {destination.name}</h2><p className="text-sm text-on-shell-muted mt-2">Use accommodation as part of route planning: location, transfer time and the kind of experience matter as much as room style.</p></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">{matchingHotels.map(hotel => <HotelCard key={hotel.id} hotel={hotel} />)}</div></section> : null}
     <section className="rounded-[2rem] bg-shell border border-brand-deep p-7 sm:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"><div><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Your route, not a template</span><h2 className="font-serif-luxury text-3xl font-bold text-white mt-2">Want {destination.name} without building the whole trip yourself?</h2><p className="text-sm text-on-shell-muted mt-2 max-w-2xl">Share your dates, travel style and the other places on your wish list. We can suggest how this destination fits into a private East Africa journey.</p></div><EnquiryButton label="Plan my route" destination={destination.name} className="min-h-12 shrink-0 px-6 rounded-xl bg-brand-soft hover:bg-brand-soft text-ink-strong font-extrabold text-sm inline-flex items-center gap-2" /></section>
+    <RelatedPlanningGuides guides={planningGuides} eyebrow="Research this destination" title="Plan the wider safari, not just the park" />
   </div>;
 }
