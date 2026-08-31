@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { FileText, Inbox, MapPin, MessageSquare, Palmtree, Plus, RefreshCw, Search, Trash2, X } from 'lucide-react';
+import { FileText, Inbox, MapPin, MessageSquare, Palmtree, Plus, Search, Trash2, X } from 'lucide-react';
 import { AdminGrowth } from './admin/AdminGrowth';
 import { AdminLayout, type AdminSection } from './admin/AdminLayout';
 import { AdminOverview } from './admin/AdminOverview';
+import { AdminSettings } from './admin/AdminSettings';
 
 type AdminUser = { id: string; email: string; name: string };
 type CatalogKey = 'tours' | 'destinations' | 'hotels' | 'blog' | 'testimonials';
@@ -26,7 +27,7 @@ export function AdminPortal() {
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState('');
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
-  const [data, setData] = useState<Record<string, AnyRecord[]>>({});
+  const [data, setData] = useState<Record<string, any>>({});
   const [editor, setEditor] = useState<{ key: CatalogKey; id?: string; json: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [query, setQuery] = useState('');
@@ -37,8 +38,12 @@ export function AdminPortal() {
   async function refresh() {
     setError('');
     try {
-      const results = await Promise.all([api('/api/enquiries'), ...Object.entries(endpoints).map(async ([key, path]) => [key, await api(path)] as const)]);
-      setData({ enquiries: results[0], ...Object.fromEntries(results.slice(1) as any) });
+      const [enquiries, settings, ...catalogResults] = await Promise.all([
+        api('/api/enquiries'),
+        api('/api/settings'),
+        ...Object.entries(endpoints).map(async ([key, path]) => [key, await api(path)] as const),
+      ]);
+      setData({ enquiries, settings, ...Object.fromEntries(catalogResults as any) });
     } catch (err: any) { setError(err.message); }
   }
   async function login(formData: FormData) {
@@ -48,6 +53,7 @@ export function AdminPortal() {
   }
   async function logout() { await api('/api/auth/logout', { method: 'POST' }).catch(() => undefined); setUser(null); setData({}); }
   async function updateStatus(id: string, status: string) { try { await api(`/api/enquiries/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }); await refresh(); } catch (err: any) { setError(err.message); } }
+  async function saveSettings(settings: AnyRecord) { try { const saved = await api('/api/settings', { method: 'PUT', body: JSON.stringify(settings) }); setData(current => ({ ...current, settings: saved })); } catch (err: any) { setError(err.message); throw err; } }
   async function deleteRecord(key: CatalogKey, id: string) { if (!confirm('Delete this record? This cannot be undone.')) return; try { await api(`${endpoints[key]}/${id}`, { method: 'DELETE' }); await refresh(); } catch (err: any) { setError(err.message); } }
   function editRecord(key: CatalogKey, record: AnyRecord) { setEditor({ key, id: record.id, json: JSON.stringify(stripServerFields(record), null, 2) }); }
   function createFromExisting(key: CatalogKey) {
@@ -72,21 +78,23 @@ export function AdminPortal() {
   }
 
   const enquiries = data.enquiries || [];
-  const counts = useMemo(() => ({ enquiries: enquiries.length, newEnquiries: enquiries.filter(item => item.status === 'New').length, tours: data.tours?.length || 0, hotels: data.hotels?.length || 0, destinations: data.destinations?.length || 0, blog: data.blog?.length || 0, testimonials: data.testimonials?.length || 0 }), [data, enquiries]);
+  const counts = useMemo(() => ({ enquiries: enquiries.length, newEnquiries: enquiries.filter((item: AnyRecord) => item.status === 'New').length, tours: data.tours?.length || 0, hotels: data.hotels?.length || 0, destinations: data.destinations?.length || 0, blog: data.blog?.length || 0, testimonials: data.testimonials?.length || 0 }), [data, enquiries]);
 
   if (!authChecked) return <div className="min-h-screen bg-[#f7f5ee] flex items-center justify-center p-6 text-sm text-[#707f74]">Checking admin session…</div>;
   if (!user) return <div className="min-h-screen bg-[#f7f5ee] flex items-center justify-center px-4 py-12"><div className="w-full max-w-md rounded-3xl border border-[#e8e4da] bg-white p-7 sm:p-9 shadow-xl"><div className="mb-7"><span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#9e7120]">Authenticated access</span><h1 className="mt-1 font-serif-luxury text-3xl font-bold text-[#161f19]">Good Secrets admin</h1><p className="mt-2 text-sm text-[#707f74]">Sign in to manage enquiries, website content and growth reporting.</p></div><form action={login} className="space-y-4"><label className="block text-sm font-bold text-[#303e35]">Email<input type="email" name="email" required autoComplete="email" className="mt-1.5 w-full min-h-12 rounded-xl border border-[#d7d1c4] bg-[#faf8f2] px-4 text-[#161f19] outline-none focus:border-[#8a611d] focus:ring-2 focus:ring-[#8a611d]/20" /></label><label className="block text-sm font-bold text-[#303e35]">Password<input type="password" name="password" required autoComplete="current-password" className="mt-1.5 w-full min-h-12 rounded-xl border border-[#d7d1c4] bg-[#faf8f2] px-4 text-[#161f19] outline-none focus:border-[#8a611d] focus:ring-2 focus:ring-[#8a611d]/20" /></label>{error ? <p className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{error}</p> : null}<button className="w-full min-h-12 rounded-xl bg-[#1b4332] text-white font-extrabold text-sm hover:bg-[#123326]">Sign in</button></form></div></div>;
 
   const catalogKey = activeSection === 'tours' || activeSection === 'hotels' || activeSection === 'destinations' || activeSection === 'blog' || activeSection === 'testimonials' ? activeSection : null;
   const sectionContent = activeSection === 'overview'
-    ? <AdminOverview tours={data.tours || []} hotels={data.hotels || []} enquiries={enquiries} whatsapp="+254 729 000 410" onGoToEnquiries={() => setActiveSection('enquiries')} onGoToTours={() => setActiveSection('tours')} />
+    ? <AdminOverview tours={data.tours || []} hotels={data.hotels || []} enquiries={enquiries} whatsapp={data.settings?.contact?.whatsapp || '+254 729 000 410'} onGoToEnquiries={() => setActiveSection('enquiries')} onGoToTours={() => setActiveSection('tours')} />
     : activeSection === 'growth'
       ? <AdminGrowth enquiries={enquiries} />
       : activeSection === 'enquiries'
         ? <EnquiriesPanel enquiries={enquiries} onStatus={updateStatus} />
         : catalogKey
           ? <CatalogPanel keyName={catalogKey} records={data[catalogKey] || []} query={query} setQuery={setQuery} onCreate={() => createFromExisting(catalogKey)} onEdit={record => editRecord(catalogKey, record)} onDelete={id => deleteRecord(catalogKey, id)} />
-          : <SettingsPlaceholder />;
+          : data.settings
+            ? <AdminSettings settings={data.settings} onSave={saveSettings} />
+            : <div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading company settings…</div>;
 
   return <AdminLayout active={activeSection} onNavigate={section => { setError(''); setQuery(''); setActiveSection(section); }} adminName={user.name} adminEmail={user.email} onLogout={logout} counts={counts}>
     {error ? <div className="mb-6 flex items-center justify-between gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800"><span>{error}</span><button onClick={() => setError('')} aria-label="Dismiss error" className="text-rose-600 hover:text-rose-800"><X className="w-4 h-4" /></button></div> : null}
@@ -110,4 +118,3 @@ function CatalogPanel({ keyName, records, query, setQuery, onCreate, onEdit, onD
   const meta = catalogMeta[keyName]; const Icon = meta.icon; const filtered = records.filter(record => `${labelOf(record)} ${record.slug || ''}`.toLowerCase().includes(query.toLowerCase()));
   return <div className="space-y-6"><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#9e7120]"><Icon className="w-4 h-4" />Website content</div><h1 className="mt-1 font-serif-luxury text-3xl font-bold text-[#161f19]">{meta.title}</h1><p className="mt-2 max-w-2xl text-sm text-[#707f74]">{meta.copy}</p></div><button onClick={onCreate} className="min-h-11 inline-flex items-center justify-center gap-2 rounded-xl bg-[#1b4332] px-5 text-sm font-bold text-white hover:bg-[#123326]"><Plus className="w-4 h-4" />Add new</button></div><div className="flex items-center gap-3 rounded-2xl border border-[#e8e4da] bg-white p-3 shadow-sm"><Search className="w-4 h-4 text-[#9e7120]" /><input value={query} onChange={event => setQuery(event.target.value)} placeholder={`Search ${meta.title.toLowerCase()}...`} className="min-h-10 flex-1 bg-transparent text-sm text-[#161f19] outline-none" /><span className="text-xs text-[#707f74]">{filtered.length} records</span></div><div className="overflow-hidden rounded-2xl border border-[#e8e4da] bg-white shadow-sm"><div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="bg-[#faf8f2] text-[11px] uppercase tracking-wider text-[#707f74]"><tr><th className="px-5 py-4">Record</th><th className="px-5 py-4">Published</th><th className="px-5 py-4 text-right">Actions</th></tr></thead><tbody className="divide-y divide-[#eeebe2]">{filtered.map(item => <tr key={item.id}><td className="px-5 py-4"><strong className="text-[#161f19]">{labelOf(item)}</strong>{item.slug ? <span className="mt-1 block text-xs text-[#9a9184]">/{item.slug}</span> : null}</td><td className="px-5 py-4"><span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${item.published === false ? 'bg-stone-100 text-stone-600' : 'bg-emerald-100 text-emerald-800'}`}>{item.published === false ? 'Draft' : item.published === undefined ? '—' : 'Published'}</span></td><td className="px-5 py-4"><div className="flex justify-end gap-2"><button onClick={() => onEdit(item)} className="min-h-10 rounded-xl border border-[#d7d1c4] bg-[#faf8f2] px-4 text-xs font-bold text-[#303e35] hover:border-[#9e7120]">Edit</button><button onClick={() => onDelete(item.id)} aria-label={`Delete ${labelOf(item)}`} className="min-h-10 min-w-10 rounded-xl text-rose-700 hover:bg-rose-50 inline-flex items-center justify-center"><Trash2 className="w-4 h-4" /></button></div></td></tr>)}</tbody></table></div></div></div>;
 }
-function SettingsPlaceholder() { return <div className="space-y-6"><div><div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#9e7120]">Configuration</div><h1 className="mt-1 font-serif-luxury text-3xl font-bold text-[#161f19]">Company Settings</h1><p className="mt-2 text-sm text-[#707f74]">The Vite settings form is the next admin section being ported. Public company settings continue to come from the existing API.</p></div><div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74] shadow-sm"><RefreshCw className="mb-3 w-5 h-5 text-[#9e7120]" />No settings have been changed by this migration.</div></div>; }
