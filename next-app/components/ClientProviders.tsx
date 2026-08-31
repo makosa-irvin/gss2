@@ -91,8 +91,8 @@ function EnquiryModal({ context, onClose }: { context: Record<string, string> | 
           <form action={submit} className="form-grid">
             <label>Full name<input name="fullName" required autoComplete="name" /></label>
             <label>Email<input name="email" required type="email" autoComplete="email" /></label>
-            <label>Phone / WhatsApp<input name="phone" autoComplete="tel" /></label>
-            <label>Country<input name="country" autoComplete="country-name" /></label>
+            <label>Phone / WhatsApp<input name="phone" required minLength={3} autoComplete="tel" /></label>
+            <label>Country<input name="country" required autoComplete="country-name" /></label>
             <label>Travel dates<input name="travelDates" placeholder="Approximate is fine" /></label>
             <label>Adults<input name="adults" type="number" min="1" defaultValue="2" /></label>
             <label>Children<input name="children" type="number" min="0" defaultValue="0" /></label>
