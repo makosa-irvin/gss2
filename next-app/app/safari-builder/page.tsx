@@ -1,5 +1,11 @@
 import type { Metadata } from 'next';
 import { SafariBuilder } from '../../components/SafariBuilder';
+import { getTours } from '../../lib/api';
 
-export const metadata:Metadata={title:'Custom Safari Builder',description:'Answer a few quick questions to create a useful safari brief for a tailor-made Kenya, Tanzania or Zanzibar itinerary.',alternates:{canonical:'/safari-builder'}};
-export default function SafariBuilderPage(){return <><header className="page-hero"><div className="container"><p className="eyebrow">Tailor-made journey engine</p><h1>Build a useful safari brief.</h1><p>Answer six questions. We will use them to narrow the route rather than pretending current lodge and flight availability can be solved by a generic calculator.</p></div></header><section className="section"><div className="container" style={{maxWidth:900}}><SafariBuilder/></div></section></>}
+export const metadata: Metadata = { title: 'Custom Safari Builder', description: 'Answer a few quick questions to get a tailor-made Kenya, Tanzania, or Zanzibar safari itinerary and pricing estimate.', alternates: { canonical: '/safari-builder' } };
+export const revalidate = 900;
+
+export default async function SafariBuilderPage() {
+  const tours = await getTours();
+  return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-8"><div className="text-center max-w-3xl mx-auto space-y-3"><span className="text-xs font-bold uppercase tracking-widest text-brand">Tailor-Made Journey Engine</span><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-on-shell">Custom Safari Builder</h1><p className="text-sm text-on-shell-subtle">Answer 6 quick questions to narrow down a route and receive a bespoke itinerary proposal from the safari team.</p></div><SafariBuilder tours={tours} /></div>;
+}
