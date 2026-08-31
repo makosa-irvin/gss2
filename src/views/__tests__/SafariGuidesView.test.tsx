@@ -38,7 +38,7 @@ describe('SafariGuidesView', () => {
     expect(screen.getByRole('link', { name: /build my safari/i })).toHaveAttribute('href', '/safari-builder');
   });
 
-  it('publishes article metadata and a canonical URL for guide detail pages', () => {
+  it('publishes article metadata, breadcrumbs and a canonical URL for guide detail pages', () => {
     renderGuides('/guides/kenya-safari-cost-guide');
 
     expect(document.title).toContain('How Much Does a Kenya Safari Cost?');
@@ -50,5 +50,8 @@ describe('SafariGuidesView', () => {
 
     expect(structuredData).toContain('"@type":"Article"');
     expect(structuredData).toContain('"mainEntityOfPage"');
+    expect(structuredData).toContain('"@type":"BreadcrumbList"');
+    expect(structuredData).toContain('"name":"Safari Planning Guides"');
+    expect(structuredData).toContain('/guides/kenya-safari-cost-guide');
   });
 });
