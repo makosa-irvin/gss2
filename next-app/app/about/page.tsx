@@ -1,0 +1,14 @@
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { EnquiryButton } from '../../components/EnquiryButton';
+
+export const metadata: Metadata = { title: 'About Good Secrets Safaris', description: 'Meet the Nairobi-based Good Secrets Safaris team and learn how we plan private Kenya, Tanzania and Zanzibar journeys.', alternates: { canonical: '/about' } };
+
+export default function AboutPage() {
+  return <>
+    <header className="page-hero"><div className="container"><p className="eyebrow">Local knowledge · personal planning</p><h1>A safari company built around the conversation.</h1><p>Good Secrets Safaris is based in Nairobi and plans private journeys across Kenya, Tanzania and Zanzibar. Our role is to turn dates, interests and comfort priorities into a route that makes sense on the ground.</p></div></header>
+    <section className="section"><div className="container content-layout"><div className="prose-card"><section><h2>Why local planning matters</h2><p>Safari quality depends on more than a list of parks. Transfer time, lodge location, season, vehicle days and the order of destinations all change how a trip feels. We design around those trade-offs rather than asking travelers to fit a fixed template.</p></section><section><h2>Meet the people behind the itinerary</h2><p>The team combines destination knowledge, supplier relationships and direct traveler communication. You should know who is helping shape your safari and be able to ask practical questions before you commit.</p></section><section><h2>Independent verification is welcome</h2><p>A premium trip deserves due diligence. We encourage travelers to compare independent reviews, understand the exact proposal, and read booking and cancellation terms before paying.</p></section></div><aside className="sticky-card"><h3>Start with your priorities</h3><p>Tell us when you want to travel, who is coming and what you want the safari to feel like. We will help narrow the route.</p><EnquiryButton label="Plan with our team" /></aside></div></section>
+    <section className="section dark-section"><div className="container"><div className="section-header"><div><p className="eyebrow">The Good Secrets team</p><h2>People first, itinerary second.</h2><p>Direct planning should make it easier to ask questions, adjust pace and understand the decisions behind your route.</p></div></div><div style={{position:'relative',aspectRatio:'21/9',borderRadius:24,overflow:'hidden'}}><Image src="/images/catalog/team-at-nairobi-national-park.jpg" alt="The Good Secrets Safaris team at Nairobi National Park" fill sizes="100vw" style={{objectFit:'cover',objectPosition:'center 60%'}} /></div><div className="hero-actions"><Link className="button secondary" href="/reviews">Read traveler reviews</Link><Link className="button primary" href="/plan-with-us">How we plan safaris</Link></div></div></section>
+  </>;
+}
