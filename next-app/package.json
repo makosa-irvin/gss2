@@ -12,14 +12,21 @@
     "verify": "npm run typecheck && npm run build"
   },
   "dependencies": {
+    "@fontsource-variable/cinzel": "^5.2.8",
+    "@fontsource-variable/playfair-display": "^5.2.8",
+    "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
+    "lucide-react": "^0.468.0",
     "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.14.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "tailwindcss": "^4.1.12",
     "typescript": "~5.8.2"
   }
 }
