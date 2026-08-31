@@ -58,4 +58,8 @@
 /accommodation-packag                                       /hotels                                      301
 /accommodation-packag/                                      /hotels                                      301
 
+# Superseded direct-booking landing page. Keep one canonical editorial URL.
+/book-direct                   /guides/booking-safari-direct-local-operator 301
+/book-direct/                  /guides/booking-safari-direct-local-operator 301
+
 /*                            /index.html          200
