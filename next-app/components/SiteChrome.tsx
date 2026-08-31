@@ -1,11 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { FloatingWhatsApp } from './FloatingWhatsApp';
-import { SiteFooter } from './SiteFooter';
-import { SiteHeader } from './SiteHeader';
 
-export function SiteChrome({ children }: { children: React.ReactNode }) {
+export function SiteChrome({ children, header, footer, whatsapp }: { children: React.ReactNode; header: React.ReactNode; footer: React.ReactNode; whatsapp: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname === '/admin' || pathname?.startsWith('/admin/');
 
@@ -13,10 +10,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return <>
     <div className="site-frame">
-      <SiteHeader />
+      {header}
       <main className="main-content">{children}</main>
-      <SiteFooter />
+      {footer}
     </div>
-    <FloatingWhatsApp />
+    {whatsapp}
   </>;
 }
