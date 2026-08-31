@@ -1,24 +1,23 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { ChevronDown, Heart, Menu, Phone, Sparkles, X } from 'lucide-react';
 import { EnquiryButton } from './EnquiryButton';
-
-const links = [
-  ['Safaris', '/safaris'], ['Destinations', '/destinations'], ['Hotels', '/hotels'], ['Guides', '/guides'],
-  ['Reviews', '/reviews'], ['About', '/about'], ['Contact', '/contact'],
-] as const;
+import { readShortlist } from './ShortlistButton';
 
 export function SiteHeader() {
-  return (
-    <header className="site-header">
-      <div className="header-inner">
-        <Link href="/" className="brand-lockup" aria-label="Good Secrets Safaris home">
-          <Image src="/images/brand/logo.png" alt="Good Secrets Safaris" width={54} height={54} priority />
-          <span><strong>Good Secrets Safaris</strong><small>Kenya · Tanzania · Zanzibar</small></span>
-        </Link>
-        <nav className="desktop-nav" aria-label="Primary navigation">{links.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav>
-        <div className="header-actions"><Link className="shortlist-link" href="/shortlist">Shortlist</Link><EnquiryButton label="Plan my safari" /></div>
-      </div>
-      <nav className="mobile-nav" aria-label="Mobile navigation">{links.slice(0, 6).map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav>
-    </header>
-  );
+  const [scrolled,setScrolled]=useState(false); const [mobileOpen,setMobileOpen]=useState(false); const [savedCount,setSavedCount]=useState(0);
+  useEffect(()=>{const onScroll=()=>setScrolled(window.scrollY>20); const update=()=>setSavedCount(readShortlist().length); onScroll();update();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('gss-shortlist-changed',update);return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('gss-shortlist-changed',update)}},[]);
+  const nav=[['Destinations','/destinations'],['Safaris','/safaris'],['Beach & Stays','/hotels'],['Plan Your Safari','/plan-with-us']] as const;
+  return <header className="sticky top-0 z-40 w-full">
+    <div className={`bg-surface-soft border-b border-border px-4 sm:px-8 text-xs text-ink-muted transition-all ${scrolled?'max-h-0 opacity-0 py-0 sm:max-h-20 sm:opacity-100 sm:py-1.5':'max-h-20 opacity-100 py-1.5'}`}><div className="max-w-7xl mx-auto flex items-center justify-between gap-4"><div className="flex items-center gap-4"><span className="hidden sm:inline-flex items-center gap-1.5 text-ink font-medium"><span className="w-2 h-2 rounded-full bg-emerald-700"/>East Africa-based safari planning</span><a href="tel:+254729000410" className="hidden md:flex items-center gap-1 min-h-8 hover:text-brand-deep font-semibold"><Phone className="w-3 h-3 text-brand-deep"/>+254 729 000 410</a></div><div className="flex items-center gap-2"><span className="min-h-8 px-2.5 py-1 rounded-full text-[11px] font-semibold border bg-white text-ink-muted border-border-strong">Kenyan Resident Rates</span><span className="min-h-8 px-2.5 py-1 rounded-lg text-[11px] font-bold border bg-white text-ink border-border-strong">USD</span></div></div></div>
+    <nav aria-label="Main navigation" className={`w-full bg-white/95 backdrop-blur-xl border-b border-border ${scrolled?'shadow-md py-2.5':'py-3.5'}`}><div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between gap-4">
+      <Link href="/" aria-label="Good Secrets Safaris home" className="shrink-0"><Image src="/images/brand/logo.png" alt="Good Secrets Safaris" width={170} height={70} className="h-11 sm:h-14 w-auto object-contain" priority/></Link>
+      <div className="hidden lg:flex items-center gap-0.5">{nav.map(([label,href])=><Link key={href} href={href} className="min-h-11 px-3.5 py-2 text-sm font-semibold text-ink hover:text-brand-deep transition-colors flex items-center gap-1 rounded-lg">{label}<ChevronDown className="w-3.5 h-3.5 opacity-60"/></Link>)}<Link href="/reviews" className="min-h-11 px-3.5 py-2 text-sm font-semibold text-ink hover:text-brand-deep flex items-center">Reviews</Link></div>
+      <div className="hidden lg:flex items-center gap-2"><Link href="/shortlist" className="relative min-h-11 inline-flex items-center gap-2 rounded-xl border border-border-strong bg-surface-muted hover:bg-white px-3.5 text-sm font-bold text-ink"><Heart className={`w-4 h-4 text-brand-strong ${savedCount?'fill-current':''}`}/><span>Shortlist</span>{savedCount>0&&<span className="min-w-5 h-5 px-1 rounded-full bg-action text-white text-[11px] inline-flex items-center justify-center">{savedCount}</span>}</Link><EnquiryButton label="Request a Quote" className="inline-flex items-center gap-1.5 min-h-11 px-5 py-2.5 rounded-xl bg-brand-strong hover:bg-brand-hover text-white font-extrabold text-xs uppercase tracking-wider shadow-md"/></div>
+      <div className="flex items-center gap-2 lg:hidden"><Link href="/shortlist" className="relative min-w-11 min-h-11 flex items-center justify-center rounded-xl bg-surface-soft text-brand-strong border border-border-strong"><Heart className={`w-5 h-5 ${savedCount?'fill-current':''}`}/>{savedCount>0&&<span className="absolute -right-1 -top-1 min-w-5 h-5 rounded-full bg-action text-white text-[10px] inline-flex items-center justify-center">{savedCount}</span>}</Link><button onClick={()=>setMobileOpen(v=>!v)} className="min-w-11 min-h-11 flex items-center justify-center rounded-xl bg-surface-soft text-ink border border-border-strong" aria-label={mobileOpen?'Close navigation menu':'Open navigation menu'}>{mobileOpen?<X/>:<Menu/>}</button></div>
+    </div>{mobileOpen&&<div className="lg:hidden bg-white border-t border-border px-4 py-5 space-y-1 shadow-2xl">{[['Home','/'],['Safaris & Tours','/safaris'],['Destinations','/destinations'],['Beach Resorts & Stays','/hotels'],['My Shortlist','/shortlist'],['How We Plan Your Safari','/plan-with-us'],['Traveler Reviews','/reviews'],['Custom Safari Builder','/safari-builder'],['Safari Planning Guides','/guides'],['Travel Magazine & Stories','/blog'],['About Good Secrets Safaris','/about'],['Contact Us','/contact']].map(([label,href])=><Link key={href} href={href} onClick={()=>setMobileOpen(false)} className="block min-h-11 py-2.5 px-4 rounded-xl font-bold text-sm text-ink hover:bg-surface-soft">{label}</Link>)}<div className="pt-3"><EnquiryButton label="Request a Safari Quote" className="w-full min-h-12 rounded-xl bg-brand-strong text-white font-extrabold text-sm uppercase tracking-wider"/></div></div>}</nav>
+  </header>;
 }
