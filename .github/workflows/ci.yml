@@ -153,7 +153,7 @@ jobs:
         run: npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=text --coverage.reporter=json-summary --coverage.thresholds.lines=86 --coverage.thresholds.functions=75 --coverage.thresholds.statements=85 --coverage.thresholds.branches=65
       - name: Upload coverage summaries
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-summaries
           path: |
