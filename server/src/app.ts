@@ -45,8 +45,10 @@ export function createApp() {
   // authenticated, state-changing request whose Origin header isn't on
   // the explicit allowlist - an OWASP-endorsed CSRF defense ("Verifying
   // Origin with Standard Headers") that a token library would duplicate
-  // without closing any gap it doesn't already close.
-  // codeql[js/missing-token-validation]
+  // without closing any gap it doesn't already close. The query is
+  // excluded repo-wide in .github/codeql/codeql-config.yml rather than
+  // suppressed line-by-line here, since it re-flags at every individual
+  // route this global middleware protects, not just this line.
   app.use(cookieParser());
   // Applied globally (it already no-ops for GET/HEAD/OPTIONS) rather than
   // mounted on a hand-picked list of routes: that approach previously
