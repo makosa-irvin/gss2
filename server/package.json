@@ -26,8 +26,10 @@
     "db:migrate:prod": "node dist/db/migrate.js",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx src/db/seed.ts",
+    "reset-admin-password": "tsx src/db/resetAdminPassword.ts",
     "update:content-images": "tsx src/db/updateContentImages.ts",
-    "seed:prod": "node dist/db/seed.js"
+    "seed:prod": "node dist/db/seed.js",
+    "reset-admin-password:prod": "node dist/db/resetAdminPassword.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

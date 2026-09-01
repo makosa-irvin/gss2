@@ -127,7 +127,7 @@ if (baseRef) {
       if (!line.startsWith('+') || line.startsWith('+++')) continue;
       if (!line.includes('process.env')) continue;
       if (currentFile === 'server/src/config/env.ts') continue;
-      if (/^server\/src\/db\/(?:seed|migrate)\.ts$/.test(currentFile)) continue;
+      if (/^server\/src\/db\/(?:seed|migrate|resetAdminPassword)\.ts$/.test(currentFile)) continue;
       if (/^server\/src\/test\//.test(currentFile) || /\.test\.ts$/.test(currentFile)) continue;
 
       violations.push(`${currentFile}: new runtime process.env access must go through server/src/config/env.ts`);

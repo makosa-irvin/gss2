@@ -97,4 +97,96 @@ describe('Auth', () => {
     const clearedCookie = logoutRes.headers['set-cookie'];
     expect(clearedCookie).toBeDefined();
   });
+
+  describe('PATCH /change-password', () => {
+    const CHANGE_PW_EMAIL = 'ci-admin-change-password@example.com';
+    const ORIGINAL_PASSWORD = 'Original-test-password-1!';
+
+    async function loginAndGetCookie() {
+      const res = await request(app)
+        .post('/api/auth/login')
+        .send({ email: CHANGE_PW_EMAIL, password: ORIGINAL_PASSWORD });
+      const cookies = res.headers['set-cookie'];
+      return Array.isArray(cookies) ? cookies[0] : cookies;
+    }
+
+    beforeAll(async () => {
+      await db.delete(adminUsers).where(eq(adminUsers.email, CHANGE_PW_EMAIL));
+      await db.insert(adminUsers).values({
+        email: CHANGE_PW_EMAIL,
+        passwordHash: await hashPassword(ORIGINAL_PASSWORD),
+        name: 'CI Change-Password Administrator',
+      });
+    });
+
+    afterAll(async () => {
+      await db.delete(adminUsers).where(eq(adminUsers.email, CHANGE_PW_EMAIL));
+    });
+
+    it('rejects an unauthenticated request', async () => {
+      const res = await request(app)
+        .patch('/api/auth/change-password')
+        .send({ currentPassword: ORIGINAL_PASSWORD, newPassword: 'Some-new-password-1!' });
+      expect(res.status).toBe(401);
+    });
+
+    it('rejects a request body that fails validation before touching the database', async () => {
+      const cookie = await loginAndGetCookie();
+      const tooShort = await request(app)
+        .patch('/api/auth/change-password')
+        .set('Cookie', cookie)
+        .send({ currentPassword: ORIGINAL_PASSWORD, newPassword: 'short' });
+      expect(tooShort.status).toBe(400);
+
+      const sameAsCurrent = await request(app)
+        .patch('/api/auth/change-password')
+        .set('Cookie', cookie)
+        .send({ currentPassword: ORIGINAL_PASSWORD, newPassword: ORIGINAL_PASSWORD });
+      expect(sameAsCurrent.status).toBe(400);
+    });
+
+    it('rejects the wrong current password without changing the stored hash', async () => {
+      const cookie = await loginAndGetCookie();
+      const [before] = await db.select().from(adminUsers).where(eq(adminUsers.email, CHANGE_PW_EMAIL));
+
+      const res = await request(app)
+        .patch('/api/auth/change-password')
+        .set('Cookie', cookie)
+        .send({ currentPassword: 'definitely-wrong', newPassword: 'Some-new-password-1!' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBe('Current password is incorrect.');
+
+      const [after] = await db.select().from(adminUsers).where(eq(adminUsers.email, CHANGE_PW_EMAIL));
+      expect(after.passwordHash).toBe(before.passwordHash);
+    });
+
+    it('changes the password when the current password is correct, and the new one works to log in', async () => {
+      const cookie = await loginAndGetCookie();
+      const NEW_PASSWORD = 'Brand-new-test-password-2!';
+
+      const changeRes = await request(app)
+        .patch('/api/auth/change-password')
+        .set('Cookie', cookie)
+        .send({ currentPassword: ORIGINAL_PASSWORD, newPassword: NEW_PASSWORD });
+      expect(changeRes.status).toBe(204);
+
+      const oldLoginRes = await request(app)
+        .post('/api/auth/login')
+        .send({ email: CHANGE_PW_EMAIL, password: ORIGINAL_PASSWORD });
+      expect(oldLoginRes.status).toBe(401);
+
+      const newLoginRes = await request(app)
+        .post('/api/auth/login')
+        .send({ email: CHANGE_PW_EMAIL, password: NEW_PASSWORD });
+      expect(newLoginRes.status).toBe(200);
+
+      // Restore the original password so this test is re-runnable / order-independent.
+      const restoreCookie = newLoginRes.headers['set-cookie'];
+      await request(app)
+        .patch('/api/auth/change-password')
+        .set('Cookie', Array.isArray(restoreCookie) ? restoreCookie[0] : restoreCookie)
+        .send({ currentPassword: NEW_PASSWORD, newPassword: ORIGINAL_PASSWORD });
+    });
+  });
 });

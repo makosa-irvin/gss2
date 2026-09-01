@@ -13,6 +13,7 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().min(1).optional(),
   ENQUIRY_FROM_EMAIL: z.string().min(1).default('Good Secrets Safaris <onboarding@resend.dev>'),
   ENQUIRY_NOTIFY_EMAIL: z.string().min(1).optional(),
+  ADMIN_SECURITY_NOTIFY_EMAIL: z.string().min(1).default('goodsecretssafaris@gmail.com'),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;
