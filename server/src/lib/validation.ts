@@ -5,6 +5,16 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Current password is required.'),
+    newPassword: z.string().min(8, 'New password must be at least 8 characters.').max(200),
+  })
+  .refine((data) => data.newPassword !== data.currentPassword, {
+    message: 'New password must be different from the current password.',
+    path: ['newPassword'],
+  });
+
 const marketingAttributionSchema = z.object({
   source: z.string().trim().min(1).max(200),
   medium: z.string().trim().min(1).max(100),

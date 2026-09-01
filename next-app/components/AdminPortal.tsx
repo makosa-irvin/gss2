@@ -24,6 +24,7 @@ export function AdminPortal(){
  async function logout(){await api('/api/auth/logout',{method:'POST'}).catch(()=>undefined);setUser(null);setData({})}
  async function updateStatus(id:string,status:string){try{await api(`/api/enquiries/${id}/status`,{method:'PUT',body:JSON.stringify({status})});await refresh()}catch(err:any){setError(err.message)}}
  async function saveSettings(settings:AnyRecord){try{const saved=await api('/api/settings',{method:'PUT',body:JSON.stringify(settings)});setData(current=>({...current,settings:saved}))}catch(err:any){setError(err.message);throw err}}
+ async function changePassword(currentPassword:string,newPassword:string){await api('/api/auth/change-password',{method:'PATCH',body:JSON.stringify({currentPassword,newPassword})})}
  async function createRecord(key:CatalogKey,draft:AnyRecord){try{const created=await api(endpoints[key],{method:'POST',body:JSON.stringify(draft)});setData(current=>({...current,[key]:[created,...(current[key]||[])]}))}catch(err:any){setError(err.message);throw err}}
  async function updateRecord(key:CatalogKey,id:string,draft:AnyRecord){try{const saved=await api(`${endpoints[key]}/${id}`,{method:'PUT',body:JSON.stringify(draft)});setData(current=>({...current,[key]:(current[key]||[]).map((item:AnyRecord)=>item.id===id?saved:item)}))}catch(err:any){setError(err.message);throw err}}
  async function deleteRecord(key:CatalogKey,id:string){try{await api(`${endpoints[key]}/${id}`,{method:'DELETE'});setData(current=>({...current,[key]:(current[key]||[]).filter((item:AnyRecord)=>item.id!==id)}))}catch(err:any){setError(err.message);throw err}}
@@ -40,7 +41,7 @@ export function AdminPortal(){
  else if(activeSection==='destinations')section=<AdminDestinations {...common('destinations')}/>;
  else if(activeSection==='blog')section=<AdminBlog {...common('blog')} defaultAuthorName={user.name}/>;
  else if(activeSection==='testimonials')section=<AdminTestimonials testimonials={data.testimonials||[]} onCreate={draft=>createRecord('testimonials',draft)} onUpdate={(id,draft)=>updateRecord('testimonials',id,draft)} onDelete={id=>deleteRecord('testimonials',id)} onError={setError}/>;
- else section=data.settings?<AdminSettings settings={data.settings} onSave={saveSettings}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading company settings…</div>;
+ else section=data.settings?<AdminSettings settings={data.settings} onSave={saveSettings} onChangePassword={changePassword}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading company settings…</div>;
  return <AdminLayout active={activeSection} onNavigate={value=>{setError('');setActiveSection(value)}} adminName={user.name} adminEmail={user.email} onLogout={logout} counts={counts}>{error?<div className="mb-6 flex items-center justify-between gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800"><span>{error}</span><button onClick={()=>setError('')} aria-label="Dismiss error" className="text-rose-600 hover:text-rose-800"><X className="w-4 h-4"/></button></div>:null}{section}</AdminLayout>;
 }
 

@@ -7,6 +7,7 @@ type Enquiry = typeof enquiries.$inferSelect;
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 const FROM = env.ENQUIRY_FROM_EMAIL;
 const NOTIFY_TO = env.ENQUIRY_NOTIFY_EMAIL;
+const SECURITY_NOTIFY_TO = env.ADMIN_SECURITY_NOTIFY_EMAIL;
 
 /**
  * Sends two best-effort messages after an enquiry is persisted:
@@ -65,6 +66,53 @@ export async function sendEnquiryNotifications(enquiry: Enquiry): Promise<void> 
   } catch (err) {
     console.error(`[email] Failed to send customer confirmation for enquiry ${enquiry.id}:`, err);
   }
+}
+
+/**
+ * Best-effort security notification sent whenever an admin's password is
+ * changed, whether through the in-app change-password form or the
+ * one-off reset script (server/src/db/resetAdminPassword.ts). Like the
+ * enquiry emails above, delivery never determines whether the password
+ * change itself succeeds - the DB update already happened by the time
+ * this is called.
+ */
+export async function sendAdminPasswordChangedNotification(admin: { email: string; name: string }): Promise<void> {
+  if (!resend) {
+    console.warn(
+      `[email] RESEND_API_KEY not configured - admin password change for ${admin.email} ` +
+        `was not emailed to ${SECURITY_NOTIFY_TO}.`
+    );
+    return;
+  }
+
+  try {
+    await resend.emails.send({
+      from: FROM,
+      to: SECURITY_NOTIFY_TO,
+      subject: `Admin password changed — ${admin.email}`,
+      html: renderPasswordChangedHtml(admin),
+      text: renderPasswordChangedText(admin),
+    });
+  } catch (err) {
+    console.error(`[email] Failed to send admin password change notification for ${admin.email}:`, err);
+  }
+}
+
+function passwordChangedTimestamp(): string {
+  return new Date().toLocaleString('en-US', { timeZone: 'Africa/Nairobi', dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function renderPasswordChangedHtml(admin: { email: string; name: string }): string {
+  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#161f19;">
+    <div style="border-bottom:3px solid #9e7120;padding-bottom:14px;margin-bottom:20px;"><div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9e7120;font-weight:700;">Good Secrets Safaris — Security</div><h2 style="margin:6px 0 0;">Admin password changed</h2></div>
+    <p style="font-size:15px;line-height:1.65;">The password for the admin account <strong>${escapeHtml(admin.email)}</strong> (${escapeHtml(admin.name)}) was just changed.</p>
+    <p style="font-size:13px;color:#5d6e62;">Time: ${passwordChangedTimestamp()} (Africa/Nairobi)</p>
+    <p style="font-size:14px;line-height:1.65;color:#4d5c52;">If you made this change, no action is needed. If you did not make this change, reset the password immediately and let your developer know.</p>
+  </div>`;
+}
+
+function renderPasswordChangedText(admin: { email: string; name: string }): string {
+  return `Admin password changed\n\nThe password for the admin account ${admin.email} (${admin.name}) was just changed.\nTime: ${passwordChangedTimestamp()} (Africa/Nairobi)\n\nIf you made this change, no action is needed. If you did not make this change, reset the password immediately and let your developer know.`;
 }
 
 function escapeHtml(value: string): string {

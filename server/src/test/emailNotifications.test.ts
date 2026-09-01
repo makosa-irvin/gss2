@@ -192,3 +192,54 @@ describe('enquiry notification sending (Resend configured)', () => {
     expect(String(errorSpy.mock.calls[0]?.[0])).toContain('customer confirmation');
   });
 });
+
+describe('admin password-change notification', () => {
+  const admin = { email: 'admin@goodsecretssafaris.com', name: 'Admin' };
+
+  it('emails the configured security recipient with the admin identity, and never the password itself', async () => {
+    sendMock.mockResolvedValue({ data: { id: 'mock-message-id' }, error: null });
+    const { sendAdminPasswordChangedNotification } = await loadEmailModule({
+      RESEND_API_KEY: 'test-resend-key',
+      ADMIN_SECURITY_NOTIFY_EMAIL: 'goodsecretssafaris@gmail.com',
+      ENQUIRY_FROM_EMAIL: 'Good Secrets Safaris <notifications@example.test>',
+    });
+
+    await expect(sendAdminPasswordChangedNotification(admin)).resolves.toBeUndefined();
+
+    expect(sendMock).toHaveBeenCalledTimes(1);
+    const [call] = sendMock.mock.calls[0]!;
+    expect(call.to).toBe('goodsecretssafaris@gmail.com');
+    expect(call.subject).toContain(admin.email);
+    expect(call.html).toContain(admin.email);
+    expect(call.html).toContain(admin.name);
+    expect(call.text).toContain(admin.email);
+  });
+
+  it('warns and skips sending when Resend is not configured', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const { sendAdminPasswordChangedNotification } = await loadEmailModule({
+      RESEND_API_KEY: undefined,
+      ADMIN_SECURITY_NOTIFY_EMAIL: 'goodsecretssafaris@gmail.com',
+    });
+
+    await expect(sendAdminPasswordChangedNotification(admin)).resolves.toBeUndefined();
+
+    expect(sendMock).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(String(warnSpy.mock.calls[0]?.[0])).toContain(admin.email);
+  });
+
+  it('logs but does not throw when Resend fails to send', async () => {
+    sendMock.mockRejectedValue(new Error('resend send failed'));
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { sendAdminPasswordChangedNotification } = await loadEmailModule({
+      RESEND_API_KEY: 'test-resend-key',
+      ADMIN_SECURITY_NOTIFY_EMAIL: 'goodsecretssafaris@gmail.com',
+      ENQUIRY_FROM_EMAIL: 'Good Secrets Safaris <notifications@example.test>',
+    });
+
+    await expect(sendAdminPasswordChangedNotification(admin)).resolves.toBeUndefined();
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(String(errorSpy.mock.calls[0]?.[0])).toContain(admin.email);
+  });
+});
