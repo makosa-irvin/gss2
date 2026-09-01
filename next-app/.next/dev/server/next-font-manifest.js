@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\n  \"app\": {\n    \"[project]/next-app/app/about/page\": []\n  },\n  \"appUsingSizeAdjust\": true,\n  \"pages\": {},\n  \"pagesUsingSizeAdjust\": false\n}"

@@ -1,0 +1,8 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/next-app/app/blog/page": []
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

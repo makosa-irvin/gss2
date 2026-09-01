@@ -1,0 +1,65 @@
+# Legacy WordPress redirects.
+#
+# Verified directly against the live site (https://goodsecretssafaris.com)
+# on 2026-08-26 - fetched its actual navigation and homepage content and
+# compared every slug it links to against this repo's current seed data,
+# rather than assuming old and new slugs line up.
+#
+# /about-2 and /contact-2 are simple, fixed 1:1 mappings - low risk.
+#
+# /accommodation-packag/* used to be a single wildcard rule
+# (/hotels/:splat) on the assumption that every old hotel slug matches
+# the new one exactly. That's true for 7 of the 8 hotels currently on
+# the live site, but NOT for PrideInn Paradise Beach Resort & Spa: the
+# legacy slug is "prideinn-paradise-beach-resort-spa", the new one is
+# "prideinn-paradise-beach-resort" (no "-spa"). The wildcard would have
+# 301'd that one straight to a 404. Replaced with explicit per-hotel
+# rules instead, matching this project's own documented migration
+# process (docs/migration/README.md: "Build redirect-map.csv with one
+# row per valuable legacy URL"), which a broad wildcard skipped.
+#
+# IMPORTANT - NOT covered here, and NOT safe to cover with a wildcard:
+# individual tour pages (legacy /safari-tour-packages/:slug/) and
+# destination pages (legacy /destination/:slug/). Checked several
+# examples directly against the live site and slugs were extensively
+# renamed during the rebuild - e.g. legacy
+# "masai-mara-national-reserve" vs this site's "maasai-mara", legacy
+# "14-day-ultimate-kenya-tanzania-safari-experience" vs this site's
+# "14-day-ultimate-kenya-tanzania-safari". A wildcard here would send
+# most visitors and search crawlers to 404s, not the intended page.
+# These need the full discover -> build redirect-map.csv -> validate
+# workflow already documented in docs/migration/README.md and
+# docs/launch/seo-migration-checklist.md before they can be added
+# safely - do not add a tours/* or destination/* wildcard without that.
+#
+# Also note: the legacy site's main tour-listing link (in its own
+# current navigation) is /safari-tour-packages/, not
+# /all-tours-and-safaris - kept the existing /all-tours-and-safaris
+# rule in case it's a real, older, unindexed slug, and added the
+# actual current one alongside it.
+
+/about-2                     /about              301
+/about-2/                    /about              301
+/contact-2                   /contact            301
+/contact-2/                  /contact            301
+/all-tours-and-safaris       /safaris            301
+/all-tours-and-safaris/      /safaris            301
+/safari-tour-packages        /safaris            301
+/safari-tour-packages/       /safaris            301
+
+/accommodation-packag/southern-palms-beach-resort/        /hotels/southern-palms-beach-resort        301
+/accommodation-packag/swahili-beach-resort/                /hotels/swahili-beach-resort                301
+/accommodation-packag/turtle-bay-beach-club/                /hotels/turtle-bay-beach-club                301
+/accommodation-packag/hemingways-watamu/                    /hotels/hemingways-watamu                    301
+/accommodation-packag/voyager-beach-resort/                 /hotels/voyager-beach-resort                 301
+/accommodation-packag/baobab-beach-resort-spa/              /hotels/baobab-beach-resort-spa              301
+/accommodation-packag/diani-reef-beach-resort-spa/          /hotels/diani-reef-beach-resort-spa          301
+/accommodation-packag/prideinn-paradise-beach-resort-spa/   /hotels/prideinn-paradise-beach-resort       301
+/accommodation-packag                                       /hotels                                      301
+/accommodation-packag/                                      /hotels                                      301
+
+# Superseded direct-booking landing page. Keep one canonical editorial URL.
+/book-direct                   /guides/booking-safari-direct-local-operator 301
+/book-direct/                  /guides/booking-safari-direct-local-operator 301
+
+/*                            /index.html          200
