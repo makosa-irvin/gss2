@@ -1,0 +1,1 @@
+The production Next deployment uses the repository root public/ directory as its asset source. Vercel runs the sync-public-assets script before next build so images are copied into next-app/public without duplicating them in Git history.

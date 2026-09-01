@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-page: #fcfbf9;
+  --color-surface: #ffffff;
+  --color-surface-muted: #faf8f2;
+  --color-ink: #1a241e;
+  --color-ink-strong: #161f19;
+  --color-ink-muted: #5d6e62;
+  --color-ink-subtle: #707f74;
+  --color-brand: #b3822a;
+  --color-brand-strong: #9e7120;
+  --color-brand-soft: #e6bc65;
+  --color-brand-deep: #76541a;
+  --color-brand-hover: #704d15;
+  --color-action: #1b4332;
+  --color-action-strong: #123524;
+  --color-action-soft: #eef7f2;
+  --color-action-border: #b9d8c5;
+  --color-shell: #0c120e;
+  --color-on-shell: #f4f2eb;
+  --color-on-shell-muted: #c7d2cb;
+  --color-on-shell-subtle: #aebbb2;
+  --color-surface-soft: #f4f1e8;
+  --color-border: #e8e4da;
+  --color-border-strong: #ded8cb;
+  --color-success: #166534;
+  --color-warning: #92400e;
+  --color-danger: #be123c;
+}
+
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/plus-jakarta-sans/wght-italic.css";
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+@import "@fontsource-variable/cinzel";
+
+:root{--page:#fcfbf9;--surface:#fff;--surface-muted:#faf8f2;--surface-soft:#f4f1e8;--ink:#1a241e;--ink-strong:#161f19;--ink-muted:#5d6e62;--ink-subtle:#707f74;--brand:#b3822a;--brand-strong:#9e7120;--brand-soft:#e6bc65;--brand-deep:#76541a;--action:#1b4332;--action-strong:#123524;--shell:#0c120e;--on-shell:#f4f2eb;--on-shell-muted:#c7d2cb;--border:#e8e4da;--border-strong:#ded8cb;--success:#166534;--danger:#be123c;--shadow:0 20px 50px rgba(12,18,14,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Plus Jakarta Sans Variable',sans-serif;background-color:var(--color-page);color:var(--color-ink);line-height:1.5}h1,h2,h3,.font-serif-luxury{font-family:'Playfair Display Variable',Georgia,serif}.font-display-accent{font-family:'Cinzel Variable',serif}a{color:inherit}button,input,textarea,select{font:inherit}img{max-width:100%}
+:where(a,button,input,select,textarea,summary,[role='button'],[tabindex]):focus-visible{outline:3px solid var(--color-brand-soft);outline-offset:3px;box-shadow:0 0 0 5px rgba(12,18,14,.9)}
+section:has(h2.text-white)>div:first-child .text-\[\#5d6e62\]{color:#c7d2cb}section:has(h2.text-white)>div:first-child .text-\[\#9e7120\]{color:var(--color-brand-soft)}
+.cv-auto{content-visibility:auto;contain-intrinsic-size:0 900px}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#f4f2ec}::-webkit-scrollbar-thumb{background:#d1cbbe;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--color-brand)}
+@keyframes floatSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}.animate-float-slow{animation:floatSlow 6s ease-in-out infinite}
+
+/* Next shell: minimal layout classes actually used by SiteChrome. The rest of
+   the earlier "Next shell compatibility" scaffold (.hero, .catalog-card,
+   .page-hero, .guide-grid, .form-grid, etc.) was leftover from an early
+   draft of this migration and was never referenced by any component once
+   the real Vite markup was ported - removed to avoid unused-class drift. */
+.site-frame{min-height:100vh;display:flex;flex-direction:column;background:var(--shell);color:var(--on-shell)}
+.site-frame ::selection{background:var(--brand);color:#000}
+.main-content{flex:1}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.animate-float-slow{animation:none!important}}

@@ -1,0 +1,40 @@
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
+import { EnquiryButton } from '../../../components/EnquiryButton';
+import { getBlogPostBySlug, getBlogPosts } from '../../../lib/api';
+import { siteUrl } from '../../../lib/site';
+
+export const revalidate = 900;
+export const dynamicParams = true;
+export async function generateStaticParams() { return (await getBlogPosts()).map(post => ({ slug: post.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
+  if (!post) return {};
+  return { title: post.title, description: post.excerpt, alternates: { canonical: `/blog/${post.slug}` }, openGraph: { title: post.title, description: post.excerpt, type: 'article', url: `/blog/${post.slug}`, images: [post.featuredImage] } };
+}
+
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
+  if (!post) notFound();
+  const url = siteUrl(`/blog/${post.slug}`);
+  const schema = [
+    { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.excerpt, image: siteUrl(post.featuredImage), author: { '@type': 'Person', name: post.author?.name || 'Good Secrets Safaris' }, publisher: { '@type': 'Organization', name: 'Good Secrets Safaris' }, datePublished: post.publishedDate, mainEntityOfPage: url },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') }, { '@type': 'ListItem', position: 2, name: 'Blog', item: siteUrl('/blog') }, { '@type': 'ListItem', position: 3, name: post.title, item: url }] },
+  ];
+
+  return <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    <Link href="/blog" className="min-h-11 inline-flex items-center gap-2 text-sm text-[#c7d2cb] hover:text-[#e6bc65] transition-colors font-semibold"><ArrowLeft className="w-4 h-4" /><span>Back to travel guides</span></Link>
+    <header className="space-y-4"><div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#e6bc65]"><span>{post.category}</span><span aria-hidden="true">·</span><span className="text-[#c7d2cb]">{post.readingTime}</span></div><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">{post.title}</h1>{post.author ? <div className="flex items-center gap-3 pt-1 text-sm text-[#c7d2cb]">{post.author.avatar ? <Image src={post.author.avatar} alt="" width={44} height={44} className="w-11 h-11 rounded-full object-cover border border-[#e6bc65]" /> : null}<div><span className="font-bold text-white block">{post.author.name}</span><span>{post.author.role} · Published {post.publishedDate}</span></div></div> : null}</header>
+    <div className="rounded-3xl overflow-hidden aspect-[16/9] border border-white/15 shadow-lg bg-[#faf8f2] relative"><Image src={post.featuredImage || '/images/catalog/mara-savannah.jpg'} alt={post.title} fill priority className="object-cover" sizes="(max-width:900px) 100vw,860px" /></div>
+    <article className="rounded-3xl bg-white border border-[#ded8cb] p-6 sm:p-9 shadow-sm prose prose-neutral max-w-none text-[#303e35] text-base leading-relaxed"><p className="text-lg font-medium text-[#303e35] border-l-4 border-[#8a611d] pl-4 italic">{post.excerpt}</p><ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ''}</ReactMarkdown></article>
+    <section className="p-7 sm:p-9 rounded-3xl bg-gradient-to-br from-[#142019] to-[#0c120e] border border-white/10 text-center space-y-4 shadow-lg"><Sparkles className="w-8 h-8 text-[#e6bc65] mx-auto" aria-hidden="true" /><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-white">Turn the research into a trip that fits you.</h2><p className="text-sm text-[#c7d2cb] max-w-lg mx-auto leading-relaxed">Use this guide as a starting point. We can help adapt the route, dates, pace and accommodation to your priorities.</p><div className="flex flex-wrap justify-center gap-4 text-xs text-[#e8eee9]"><span className="inline-flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-[#e6bc65]" />No payment to enquire</span><span className="inline-flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-[#e6bc65]" />Tailor-made recommendations</span></div><EnquiryButton label="Ask us to plan around this guide" type={`Safari inspired by ${post.title}`} className="min-h-12 px-7 rounded-xl bg-[#8a611d] hover:bg-[#704d15] text-white font-bold text-sm shadow-md" /></section>
+  </div>;
+}

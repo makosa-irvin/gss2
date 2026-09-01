@@ -1,0 +1,38 @@
+name: Next.js migration preview
+
+on:
+  pull_request:
+    paths:
+      - 'next-app/**'
+      - '.github/workflows/next-migration.yml'
+  push:
+    branches:
+      - 'feature/nextjs-hybrid-migration'
+    paths:
+      - 'next-app/**'
+      - '.github/workflows/next-migration.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  next-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: next-app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: next-app/package.json
+      - name: Install migration app dependencies
+        run: npm install --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build Next.js migration app
+        run: npm run build
