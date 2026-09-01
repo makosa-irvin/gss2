@@ -1,0 +1,15 @@
+# Next.js build/dev output
+.next/
+out/
+
+# Synced from the root /public directory by scripts/sync-public-assets.mjs
+# (npm run assets, runs before both `dev` and `build`). Root /public stays
+# the single source of truth - see next-app/README.md.
+public/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# npm
+package-lock.json
