@@ -1,8 +1,0 @@
-{
-  "app": {
-    "[project]/next-app/app/about/page": []
-  },
-  "appUsingSizeAdjust": true,
-  "pages": {},
-  "pagesUsingSizeAdjust": false
-}

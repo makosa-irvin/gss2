@@ -1,8 +1,0 @@
-{
-  "pages": {},
-  "app": {
-    "[project]/next-app/app/safaris/[slug]/page": []
-  },
-  "appUsingSizeAdjust": true,
-  "pagesUsingSizeAdjust": false
-}
