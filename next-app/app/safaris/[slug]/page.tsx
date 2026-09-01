@@ -6,11 +6,13 @@ import { ArrowLeft, CalendarDays, Camera, Check, CircleHelp, Clock, Compass, Ext
 import { DynamicPricingTable } from '../../../components/DynamicPricingTable';
 import { EnquiryButton } from '../../../components/EnquiryButton';
 import { ItineraryTimeline } from '../../../components/ItineraryTimeline';
+import { RelatedPlanningGuides } from '../../../components/RelatedPlanningGuides';
 import { ShortlistButton } from '../../../components/ShortlistButton';
 import { TourDecisionSummary } from '../../../components/TourDecisionSummary';
 import { TourGallery } from '../../../components/TourGallery';
 import { TourRouteMap } from '../../../components/TourRouteMap';
 import { getTourBySlug, getTours } from '../../../lib/api';
+import { getTourGuideRecommendations } from '../../../lib/guideRecommendations';
 import { getRouteReviewStories, sourceUrl } from '../../../lib/reviewStories';
 import { siteUrl } from '../../../lib/site';
 
@@ -33,6 +35,7 @@ export default async function SafariDetailPage({ params }: { params: Promise<{ s
   const includedItems = [...(tour.includedServices || []), ...(tour.includedActivities || [])];
   const excludedItems = tour.exclusions || [];
   const routeStories = getRouteReviewStories(tour.destinations || []);
+  const planningGuides = getTourGuideRecommendations(tour);
   const url = siteUrl(`/safaris/${tour.slug}`);
   const schema = [
     { '@context': 'https://schema.org', '@type': 'TouristTrip', name: tour.title, description: tour.shortDescription, touristType: tour.travelStyles, itinerary: tour.destinations?.join(' → '), image: siteUrl(image), url },
@@ -63,5 +66,8 @@ export default async function SafariDetailPage({ params }: { params: Promise<{ s
       <section id="faqs" className={`${sectionOffsetClass} rounded-2xl bg-white border border-border-strong p-5 sm:p-7 text-ink`}><h2 className="font-serif-luxury text-2xl font-bold text-ink-strong">Safari essentials</h2><div className="mt-5 grid md:grid-cols-2 gap-5">{tour.childrenPolicy ? <div><h3 className="text-sm font-bold text-ink-strong">Children policy</h3><p className="text-sm text-ink-muted mt-1">{tour.childrenPolicy}</p></div> : null}{tour.startingDates ? <div><h3 className="text-sm font-bold text-ink-strong">Starting dates</h3><p className="text-sm text-ink-muted mt-1">{tour.startingDates}</p></div> : null}<div><h3 className="text-sm font-bold text-ink-strong">Availability</h3><p className="text-sm text-ink-muted mt-1">{tour.bookingAvailability || 'On request'}</p></div><div><h3 className="text-sm font-bold text-ink-strong">Route</h3><p className="text-sm text-ink-muted mt-1">{tour.startingLocation} → {tour.destinations?.join(' → ')} → {tour.endingLocation}</p></div></div>{tour.importantInformation?.length ? <div className="mt-6 pt-5 border-t border-border"><h3 className="text-sm font-bold text-ink-strong">Important information</h3><ul className="list-clean mt-3">{tour.importantInformation.map(info => <li key={info}>{info}</li>)}</ul></div> : null}</section>
       <section className="rounded-[2rem] border border-brand-deep bg-shell p-7 sm:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"><div><span className="text-xs font-bold uppercase tracking-widest text-brand-soft">Make it yours</span><h2 className="font-serif-luxury text-3xl font-bold text-white mt-2">Want this route adjusted around your dates?</h2><p className="text-sm text-on-shell-muted mt-2 max-w-2xl">Share your group, dates and priorities. We can adapt nights, stays and pacing before you decide to proceed.</p></div><div className="flex flex-col sm:flex-row gap-3"><EnquiryButton label="Request this safari" tourTitle={tour.title} className="min-h-12 px-6 rounded-xl bg-brand-soft hover:bg-brand-soft text-ink-strong font-extrabold text-sm" /><a href={`https://wa.me/254729000410?text=${encodeURIComponent(`Hello Good Secrets Safaris, I'd like to ask about ${tour.title}.`)}`} target="_blank" rel="noopener noreferrer" className="min-h-12 px-6 rounded-xl border border-white/20 text-white font-bold text-sm inline-flex items-center justify-center gap-2"><MessageCircle className="w-4 h-4" />WhatsApp</a></div></section>
     </main>
+    <div className="max-w-7xl mx-auto px-4 sm:px-8 pb-16">
+      <RelatedPlanningGuides guides={planningGuides} eyebrow="Research this safari" title="Questions worth answering before you book" />
+    </div>
   </div>;
 }
