@@ -14,6 +14,8 @@ const envSchema = z.object({
   ENQUIRY_FROM_EMAIL: z.string().min(1).default('Good Secrets Safaris <onboarding@resend.dev>'),
   ENQUIRY_NOTIFY_EMAIL: z.string().min(1).optional(),
   ADMIN_SECURITY_NOTIFY_EMAIL: z.string().min(1).default('goodsecretssafaris@gmail.com'),
+  UPLOAD_DIR: z.string().min(1).default('uploads'),
+  PUBLIC_API_URL: z.string().url().optional(),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;

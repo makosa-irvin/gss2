@@ -13,3 +13,4 @@ next-env.d.ts
 
 # npm
 package-lock.json
+.npm-cache/

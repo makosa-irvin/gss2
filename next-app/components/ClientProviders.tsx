@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { CheckCircle2, MapPin, MessageCircle, Send, ShieldCheck, X } from 'lucide-react';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../lib/countries';
 
 type EnquiryContextValue = {
   openEnquiry: (context?: { type?: string; destination?: string; tourTitle?: string; hotelTitle?: string }) => void;
@@ -156,7 +157,7 @@ function EnquiryModal({ context, onClose }: { context: Record<string, string> | 
                 <div><label htmlFor="enquiry-name" className={labelClass}>Full name *</label><input id="enquiry-name" name="fullName" autoComplete="name" required className={inputClass} /></div>
                 <div><label htmlFor="enquiry-email" className={labelClass}>Email *</label><input id="enquiry-email" name="email" type="email" autoComplete="email" required className={inputClass} /></div>
                 <div><label htmlFor="enquiry-phone" className={labelClass}>Phone / WhatsApp *</label><input id="enquiry-phone" name="phone" type="tel" autoComplete="tel" required minLength={3} className={inputClass} /></div>
-                <div><label htmlFor="enquiry-country" className={labelClass}>Country *</label><input id="enquiry-country" name="country" autoComplete="country-name" required minLength={2} className={inputClass} /></div>
+                <div><label htmlFor="enquiry-country" className={labelClass}>Country *</label><select id="enquiry-country" name="country" autoComplete="country-name" required defaultValue={DEFAULT_COUNTRY} className={inputClass}>{COUNTRIES.map(country => <option key={country} value={country}>{country}</option>)}</select></div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div><label htmlFor="enquiry-dates" className={labelClass}>Travel dates</label><input id="enquiry-dates" name="travelDates" placeholder="Flexible is fine" className={inputClass} /></div>

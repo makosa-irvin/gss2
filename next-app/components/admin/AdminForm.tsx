@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ImageOff, Loader2, Plus, Save, X } from 'lucide-react';
+import { ImageOff, Loader2, Plus, Save, Star, UploadCloud, X } from 'lucide-react';
 
 export const fieldBaseClass = 'w-full min-h-11 px-3.5 py-2.5 rounded-xl bg-[#faf8f2] border border-[#ded8cb] text-sm text-[#161f19] focus:border-[#b3822a] focus:outline-none focus:ring-2 focus:ring-[#b3822a]/15 transition-colors';
 export function Field({ label, hint, required, children, className }: { label: string; hint?: string; required?: boolean; children: React.ReactNode; className?: string }) { return <label className={`block ${className || ''}`}><span className="text-xs font-bold uppercase tracking-wider text-[#76541a] mb-1.5 block">{label}{required ? <span className="text-rose-600 ml-0.5">*</span> : null}</span>{children}{hint ? <span className="text-xs text-[#707f74] mt-1 block">{hint}</span> : null}</label>; }
@@ -11,7 +11,68 @@ export function TextArea({ value, onChange, rows = 3, placeholder }: { value: st
 export function SelectInput({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: readonly string[] | { value: string; label: string }[] }) { return <select value={value} onChange={event => onChange(event.target.value)} className={`${fieldBaseClass} cursor-pointer`}>{options.map(option => { const item = typeof option === 'string' ? { value: option, label: option } : option; return <option key={item.value} value={item.value}>{item.label}</option>; })}</select>; }
 export function ToggleField({ label, description, checked, onChange }: { label: string; description?: string; checked: boolean; onChange: (v: boolean) => void }) { return <button type="button" onClick={() => onChange(!checked)} aria-pressed={checked} className={`w-full flex items-center justify-between gap-3 p-3.5 rounded-xl border text-left transition-colors ${checked ? 'bg-[#eef7f2] border-[#b6d8c3]' : 'bg-[#faf8f2] border-[#ded8cb]'}`}><span><span className="text-sm font-semibold text-[#161f19] block">{label}</span>{description ? <span className="text-xs text-[#707f74] block mt-0.5">{description}</span> : null}</span><span className={`shrink-0 w-10 h-6 rounded-full relative transition-colors ${checked ? 'bg-[#1b4332]' : 'bg-[#d7d1c4]'}`}><span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${checked ? 'translate-x-[18px]' : 'translate-x-0.5'}`} /></span></button>; }
 export function ChipListEditor({ items, onChange, placeholder = 'Add an item and press Enter' }: { items: string[]; onChange: (items: string[]) => void; placeholder?: string }) { const [draft, setDraft] = useState(''); const commit = () => { const trimmed = draft.trim(); if (!trimmed) return; onChange([...items, trimmed]); setDraft(''); }; return <div className="space-y-2.5">{items.length ? <div className="flex flex-wrap gap-2">{items.map((item, index) => <span key={`${item}-${index}`} className="inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-lg bg-[#f4f1e8] border border-[#e2ddd0] text-xs font-medium text-[#303e35]">{item}<button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} aria-label={`Remove ${item}`} className="text-[#9a917f] hover:text-rose-600"><X className="w-3.5 h-3.5" /></button></span>)}</div> : null}<div className="flex gap-2"><input type="text" value={draft} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commit(); } }} placeholder={placeholder} className={fieldBaseClass} /><button type="button" onClick={commit} className="shrink-0 min-h-11 px-3.5 rounded-xl bg-[#f4f1e8] hover:bg-[#eae5d8] border border-[#ded8cb] text-[#161f19]" aria-label="Add item"><Plus className="w-4 h-4" /></button></div></div>; }
-export function ImageListEditor({ images, onChange }: { images: string[]; onChange: (images: string[]) => void }) { const [draft, setDraft] = useState(''); const commit = () => { const trimmed = draft.trim(); if (!trimmed) return; onChange([...images, trimmed]); setDraft(''); }; return <div className="space-y-3">{images.length ? <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">{images.map((src, index) => <div key={`${src}-${index}`} className="relative group aspect-square rounded-xl overflow-hidden border border-[#ded8cb] bg-[#f4f1e8]"><img src={src} alt={`Image ${index + 1}`} className="w-full h-full object-cover" onError={event => { (event.target as HTMLImageElement).style.display = 'none'; }} /><button type="button" onClick={() => onChange(images.filter((_, i) => i !== index))} aria-label={`Remove image ${index + 1}`} className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"><X className="w-3.5 h-3.5" /></button>{index === 0 ? <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase">Cover</span> : null}</div>)}</div> : <div className="flex items-center gap-2 p-3 rounded-xl border border-dashed border-[#d7d1c4] text-xs text-[#707f74]"><ImageOff className="w-4 h-4 shrink-0" />No images yet. The first image added becomes the cover photo.</div>}<div className="flex gap-2"><input type="url" value={draft} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commit(); } }} placeholder="Paste an image URL" className={fieldBaseClass} /><button type="button" onClick={commit} className="shrink-0 min-h-11 px-3.5 rounded-xl bg-[#f4f1e8] hover:bg-[#eae5d8] border border-[#ded8cb] text-[#161f19]" aria-label="Add image"><Plus className="w-4 h-4" /></button></div></div>; }
+export function ImageListEditor({ images, onChange, maxImages }: { images: string[]; onChange: (images: string[]) => void; maxImages?: number }) {
+  const [draft, setDraft] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const applyImages = (next: string[]) => onChange(maxImages ? next.slice(0, maxImages) : next);
+  const commit = () => {
+    const trimmed = draft.trim();
+    if (!trimmed) return;
+    applyImages(maxImages === 1 ? [trimmed] : [...images, trimmed]);
+    setDraft('');
+  };
+  const promote = (index: number) => applyImages([images[index], ...images.filter((_, itemIndex) => itemIndex !== index)]);
+  async function upload(files: FileList | null) {
+    if (!files?.length) return;
+    setUploading(true);
+    setUploadError('');
+    try {
+      const uploaded = await Promise.all(Array.from(files).map(async file => {
+        const dataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result));
+          reader.onerror = () => reject(new Error('Could not read the selected image.'));
+          reader.readAsDataURL(file);
+        });
+        const response = await fetch('/api/backend/api/admin/uploads', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName: file.name, dataUrl }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Image upload failed.');
+        return result.url as string;
+      }));
+      applyImages(maxImages === 1 ? [uploaded[0]] : [...images, ...uploaded]);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : 'Image upload failed.');
+    } finally {
+      setUploading(false);
+    }
+  }
+  return <div className="space-y-3">
+    {images.length ? <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">{images.map((src, index) => <div key={`${src}-${index}`} className="relative group aspect-square rounded-xl overflow-hidden border border-[#ded8cb] bg-[#f4f1e8]">
+      <img src={src} alt={`Image ${index + 1}`} className="w-full h-full object-cover" onError={event => { (event.target as HTMLImageElement).style.display = 'none'; }} />
+      <div className="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+        {index > 0 ? <button type="button" onClick={() => promote(index)} aria-label={`Make image ${index + 1} the cover`} title="Make cover image" className="p-1 rounded-full bg-black/70 text-amber-300"><Star className="w-3.5 h-3.5" /></button> : null}
+        <button type="button" onClick={() => applyImages(images.filter((_, i) => i !== index))} aria-label={`Remove image ${index + 1}`} className="p-1 rounded-full bg-black/70 text-white"><X className="w-3.5 h-3.5" /></button>
+      </div>
+      {index === 0 ? <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase">{maxImages === 1 ? 'Primary' : 'Cover'}</span> : null}
+    </div>)}</div> : <div className="flex items-center gap-2 p-3 rounded-xl border border-dashed border-[#d7d1c4] text-xs text-[#707f74]"><ImageOff className="w-4 h-4 shrink-0" />No images yet.</div>}
+    <div className="flex flex-col sm:flex-row gap-2">
+      <label className="min-h-11 px-4 rounded-xl bg-[#1b4332] hover:bg-[#123326] text-white text-sm font-bold inline-flex items-center justify-center gap-2 cursor-pointer">
+        {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+        {uploading ? 'Uploading…' : 'Upload from computer'}
+        <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple={maxImages !== 1} disabled={uploading} className="sr-only" onChange={event => upload(event.target.files)} />
+      </label>
+      <div className="flex flex-1 gap-2"><input type="url" value={draft} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commit(); } }} placeholder="Or paste an image URL" className={fieldBaseClass} /><button type="button" onClick={commit} className="shrink-0 min-h-11 px-3.5 rounded-xl bg-[#f4f1e8] hover:bg-[#eae5d8] border border-[#ded8cb] text-[#161f19]" aria-label="Add image"><Plus className="w-4 h-4" /></button></div>
+    </div>
+    {uploadError ? <p role="alert" className="text-xs font-semibold text-rose-700">{uploadError}</p> : null}
+    <p className="text-xs text-[#707f74]">JPEG, PNG, WebP or GIF, up to 5 MB. Use the star to promote an existing gallery image.</p>
+  </div>;
+}
 export function MultiSelectChips({ options, selected, onChange }: { options: readonly string[]; selected: string[]; onChange: (selected: string[]) => void }) { return <div className="flex flex-wrap gap-2">{options.map(option => { const isSelected = selected.includes(option); return <button key={option} type="button" aria-pressed={isSelected} onClick={() => onChange(isSelected ? selected.filter(item => item !== option) : [...selected, option])} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${isSelected ? 'bg-[#1b4332] text-white border-[#1b4332]' : 'bg-[#faf8f2] text-[#405046] border-[#ded8cb] hover:border-[#b3822a]'}`}>{option}</button>; })}</div>; }
 export function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) { return <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#e8e4da] space-y-4 shadow-xs"><div><h3 className="font-serif-luxury text-lg font-bold text-[#161f19]">{title}</h3>{description ? <p className="text-xs text-[#707f74] mt-0.5">{description}</p> : null}</div>{children}</div>; }
 export function FormActionBar({ onCancel, isSaving, saveLabel = 'Save changes', error }: { onCancel: () => void; isSaving: boolean; saveLabel?: string; error?: string | null }) { return <div className="sticky bottom-0 -mx-4 sm:-mx-8 px-4 sm:px-8 py-4 bg-[#faf8f2]/95 backdrop-blur-xl border-t border-[#e8e4da] flex items-center justify-between gap-4"><span className="text-xs text-rose-700 font-medium">{error}</span><div className="flex items-center gap-3 ml-auto"><button type="button" onClick={onCancel} className="min-h-11 px-5 rounded-xl bg-white border border-[#ded8cb] text-[#161f19] text-sm font-semibold hover:bg-[#f4f1e8]">Cancel</button><button type="submit" disabled={isSaving} className="min-h-11 px-6 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white text-sm font-bold flex items-center gap-2 shadow-sm">{isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}<span>{isSaving ? 'Saving…' : saveLabel}</span></button></div></div>; }
