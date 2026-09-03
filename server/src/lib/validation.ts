@@ -228,6 +228,23 @@ export const testimonialInputSchema = z.object({
 });
 export const testimonialUpdateSchema = testimonialInputSchema.partial();
 
+export const reviewSubmissionSchema = z.object({
+  reviewerName: z.string().trim().min(2).max(200),
+  reviewerCountry: z.string().trim().min(1).max(100),
+  rating: z.number().int().min(1).max(5),
+  tourTaken: z.string().trim().min(1).max(300),
+  reviewText: z.string().trim().min(20).max(5000),
+});
+
+const teamMemberSchema = z.object({
+  id: z.string().min(1).max(100),
+  name: z.string().min(1).max(200),
+  role: z.string().min(1).max(200),
+  bio: z.string().max(2000),
+  imageUrl: z.string(),
+  active: z.boolean(),
+});
+
 export const settingsUpdateSchema = z.object({
   companyName: z.string().min(1).optional(),
   tagline: z.string().min(1).optional(),
@@ -267,6 +284,28 @@ export const settingsUpdateSchema = z.object({
       defaultTitle: z.string(),
       defaultDescription: z.string(),
       defaultOgImage: z.string(),
+    })
+    .optional(),
+  homepage: z
+    .object({
+      eyebrow: z.string().max(300),
+      title: z.string().min(1).max(300),
+      highlightedTitle: z.string().max(300),
+      subtitle: z.string().max(1000),
+      heroImage: z.string(),
+      primaryCtaLabel: z.string().max(100),
+      secondaryCtaLabel: z.string().max(100),
+    })
+    .optional(),
+  about: z
+    .object({
+      eyebrow: z.string().max(300),
+      title: z.string().min(1).max(300),
+      intro: z.string().max(2000),
+      storyTitle: z.string().max(300),
+      storyParagraphs: z.array(z.string().max(5000)).max(10),
+      teamPhoto: z.string(),
+      teamMembers: z.array(teamMemberSchema).max(50),
     })
     .optional(),
 });

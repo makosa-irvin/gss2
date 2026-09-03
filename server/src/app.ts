@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'node:path';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -18,9 +19,11 @@ import { adminHotelsRouter } from './routes/adminHotels.js';
 import { adminDestinationsRouter } from './routes/adminDestinations.js';
 import { adminBlogRouter } from './routes/adminBlog.js';
 import { adminTestimonialsRouter } from './routes/adminTestimonials.js';
+import { adminUploadsRouter } from './routes/adminUploads.js';
+import { reviewsRouter } from './routes/reviews.js';
 import { errorHandler } from './middleware/common.js';
 import { requireTrustedOrigin } from './middleware/requireTrustedOrigin.js';
-import { allowedOrigins } from './config/env.js';
+import { allowedOrigins, env } from './config/env.js';
 
 export function createApp() {
   const app = express();
@@ -37,7 +40,7 @@ export function createApp() {
       credentials: true, // required so the admin session cookie is sent/received cross-origin
     })
   );
-  app.use(express.json({ limit: '1mb' }));
+  app.use(express.json({ limit: '8mb' }));
   // CodeQL's js/missing-token-validation query only recognizes
   // token-based CSRF middleware (e.g. csurf/lusca) and flags any
   // cookie-parser usage without one. This API is JSON-only (no HTML
@@ -78,6 +81,11 @@ export function createApp() {
   });
 
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
+  app.use('/uploads', express.static(path.resolve(env.UPLOAD_DIR), {
+    fallthrough: false,
+    maxAge: '30d',
+    immutable: true,
+  }));
 
   app.use('/api/auth/login', loginLimiter);
   app.use('/api/auth', authRouter);
@@ -86,6 +94,13 @@ export function createApp() {
   app.use('/api/destinations', destinationsRouter);
   app.use('/api/blog', blogRouter);
   app.use('/api/testimonials', testimonialsRouter);
+  app.use('/api/reviews', rateLimit({
+    windowMs: 60 * 60 * 1000,
+    limit: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many review submissions. Please try again later.' },
+  }), reviewsRouter);
   app.use('/api/settings', settingsRouter);
   app.use('/api/enquiries', enquiriesRouter);
   app.use('/api/analytics', analyticsRouter);
@@ -94,6 +109,7 @@ export function createApp() {
   app.use('/api/admin/destinations', adminDestinationsRouter);
   app.use('/api/admin/blog', adminBlogRouter);
   app.use('/api/admin/testimonials', adminTestimonialsRouter);
+  app.use('/api/admin/uploads', adminUploadsRouter);
 
   app.use((req, res) => {
     res.status(404).json({ error: `Not found: ${req.method} ${req.path}` });

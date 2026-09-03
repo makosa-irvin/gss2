@@ -218,6 +218,8 @@ async function main() {
     currency: initialCompanySettings.currency,
     booking: initialCompanySettings.booking,
     seo: initialCompanySettings.seo,
+    homepage: initialCompanySettings.homepage,
+    about: initialCompanySettings.about,
   });
 
   // Seed one admin user if none exist yet, from env vars, so a fresh

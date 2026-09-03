@@ -53,9 +53,14 @@ describe('Auth', () => {
   it('rejects access to protected routes with no session cookie', async () => {
     const meRes = await request(app).get('/api/auth/me');
     const enquiriesRes = await request(app).get('/api/enquiries');
+    const uploadRes = await request(app).post('/api/admin/uploads').send({
+      fileName: 'test.png',
+      dataUrl: 'data:image/png;base64,aGVsbG8=',
+    });
 
     expect(meRes.status).toBe(401);
     expect(enquiriesRes.status).toBe(401);
+    expect(uploadRes.status).toBe(401);
   });
 
   it('rejects a tampered admin session cookie with a clear re-login message', async () => {
