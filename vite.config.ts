@@ -34,7 +34,7 @@ export default defineConfig(() => {
       // explicitly excluding server/, Vitest was also discovering and
       // running the backend's dependencies' internal test suites here,
       // inflating "154 test files" into real frontend test runs.
-      exclude: ['**/node_modules/**', 'dist', 'server/**'],
+      exclude: ['**/node_modules/**', 'dist', 'server/**', 'next-app/**'],
     },
   };
 });
