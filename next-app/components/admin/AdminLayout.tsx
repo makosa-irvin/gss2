@@ -9,7 +9,7 @@ type NavItem = { id: AdminSection; label: string; icon: React.ComponentType<{ cl
 export function AdminLayout({ active, onNavigate, adminName, adminEmail, onLogout, counts, children }: { active: AdminSection; onNavigate: (section: AdminSection) => void; adminName?: string; adminEmail?: string; onLogout: () => void; counts: { enquiries: number; newEnquiries: number; tours: number; hotels: number; destinations: number; blog: number; testimonials: number }; children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const crmItems: NavItem[] = [{ id: 'overview', label: 'Dashboard', icon: LayoutDashboard }, { id: 'growth', label: 'Growth', icon: BarChart3 }, { id: 'enquiries', label: 'Enquiries', icon: Inbox, count: counts.enquiries, badge: counts.newEnquiries }];
-  const cmsItems: NavItem[] = [{ id: 'tours', label: 'Safaris & Tours', icon: Compass, count: counts.tours }, { id: 'hotels', label: 'Hotels & Resorts', icon: Palmtree, count: counts.hotels }, { id: 'destinations', label: 'Destinations', icon: MapPin, count: counts.destinations }, { id: 'blog', label: 'Blog', icon: FileText, count: counts.blog }, { id: 'testimonials', label: 'Testimonials', icon: MessageSquare, count: counts.testimonials }];
+  const cmsItems: NavItem[] = [{ id: 'tours', label: 'Safaris & Tours', icon: Compass, count: counts.tours }, { id: 'hotels', label: 'Hotels & Resorts', icon: Palmtree, count: counts.hotels }, { id: 'destinations', label: 'Destinations', icon: MapPin, count: counts.destinations }, { id: 'blog', label: 'Blog', icon: FileText, count: counts.blog }, { id: 'testimonials', label: 'Customer Reviews', icon: MessageSquare, count: counts.testimonials }];
 
   const navButton = (item: NavItem) => {
     const Icon = item.icon;

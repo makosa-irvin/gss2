@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { ChipListEditor, Field, FormActionBar, FormGrid, ImageListEditor, NumberInput, SectionCard, SelectInput, TextArea, TextInput, ToggleField } from './AdminForm';
+import { createStandardHotelSeasons } from '../../lib/seasonalPricing';
 
 type RecordData = Record<string, any>;
 const COUNTRIES = ['Kenya', 'Tanzania', 'Zanzibar'];
 const CATEGORIES = ['Luxury Safari Lodge', 'Tented Camp', 'Beach Resort & Spa', 'Boutique Hotel', 'Eco Lodge'];
 const slugify = (value:string)=>value.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const emptySeason = () => ({ seasonName:'', dates:'', priceKES:0, priceUSD:0 });
-function draftFromHotel(hotel?:RecordData|null){ if(hotel){const{id,...rest}=hotel;return rest;} return {name:'',slug:'',location:'',country:'Kenya',description:'',category:'Beach Resort & Spa',images:[],priceFromUSD:0,priceFromKES:0,soloPriceUSD:0,sharingPriceUSD:0,seasonalPricing:[],facilities:[],roomTypes:[],inclusions:[],exclusions:[],isFamilyFriendly:false,isHoneymoonFriendly:false,isSeniorFriendly:false,isKenyanResidentOffer:false,bookingLink:'',rating:undefined,seo:{title:'',description:''},published:false}; }
+function draftFromHotel(hotel?:RecordData|null){ if(hotel){const{id,...rest}=hotel;return rest;} return {name:'',slug:'',location:'',country:'Kenya',description:'',category:'Beach Resort & Spa',images:[],priceFromUSD:0,priceFromKES:0,soloPriceUSD:0,sharingPriceUSD:0,seasonalPricing:createStandardHotelSeasons(),facilities:[],roomTypes:[],inclusions:[],exclusions:[],isFamilyFriendly:false,isHoneymoonFriendly:false,isSeniorFriendly:false,isKenyanResidentOffer:false,bookingLink:'',rating:undefined,seo:{title:'',description:''},published:false}; }
 export function AdminHotelForm({hotel,onSave,onCancel}:{hotel?:RecordData|null;onSave:(draft:RecordData)=>Promise<void>;onCancel:()=>void}){
  const[draft,setDraft]=useState<RecordData>(()=>draftFromHotel(hotel));const[slugTouched,setSlugTouched]=useState(!!hotel);const[isSaving,setIsSaving]=useState(false);const[error,setError]=useState<string|null>(null);const set=(key:string,value:any)=>setDraft(current=>({...current,[key]:value}));const updateSeason=(idx:number,patch:RecordData)=>set('seasonalPricing',(draft.seasonalPricing||[]).map((item:RecordData,i:number)=>i===idx?{...item,...patch}:item));
  async function submit(event:React.FormEvent){event.preventDefault();setError(null);if(!draft.name.trim()||!draft.slug.trim()){setError('Name and slug are required.');return;}setIsSaving(true);try{await onSave({...draft,seo:{...draft.seo,title:draft.seo?.title||draft.name,description:draft.seo?.description||draft.description}})}catch(err){setError(err instanceof Error?err.message:'Failed to save hotel.');setIsSaving(false)}}
