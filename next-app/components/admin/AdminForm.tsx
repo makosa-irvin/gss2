@@ -16,9 +16,17 @@ export function ImageListEditor({ images, onChange, maxImages }: { images: strin
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const applyImages = (next: string[]) => onChange(maxImages ? next.slice(0, maxImages) : next);
+  // Only ever accept http(s) or root-relative image paths - never a
+  // javascript:/data: URL scheme an admin could paste in by mistake (or
+  // maliciously). No modern browser executes a javascript: URL from an
+  // <img src>, so this isn't closing an exploitable gap, just refusing to
+  // store anything other than an actual image location.
+  const isSafeImageUrl = (value: string) => /^https?:\/\//i.test(value) || value.startsWith('/');
   const commit = () => {
     const trimmed = draft.trim();
     if (!trimmed) return;
+    if (!isSafeImageUrl(trimmed)) { setUploadError('Enter a valid image URL starting with http:// or https://.'); return; }
+    setUploadError('');
     applyImages(maxImages === 1 ? [trimmed] : [...images, trimmed]);
     setDraft('');
   };
