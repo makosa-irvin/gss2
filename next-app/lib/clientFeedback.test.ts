@@ -6,10 +6,10 @@ import { buildWhatsAppMessage } from './whatsapp.ts';
 describe('client meeting content rules', () => {
   it('uses the four agreed seasonal periods including the year boundary', () => {
     assert.deepEqual(STANDARD_SEASONAL_PERIODS.map(period => [period.startDate, period.endDate]), [
-      ['01-04', '06-30'],
+      ['01-21', '06-30'],
       ['07-01', '09-30'],
       ['10-01', '12-14'],
-      ['12-15', '01-03'],
+      ['12-15', '01-20'],
     ]);
     assert.equal(createStandardTourSeasons().length, 4);
     assert.equal(createStandardHotelSeasons().length, 4);

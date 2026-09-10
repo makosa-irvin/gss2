@@ -1,8 +1,8 @@
 export const STANDARD_SEASONAL_PERIODS = [
-  { id: 'jan-jun', name: 'Jan 4 – Jun 30', startDate: '01-04', endDate: '06-30' },
+  { id: 'jan-jun', name: 'Jan 21 – Jun 30', startDate: '01-21', endDate: '06-30' },
   { id: 'jul-sep', name: 'Jul 1 – Sep 30', startDate: '07-01', endDate: '09-30' },
   { id: 'oct-dec', name: 'Oct 1 – Dec 14', startDate: '10-01', endDate: '12-14' },
-  { id: 'festive', name: 'Dec 15 – Jan 3', startDate: '12-15', endDate: '01-03' },
+  { id: 'festive', name: 'Dec 15 – Jan 20', startDate: '12-15', endDate: '01-20' },
 ] as const;
 
 export function createStandardTourSeasons() {
