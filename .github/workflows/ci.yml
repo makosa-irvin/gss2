@@ -125,8 +125,12 @@ jobs:
           cache: npm
       - name: Install frontend dependencies
         run: npm ci
+      # --legacy-peer-deps works around a long-standing npm Arborist bug
+      # (npm/cli#8261, #9787) that can surface when installing a new
+      # top-level package into an already-resolved tree without touching
+      # the lockfile - see the same note on the Playwright install below.
       - name: Install coverage provider without changing lockfile
-        run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
+        run: npm install --no-save --package-lock=false --legacy-peer-deps @vitest/coverage-v8@4.1.11
       # The DataContext enquiry-contract test raised the measured frontend
       # suite to 42.65 statements / 44.76 branches / 26.13 functions /
       # 47.76 lines. Floors sit just below that measured result so the
@@ -138,7 +142,7 @@ jobs:
         run: npm ci
       - name: Install backend coverage provider without changing lockfile
         working-directory: server
-        run: npm install --no-save --package-lock=false @vitest/coverage-v8@4.1.11
+        run: npm install --no-save --package-lock=false --legacy-peer-deps @vitest/coverage-v8@4.1.11
       - name: Migrate disposable coverage database
         working-directory: server
         run: npm run db:migrate
@@ -178,8 +182,16 @@ jobs:
       # that npm reported a high-severity advisory after installing it in
       # the CI workspace even though the committed dependency graph was
       # clean. This version is the current stable Playwright release.
+      #
+      # --legacy-peer-deps works around a long-standing npm Arborist bug
+      # ("Cannot read properties of null (reading 'edgesOut')", npm/cli#8261
+      # and #9787) that can hit when `npm install <pkg>` adds a new
+      # top-level package into an already-resolved tree without touching
+      # the lockfile - exactly what --no-save --package-lock=false does
+      # here. It's an npm-internal peer-dependency-resolution crash, not a
+      # conflict in this project's own dependencies.
       - name: Install Playwright runner without changing lockfile
-        run: npm install --no-save --package-lock=false playwright@1.62.1
+        run: npm install --no-save --package-lock=false --legacy-peer-deps playwright@1.62.1
       - name: Audit browser-test workspace
         run: npm audit --audit-level=high
       - name: Install Chromium
