@@ -188,7 +188,7 @@ export const destinationInputSchema = z.object({
   activities: z.array(z.string()).default([]),
   recommendedDuration: z.string().min(1),
   thingsToDo: z.array(z.string()).default([]),
-  whereToStay: z.string().min(1),
+  whereToStay: z.string().optional().default(''),
   featured: z.boolean().default(false),
   mapLocation: z.object({ lat: z.number(), lng: z.number(), zoom: z.number() }).optional().nullable(),
   faqs: z.array(faqSchema).default([]),

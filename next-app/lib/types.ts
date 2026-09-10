@@ -17,7 +17,7 @@ export interface Tour {
 export interface Destination {
   id: string; name: string; slug: string; country: string; subtitle: string; description: string;
   heroImage: string; gallery: string[]; bestTimeToVisit: string; wildlife: string[]; activities: string[];
-  recommendedDuration: string; thingsToDo?: string[]; whereToStay: string; featured: boolean;
+  recommendedDuration: string; thingsToDo?: string[]; featured: boolean;
   faqs?: Array<{ question: string; answer: string }>; seo?: SeoFields; published?: boolean;
 }
 
