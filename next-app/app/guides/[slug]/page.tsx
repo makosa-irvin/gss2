@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { DirectBookingGuide } from '../../../components/DirectBookingGuide';
 import { guideBySlug, guides } from '../../../lib/guides';
-import { siteUrl } from '../../../lib/site';
+import { safeJsonLd, siteUrl } from '../../../lib/site';
 
 export const dynamicParams = false;
 export function generateStaticParams() { return guides.map(guide => ({ slug: guide.slug })); }
@@ -26,10 +26,10 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') }, { '@type': 'ListItem', position: 2, name: 'Safari Planning Guides', item: siteUrl('/guides') }, { '@type': 'ListItem', position: 3, name: guide.title, item: url }] },
   ];
 
-  if (guide.slug === 'booking-safari-direct-local-operator') return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><DirectBookingGuide /></>;
+  if (guide.slug === 'booking-safari-direct-local-operator') return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }} /><DirectBookingGuide /></>;
 
   return <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14 space-y-8">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }} />
     <Link href="/guides" className="min-h-11 inline-flex items-center gap-2 text-sm font-bold text-brand-soft hover:text-white"><ArrowLeft className="w-4 h-4" />All safari planning guides</Link>
     <header className="space-y-5"><span className="text-xs font-extrabold uppercase tracking-widest text-brand-soft">Safari planning guide</span><h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">{guide.title}</h1><p className="text-lg text-on-shell-muted leading-relaxed max-w-3xl">{guide.intro}</p></header>
     <div className="rounded-[2rem] overflow-hidden aspect-[16/8] border border-white/10 relative"><Image src={guide.image} alt="" fill priority className="object-cover" sizes="(max-width:900px) 100vw, 860px" /></div>

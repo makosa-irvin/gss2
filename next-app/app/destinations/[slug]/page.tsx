@@ -8,7 +8,7 @@ import { EnquiryButton } from '../../../components/EnquiryButton';
 import { RelatedPlanningGuides } from '../../../components/RelatedPlanningGuides';
 import { getDestinationBySlug, getDestinations, getTours } from '../../../lib/api';
 import { getDestinationGuideRecommendations } from '../../../lib/guideRecommendations';
-import { siteUrl } from '../../../lib/site';
+import { safeJsonLd, siteUrl } from '../../../lib/site';
 
 export const revalidate = 900;
 export const dynamicParams = true;
@@ -36,7 +36,7 @@ export default async function DestinationDetailPage({ params }: { params: Promis
   ];
 
   return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-14">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
     <div className="flex items-center justify-between text-xs text-on-shell-muted"><Link href="/destinations" className="min-h-11 inline-flex items-center gap-1.5 hover:text-brand-soft transition-colors font-semibold"><ArrowLeft className="w-4 h-4" /><span>All destinations</span></Link><div className="hidden sm:flex items-center gap-2" aria-label="Breadcrumb"><span>{destination.country}</span><ChevronRight className="w-3 h-3 text-on-shell-subtle" /><span className="text-white font-medium">{destination.name}</span></div></div>
 
     <section className="relative rounded-[2rem] overflow-hidden min-h-[460px] sm:min-h-[560px] flex flex-col justify-end p-6 sm:p-12 border border-white/10 shadow-xl bg-shell"><Image src={image} alt={`${destination.name}, ${destination.country}`} fill priority className="object-cover" sizes="100vw" /><div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15" /><div className="relative z-10 space-y-4 max-w-3xl"><span className="inline-flex px-3 py-1.5 rounded-full text-xs font-bold bg-brand-strong text-white">{destination.country}</span><h1 className="font-serif-luxury text-4xl sm:text-6xl font-bold text-white leading-tight">{destination.name} safari guide</h1><p className="text-base sm:text-lg text-white leading-relaxed font-medium max-w-2xl">{destination.subtitle}</p><div className="pt-2 flex flex-col sm:flex-row gap-3"><EnquiryButton label={`Plan a ${destination.name} safari`} destination={destination.name} className="min-h-12 px-6 rounded-xl bg-brand-soft hover:bg-brand-soft text-ink-strong font-extrabold text-sm transition-all shadow-md inline-flex items-center justify-center gap-2" /><a href="https://wa.me/254729000410" target="_blank" rel="noopener noreferrer" className="min-h-12 px-5 rounded-xl border border-white/25 bg-black/20 text-white font-bold text-sm inline-flex items-center justify-center gap-2"><MessageCircle className="w-4 h-4" />Ask a local expert</a></div></div></section>
