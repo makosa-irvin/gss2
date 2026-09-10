@@ -6,7 +6,7 @@ import { ArrowLeft, Check, Compass, MapPin, MessageCircle, ShieldCheck, Star } f
 import { EnquiryButton } from '../../../components/EnquiryButton';
 import { HotelShortlistButton } from '../../../components/ShortlistButton';
 import { getHotelBySlug, getHotels } from '../../../lib/api';
-import { siteUrl } from '../../../lib/site';
+import { safeJsonLd, siteUrl } from '../../../lib/site';
 
 export const revalidate = 900;
 export const dynamicParams = true;
@@ -32,7 +32,7 @@ export default async function HotelDetailPage({ params }: { params: Promise<{ sl
   const savedHotel = { id: hotel.id, title: hotel.name, slug: hotel.slug, image, location: hotel.location, country: hotel.country, priceFrom: hotel.priceFromUSD, priceFromKES: hotel.priceFromKES };
 
   return <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-10">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
     <div className="flex items-center justify-between gap-3"><Link href="/hotels" className="min-h-11 inline-flex items-center gap-1.5 text-sm text-on-shell-muted hover:text-brand-soft transition-colors font-semibold"><ArrowLeft className="w-4 h-4" /><span>Beach resorts & lodges</span></Link><HotelShortlistButton hotel={savedHotel} /></div>
 
     <section className="relative rounded-3xl overflow-hidden min-h-[430px] sm:min-h-[540px] flex items-end border border-white/10 shadow-xl"><Image src={image} alt={`${hotel.name} in ${hotel.location}`} fill priority className="object-cover -z-10" sizes="100vw" /><div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/15 -z-10" /><div className="p-6 sm:p-10 max-w-3xl space-y-3"><div className="flex flex-wrap items-center gap-3"><span className="px-3 py-1.5 rounded-full text-xs font-bold bg-brand-strong text-white">{hotel.category}</span>{hotel.rating ? <div className="flex items-center gap-1 text-brand-soft" aria-label={`${hotel.rating} rating`}>{Array.from({ length: Math.round(hotel.rating) }).map((_, index) => <Star key={index} className="w-4 h-4 fill-current" />)}</div> : null}</div><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">{hotel.name}</h1><div className="flex items-center gap-1.5 text-sm font-semibold text-white"><MapPin className="w-4 h-4 text-brand-soft" /><span>{hotel.location}, {hotel.country}</span></div></div></section>

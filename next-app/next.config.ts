@@ -1,11 +1,14 @@
 import type { NextConfig } from 'next';
 
+const backendOrigin = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || process.env.VITE_API_URL || 'http://localhost:4000';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      new URL('/uploads/**', backendOrigin),
     ],
   },
   async redirects() {

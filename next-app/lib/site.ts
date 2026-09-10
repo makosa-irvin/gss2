@@ -13,6 +13,17 @@ export function absoluteImage(src?: string) {
   return siteUrl(src);
 }
 
+// JSON.stringify does not escape "<", so a title/description containing a
+// literal "</script>" would otherwise close the tag early and let whatever
+// follows in the string be parsed as HTML - a script-injection risk for any
+// JSON-LD block rendered via dangerouslySetInnerHTML. All the data currently
+// feeding these schemas (tours/hotels/destinations/blog/guides) is
+// admin-authored, not public-submitted, but the fix costs nothing and
+// removes the gap regardless of what feeds it in the future.
+export function safeJsonLd(data: unknown) {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
 export const companyContact = {
   email: 'info@goodsecretssafaris.com',
   phone: '+254 729 000 410',

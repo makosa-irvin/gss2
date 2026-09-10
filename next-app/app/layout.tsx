@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import './globals.css';
 import { ClientProviders } from '../components/ClientProviders';
 import { FloatingWhatsApp } from '../components/FloatingWhatsApp';
@@ -6,6 +7,7 @@ import { SiteChrome } from '../components/SiteChrome';
 import { SiteFooter } from '../components/SiteFooter';
 import { SiteHeader } from '../components/SiteHeader';
 import { DEFAULT_SITE_URL, SITE_NAME } from '../lib/site';
+import { getDestinations, getSettings, getTours } from '../lib/api';
 
 const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || DEFAULT_SITE_URL);
 
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><ClientProviders><SiteChrome header={<SiteHeader />} footer={<SiteFooter />} whatsapp={<FloatingWhatsApp />}>{children}</SiteChrome></ClientProviders></body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const [settings, tours, destinations] = await Promise.all([getSettings(), getTours(), getDestinations()]);
+  return <html lang="en"><body><ClientProviders><SiteChrome header={<SiteHeader />} footer={<SiteFooter />} whatsapp={<Suspense fallback={null}><FloatingWhatsApp tours={tours.map(item => ({ slug: item.slug, title: item.title }))} destinations={destinations.map(item => ({ slug: item.slug, title: item.name }))} number={settings?.booking?.whatsappNumber || settings?.contact.whatsapp || '+254729000410'} defaultMessage={settings?.booking?.whatsappDefaultMessage} /></Suspense>}>{children}</SiteChrome></ClientProviders></body></html>;
 }

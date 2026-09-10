@@ -100,6 +100,12 @@ export function SiteHeader() {
             </div>
           </div>
 
+          <div className="hidden xl:flex items-center gap-0.5 text-[#1a241e]">
+            <Link href="/about" className="min-h-11 px-2.5 inline-flex items-center text-sm font-semibold hover:text-[#76541a]">About</Link>
+            <Link href="/reviews" className="min-h-11 px-2.5 inline-flex items-center text-sm font-semibold hover:text-[#76541a]">Reviews</Link>
+            <Link href="/contact" className="min-h-11 px-2.5 inline-flex items-center text-sm font-semibold hover:text-[#76541a]">Contact</Link>
+          </div>
+
           <div className="hidden lg:flex items-center gap-2">
             <Link href="/shortlist" className="relative min-h-11 inline-flex items-center gap-2 rounded-xl border border-[#ded8cb] bg-[#faf8f2] hover:bg-white px-3.5 text-sm font-bold text-[#1a241e] transition-colors" aria-label={`Open safari shortlist with ${savedCount} saved ${savedCount === 1 ? 'item' : 'items'}`}><Heart className={`w-4 h-4 text-[#9e7120] ${savedCount > 0 ? 'fill-current' : ''}`} /><span className="text-[#1a241e]">Shortlist</span>{savedCount > 0 && <span className="min-w-5 h-5 px-1 rounded-full bg-[#1b4332] text-white text-[11px] inline-flex items-center justify-center">{savedCount}</span>}</Link>
             <EnquiryButton showSparkles label="Request a Quote" className="inline-flex items-center gap-1.5 min-h-11 px-5 py-2.5 rounded-xl bg-brand-strong hover:bg-brand-hover text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.98]" />

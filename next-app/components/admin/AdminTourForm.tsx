@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ArrowLeft, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { ChipListEditor, Field, FormActionBar, FormGrid, ImageListEditor, MultiSelectChips, NumberInput, SectionCard, SelectInput, TextArea, TextInput, ToggleField } from './AdminForm';
+import { createStandardTourSeasons } from '../../lib/seasonalPricing';
 
 type RecordData = Record<string, any>;
 const COUNTRIES = ['Kenya', 'Tanzania', 'Zanzibar', 'Kenya + Tanzania', 'Safari + Beach'];
@@ -16,7 +17,7 @@ const emptySeason = () => ({ id: `season-${Date.now()}`, name: '', startDate: ''
 
 function draftFromTour(tour?: RecordData | null) {
   if (tour) { const { id, createdAt, updatedAt, viewsCount, ...rest } = tour; return rest; }
-  return { title: '', slug: '', shortDescription: '', fullDescription: '', country: 'Kenya', destinations: [], durationDays: 3, durationLabel: '3 Days / 2 Nights', startingLocation: 'Nairobi, Kenya', endingLocation: 'Nairobi, Kenya', categories: [], travelStyles: [], comfortLevel: 'Luxury', travelerTypes: [], featured: false, popular: false, recommended: false, priceFrom: 0, currency: 'USD', soloPrice: 0, sharingPrice: 0, residentPriceKES: undefined, seasonalPricing: [], images: [], itinerary: [emptyDay(1)], accommodationSummary: '', mealsSummary: '', includedActivities: [], includedServices: [], exclusions: [], importantInformation: [], childrenPolicy: '', startingDates: 'Daily Departures (Year-Round)', bookingAvailability: 'Available', seo: { title: '', description: '' }, published: false };
+  return { title: '', slug: '', shortDescription: '', fullDescription: '', country: 'Kenya', destinations: [], durationDays: 3, durationLabel: '3 Days / 2 Nights', startingLocation: 'Nairobi, Kenya', endingLocation: 'Nairobi, Kenya', categories: [], travelStyles: [], comfortLevel: 'Luxury', travelerTypes: [], featured: false, popular: false, recommended: false, priceFrom: 0, currency: 'USD', soloPrice: 0, sharingPrice: 0, residentPriceKES: undefined, seasonalPricing: createStandardTourSeasons(), images: [], itinerary: [emptyDay(1)], accommodationSummary: '', mealsSummary: '', includedActivities: [], includedServices: [], exclusions: [], importantInformation: [], childrenPolicy: '', startingDates: 'Daily Departures (Year-Round)', bookingAvailability: 'Available', seo: { title: '', description: '' }, published: false };
 }
 
 export function AdminTourForm({ tour, onSave, onCancel }: { tour?: RecordData | null; onSave: (draft: RecordData) => Promise<void>; onCancel: () => void }) {

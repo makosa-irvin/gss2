@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { apiOrigin } from '../../../../lib/api';
 
 async function proxy(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
@@ -23,6 +24,12 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
   response.headers.forEach((value, key) => {
     if (!['content-encoding', 'content-length', 'transfer-encoding', 'connection'].includes(key.toLowerCase())) outgoing.append(key, value);
   });
+  if (response.ok && !['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+    const backendPath = `/${path.join('/')}`;
+    if (backendPath === '/api/settings' || backendPath.startsWith('/api/admin/')) {
+      revalidatePath('/', 'layout');
+    }
+  }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers: outgoing });
 }
 

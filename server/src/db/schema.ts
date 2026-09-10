@@ -75,6 +75,15 @@ export interface BlogAuthor {
   avatar: string;
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  imageUrl: string;
+  active: boolean;
+}
+
 // --- Tours ---
 export const tours = pgTable(
   'tours',
@@ -251,7 +260,7 @@ export const testimonials = pgTable('testimonials', {
   date: timestamp('date').notNull(),
   featured: boolean('featured').notNull().default(false),
   platform: text('platform').notNull(),
-  published: boolean('published').notNull().default(true),
+  published: boolean('published').notNull().default(false),
 
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
@@ -351,6 +360,24 @@ export const companySettings = pgTable('company_settings', {
     whatsappDefaultMessage: string;
   }>().notNull(),
   seo: jsonb('seo').$type<{ defaultTitle: string; defaultDescription: string; defaultOgImage: string }>().notNull(),
+  homepage: jsonb('homepage').$type<{
+    eyebrow: string;
+    title: string;
+    highlightedTitle: string;
+    subtitle: string;
+    heroImage: string;
+    primaryCtaLabel: string;
+    secondaryCtaLabel: string;
+  }>().notNull(),
+  about: jsonb('about').$type<{
+    eyebrow: string;
+    title: string;
+    intro: string;
+    storyTitle: string;
+    storyParagraphs: string[];
+    teamPhoto: string;
+    teamMembers: TeamMember[];
+  }>().notNull(),
 
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

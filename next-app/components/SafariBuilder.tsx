@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, Send, ShieldCheck, Sparkles } from 'lucide-react';
 import type { Tour } from '../lib/types';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../lib/countries';
 
 type Choice = { id: string; title: string; desc?: string; label?: string };
 const destinationChoices: Choice[] = [
@@ -47,6 +48,7 @@ export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
   const [travelMonth, setTravelMonth] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -81,7 +83,7 @@ export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSubmitError(''); setIsSubmitting(true);
     const payload = {
-      fullName, email, phone: phone || 'Not provided', country: 'Not specified', travelDates: travelMonth || 'Flexible',
+      fullName, email, phone: phone || 'Not provided', country, travelDates: travelMonth || 'Flexible',
       durationDays: duration === '1-3' ? 3 : duration === '4-7' ? 6 : duration === '8-14' ? 10 : 15,
       adults: travelerType === 'Solo' ? 1 : travelerType === 'Couple' ? 2 : 4,
       children: travelerType === 'Family' ? 2 : 0,
@@ -100,6 +102,8 @@ export function SafariBuilder({ tours = [] }: { tours?: Tour[] }) {
 
   return <section id="custom-safari-builder" aria-labelledby="builder-title" className="rounded-3xl bg-white border border-[#ded8cb] overflow-hidden shadow-xl p-5 sm:p-10 max-w-4xl mx-auto text-[#303e35]">
     <div className="mb-8"><div className="flex flex-wrap items-center justify-between gap-2 text-sm font-bold text-[#46544b] mb-3"><span className="text-[#76541a]">Step {step} of 6</span><span>{['', 'Destination', 'Duration', 'Travel party', 'Comfort', 'Experiences', 'Your plan'][step]}</span></div><div className="h-2.5 w-full bg-[#f2efe6] rounded-full overflow-hidden" role="progressbar" aria-valuemin={1} aria-valuemax={6} aria-valuenow={step} aria-label={`Step ${step} of 6`}><div className="h-full bg-[#8a611d] transition-all duration-300 rounded-full" style={{ width: `${(step / 6) * 100}%` }} /></div></div>
+
+    {step === 6 && !isSubmitted ? <div className="mb-5 rounded-2xl border border-[#e3ddcf] bg-[#faf8f2] p-4"><label htmlFor="builder-country" className={labelClass}>Country of residence *</label><select id="builder-country" required value={country} onChange={event => setCountry(event.target.value)} className={inputClass}>{COUNTRIES.map(item => <option key={item} value={item}>{item}</option>)}</select></div> : null}
 
     {step === 1 ? <div className="space-y-6"><div><h2 id="builder-title" className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">Where would you like to go?</h2><p className="text-base text-[#46544b] mt-2">Choose one or combine several places. You can change this later.</p></div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{destinationChoices.map(item => { const selected = destinations.includes(item.id); return <button type="button" aria-pressed={selected} key={item.id} onClick={() => toggleDestination(item.id)} className={choiceClass(selected)}><div className="flex items-start justify-between gap-3"><span className="font-serif-luxury text-lg font-bold text-[#161f19]">{item.title}</span><span aria-hidden="true" className={`w-5 h-5 rounded-full flex items-center justify-center ${selected ? 'bg-[#8a611d] text-white' : 'border border-[#a9a093]'}`}>{selected ? <Check className="w-3 h-3 stroke-[3]" /> : null}</span></div><span className="text-sm text-[#46544b] mt-2 block">{item.desc}</span></button>; })}</div><div className="flex justify-end"><button type="button" onClick={() => setStep(2)} className={`${navButton} bg-[#8a611d] hover:bg-[#704d15] text-white`}>Next: trip length <ArrowRight className="w-4 h-4" /></button></div></div> : null}
     {step === 2 ? <div className="space-y-6"><div><h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#161f19]">How long would you like to travel?</h2><p className="text-base text-[#46544b] mt-2">Choose the closest range. The final itinerary can be shorter or longer.</p></div>{renderSingleChoice(durationChoices, duration, setDuration)}<Nav back={() => setStep(1)} next={() => setStep(3)} nextLabel="Next: travelers" /></div> : null}

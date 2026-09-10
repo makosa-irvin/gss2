@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react';
 import { EnquiryButton } from '../../../components/EnquiryButton';
 import { getBlogPostBySlug, getBlogPosts } from '../../../lib/api';
-import { siteUrl } from '../../../lib/site';
+import { safeJsonLd, siteUrl } from '../../../lib/site';
 
 export const revalidate = 900;
 export const dynamicParams = true;
@@ -30,7 +30,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   ];
 
   return <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 space-y-8">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
     <Link href="/blog" className="min-h-11 inline-flex items-center gap-2 text-sm text-[#c7d2cb] hover:text-[#e6bc65] transition-colors font-semibold"><ArrowLeft className="w-4 h-4" /><span>Back to travel guides</span></Link>
     <header className="space-y-4"><div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#e6bc65]"><span>{post.category}</span><span aria-hidden="true">·</span><span className="text-[#c7d2cb]">{post.readingTime}</span></div><h1 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white leading-tight">{post.title}</h1>{post.author ? <div className="flex items-center gap-3 pt-1 text-sm text-[#c7d2cb]">{post.author.avatar ? <Image src={post.author.avatar} alt="" width={44} height={44} className="w-11 h-11 rounded-full object-cover border border-[#e6bc65]" /> : null}<div><span className="font-bold text-white block">{post.author.name}</span><span>{post.author.role} · Published {post.publishedDate}</span></div></div> : null}</header>
     <div className="rounded-3xl overflow-hidden aspect-[16/9] border border-white/15 shadow-lg bg-[#faf8f2] relative"><Image src={post.featuredImage || '/images/catalog/mara-savannah.jpg'} alt={post.title} fill priority className="object-cover" sizes="(max-width:900px) 100vw,860px" /></div>

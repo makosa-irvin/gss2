@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Inbox, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { AdminBlog, AdminDestinations, AdminHotels, AdminTours } from './admin/AdminCatalogSections';
+import { AdminEnquiries } from './admin/AdminEnquiries';
 import { AdminGrowth } from './admin/AdminGrowth';
 import { AdminLayout, type AdminSection } from './admin/AdminLayout';
 import { AdminOverview } from './admin/AdminOverview';
@@ -22,7 +23,7 @@ export function AdminPortal(){
  async function refresh(){setError('');try{const[enquiries,settings,...catalog]=await Promise.all([api('/api/enquiries'),api('/api/settings'),...Object.entries(endpoints).map(async([key,path])=>[key,await api(path)] as const)]);setData({enquiries,settings,...Object.fromEntries(catalog as any)})}catch(err:any){setError(err.message)}}
  async function login(formData:FormData){setError('');try{setUser(await api('/api/auth/login',{method:'POST',body:JSON.stringify({email:formData.get('email'),password:formData.get('password')})}))}catch(err:any){setError(err.message)}}
  async function logout(){await api('/api/auth/logout',{method:'POST'}).catch(()=>undefined);setUser(null);setData({})}
- async function updateStatus(id:string,status:string){try{await api(`/api/enquiries/${id}/status`,{method:'PUT',body:JSON.stringify({status})});await refresh()}catch(err:any){setError(err.message)}}
+ async function saveEnquiry(id:string,status:string,notes:string){try{await api(`/api/enquiries/${id}/status`,{method:'PUT',body:JSON.stringify({status,notes})});await refresh()}catch(err:any){setError(err.message);throw err}}
  async function saveSettings(settings:AnyRecord){try{const saved=await api('/api/settings',{method:'PUT',body:JSON.stringify(settings)});setData(current=>({...current,settings:saved}))}catch(err:any){setError(err.message);throw err}}
  async function changePassword(currentPassword:string,newPassword:string){await api('/api/auth/change-password',{method:'PATCH',body:JSON.stringify({currentPassword,newPassword})})}
  async function createRecord(key:CatalogKey,draft:AnyRecord){try{const created=await api(endpoints[key],{method:'POST',body:JSON.stringify(draft)});setData(current=>({...current,[key]:[created,...(current[key]||[])]}))}catch(err:any){setError(err.message);throw err}}
@@ -35,7 +36,7 @@ export function AdminPortal(){
  let section:React.ReactNode=null;
  if(activeSection==='overview')section=<AdminOverview tours={data.tours||[]} hotels={data.hotels||[]} enquiries={enquiries} whatsapp={data.settings?.contact?.whatsapp||'+254 729 000 410'} onGoToEnquiries={()=>setActiveSection('enquiries')} onGoToTours={()=>setActiveSection('tours')}/>;
  else if(activeSection==='growth')section=<AdminGrowth enquiries={enquiries}/>;
- else if(activeSection==='enquiries')section=<EnquiriesPanel enquiries={enquiries} onStatus={updateStatus}/>;
+ else if(activeSection==='enquiries')section=<AdminEnquiries enquiries={enquiries} onSave={saveEnquiry}/>;
  else if(activeSection==='tours')section=<AdminTours {...common('tours')}/>;
  else if(activeSection==='hotels')section=<AdminHotels {...common('hotels')}/>;
  else if(activeSection==='destinations')section=<AdminDestinations {...common('destinations')}/>;
@@ -44,5 +45,3 @@ export function AdminPortal(){
  else section=data.settings?<AdminSettings settings={data.settings} onSave={saveSettings} onChangePassword={changePassword}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading company settings…</div>;
  return <AdminLayout active={activeSection} onNavigate={value=>{setError('');setActiveSection(value)}} adminName={user.name} adminEmail={user.email} onLogout={logout} counts={counts}>{error?<div className="mb-6 flex items-center justify-between gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800"><span>{error}</span><button onClick={()=>setError('')} aria-label="Dismiss error" className="text-rose-600 hover:text-rose-800"><X className="w-4 h-4"/></button></div>:null}{section}</AdminLayout>;
 }
-
-function EnquiriesPanel({enquiries,onStatus}:{enquiries:AnyRecord[];onStatus:(id:string,status:string)=>void}){return <div className="space-y-6"><div><div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#9e7120]"><Inbox className="w-4 h-4"/>CRM</div><h1 className="mt-1 font-serif-luxury text-3xl font-bold text-[#161f19]">Enquiries</h1><p className="mt-2 text-sm text-[#707f74]">Review new leads and move each enquiry through the planning pipeline.</p></div><div className="overflow-hidden rounded-2xl border border-[#e8e4da] bg-white shadow-sm"><div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="bg-[#faf8f2] text-[11px] uppercase tracking-wider text-[#707f74]"><tr><th className="px-5 py-4">Lead</th><th className="px-5 py-4">Trip</th><th className="px-5 py-4">Created</th><th className="px-5 py-4">Status</th></tr></thead><tbody className="divide-y divide-[#eeebe2]">{enquiries.map(item=><tr key={item.id}><td className="px-5 py-4"><strong className="text-[#161f19]">{item.fullName}</strong><span className="block text-xs text-[#707f74] mt-1">{item.email}</span><span className="block text-xs text-[#707f74]">{item.phone}</span></td><td className="px-5 py-4 text-[#405046]">{item.tourTitle||item.hotelTitle||item.preferredDestination||item.safariType||'General enquiry'}<span className="block text-xs text-[#9a9184] mt-1">{item.hearAboutUs}</span></td><td className="px-5 py-4 text-[#707f74]">{new Date(item.createdAt).toLocaleDateString()}</td><td className="px-5 py-4"><select value={item.status} onChange={event=>onStatus(item.id,event.target.value)} className="min-h-10 rounded-xl border border-[#d7d1c4] bg-[#faf8f2] px-3 font-semibold text-[#303e35]">{['New','Contacted','Quoted','Confirmed','Cancelled'].map(status=><option key={status}>{status}</option>)}</select></td></tr>)}</tbody></table></div></div></div>}

@@ -17,7 +17,7 @@ export interface Tour {
 export interface Destination {
   id: string; name: string; slug: string; country: string; subtitle: string; description: string;
   heroImage: string; gallery: string[]; bestTimeToVisit: string; wildlife: string[]; activities: string[];
-  recommendedDuration: string; thingsToDo?: string[]; whereToStay: string; featured: boolean;
+  recommendedDuration: string; thingsToDo?: string[]; featured: boolean;
   faqs?: Array<{ question: string; answer: string }>; seo?: SeoFields; published?: boolean;
 }
 
@@ -40,6 +40,20 @@ export interface BlogPost {
   readingTime: string; relatedDestinations?: string[]; relatedTours?: string[]; tags?: string[]; published?: boolean;
 }
 
+export interface TeamMember {
+  id: string; name: string; role: string; bio: string; imageUrl: string; active: boolean;
+}
+
+export interface HomepageContent {
+  eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string;
+  primaryCtaLabel: string; secondaryCtaLabel: string;
+}
+
+export interface AboutContent {
+  eyebrow: string; title: string; intro: string; storyTitle: string; storyParagraphs: string[];
+  teamPhoto: string; teamMembers: TeamMember[];
+}
+
 export interface CompanySettings {
   companyName: string; tagline: string; description: string; logoUrl?: string;
   contact: { email: string; phone: string; whatsapp: string; address: string; businessHours?: string };
@@ -47,6 +61,8 @@ export interface CompanySettings {
   currency?: { exchangeRateUsdToKes?: number };
   booking?: { bookingEmail?: string; whatsappNumber?: string; whatsappDefaultMessage?: string };
   seo?: { defaultTitle?: string; defaultDescription?: string; defaultOgImage?: string };
+  homepage?: HomepageContent;
+  about?: AboutContent;
 }
 
 export interface Enquiry {
