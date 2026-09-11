@@ -39,7 +39,93 @@
     "subtitle": "Private 4x4 journeys, experienced local guides and carefully chosen stays — shaped around your dates, pace and priorities.",
     "heroImage": "/images/catalog/vehicle-next-to-the-great-migration.jpg",
     "primaryCtaLabel": "Build My Safari",
-    "secondaryCtaLabel": "Explore Safari Ideas"
+    "secondaryCtaLabel": "Explore Safari Ideas",
+    "personalPlanning": {
+      "eyebrow": "Personal planning, on the ground",
+      "title": "A safari is too important to feel anonymous.",
+      "body": "You should understand who is shaping your route, what is included and how to get help while you travel. We plan private East Africa journeys around real people rather than treating an itinerary as a checkout product.",
+      "steps": [
+        {
+          "number": "1",
+          "label": "Tell us your priorities"
+        },
+        {
+          "number": "2",
+          "label": "Refine route & stays"
+        },
+        {
+          "number": "3",
+          "label": "Review before committing"
+        },
+        {
+          "number": "4",
+          "label": "Travel with local support"
+        }
+      ],
+      "images": [
+        "/images/catalog/family-safari-game-drive.jpg",
+        "/images/catalog/picnic-lunch-in-the-wild.jpg",
+        "/images/catalog/honey-moon-in-samburu.jpg"
+      ]
+    },
+    "tours": {
+      "eyebrow": "Safari ideas",
+      "title": "Start with a proven route. Make it yours.",
+      "subtitle": "Compare duration, country and guide price, then adjust dates, accommodation and pacing with the safari team."
+    },
+    "styleFinder": {
+      "eyebrow": "Choose the feeling first",
+      "title": "What kind of safari are you imagining?",
+      "subtitle": "Use these as starting points rather than boxes you have to fit into."
+    },
+    "destinations": {
+      "eyebrow": "Destination guides",
+      "title": "Learn the parks before choosing the route.",
+      "subtitle": "Wildlife, seasons and route ideas across East Africa."
+    },
+    "whyUs": {
+      "eyebrow": "Why Good Secrets",
+      "title": "Local expertise is most useful when it changes the trip.",
+      "items": [
+        {
+          "title": "Personal planning",
+          "description": "Change the route, pace and accommodation around the people actually traveling."
+        },
+        {
+          "title": "Independent proof",
+          "description": "Use independent traveler reviews to verify what past guests say."
+        },
+        {
+          "title": "Local communication",
+          "description": "Email, phone and WhatsApp keep the East Africa team within reach."
+        },
+        {
+          "title": "Clarity before commitment",
+          "description": "Review itinerary, inclusions and trip terms before deciding to proceed."
+        }
+      ],
+      "image": "/images/catalog/sundowner-at-amboseli.jpg"
+    },
+    "beachStays": {
+      "badge": "Kenyan resident offers",
+      "title": "Beach stays and safari extensions",
+      "subtitle": "Diani, Watamu and Mombasa stays, with dedicated resident pricing where available."
+    },
+    "safariBuilder": {
+      "eyebrow": "Not sure where to start?",
+      "title": "Build your safari preferences",
+      "subtitle": "Answer a few questions to narrow the route. A human safari planner still helps shape the final itinerary."
+    },
+    "guides": {
+      "eyebrow": "Plan with confidence",
+      "title": "Safari guides & practical advice",
+      "subtitle": "Use our destination and planning content before you choose an itinerary."
+    },
+    "finalCta": {
+      "eyebrow": "Start with a conversation",
+      "title": "Tell us what would make the safari worth the journey.",
+      "subtitle": "Share dates, group size and priorities. We can suggest a practical route without requiring payment to enquire."
+    }
   },
   "about": {
     "eyebrow": "Local East Africa safari planning",

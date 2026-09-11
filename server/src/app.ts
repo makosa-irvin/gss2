@@ -54,7 +54,9 @@ export function createApp() {
       credentials: true, // required so the admin session cookie is sent/received cross-origin
     })
   );
-  app.use(express.json({ limit: '8mb' }));
+  // 60mb accommodates the admin upload endpoint's 40MB video cap once
+  // base64-encoded (~33% larger) plus the surrounding JSON payload.
+  app.use(express.json({ limit: '60mb' }));
   // CodeQL's js/missing-token-validation query only recognizes
   // token-based CSRF middleware (e.g. csurf/lusca) and flags any
   // cookie-parser usage without one. This API is JSON-only (no HTML

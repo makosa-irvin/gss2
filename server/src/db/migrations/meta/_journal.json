@@ -50,6 +50,20 @@
       "when": 1788408000000,
       "tag": "0006_client_meeting_cms",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789116210000,
+      "tag": "0007_homepage_sections",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789124301000,
+      "tag": "0008_homepage_images",
+      "breakpoints": true
     }
   ]
 }

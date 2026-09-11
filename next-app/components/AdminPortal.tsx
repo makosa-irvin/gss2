@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { X } from 'lucide-react';
+import { AdminAboutContent } from './admin/AdminAboutContent';
 import { AdminBlog, AdminDestinations, AdminHotels, AdminTours } from './admin/AdminCatalogSections';
 import { AdminEnquiries } from './admin/AdminEnquiries';
 import { AdminGrowth } from './admin/AdminGrowth';
+import { AdminHomepageContent } from './admin/AdminHomepageContent';
 import { AdminLayout, type AdminSection } from './admin/AdminLayout';
 import { AdminOverview } from './admin/AdminOverview';
 import { AdminSettings } from './admin/AdminSettings';
@@ -25,6 +27,8 @@ export function AdminPortal(){
  async function logout(){await api('/api/auth/logout',{method:'POST'}).catch(()=>undefined);setUser(null);setData({})}
  async function saveEnquiry(id:string,status:string,notes:string){try{await api(`/api/enquiries/${id}/status`,{method:'PUT',body:JSON.stringify({status,notes})});await refresh()}catch(err:any){setError(err.message);throw err}}
  async function saveSettings(settings:AnyRecord){try{const saved=await api('/api/settings',{method:'PUT',body:JSON.stringify(settings)});setData(current=>({...current,settings:saved}))}catch(err:any){setError(err.message);throw err}}
+ async function saveHomepage(homepage:AnyRecord){await saveSettings({homepage})}
+ async function saveAbout(about:AnyRecord){await saveSettings({about})}
  async function changePassword(currentPassword:string,newPassword:string){await api('/api/auth/change-password',{method:'PATCH',body:JSON.stringify({currentPassword,newPassword})})}
  async function createRecord(key:CatalogKey,draft:AnyRecord){try{const created=await api(endpoints[key],{method:'POST',body:JSON.stringify(draft)});setData(current=>({...current,[key]:[created,...(current[key]||[])]}))}catch(err:any){setError(err.message);throw err}}
  async function updateRecord(key:CatalogKey,id:string,draft:AnyRecord){try{const saved=await api(`${endpoints[key]}/${id}`,{method:'PUT',body:JSON.stringify(draft)});setData(current=>({...current,[key]:(current[key]||[]).map((item:AnyRecord)=>item.id===id?saved:item)}))}catch(err:any){setError(err.message);throw err}}
@@ -42,6 +46,8 @@ export function AdminPortal(){
  else if(activeSection==='destinations')section=<AdminDestinations {...common('destinations')}/>;
  else if(activeSection==='blog')section=<AdminBlog {...common('blog')} defaultAuthorName={user.name}/>;
  else if(activeSection==='testimonials')section=<AdminTestimonials testimonials={data.testimonials||[]} onCreate={draft=>createRecord('testimonials',draft)} onUpdate={(id,draft)=>updateRecord('testimonials',id,draft)} onDelete={id=>deleteRecord('testimonials',id)} onError={setError}/>;
+ else if(activeSection==='homepage')section=data.settings?<AdminHomepageContent homepage={data.settings.homepage} onSave={saveHomepage}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading homepage content…</div>;
+ else if(activeSection==='about')section=data.settings?<AdminAboutContent about={data.settings.about} onSave={saveAbout}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading about page content…</div>;
  else section=data.settings?<AdminSettings settings={data.settings} onSave={saveSettings} onChangePassword={changePassword}/>:<div className="rounded-2xl border border-[#e8e4da] bg-white p-6 text-sm text-[#707f74]">Loading company settings…</div>;
  return <AdminLayout active={activeSection} onNavigate={value=>{setError('');setActiveSection(value)}} adminName={user.name} adminEmail={user.email} onLogout={logout} counts={counts}>{error?<div className="mb-6 flex items-center justify-between gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800"><span>{error}</span><button onClick={()=>setError('')} aria-label="Dismiss error" className="text-rose-600 hover:text-rose-800"><X className="w-4 h-4"/></button></div>:null}{section}</AdminLayout>;
 }

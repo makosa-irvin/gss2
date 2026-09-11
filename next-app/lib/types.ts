@@ -45,8 +45,17 @@ export interface TeamMember {
 }
 
 export interface HomepageContent {
-  eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string;
+  eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string; heroVideo?: string;
   primaryCtaLabel: string; secondaryCtaLabel: string;
+  personalPlanning?: { eyebrow: string; title: string; body: string; steps: { number: string; label: string }[]; images?: string[] };
+  tours?: { eyebrow: string; title: string; subtitle: string };
+  styleFinder?: { eyebrow: string; title: string; subtitle: string };
+  destinations?: { eyebrow: string; title: string; subtitle: string };
+  whyUs?: { eyebrow: string; title: string; items: { title: string; description: string }[]; image?: string };
+  beachStays?: { badge: string; title: string; subtitle: string };
+  safariBuilder?: { eyebrow: string; title: string; subtitle: string };
+  guides?: { eyebrow: string; title: string; subtitle: string };
+  finalCta?: { eyebrow: string; title: string; subtitle: string };
 }
 
 export interface AboutContent {
