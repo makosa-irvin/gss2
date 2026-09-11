@@ -13,7 +13,18 @@ type CompanySettings = {
   currency: { primary: 'USD' | 'KES'; exchangeRateUsdToKes: number };
   booking: { defaultEnquiryMessage: string; bookingEmail: string; whatsappNumber: string; whatsappDefaultMessage: string };
   seo: { defaultTitle: string; defaultDescription: string; defaultOgImage: string };
-  homepage: { eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string; primaryCtaLabel: string; secondaryCtaLabel: string };
+  homepage: {
+    eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string; primaryCtaLabel: string; secondaryCtaLabel: string;
+    personalPlanning: { eyebrow: string; title: string; body: string; steps: { number: string; label: string }[] };
+    tours: { eyebrow: string; title: string; subtitle: string };
+    styleFinder: { eyebrow: string; title: string; subtitle: string };
+    destinations: { eyebrow: string; title: string; subtitle: string };
+    whyUs: { eyebrow: string; title: string; items: { title: string; description: string }[] };
+    beachStays: { badge: string; title: string; subtitle: string };
+    safariBuilder: { eyebrow: string; title: string; subtitle: string };
+    guides: { eyebrow: string; title: string; subtitle: string };
+    finalCta: { eyebrow: string; title: string; subtitle: string };
+  };
   about: { eyebrow: string; title: string; intro: string; storyTitle: string; storyParagraphs: string[]; teamPhoto: string; teamMembers: TeamMember[] };
 };
 
@@ -27,6 +38,9 @@ export function AdminSettings({ settings, onSave, onChangePassword }: { settings
   const [saved, setSaved] = useState(false);
   useEffect(() => setDraft(settings), [settings]);
   const set = <K extends keyof CompanySettings>(key: K, value: CompanySettings[K]) => setDraft(current => ({ ...current, [key]: value }));
+  const setHomepageSection = <K extends keyof CompanySettings['homepage']>(key: K, value: CompanySettings['homepage'][K]) => set('homepage', { ...draft.homepage, [key]: value });
+  const updatePlanningStep = (index: number, label: string) => setHomepageSection('personalPlanning', { ...draft.homepage.personalPlanning, steps: draft.homepage.personalPlanning.steps.map((step, stepIndex) => stepIndex === index ? { ...step, label } : step) });
+  const updateWhyUsItem = (index: number, patch: Partial<{ title: string; description: string }>) => setHomepageSection('whyUs', { ...draft.homepage.whyUs, items: draft.homepage.whyUs.items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item) });
   const updateTeamMember = (index: number, patch: Partial<TeamMember>) => set('about', { ...draft.about, teamMembers: draft.about.teamMembers.map((member, memberIndex) => memberIndex === index ? { ...member, ...patch } : member) });
   async function submit(event: React.FormEvent) { event.preventDefault(); setSaving(true); try { await onSave(draft); setSaved(true); window.setTimeout(() => setSaved(false), 3000); } finally { setSaving(false); } }
 
@@ -37,6 +51,45 @@ export function AdminSettings({ settings, onSave, onChangePassword }: { settings
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.eyebrow} onChange={e => set('homepage', { ...draft.homepage, eyebrow: e.target.value })} /></Field><Field label="Main heading"><input className={inputClass} value={draft.homepage.title} onChange={e => set('homepage', { ...draft.homepage, title: e.target.value })} /></Field><Field label="Highlighted heading"><input className={inputClass} value={draft.homepage.highlightedTitle} onChange={e => set('homepage', { ...draft.homepage, highlightedTitle: e.target.value })} /></Field><Field label="Primary button label"><input className={inputClass} value={draft.homepage.primaryCtaLabel} onChange={e => set('homepage', { ...draft.homepage, primaryCtaLabel: e.target.value })} /></Field><Field label="Secondary button label"><input className={inputClass} value={draft.homepage.secondaryCtaLabel} onChange={e => set('homepage', { ...draft.homepage, secondaryCtaLabel: e.target.value })} /></Field></div>
         <Field label="Subtitle"><textarea className={`${inputClass} min-h-24`} rows={3} value={draft.homepage.subtitle} onChange={e => set('homepage', { ...draft.homepage, subtitle: e.target.value })} /></Field>
         <Field label="Hero image"><ImageListEditor images={draft.homepage.heroImage ? [draft.homepage.heroImage] : []} maxImages={1} onChange={images => set('homepage', { ...draft.homepage, heroImage: images[0] || '' })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Personal planning section" description="The 'A safari is too important to feel anonymous' section, just below the hero.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.personalPlanning.eyebrow} onChange={e => setHomepageSection('personalPlanning', { ...draft.homepage.personalPlanning, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.personalPlanning.title} onChange={e => setHomepageSection('personalPlanning', { ...draft.homepage.personalPlanning, title: e.target.value })} /></Field></div>
+        <Field label="Body text"><textarea className={`${inputClass} min-h-24`} rows={3} value={draft.homepage.personalPlanning.body} onChange={e => setHomepageSection('personalPlanning', { ...draft.homepage.personalPlanning, body: e.target.value })} /></Field>
+        <Field label="Four-step process" hint="Shown as a 2x2 grid under the text."><div className="grid gap-3 sm:grid-cols-2">{draft.homepage.personalPlanning.steps.map((step, index) => <input key={index} className={inputClass} value={step.label} onChange={e => updatePlanningStep(index, e.target.value)} placeholder={`Step ${step.number}`} />)}</div></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Safari ideas section" description="Heading above the featured tours grid.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.tours.eyebrow} onChange={e => setHomepageSection('tours', { ...draft.homepage.tours, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.tours.title} onChange={e => setHomepageSection('tours', { ...draft.homepage.tours, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.tours.subtitle} onChange={e => setHomepageSection('tours', { ...draft.homepage.tours, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Safari style finder section" description="Heading above the 'Big 5 / Great Migration / Family...' style picker.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.styleFinder.eyebrow} onChange={e => setHomepageSection('styleFinder', { ...draft.homepage.styleFinder, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.styleFinder.title} onChange={e => setHomepageSection('styleFinder', { ...draft.homepage.styleFinder, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.styleFinder.subtitle} onChange={e => setHomepageSection('styleFinder', { ...draft.homepage.styleFinder, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Destinations section" description="Heading above the featured destinations grid.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.destinations.eyebrow} onChange={e => setHomepageSection('destinations', { ...draft.homepage.destinations, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.destinations.title} onChange={e => setHomepageSection('destinations', { ...draft.homepage.destinations, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.destinations.subtitle} onChange={e => setHomepageSection('destinations', { ...draft.homepage.destinations, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Why Good Secrets section" description="The four-point 'why book with us' section, with the sundowner photo.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.whyUs.eyebrow} onChange={e => setHomepageSection('whyUs', { ...draft.homepage.whyUs, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.whyUs.title} onChange={e => setHomepageSection('whyUs', { ...draft.homepage.whyUs, title: e.target.value })} /></Field></div>
+        <Field label="Four points" hint="Each has a short title and one sentence of detail.">
+          <div className="space-y-3">{draft.homepage.whyUs.items.map((item, index) => <div key={index} className="grid gap-2 sm:grid-cols-[1fr_2fr] rounded-xl border border-[#e8e4da] p-3"><input className={inputClass} value={item.title} onChange={e => updateWhyUsItem(index, { title: e.target.value })} placeholder="Point title" /><input className={inputClass} value={item.description} onChange={e => updateWhyUsItem(index, { description: e.target.value })} placeholder="Point detail" /></div>)}</div>
+        </Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Beach stays section" description="Only shown when at least one hotel exists.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Badge label"><input className={inputClass} value={draft.homepage.beachStays.badge} onChange={e => setHomepageSection('beachStays', { ...draft.homepage.beachStays, badge: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.beachStays.title} onChange={e => setHomepageSection('beachStays', { ...draft.homepage.beachStays, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.beachStays.subtitle} onChange={e => setHomepageSection('beachStays', { ...draft.homepage.beachStays, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Safari builder section" description="Heading above the 'build your preferences' tool.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.safariBuilder.eyebrow} onChange={e => setHomepageSection('safariBuilder', { ...draft.homepage.safariBuilder, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.safariBuilder.title} onChange={e => setHomepageSection('safariBuilder', { ...draft.homepage.safariBuilder, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.safariBuilder.subtitle} onChange={e => setHomepageSection('safariBuilder', { ...draft.homepage.safariBuilder, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Safari guides section" description="Only shown when at least one blog post exists.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.guides.eyebrow} onChange={e => setHomepageSection('guides', { ...draft.homepage.guides, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.guides.title} onChange={e => setHomepageSection('guides', { ...draft.homepage.guides, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.guides.subtitle} onChange={e => setHomepageSection('guides', { ...draft.homepage.guides, subtitle: e.target.value })} /></Field>
+      </SectionCard>
+      <SectionCard title="Homepage: Closing call-to-action" description="Final section before the footer.">
+        <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.homepage.finalCta.eyebrow} onChange={e => setHomepageSection('finalCta', { ...draft.homepage.finalCta, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.homepage.finalCta.title} onChange={e => setHomepageSection('finalCta', { ...draft.homepage.finalCta, title: e.target.value })} /></Field></div>
+        <Field label="Subtitle"><textarea className={`${inputClass} min-h-20`} rows={2} value={draft.homepage.finalCta.subtitle} onChange={e => setHomepageSection('finalCta', { ...draft.homepage.finalCta, subtitle: e.target.value })} /></Field>
       </SectionCard>
       <SectionCard title="About Us & team" description="Controls the public About page story, team image and individual profiles.">
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.about.eyebrow} onChange={e => set('about', { ...draft.about, eyebrow: e.target.value })} /></Field><Field label="Page title"><input className={inputClass} value={draft.about.title} onChange={e => set('about', { ...draft.about, title: e.target.value })} /></Field><Field label="Story heading"><input className={inputClass} value={draft.about.storyTitle} onChange={e => set('about', { ...draft.about, storyTitle: e.target.value })} /></Field></div>
