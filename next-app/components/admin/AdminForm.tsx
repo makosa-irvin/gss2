@@ -81,6 +81,63 @@ export function ImageListEditor({ images, onChange, maxImages }: { images: strin
     <p className="text-xs text-[#707f74]">JPEG, PNG, WebP or GIF, up to 5 MB. Use the star to promote an existing gallery image.</p>
   </div>;
 }
+export function VideoUploader({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const [draft, setDraft] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const isSafeVideoUrl = (candidate: string) => /^https?:\/\//i.test(candidate) || candidate.startsWith('/');
+  const commit = () => {
+    const trimmed = draft.trim();
+    if (!trimmed) return;
+    if (!isSafeVideoUrl(trimmed)) { setUploadError('Enter a valid video URL starting with http:// or https://.'); return; }
+    setUploadError('');
+    onChange(trimmed);
+    setDraft('');
+  };
+  async function upload(files: FileList | null) {
+    const file = files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError('');
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error('Could not read the selected video.'));
+        reader.readAsDataURL(file);
+      });
+      const response = await fetch('/api/backend/api/admin/uploads', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName: file.name, dataUrl }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'Video upload failed.');
+      onChange(result.url as string);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : 'Video upload failed.');
+    } finally {
+      setUploading(false);
+    }
+  }
+  return <div className="space-y-3">
+    {value ? <div className="relative rounded-xl overflow-hidden border border-[#ded8cb] bg-black max-w-sm">
+      <video src={value} controls muted className="w-full aspect-video object-cover" />
+      <button type="button" onClick={() => onChange('')} aria-label="Remove video" className="absolute top-1.5 right-1.5 p-1 rounded-full bg-black/70 text-white"><X className="w-3.5 h-3.5" /></button>
+    </div> : <div className="flex items-center gap-2 p-3 rounded-xl border border-dashed border-[#d7d1c4] text-xs text-[#707f74]"><ImageOff className="w-4 h-4 shrink-0" />No video set - the hero image is used instead.</div>}
+    <div className="flex flex-col sm:flex-row gap-2">
+      <label className="min-h-11 px-4 rounded-xl bg-[#1b4332] hover:bg-[#123326] text-white text-sm font-bold inline-flex items-center justify-center gap-2 cursor-pointer">
+        {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+        {uploading ? 'Uploading…' : 'Upload from computer'}
+        <input type="file" accept="video/mp4,video/webm" disabled={uploading} className="sr-only" onChange={event => upload(event.target.files)} />
+      </label>
+      <div className="flex flex-1 gap-2"><input type="url" value={draft} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commit(); } }} placeholder="Or paste a video URL" className={fieldBaseClass} /><button type="button" onClick={commit} className="shrink-0 min-h-11 px-3.5 rounded-xl bg-[#f4f1e8] hover:bg-[#eae5d8] border border-[#ded8cb] text-[#161f19]" aria-label="Set video"><Plus className="w-4 h-4" /></button></div>
+    </div>
+    {uploadError ? <p role="alert" className="text-xs font-semibold text-rose-700">{uploadError}</p> : null}
+    <p className="text-xs text-[#707f74]">MP4 or WebM, up to 40 MB. Keep it short and compressed - it autoplays muted and loops, so it's re-downloaded by every visitor.</p>
+  </div>;
+}
 export function MultiSelectChips({ options, selected, onChange }: { options: readonly string[]; selected: string[]; onChange: (selected: string[]) => void }) { return <div className="flex flex-wrap gap-2">{options.map(option => { const isSelected = selected.includes(option); return <button key={option} type="button" aria-pressed={isSelected} onClick={() => onChange(isSelected ? selected.filter(item => item !== option) : [...selected, option])} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${isSelected ? 'bg-[#1b4332] text-white border-[#1b4332]' : 'bg-[#faf8f2] text-[#405046] border-[#ded8cb] hover:border-[#b3822a]'}`}>{option}</button>; })}</div>; }
 export function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) { return <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#e8e4da] space-y-4 shadow-xs"><div><h3 className="font-serif-luxury text-lg font-bold text-[#161f19]">{title}</h3>{description ? <p className="text-xs text-[#707f74] mt-0.5">{description}</p> : null}</div>{children}</div>; }
 export function FormActionBar({ onCancel, isSaving, saveLabel = 'Save changes', error }: { onCancel: () => void; isSaving: boolean; saveLabel?: string; error?: string | null }) { return <div className="sticky bottom-0 -mx-4 sm:-mx-8 px-4 sm:px-8 py-4 bg-[#faf8f2]/95 backdrop-blur-xl border-t border-[#e8e4da] flex items-center justify-between gap-4"><span className="text-xs text-rose-700 font-medium">{error}</span><div className="flex items-center gap-3 ml-auto"><button type="button" onClick={onCancel} className="min-h-11 px-5 rounded-xl bg-white border border-[#ded8cb] text-[#161f19] text-sm font-semibold hover:bg-[#f4f1e8]">Cancel</button><button type="submit" disabled={isSaving} className="min-h-11 px-6 rounded-xl bg-[#b3822a] hover:bg-[#9e7120] disabled:opacity-60 text-white text-sm font-bold flex items-center gap-2 shadow-sm">{isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}<span>{isSaving ? 'Saving…' : saveLabel}</span></button></div></div>; }

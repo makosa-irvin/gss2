@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import { Check, Layout, Loader2, Save } from 'lucide-react';
 import { DEFAULT_HOMEPAGE } from '../../lib/cmsDefaults';
-import { ImageListEditor } from './AdminForm';
+import { ImageListEditor, VideoUploader } from './AdminForm';
 import { Field, inputClass, SectionCard } from './AdminSettingsShared';
 
 type HomepageContent = {
-  eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string; primaryCtaLabel: string; secondaryCtaLabel: string;
-  personalPlanning: { eyebrow: string; title: string; body: string; steps: { number: string; label: string }[] };
+  eyebrow: string; title: string; highlightedTitle: string; subtitle: string; heroImage: string; heroVideo?: string; primaryCtaLabel: string; secondaryCtaLabel: string;
+  personalPlanning: { eyebrow: string; title: string; body: string; steps: { number: string; label: string }[]; images?: string[] };
   tours: { eyebrow: string; title: string; subtitle: string };
   styleFinder: { eyebrow: string; title: string; subtitle: string };
   destinations: { eyebrow: string; title: string; subtitle: string };
-  whyUs: { eyebrow: string; title: string; items: { title: string; description: string }[] };
+  whyUs: { eyebrow: string; title: string; items: { title: string; description: string }[]; image?: string };
   beachStays: { badge: string; title: string; subtitle: string };
   safariBuilder: { eyebrow: string; title: string; subtitle: string };
   guides: { eyebrow: string; title: string; subtitle: string };
@@ -33,13 +33,14 @@ function withDefaults(homepage: Partial<HomepageContent> | null | undefined): Ho
     highlightedTitle: homepage?.highlightedTitle ?? base.highlightedTitle,
     subtitle: homepage?.subtitle ?? base.subtitle,
     heroImage: homepage?.heroImage ?? base.heroImage,
+    heroVideo: homepage?.heroVideo ?? base.heroVideo ?? '',
     primaryCtaLabel: homepage?.primaryCtaLabel ?? base.primaryCtaLabel,
     secondaryCtaLabel: homepage?.secondaryCtaLabel ?? base.secondaryCtaLabel,
-    personalPlanning: homepage?.personalPlanning ?? base.personalPlanning,
+    personalPlanning: homepage?.personalPlanning ? { ...base.personalPlanning, ...homepage.personalPlanning } : base.personalPlanning,
     tours: homepage?.tours ?? base.tours,
     styleFinder: homepage?.styleFinder ?? base.styleFinder,
     destinations: homepage?.destinations ?? base.destinations,
-    whyUs: homepage?.whyUs ?? base.whyUs,
+    whyUs: homepage?.whyUs ? { ...base.whyUs, ...homepage.whyUs } : base.whyUs,
     beachStays: homepage?.beachStays ?? base.beachStays,
     safariBuilder: homepage?.safariBuilder ?? base.safariBuilder,
     guides: homepage?.guides ?? base.guides,
@@ -63,12 +64,14 @@ export function AdminHomepageContent({ homepage, onSave }: { homepage: Partial<H
       <SectionCard title="Hero" description="The full-height banner at the very top of the homepage.">
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.eyebrow} onChange={e => setSection('eyebrow', e.target.value)} /></Field><Field label="Main heading"><input className={inputClass} value={draft.title} onChange={e => setSection('title', e.target.value)} /></Field><Field label="Highlighted heading"><input className={inputClass} value={draft.highlightedTitle} onChange={e => setSection('highlightedTitle', e.target.value)} /></Field><Field label="Primary button label"><input className={inputClass} value={draft.primaryCtaLabel} onChange={e => setSection('primaryCtaLabel', e.target.value)} /></Field><Field label="Secondary button label"><input className={inputClass} value={draft.secondaryCtaLabel} onChange={e => setSection('secondaryCtaLabel', e.target.value)} /></Field></div>
         <Field label="Subtitle"><textarea className={`${inputClass} min-h-24`} rows={3} value={draft.subtitle} onChange={e => setSection('subtitle', e.target.value)} /></Field>
-        <Field label="Hero image"><ImageListEditor images={draft.heroImage ? [draft.heroImage] : []} maxImages={1} onChange={images => setSection('heroImage', images[0] || '')} /></Field>
+        <Field label="Hero image" hint="Used whenever no hero video is set, or as a fallback while the video loads."><ImageListEditor images={draft.heroImage ? [draft.heroImage] : []} maxImages={1} onChange={images => setSection('heroImage', images[0] || '')} /></Field>
+        <Field label="Hero video" hint="Optional - when set, this plays instead of the hero image."><VideoUploader value={draft.heroVideo || ''} onChange={url => setSection('heroVideo', url)} /></Field>
       </SectionCard>
       <SectionCard title="Personal planning section" description="The 'A safari is too important to feel anonymous' section, just below the hero.">
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.personalPlanning.eyebrow} onChange={e => setSection('personalPlanning', { ...draft.personalPlanning, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.personalPlanning.title} onChange={e => setSection('personalPlanning', { ...draft.personalPlanning, title: e.target.value })} /></Field></div>
         <Field label="Body text"><textarea className={`${inputClass} min-h-24`} rows={3} value={draft.personalPlanning.body} onChange={e => setSection('personalPlanning', { ...draft.personalPlanning, body: e.target.value })} /></Field>
         <Field label="Four-step process" hint="Shown as a 2x2 grid under the text."><div className="grid gap-3 sm:grid-cols-2">{draft.personalPlanning.steps.map((step, index) => <input key={index} className={inputClass} value={step.label} onChange={e => updatePlanningStep(index, e.target.value)} placeholder={`Step ${step.number}`} />)}</div></Field>
+        <Field label="Photo grid" hint="Up to 3 images shown next to the text."><ImageListEditor images={draft.personalPlanning.images || []} maxImages={3} onChange={images => setSection('personalPlanning', { ...draft.personalPlanning, images })} /></Field>
       </SectionCard>
       <SectionCard title="Safari ideas section" description="Heading above the featured tours grid.">
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Eyebrow"><input className={inputClass} value={draft.tours.eyebrow} onChange={e => setSection('tours', { ...draft.tours, eyebrow: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.tours.title} onChange={e => setSection('tours', { ...draft.tours, title: e.target.value })} /></Field></div>
@@ -87,6 +90,7 @@ export function AdminHomepageContent({ homepage, onSave }: { homepage: Partial<H
         <Field label="Four points" hint="Each has a short title and one sentence of detail.">
           <div className="space-y-3">{draft.whyUs.items.map((item, index) => <div key={index} className="grid gap-2 sm:grid-cols-[1fr_2fr] rounded-xl border border-[#e8e4da] p-3"><input className={inputClass} value={item.title} onChange={e => updateWhyUsItem(index, { title: e.target.value })} placeholder="Point title" /><input className={inputClass} value={item.description} onChange={e => updateWhyUsItem(index, { description: e.target.value })} placeholder="Point detail" /></div>)}</div>
         </Field>
+        <Field label="Photo" hint="The sundowner-style image shown next to this section."><ImageListEditor images={draft.whyUs.image ? [draft.whyUs.image] : []} maxImages={1} onChange={images => setSection('whyUs', { ...draft.whyUs, image: images[0] || '' })} /></Field>
       </SectionCard>
       <SectionCard title="Beach stays section" description="Only shown when at least one hotel exists.">
         <div className="grid gap-4 sm:grid-cols-2"><Field label="Badge label"><input className={inputClass} value={draft.beachStays.badge} onChange={e => setSection('beachStays', { ...draft.beachStays, badge: e.target.value })} /></Field><Field label="Heading"><input className={inputClass} value={draft.beachStays.title} onChange={e => setSection('beachStays', { ...draft.beachStays, title: e.target.value })} /></Field></div>
