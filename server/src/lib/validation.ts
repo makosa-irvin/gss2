@@ -295,6 +295,28 @@ export const settingsUpdateSchema = z.object({
       heroImage: z.string(),
       primaryCtaLabel: z.string().max(100),
       secondaryCtaLabel: z.string().max(100),
+      personalPlanning: z
+        .object({
+          eyebrow: z.string().max(300),
+          title: z.string().max(300),
+          body: z.string().max(2000),
+          steps: z.array(z.object({ number: z.string().max(10), label: z.string().max(200) })).max(8),
+        })
+        .optional(),
+      tours: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      styleFinder: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      destinations: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      whyUs: z
+        .object({
+          eyebrow: z.string().max(300),
+          title: z.string().max(300),
+          items: z.array(z.object({ title: z.string().max(200), description: z.string().max(500) })).max(8),
+        })
+        .optional(),
+      beachStays: z.object({ badge: z.string().max(200), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      safariBuilder: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      guides: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
+      finalCta: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
     })
     .optional(),
   about: z
