@@ -6,6 +6,7 @@ export const DEFAULT_HOMEPAGE: HomepageContent = {
   highlightedTitle: 'Our home.',
   subtitle: 'Private 4x4 journeys, experienced local guides and carefully chosen stays — shaped around your dates, pace and priorities.',
   heroImage: '/images/catalog/vehicle-next-to-the-great-migration.jpg',
+  heroVideo: '',
   primaryCtaLabel: 'Build My Safari',
   secondaryCtaLabel: 'Explore Safari Ideas',
   personalPlanning: {
@@ -17,6 +18,11 @@ export const DEFAULT_HOMEPAGE: HomepageContent = {
       { number: '2', label: 'Refine route & stays' },
       { number: '3', label: 'Review before committing' },
       { number: '4', label: 'Travel with local support' },
+    ],
+    images: [
+      '/images/catalog/family-safari-game-drive.jpg',
+      '/images/catalog/picnic-lunch-in-the-wild.jpg',
+      '/images/catalog/honey-moon-in-samburu.jpg',
     ],
   },
   tours: {
@@ -43,6 +49,7 @@ export const DEFAULT_HOMEPAGE: HomepageContent = {
       { title: 'Local communication', description: 'Email, phone and WhatsApp keep the East Africa team within reach.' },
       { title: 'Clarity before commitment', description: 'Review itinerary, inclusions and trip terms before deciding to proceed.' },
     ],
+    image: '/images/catalog/sundowner-at-amboseli.jpg',
   },
   beachStays: {
     badge: 'Kenyan resident offers',

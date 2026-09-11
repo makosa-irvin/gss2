@@ -293,6 +293,7 @@ export const settingsUpdateSchema = z.object({
       highlightedTitle: z.string().max(300),
       subtitle: z.string().max(1000),
       heroImage: z.string(),
+      heroVideo: z.string().max(500).optional(),
       primaryCtaLabel: z.string().max(100),
       secondaryCtaLabel: z.string().max(100),
       personalPlanning: z
@@ -301,6 +302,7 @@ export const settingsUpdateSchema = z.object({
           title: z.string().max(300),
           body: z.string().max(2000),
           steps: z.array(z.object({ number: z.string().max(10), label: z.string().max(200) })).max(8),
+          images: z.array(z.string()).max(6).optional(),
         })
         .optional(),
       tours: z.object({ eyebrow: z.string().max(300), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),
@@ -311,6 +313,7 @@ export const settingsUpdateSchema = z.object({
           eyebrow: z.string().max(300),
           title: z.string().max(300),
           items: z.array(z.object({ title: z.string().max(200), description: z.string().max(500) })).max(8),
+          image: z.string().optional(),
         })
         .optional(),
       beachStays: z.object({ badge: z.string().max(200), title: z.string().max(300), subtitle: z.string().max(1000) }).optional(),

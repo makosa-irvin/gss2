@@ -61,6 +61,11 @@
           "number": "4",
           "label": "Travel with local support"
         }
+      ],
+      "images": [
+        "/images/catalog/family-safari-game-drive.jpg",
+        "/images/catalog/picnic-lunch-in-the-wild.jpg",
+        "/images/catalog/honey-moon-in-samburu.jpg"
       ]
     },
     "tours": {
@@ -98,7 +103,8 @@
           "title": "Clarity before commitment",
           "description": "Review itinerary, inclusions and trip terms before deciding to proceed."
         }
-      ]
+      ],
+      "image": "/images/catalog/sundowner-at-amboseli.jpg"
     },
     "beachStays": {
       "badge": "Kenyan resident offers",
