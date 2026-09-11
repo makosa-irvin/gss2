@@ -33,7 +33,21 @@ export function createApp() {
   // rather than the proxy's own address.
   app.set('trust proxy', 1);
 
-  app.use(helmet());
+  app.use(helmet({
+    // Helmet's default (Cross-Origin-Resource-Policy: same-origin) blocks
+    // the browser from directly loading resources served by this origin
+    // from any other origin - including the admin panel's own gallery
+    // <img> tags on Vercel loading uploaded photos served from here on
+    // Railway. That's a real, different origin, not same-site, so nothing
+    // short of "cross-origin" allows it. CORS (below) governs whether JS
+    // can *read* a cross-origin response; this is a separate header that
+    // governs whether the resource can be *loaded* at all, and CORS
+    // config doesn't relax it. Everything actually served under this
+    // policy is either intentionally public (tours/hotels/blog/uploaded
+    // images) or already gated by session-cookie auth, so relaxing this
+    // doesn't meaningfully change what's protected.
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }));
   app.use(
     cors({
       origin: allowedOrigins,
