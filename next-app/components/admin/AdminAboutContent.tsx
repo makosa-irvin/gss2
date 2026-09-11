@@ -2,17 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import { Check, Loader2, Plus, Save, Trash2, Users } from 'lucide-react';
+import { DEFAULT_ABOUT } from '../../lib/cmsDefaults';
 import { ImageListEditor, ToggleField } from './AdminForm';
 import { Field, inputClass, SectionCard } from './AdminSettingsShared';
 
 type TeamMember = { id: string; name: string; role: string; bio: string; imageUrl: string; active: boolean };
 type AboutContent = { eyebrow: string; title: string; intro: string; storyTitle: string; storyParagraphs: string[]; teamPhoto: string; teamMembers: TeamMember[] };
 
-export function AdminAboutContent({ about, onSave }: { about: AboutContent; onSave: (about: AboutContent) => Promise<void> }) {
-  const [draft, setDraft] = useState(about);
+// Same defensive fallback as AdminHomepageContent - never crash the
+// settings page on a database that's missing a field this component
+// expects, whatever the reason.
+function withDefaults(about: Partial<AboutContent> | null | undefined): AboutContent {
+  const base = DEFAULT_ABOUT as AboutContent;
+  return {
+    eyebrow: about?.eyebrow ?? base.eyebrow,
+    title: about?.title ?? base.title,
+    intro: about?.intro ?? base.intro,
+    storyTitle: about?.storyTitle ?? base.storyTitle,
+    storyParagraphs: about?.storyParagraphs ?? base.storyParagraphs,
+    teamPhoto: about?.teamPhoto ?? base.teamPhoto,
+    teamMembers: about?.teamMembers ?? base.teamMembers,
+  };
+}
+
+export function AdminAboutContent({ about, onSave }: { about: Partial<AboutContent> | null | undefined; onSave: (about: AboutContent) => Promise<void> }) {
+  const [draft, setDraft] = useState(() => withDefaults(about));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  useEffect(() => setDraft(about), [about]);
+  useEffect(() => setDraft(withDefaults(about)), [about]);
   const set = <K extends keyof AboutContent>(key: K, value: AboutContent[K]) => setDraft(current => ({ ...current, [key]: value }));
   const updateTeamMember = (index: number, patch: Partial<TeamMember>) => set('teamMembers', draft.teamMembers.map((member, memberIndex) => memberIndex === index ? { ...member, ...patch } : member));
   async function submit(event: React.FormEvent) { event.preventDefault(); setSaving(true); try { await onSave(draft); setSaved(true); window.setTimeout(() => setSaved(false), 3000); } finally { setSaving(false); } }

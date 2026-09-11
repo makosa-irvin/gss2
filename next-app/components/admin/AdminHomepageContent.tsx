@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Check, Layout, Loader2, Save } from 'lucide-react';
+import { DEFAULT_HOMEPAGE } from '../../lib/cmsDefaults';
 import { ImageListEditor } from './AdminForm';
 import { Field, inputClass, SectionCard } from './AdminSettingsShared';
 
@@ -18,11 +19,39 @@ type HomepageContent = {
   finalCta: { eyebrow: string; title: string; subtitle: string };
 };
 
-export function AdminHomepageContent({ homepage, onSave }: { homepage: HomepageContent; onSave: (homepage: HomepageContent) => Promise<void> }) {
-  const [draft, setDraft] = useState(homepage);
+// A database that hasn't run migration 0007 yet (or a deploy where the
+// frontend rolls out before the migration finishes) will return a
+// homepage object missing the 9 newer section keys entirely - fill in
+// anything missing from the same defaults the public site itself falls
+// back to, rather than crashing the whole settings page on a null
+// dereference.
+function withDefaults(homepage: Partial<HomepageContent> | null | undefined): HomepageContent {
+  const base = DEFAULT_HOMEPAGE as HomepageContent;
+  return {
+    eyebrow: homepage?.eyebrow ?? base.eyebrow,
+    title: homepage?.title ?? base.title,
+    highlightedTitle: homepage?.highlightedTitle ?? base.highlightedTitle,
+    subtitle: homepage?.subtitle ?? base.subtitle,
+    heroImage: homepage?.heroImage ?? base.heroImage,
+    primaryCtaLabel: homepage?.primaryCtaLabel ?? base.primaryCtaLabel,
+    secondaryCtaLabel: homepage?.secondaryCtaLabel ?? base.secondaryCtaLabel,
+    personalPlanning: homepage?.personalPlanning ?? base.personalPlanning,
+    tours: homepage?.tours ?? base.tours,
+    styleFinder: homepage?.styleFinder ?? base.styleFinder,
+    destinations: homepage?.destinations ?? base.destinations,
+    whyUs: homepage?.whyUs ?? base.whyUs,
+    beachStays: homepage?.beachStays ?? base.beachStays,
+    safariBuilder: homepage?.safariBuilder ?? base.safariBuilder,
+    guides: homepage?.guides ?? base.guides,
+    finalCta: homepage?.finalCta ?? base.finalCta,
+  };
+}
+
+export function AdminHomepageContent({ homepage, onSave }: { homepage: Partial<HomepageContent> | null | undefined; onSave: (homepage: HomepageContent) => Promise<void> }) {
+  const [draft, setDraft] = useState(() => withDefaults(homepage));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  useEffect(() => setDraft(homepage), [homepage]);
+  useEffect(() => setDraft(withDefaults(homepage)), [homepage]);
   const setSection = <K extends keyof HomepageContent>(key: K, value: HomepageContent[K]) => setDraft(current => ({ ...current, [key]: value }));
   const updatePlanningStep = (index: number, label: string) => setSection('personalPlanning', { ...draft.personalPlanning, steps: draft.personalPlanning.steps.map((step, stepIndex) => stepIndex === index ? { ...step, label } : step) });
   const updateWhyUsItem = (index: number, patch: Partial<{ title: string; description: string }>) => setSection('whyUs', { ...draft.whyUs, items: draft.whyUs.items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item) });
