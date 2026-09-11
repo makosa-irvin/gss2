@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart3, Compass, ExternalLink, FileText, Inbox, LayoutDashboard, LogOut, MapPin, Menu, MessageSquare, Palmtree, Settings, X } from 'lucide-react';
+import { BarChart3, Compass, ExternalLink, FileText, Home, Inbox, LayoutDashboard, LogOut, MapPin, Menu, MessageSquare, Palmtree, Settings, Users, X } from 'lucide-react';
 
-export type AdminSection = 'overview' | 'growth' | 'enquiries' | 'tours' | 'hotels' | 'destinations' | 'blog' | 'testimonials' | 'settings';
+export type AdminSection = 'overview' | 'growth' | 'enquiries' | 'tours' | 'hotels' | 'destinations' | 'blog' | 'testimonials' | 'homepage' | 'about' | 'settings';
 type NavItem = { id: AdminSection; label: string; icon: React.ComponentType<{ className?: string }>; count?: number; badge?: number };
 
 export function AdminLayout({ active, onNavigate, adminName, adminEmail, onLogout, counts, children }: { active: AdminSection; onNavigate: (section: AdminSection) => void; adminName?: string; adminEmail?: string; onLogout: () => void; counts: { enquiries: number; newEnquiries: number; tours: number; hotels: number; destinations: number; blog: number; testimonials: number }; children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const crmItems: NavItem[] = [{ id: 'overview', label: 'Dashboard', icon: LayoutDashboard }, { id: 'growth', label: 'Growth', icon: BarChart3 }, { id: 'enquiries', label: 'Enquiries', icon: Inbox, count: counts.enquiries, badge: counts.newEnquiries }];
-  const cmsItems: NavItem[] = [{ id: 'tours', label: 'Safaris & Tours', icon: Compass, count: counts.tours }, { id: 'hotels', label: 'Hotels & Resorts', icon: Palmtree, count: counts.hotels }, { id: 'destinations', label: 'Destinations', icon: MapPin, count: counts.destinations }, { id: 'blog', label: 'Blog', icon: FileText, count: counts.blog }, { id: 'testimonials', label: 'Customer Reviews', icon: MessageSquare, count: counts.testimonials }];
+  const cmsItems: NavItem[] = [{ id: 'tours', label: 'Safaris & Tours', icon: Compass, count: counts.tours }, { id: 'hotels', label: 'Hotels & Resorts', icon: Palmtree, count: counts.hotels }, { id: 'destinations', label: 'Destinations', icon: MapPin, count: counts.destinations }, { id: 'blog', label: 'Blog', icon: FileText, count: counts.blog }, { id: 'testimonials', label: 'Customer Reviews', icon: MessageSquare, count: counts.testimonials }, { id: 'homepage', label: 'Homepage Content', icon: Home }, { id: 'about', label: 'About Page', icon: Users }];
 
   const navButton = (item: NavItem) => {
     const Icon = item.icon;
