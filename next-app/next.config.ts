@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       new URL('/uploads/**', backendOrigin),
     ],
+    // Next's image optimizer refuses to fetch from a private/local IP by
+    // default (an SSRF guard) - correct in production, where the backend
+    // is a real public domain, but it blocks locally uploaded images in
+    // dev, where the backend is localhost. Scoped to non-production only:
+    // this must never be relaxed for the actual deployed build.
+    ...(process.env.NODE_ENV !== 'production' ? { dangerouslyAllowLocalIP: true } : {}),
   },
   async redirects() {
     return [
