@@ -52,6 +52,6 @@ export function ReviewSubmissionForm() {
     </div>
     <label className="block text-sm font-bold text-ink">Your review *<textarea name="reviewText" required minLength={20} rows={5} className={`${inputClass} resize-y`} /></label>
     {status === 'error' ? <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{error}</p> : null}
-    <button type="submit" disabled={status === 'sending'} className="min-h-12 w-full rounded-xl bg-brand-strong px-6 text-sm font-extrabold text-white shadow-md hover:bg-brand-hover disabled:opacity-60 inline-flex items-center justify-center gap-2"><Send className="h-4 w-4" />{status === 'sending' ? 'Submitting…' : 'Submit for moderation'}</button>
+    <button type="submit" disabled={status === 'sending'} className="min-h-12 w-full rounded-xl bg-brand-strong px-6 text-sm font-extrabold text-white shadow-md hover:bg-brand-hover disabled:opacity-60 inline-flex items-center justify-center gap-2"><Send className="h-4 w-4" />{status === 'sending' ? 'Submitting…' : 'Submit'}</button>
   </form>;
 }
